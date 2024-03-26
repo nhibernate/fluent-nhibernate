@@ -9,8 +9,8 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class PropertyInstance(PropertyMapping mapping) : PropertyInspector(mapping), IPropertyInstance
 {
-    private readonly PropertyMapping mapping = mapping;
-    private bool nextBool = true;
+    readonly PropertyMapping mapping = mapping;
+    bool nextBool = true;
     const int layer = Layer.Conventions;
 
     /// <inheritdoc />
@@ -192,7 +192,7 @@ public class PropertyInstance(PropertyMapping mapping) : PropertyInspector(mappi
             column.Set(x => x.Check, layer, constraint);
     }
 
-    private void AddColumnsForCompositeUserType(string columnPrefix)
+    void AddColumnsForCompositeUserType(string columnPrefix)
     {
         var inst = (ICompositeUserType)Activator.CreateInstance(mapping.Type.GetUnderlyingSystemType());
 

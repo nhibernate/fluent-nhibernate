@@ -5,7 +5,7 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class MetaValueInspector(MetaValueMapping mapping) : IMetaValueInspector
 {
-    private readonly InspectorModelMapper<IMetaValueInspector, MetaValueMapping> propertyMappings = new InspectorModelMapper<IMetaValueInspector, MetaValueMapping>();
+    readonly InspectorModelMapper<IMetaValueInspector, MetaValueMapping> propertyMappings = new InspectorModelMapper<IMetaValueInspector, MetaValueMapping>();
 
     public Type EntityType => mapping.ContainingEntityType;
 

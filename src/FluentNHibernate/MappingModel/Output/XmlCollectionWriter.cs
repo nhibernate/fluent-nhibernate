@@ -8,7 +8,7 @@ namespace FluentNHibernate.MappingModel.Output;
 public class XmlCollectionWriter(IXmlWriterServiceLocator serviceLocator)
     : NullMappingModelVisitor, IXmlWriter<CollectionMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
     Collection collection;
 
     public XmlDocument Write(CollectionMapping mappingModel)

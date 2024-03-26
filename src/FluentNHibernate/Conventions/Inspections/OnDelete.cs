@@ -8,9 +8,9 @@ public class OnDelete : IEquatable<OnDelete>
     public static readonly OnDelete Cascade = new OnDelete("cascade");
     public static readonly OnDelete NoAction = new OnDelete("noaction");
 
-    private readonly string value;
+    readonly string value;
 
-    private OnDelete(string value)
+    OnDelete(string value)
     {
         this.value = value;
     }

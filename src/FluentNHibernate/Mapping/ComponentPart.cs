@@ -7,15 +7,15 @@ namespace FluentNHibernate.Mapping;
 
 public class ComponentPart<T> : ComponentPartBase<T, ComponentPart<T>>, IComponentMappingProvider
 {
-    private readonly Type entity;
-    private readonly AttributeStore attributes;
-    private string columnPrefix;
+    readonly Type entity;
+    readonly AttributeStore attributes;
+    string columnPrefix;
 
     public ComponentPart(Type entity, Member property)
         : this(entity, property, new AttributeStore())
     {}
 
-    private ComponentPart(Type entity, Member property, AttributeStore attributes)
+    ComponentPart(Type entity, Member property, AttributeStore attributes)
         : base(attributes, property)
     {
         this.attributes = attributes;

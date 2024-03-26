@@ -616,7 +616,7 @@ public class SubClassTester
         }
     }
 
-    private class ProxyClass
+    class ProxyClass
     {}
 }
 

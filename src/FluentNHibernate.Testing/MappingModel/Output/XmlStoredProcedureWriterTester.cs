@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlStoredProcedureWriterTester
 {
-    private IXmlWriter<ClassMapping> writer;
+    IXmlWriter<ClassMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()

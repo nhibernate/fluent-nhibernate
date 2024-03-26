@@ -6,7 +6,7 @@ namespace FluentNHibernate.MappingModel.Output;
 
 public class XmlMetaValueWriter : NullMappingModelVisitor, IXmlWriter<MetaValueMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(MetaValueMapping mappingModel)
     {

@@ -14,10 +14,10 @@ public class ReferenceComponentMapping(ComponentType componentType, Member prope
     : IComponentMapping, IEquatable<ReferenceComponentMapping>
 {
     public ComponentType ComponentType { get; set; } = componentType;
-    private readonly Member property = property;
-    private readonly Type componentType = componentEntityType;
-    private ExternalComponentMapping mergedComponent;
-    private Type containingEntityType = containingEntityType;
+    readonly Member property = property;
+    readonly Type componentType = componentEntityType;
+    ExternalComponentMapping mergedComponent;
+    Type containingEntityType = containingEntityType;
 
     public void AcceptVisitor(IMappingModelVisitor visitor)
     {

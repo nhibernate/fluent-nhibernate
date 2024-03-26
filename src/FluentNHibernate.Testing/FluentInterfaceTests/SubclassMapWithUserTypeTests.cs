@@ -57,7 +57,7 @@ public class MediaMap : ClassMap<Media>
 
 public class Image : Media
 {
-    private IList<string> contexts = new List<string>();
+    IList<string> contexts = new List<string>();
 
     public virtual string Title { get; set; }
     public virtual string Description { get; set; }

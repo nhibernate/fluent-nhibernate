@@ -25,7 +25,7 @@ public class HasManyToManyStep(IAutomappingConfiguration cfg) : IAutomappingStep
         return hasInverse;
     }
 
-    private static Member GetInverseProperty(Member member)
+    static Member GetInverseProperty(Member member)
     {
         var type = member.PropertyType;
         var expectedInversePropertyType = type.GetGenericTypeDefinition()
@@ -45,7 +45,7 @@ public class HasManyToManyStep(IAutomappingConfiguration cfg) : IAutomappingStep
         return CollectionMapping.For(collectionType);
     }
 
-    private void ConfigureModel(Member member, CollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
+    void ConfigureModel(Member member, CollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
     {
         // TODO: Make the child type safer
         mapping.ContainingEntityType = classMap.Type;

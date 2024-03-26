@@ -23,7 +23,7 @@ public class TypeReferenceEnumTests
         enumTypeReference.IsEnum.ShouldBeTrue();
     }
 
-    private enum TestEnum
+    enum TestEnum
     {
         Value1
     }

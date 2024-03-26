@@ -44,7 +44,7 @@ public class PropertyColumnDefaultsTester
         mapping.Columns.First().NotNull.ShouldBeTrue();
     }
 
-    private Member Prop(Expression<Func<PropertyTarget, object>> propertyAccessor)
+    Member Prop(Expression<Func<PropertyTarget, object>> propertyAccessor)
     {
         return ReflectionHelper.GetMember(propertyAccessor);
     }

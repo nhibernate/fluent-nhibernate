@@ -7,8 +7,8 @@ namespace FluentNHibernate.Testing.Cfg.Db;
 [TestFixture]
 public class FirebirdConfigurationTester
 {
-    private FirebirdConfiguration _config;
-    private IDictionary<string, string> _props;
+    FirebirdConfiguration _config;
+    IDictionary<string, string> _props;
 
     [SetUp]
     public void SetUp()

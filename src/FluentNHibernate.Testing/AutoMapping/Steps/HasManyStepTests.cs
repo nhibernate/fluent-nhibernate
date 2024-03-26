@@ -14,7 +14,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps;
 [TestFixture]
 public class HasManyStepTests
 {
-    private HasManyStep mapper;
+    HasManyStep mapper;
 
     [SetUp]
     public void CreateMapper()

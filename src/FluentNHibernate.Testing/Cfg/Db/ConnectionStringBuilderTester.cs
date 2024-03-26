@@ -6,7 +6,7 @@ namespace FluentNHibernate.Testing.Cfg.Db;
 [TestFixture]
 public class ConnectionStringBuilderTester
 {
-    private ConnectionStringBuilderDouble builder;
+    ConnectionStringBuilderDouble builder;
 
     [SetUp]
     public void CreateBuilder()
@@ -39,7 +39,7 @@ public class ConnectionStringBuilderTester
     }
 #endif
 
-    private class ConnectionStringBuilderDouble : ConnectionStringBuilder
+    class ConnectionStringBuilderDouble : ConnectionStringBuilder
     {
         public string ConnectionString => Create();
     }

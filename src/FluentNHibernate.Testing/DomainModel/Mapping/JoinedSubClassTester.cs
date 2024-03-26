@@ -221,19 +221,19 @@ public class JoinedSubClassTester
             .Element("//joined-subclass/any").Exists();
     }
 
-    private class SuperClass
+    class SuperClass
     {
         public int Id { get; set; }
         public string Type { get; set; }
         public SuperClass Parent { get; set; }
     }
 
-    private class SubClass : SuperClass
+    class SubClass : SuperClass
     {
         public string Name { get; set; }
     }
 
-    private class ProxyClass
+    class ProxyClass
     {}
 }
 

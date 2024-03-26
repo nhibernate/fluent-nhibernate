@@ -16,7 +16,7 @@ public class AutoMapper(
 {
     List<AutoMapType> mappingTypes;
 
-    private void ApplyOverrides(Type classType, IList<Member> mappedMembers, ClassMappingBase mapping)
+    void ApplyOverrides(Type classType, IList<Member> mappedMembers, ClassMappingBase mapping)
     {
         var autoMapType = ReflectionHelper.AutomappingTypeForEntityType(classType);
         var autoMap = Activator.CreateInstance(autoMapType, mappedMembers);
@@ -42,7 +42,7 @@ public class AutoMapper(
         return mapping;
     }
 
-    private void MapInheritanceTree(Type classType, ClassMappingBase mapping, IList<Member> mappedMembers)
+    void MapInheritanceTree(Type classType, ClassMappingBase mapping, IList<Member> mappedMembers)
     {
         var discriminatorSet = HasDiscriminator(mapping);
         var isDiscriminated = cfg.IsDiscriminated(classType) || discriminatorSet;
@@ -136,7 +136,7 @@ public class AutoMapper(
         return GetLogicalParent(type.BaseType, availableTypes);
     }
 
-    private void MapSubclass(IList<Member> mappedMembers, SubclassMapping subclass, AutoMapType inheritedClass)
+    void MapSubclass(IList<Member> mappedMembers, SubclassMapping subclass, AutoMapType inheritedClass)
     {
         subclass.Set(x => x.Name, Layer.Defaults, inheritedClass.Type.AssemblyQualifiedName);
         subclass.Set(x => x.Type, Layer.Defaults, inheritedClass.Type);

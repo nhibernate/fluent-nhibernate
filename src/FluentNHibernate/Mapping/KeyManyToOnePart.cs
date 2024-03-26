@@ -7,8 +7,8 @@ namespace FluentNHibernate.Mapping;
 
 public class KeyManyToOnePart
 {
-    private readonly KeyManyToOneMapping mapping;
-    private bool nextBool = true;
+    readonly KeyManyToOneMapping mapping;
+    bool nextBool = true;
 
     public KeyManyToOnePart(KeyManyToOneMapping mapping)
     {

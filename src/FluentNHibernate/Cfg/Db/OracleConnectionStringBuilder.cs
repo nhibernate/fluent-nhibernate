@@ -2,15 +2,16 @@ namespace FluentNHibernate.Cfg.Db;
 
 public class OracleConnectionStringBuilder : ConnectionStringBuilder
 {
-    private string instance;
-    private string otherOptions;
-    private string password;
+    string instance;
+    string otherOptions;
+
+    string password;
     // Port is pre-slugged as 1521 is the default Oracle port.
-    private int port = 1521;
-    private string server;
-    private string username;
-    private bool pooling;
-    private string statementCacheSize;
+    int port = 1521;
+    string server;
+    string username;
+    bool pooling;
+    string statementCacheSize;
 
     /// <summary>
     /// Specifies the server to connect. This can be either the DNS name of the

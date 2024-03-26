@@ -7,7 +7,7 @@ namespace FluentNHibernate.Testing.Infrastructure;
 [TestFixture]
 public class ContainerTester
 {
-    private Container container;
+    Container container;
 
     [SetUp]
     public void CreateContainer()
@@ -34,9 +34,9 @@ public class ContainerTester
             .WithMessage($"Unable to resolve dependency: '{typeof(IExample).FullName}'");
     }
 
-    private interface IExample
+    interface IExample
     {}
 
-    private class Example : IExample
+    class Example : IExample
     {}
 }

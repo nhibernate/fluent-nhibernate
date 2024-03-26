@@ -59,7 +59,7 @@ public abstract class Member : IEquatable<Member>
 }
 
 [Serializable]
-internal class MethodMember(MethodInfo member) : Member
+class MethodMember(MethodInfo member) : Member
 {
     Member backingField;
 
@@ -137,7 +137,7 @@ internal class MethodMember(MethodInfo member) : Member
 }
 
 [Serializable]
-internal class FieldMember(FieldInfo member) : Member
+class FieldMember(FieldInfo member) : Member
 {
     public override void SetValue(object target, object value)
     {
@@ -190,7 +190,7 @@ internal class FieldMember(FieldInfo member) : Member
 }
 
 [Serializable]
-internal class PropertyMember : Member
+class PropertyMember : Member
 {
     readonly PropertyInfo member;
     Member backingField;

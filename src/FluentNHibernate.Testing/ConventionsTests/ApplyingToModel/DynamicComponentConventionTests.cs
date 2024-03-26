@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class DynamicComponentConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -62,12 +62,12 @@ public class DynamicComponentConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IDynamicComponentInstance> convention)
+    void Convention(Action<IDynamicComponentInstance> convention)
     {
         model.Conventions.Add(new DynamicComponentConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<ComponentMapping> modelVerification)
+    void VerifyModel(Action<ComponentMapping> modelVerification)
     {
         var classMap = new ClassMap<PropertyTarget>();
         classMap.Id(x => x.Id);

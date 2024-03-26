@@ -24,7 +24,7 @@ public class IdentityConventionTests
         ((IdMapping)classMapping.Id).Columns.First().Name.ShouldEqual("xxx");
     }
 
-    private class IdConvention : IIdConvention
+    class IdConvention : IIdConvention
     {
         public void Apply(IIdentityInstance instance)
         {
@@ -33,7 +33,7 @@ public class IdentityConventionTests
     }
 }
 
-internal class IdTarget
+class IdTarget
 {
     public int Id { get; set; }
 }

@@ -16,7 +16,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class IdConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -162,12 +162,12 @@ public class IdConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IIdentityInstance> convention)
+    void Convention(Action<IIdentityInstance> convention)
     {
         model.Conventions.Add(new IdConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<IdMapping> modelVerification)
+    void VerifyModel(Action<IdMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleClass>();
         var map = classMap.Id(x => x.Id);
@@ -185,7 +185,7 @@ public class IdConventionTests
 
     #endregion
 
-    private class CustomGenerator : IIdentifierGenerator
+    class CustomGenerator : IIdentifierGenerator
     {
         public object Generate(ISessionImplementor session, object obj)
         {

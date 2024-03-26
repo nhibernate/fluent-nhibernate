@@ -7,8 +7,8 @@ namespace FluentNHibernate.Conventions;
 
 public class ConventionsCollection : IEnumerable<Type>
 {
-    private readonly List<AddedConvention> inner = new List<AddedConvention>();
-    private readonly List<Type> types = new List<Type>();
+    readonly List<AddedConvention> inner = new List<AddedConvention>();
+    readonly List<Type> types = new List<Type>();
 
     public IEnumerator<Type> GetEnumerator()
     {
@@ -53,7 +53,7 @@ public class ConventionsCollection : IEnumerable<Type>
         get { return inner.Find(x => x.Type == type).GetInstances(); }
     }
 
-    private class AddedConvention(Type type)
+    class AddedConvention(Type type)
     {
         public IList<object> Instances { get; } = new List<object>();
         public Type Type { get; } = type;

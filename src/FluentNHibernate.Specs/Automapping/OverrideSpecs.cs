@@ -36,13 +36,13 @@ public class when_using_an_automapping_override_to_create_a_join
 
 public class when_using_an_automapping_override_to_specify_a_discriminators_and_join_on_subclass
 {
-    private Establish context = () =>
+    Establish context = () =>
         model = AutoMap.Source(new StubTypeSource(typeof (Parent), typeof (Child)))
             .Override<Parent>(map =>
                 map.DiscriminateSubClassesOnColumn("type"))
             .Override<Child>(map => map.Join("table", part => { }));
 
-    private Because of = () => 
+    Because of = () => 
         mapping = model.BuildMappingFor<Parent>();
 
     It should_not_create_the_join_mapping = () =>

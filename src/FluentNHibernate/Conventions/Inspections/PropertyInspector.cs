@@ -8,8 +8,8 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class PropertyInspector : ColumnBasedInspector, IPropertyInspector
 {
-    private readonly InspectorModelMapper<IPropertyInspector, PropertyMapping> propertyMappings = new InspectorModelMapper<IPropertyInspector, PropertyMapping>();
-    private readonly PropertyMapping mapping;
+    readonly InspectorModelMapper<IPropertyInspector, PropertyMapping> propertyMappings = new InspectorModelMapper<IPropertyInspector, PropertyMapping>();
+    readonly PropertyMapping mapping;
 
     public PropertyInspector(PropertyMapping mapping)
         : base(mapping.Columns)

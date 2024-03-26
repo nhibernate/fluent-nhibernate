@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Instances;
 public class ColumnInstance(Type parentType, ColumnMapping mapping)
     : ColumnInspector(parentType, mapping), IColumnInstance
 {
-    private readonly ColumnMapping mapping = mapping;
+    readonly ColumnMapping mapping = mapping;
 
     public new void Length(int length)
     {

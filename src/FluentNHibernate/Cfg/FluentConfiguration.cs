@@ -266,7 +266,7 @@ public class FluentConfiguration
     /// </summary>
     /// <param name="innerException">Inner exception</param>
     /// <returns>FluentConfigurationException with state</returns>
-    private FluentConfigurationException CreateConfigurationException(Exception innerException)
+    FluentConfigurationException CreateConfigurationException(Exception innerException)
     {
         var ex = new FluentConfigurationException(ExceptionMessage, innerException);
 

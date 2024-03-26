@@ -515,7 +515,7 @@ public class IdentityPartTester
             .DoesntExist();
     }
 
-    private class TestIdConvention : IIdConvention
+    class TestIdConvention : IIdConvention
     {
         public void Apply(IIdentityInstance instance)
         {

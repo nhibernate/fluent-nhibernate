@@ -26,9 +26,9 @@ public class Generated : IEquatable<Generated>
     /// </summary>
     public static readonly Generated Always = new Generated("always");
 
-    private readonly string value;
+    readonly string value;
 
-    private Generated(string value)
+    Generated(string value)
     {
         this.value = value;
     }

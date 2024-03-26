@@ -9,8 +9,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests;
 [TestFixture]
 public class KeyPropertyPartTests
 {
-    private KeyPropertyMapping mapping;
-    private KeyPropertyPart part;
+    KeyPropertyMapping mapping;
+    KeyPropertyPart part;
 
     [SetUp]
     public void SetUp()

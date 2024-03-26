@@ -9,7 +9,7 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class ComponentInstance(ComponentMapping mapping) : ComponentInspector(mapping), IComponentInstance
 {
-    private bool nextBool = true;
+    bool nextBool = true;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public IComponentInstance Not

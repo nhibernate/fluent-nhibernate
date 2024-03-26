@@ -10,7 +10,7 @@ namespace FluentNHibernate.Testing.ConventionsTests;
 [TestFixture]
 public class ForeignKeyConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -105,7 +105,7 @@ public class ForeignKeyConventionTests
             .Key.Columns.First().Name.ShouldEqual("ExampleClass!");
     }
 
-    private class TestForeignKeyConvention : ForeignKeyConvention
+    class TestForeignKeyConvention : ForeignKeyConvention
     {
         protected override string GetKeyName(Member property, Type type)
         {

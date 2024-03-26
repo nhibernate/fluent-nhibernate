@@ -494,7 +494,7 @@ public static class PersistenceSpecificationExtensions
         return spec.CheckList(expression, itemsToAdd, addAction);
     }
 
-    private class FuncEqualityComparer<T>(IEnumerable<Func<T, object>> comparisons) : EqualityComparer<T>
+    class FuncEqualityComparer<T>(IEnumerable<Func<T, object>> comparisons) : EqualityComparer<T>
     {
         public override bool Equals(T x, T y)
         {

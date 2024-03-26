@@ -7,7 +7,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-internal class MappedMembers : IMapping, IHasMappedMembers, IEquatable<MappedMembers>
+class MappedMembers : IMapping, IHasMappedMembers, IEquatable<MappedMembers>
 {
     public enum MappingType {
         Property,
@@ -21,7 +21,7 @@ internal class MappedMembers : IMapping, IHasMappedMembers, IEquatable<MappedMem
         StoredProcedure,
     }
 
-    private readonly List<Tuple<MappingType, IMapping>> orderedMappings = new();
+    readonly List<Tuple<MappingType, IMapping>> orderedMappings = new();
 
     public IEnumerable<PropertyMapping> Properties => orderedMappings.Where(x => x.Item1 == MappingType.Property).Select(x => x.Item2).Cast<PropertyMapping>();
 
@@ -205,11 +205,11 @@ internal class MappedMembers : IMapping, IHasMappedMembers, IEquatable<MappedMem
         return orderedMappings.GetHashCode();
     }
 
-    private void AddMapping<TMapping>(TMapping mapping, MappingType mappingType) where TMapping : IMapping {
+    void AddMapping<TMapping>(TMapping mapping, MappingType mappingType) where TMapping : IMapping {
         orderedMappings.Add(Tuple.Create(mappingType, (IMapping)mapping));
     }
 
-    private void AddOrReplaceMapping<TMapping>(TMapping mapping, MappingType mappingType, Predicate<TMapping> matchPredicate) {
+    void AddOrReplaceMapping<TMapping>(TMapping mapping, MappingType mappingType, Predicate<TMapping> matchPredicate) {
         var newMapping = Tuple.Create(mappingType, (IMapping)mapping);            
         var index = orderedMappings.FindIndex(x => x.Item1 == mappingType && matchPredicate((TMapping)x.Item2));
         if (index >= 0)

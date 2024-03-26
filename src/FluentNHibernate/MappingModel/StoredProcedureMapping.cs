@@ -8,7 +8,7 @@ namespace FluentNHibernate.MappingModel;
 [Serializable]
 public class StoredProcedureMapping : MappingBase, IEquatable<StoredProcedureMapping>
 {
-    private readonly AttributeStore attributes;
+    readonly AttributeStore attributes;
 
     public StoredProcedureMapping() : this("sql-insert", "")
     {

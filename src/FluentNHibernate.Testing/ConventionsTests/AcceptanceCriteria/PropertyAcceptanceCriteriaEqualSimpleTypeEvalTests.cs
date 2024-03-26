@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria;
 [TestFixture]
 public class PropertyAcceptanceCriteriaEqualSimpleTypeEvalTests
 {
-    private IAcceptanceCriteria<IPropertyInspector> acceptance;
+    IAcceptanceCriteria<IPropertyInspector> acceptance;
 
     [SetUp]
     public void CreateAcceptanceCriteria()

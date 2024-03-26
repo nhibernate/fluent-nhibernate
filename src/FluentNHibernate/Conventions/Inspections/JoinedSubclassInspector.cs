@@ -8,8 +8,8 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class JoinedSubclassInspector : IJoinedSubclassInspector
 {
-    private readonly InspectorModelMapper<IJoinedSubclassInspector, SubclassMapping> mappedProperties = new InspectorModelMapper<IJoinedSubclassInspector, SubclassMapping>();
-    private readonly SubclassMapping mapping;
+    readonly InspectorModelMapper<IJoinedSubclassInspector, SubclassMapping> mappedProperties = new InspectorModelMapper<IJoinedSubclassInspector, SubclassMapping>();
+    readonly SubclassMapping mapping;
 
     public JoinedSubclassInspector(SubclassMapping mapping)
     {

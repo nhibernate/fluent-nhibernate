@@ -7,7 +7,7 @@ namespace FluentNHibernate.MappingModel.Output;
 
 public class XmlIdWriter(IXmlWriterServiceLocator serviceLocator) : NullMappingModelVisitor, IXmlWriter<IdMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(IdMapping mappingModel)
     {

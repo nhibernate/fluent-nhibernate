@@ -6,8 +6,8 @@ namespace FluentNHibernate.Utils;
 
 public class PropertyChain : Accessor
 {
-    private readonly Member[] _chain;
-    private readonly SingleMember innerMember;
+    readonly Member[] _chain;
+    readonly SingleMember innerMember;
 
     public PropertyChain(Member[] members)
     {
@@ -79,7 +79,7 @@ public class PropertyChain : Accessor
 
     #endregion
 
-    private object findInnerMostTarget(object target)
+    object findInnerMostTarget(object target)
     {
         foreach (var info in _chain)
         {

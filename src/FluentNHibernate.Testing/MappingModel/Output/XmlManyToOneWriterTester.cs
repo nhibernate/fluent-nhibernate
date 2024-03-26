@@ -10,7 +10,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlManyToOneWriterTester
 {
-    private IXmlWriter<ManyToOneMapping> writer;
+    IXmlWriter<ManyToOneMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()

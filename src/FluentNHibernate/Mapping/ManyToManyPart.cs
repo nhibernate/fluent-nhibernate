@@ -11,12 +11,12 @@ namespace FluentNHibernate.Mapping;
 
 public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
 {
-    private readonly IList<IFilterMappingProvider> childFilters = new List<IFilterMappingProvider>();
-    private IndexManyToManyPart manyToManyIndex;
-    private IndexPart index;
-    private readonly Type childType;
-    private Type valueType;
-    private bool isTernary;
+    readonly IList<IFilterMappingProvider> childFilters = new List<IFilterMappingProvider>();
+    IndexManyToManyPart manyToManyIndex;
+    IndexPart index;
+    readonly Type childType;
+    Type valueType;
+    bool isTernary;
 
     public ManyToManyPart(Type entity, Member property)
         : this(entity, property, property.PropertyType)
@@ -74,13 +74,13 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
 
     public FetchTypeExpression<ManyToManyPart<TChild>> FetchType { get; }
 
-    private void EnsureDictionary()
+    void EnsureDictionary()
     {
         if (!typeof(IDictionary).IsAssignableFrom(childType))
             throw new ArgumentException(member.Name + " must be of type IDictionary to be used in a non-generic ternary association. Type was: " + childType);
     }
 
-    private void EnsureGenericDictionary()
+    void EnsureGenericDictionary()
     {
         if (!(childType.IsGenericType && childType.GetGenericTypeDefinition() == typeof(IDictionary<,>)))
             throw new ArgumentException(member.Name + " must be of type IDictionary<> to be used in a ternary assocation. Type was: " + childType);

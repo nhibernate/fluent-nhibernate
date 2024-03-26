@@ -12,10 +12,10 @@ public class Cascade : IEquatable<Cascade>
     public static readonly Cascade Delete = new Cascade("delete");
     public static readonly Cascade Merge = new Cascade("merge");
     public static readonly Cascade Replicate = new Cascade("replicate");
-        
-    private readonly string value;
 
-    private Cascade(string value)
+    readonly string value;
+
+    Cascade(string value)
     {
         this.value = value;
     }

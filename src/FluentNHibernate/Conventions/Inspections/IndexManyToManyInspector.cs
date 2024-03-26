@@ -8,7 +8,7 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class IndexManyToManyInspector(IndexManyToManyMapping mapping) : IIndexManyToManyInspector
 {
-    private readonly InspectorModelMapper<IIndexManyToManyInspector, IndexManyToManyMapping> mappedProperties = new InspectorModelMapper<IIndexManyToManyInspector, IndexManyToManyMapping>();
+    readonly InspectorModelMapper<IIndexManyToManyInspector, IndexManyToManyMapping> mappedProperties = new InspectorModelMapper<IIndexManyToManyInspector, IndexManyToManyMapping>();
 
     public Type EntityType => mapping.ContainingEntityType;
 

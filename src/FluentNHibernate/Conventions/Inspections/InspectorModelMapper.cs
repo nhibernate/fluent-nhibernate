@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class InspectorModelMapper<TInspector, TMapping>
 {
-    private readonly IDictionary<string, string> mappings = new Dictionary<string, string>();
+    readonly IDictionary<string, string> mappings = new Dictionary<string, string>();
 
     public void Map(Expression<Func<TInspector, object>> inspectorProperty, Expression<Func<TMapping, object>> mappingProperty)
     {
@@ -19,7 +19,7 @@ public class InspectorModelMapper<TInspector, TMapping>
         mappings[inspectorProperty.ToMember().Name] = mappingProperty;
     }
 
-    private void Map(Member inspectorProperty, Expression<Func<TMapping, object>> mappingProperty)
+    void Map(Member inspectorProperty, Expression<Func<TMapping, object>> mappingProperty)
     {
         mappings[inspectorProperty.Name] =  mappingProperty.ToMember().Name;
     }

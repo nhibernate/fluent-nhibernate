@@ -11,9 +11,9 @@ namespace FluentNHibernate.MappingModel;
 [Serializable]
 public class JoinMapping(AttributeStore attributes) : IMapping, IEquatable<JoinMapping>
 {
-    private readonly AttributeStore attributes = attributes;
+    readonly AttributeStore attributes = attributes;
 
-    private readonly MappedMembers mappedMembers = new();
+    readonly MappedMembers mappedMembers = new();
 
     public JoinMapping()
         : this(new AttributeStore())

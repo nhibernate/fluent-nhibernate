@@ -7,8 +7,8 @@ namespace FluentNHibernate.Conventions.Instances;
 public class HibernateMappingInstance(HibernateMapping mapping)
     : HibernateMappingInspector(mapping), IHibernateMappingInstance
 {
-    private readonly HibernateMapping mapping = mapping;
-    private bool nextBool = true;
+    readonly HibernateMapping mapping = mapping;
+    bool nextBool = true;
 
     public new void Catalog(string catalog)
     {

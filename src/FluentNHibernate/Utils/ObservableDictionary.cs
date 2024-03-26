@@ -8,10 +8,10 @@ using System.Collections.Specialized;
 namespace FluentNHibernate.Utils;
 
 public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INotifyCollectionChanged, INotifyPropertyChanged {
-    private const string CountString = "Count";
-    private const string IndexerName = "Item[]";
-    private const string KeysName = "Keys";
-    private const string ValuesName = "Values";
+    const string CountString = "Count";
+    const string IndexerName = "Item[]";
+    const string KeysName = "Keys";
+    const string ValuesName = "Values";
 
     protected IDictionary<TKey, TValue> Dictionary { get; private set; }
 
@@ -155,7 +155,7 @@ public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INo
         }
     }
 
-    private void Insert(TKey key, TValue value, bool add) {
+    void Insert(TKey key, TValue value, bool add) {
         if (key is null) throw new ArgumentNullException(nameof(key));
 
         TValue item;
@@ -174,7 +174,7 @@ public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INo
         }
     }
 
-    private void OnPropertyChanged() {
+    void OnPropertyChanged() {
         OnPropertyChanged(CountString);
         OnPropertyChanged(IndexerName);
         OnPropertyChanged(KeysName);
@@ -185,22 +185,22 @@ public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INo
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private void OnCollectionChanged() {
+    void OnCollectionChanged() {
         OnPropertyChanged();
         CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
     }
 
-    private void OnCollectionChanged(NotifyCollectionChangedAction action, KeyValuePair<TKey, TValue> changedItem) {
+    void OnCollectionChanged(NotifyCollectionChangedAction action, KeyValuePair<TKey, TValue> changedItem) {
         OnPropertyChanged();
         CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(action, changedItem, 0));
     }
 
-    private void OnCollectionChanged(NotifyCollectionChangedAction action, KeyValuePair<TKey, TValue> newItem, KeyValuePair<TKey, TValue> oldItem) {
+    void OnCollectionChanged(NotifyCollectionChangedAction action, KeyValuePair<TKey, TValue> newItem, KeyValuePair<TKey, TValue> oldItem) {
         OnPropertyChanged();
         CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(action, newItem, oldItem, 0));
     }
 
-    private void OnCollectionChanged(NotifyCollectionChangedAction action, IList newItems) {
+    void OnCollectionChanged(NotifyCollectionChangedAction action, IList newItems) {
         OnPropertyChanged();
         CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(action, newItems, 0));
     }

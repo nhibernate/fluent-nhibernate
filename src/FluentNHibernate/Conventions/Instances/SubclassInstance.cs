@@ -8,8 +8,8 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class SubclassInstance(SubclassMapping mapping) : SubclassInspector(mapping), ISubclassInstance
 {
-    private readonly SubclassMapping mapping = mapping;
-    private bool nextBool = true;
+    readonly SubclassMapping mapping = mapping;
+    bool nextBool = true;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public ISubclassInstance Not

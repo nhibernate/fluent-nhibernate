@@ -11,12 +11,12 @@ namespace FluentNHibernate.Mapping;
 [Obsolete("REMOVE ME")]
 public class SubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclassMappingProvider
 {
-    private readonly DiscriminatorPart parent;
-    private readonly object discriminatorValue;
-    private readonly MappingProviderStore providers;
-    private readonly AttributeStore attributes = new AttributeStore();
-    private readonly List<SubclassMapping> subclassMappings = new List<SubclassMapping>();
-    private bool nextBool = true;
+    readonly DiscriminatorPart parent;
+    readonly object discriminatorValue;
+    readonly MappingProviderStore providers;
+    readonly AttributeStore attributes = new AttributeStore();
+    readonly List<SubclassMapping> subclassMappings = new List<SubclassMapping>();
+    bool nextBool = true;
 
     public SubClassPart(DiscriminatorPart parent, object discriminatorValue)
         : this(parent, discriminatorValue, new MappingProviderStore())

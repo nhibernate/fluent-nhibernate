@@ -5,7 +5,7 @@ namespace FluentNHibernate.Mapping;
 
 public class KeyPropertyPart
 {
-    private readonly KeyPropertyMapping mapping;
+    readonly KeyPropertyMapping mapping;
 
     public KeyPropertyPart(KeyPropertyMapping mapping)
     {

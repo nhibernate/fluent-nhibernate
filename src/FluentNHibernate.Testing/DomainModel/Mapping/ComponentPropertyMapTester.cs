@@ -55,7 +55,7 @@ public class ComponentPropertyMapTester
             .Element("//property/column").HasAttribute("name", "column_name");
     }
 
-    private MappingTester<T> Model<T>(Action<ClassMap<T>> mapping)
+    MappingTester<T> Model<T>(Action<ClassMap<T>> mapping)
     {
         return new MappingTester<T>()
             .ForMapping(mapping);

@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class CompositeIdConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -46,12 +46,12 @@ public class CompositeIdConventionTests
 
     #region Helpers
 
-    private void Convention(Action<ICompositeIdentityInstance> convention)
+    void Convention(Action<ICompositeIdentityInstance> convention)
     {
         model.Conventions.Add(new CompositeIdConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<CompositeIdMapping> modelVerification)
+    void VerifyModel(Action<CompositeIdMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleClass>();
         var map = classMap.CompositeId(x => x.Id);

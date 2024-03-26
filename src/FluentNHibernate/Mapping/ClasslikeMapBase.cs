@@ -307,7 +307,7 @@ public abstract class ClasslikeMapBase<T>(MappingProviderStore providers)
         providers.Components.Add(componentProvider);
     }
 
-    private OneToManyPart<TChild> MapHasMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
+    OneToManyPart<TChild> MapHasMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
     {
         return HasMany<TChild>(expression.ToMember());
     }
@@ -354,7 +354,7 @@ public abstract class ClasslikeMapBase<T>(MappingProviderStore providers)
         return MapHasMany<TChild, object>(memberExpression);
     }
 
-    private ManyToManyPart<TChild> MapHasManyToMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
+    ManyToManyPart<TChild> MapHasManyToMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
     {
         return HasManyToMany<TChild>(expression.ToMember());
     }

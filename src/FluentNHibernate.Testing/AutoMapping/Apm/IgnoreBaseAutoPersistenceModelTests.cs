@@ -36,10 +36,10 @@ public class IgnoreBaseAutoPersistenceModelTests
     }
 }
 
-internal class Entity
+class Entity
 {
     public int Id { get; set; }
 }
 
-internal class RealBase : Entity
+class RealBase : Entity
 {}

@@ -13,9 +13,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
 [TestFixture]
 public class CompositeIdConventionTests
 {
-    private PersistenceModel model;
-    private IMappingProvider mapping;
-    private Type mappingType;
+    PersistenceModel model;
+    IMappingProvider mapping;
+    Type mappingType;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -55,12 +55,12 @@ public class CompositeIdConventionTests
 
     #region Helpers
 
-    private void Convention(Action<ICompositeIdentityInstance> convention)
+    void Convention(Action<ICompositeIdentityInstance> convention)
     {
         model.Conventions.Add(new CompositeIdConventionBuilder().Always(convention));
     }
 
-    private void Mapping<T>(Expression<Func<T, object>> property, Action<CompositeIdentityPart<object>> mappingDefinition)
+    void Mapping<T>(Expression<Func<T, object>> property, Action<CompositeIdentityPart<object>> mappingDefinition)
     {
         var classMap = new ClassMap<T>();
         var map = classMap.CompositeId(property);
@@ -71,7 +71,7 @@ public class CompositeIdConventionTests
         mappingType = typeof(T);
     }
 
-    private void VerifyModel(Action<CompositeIdMapping> modelVerification)
+    void VerifyModel(Action<CompositeIdMapping> modelVerification)
     {
         model.Add(mapping);
 

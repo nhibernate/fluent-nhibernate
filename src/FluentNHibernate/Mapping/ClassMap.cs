@@ -453,7 +453,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     /// Specifies a persister to be used with this entity
     /// </summary>
     /// <param name="type">Persister type</param>
-    private void Persister(Type type)
+    void Persister(Type type)
     {
         Persister(type.AssemblyQualifiedName);
     }

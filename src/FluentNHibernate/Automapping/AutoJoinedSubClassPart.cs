@@ -10,8 +10,8 @@ namespace FluentNHibernate.Automapping;
 public class AutoJoinedSubClassPart<T> : JoinedSubClassPart<T>, IAutoClasslike
 #pragma warning restore 612,618
 {
-    private readonly MappingProviderStore providers;
-    private readonly IList<Member> mappedMembers = new List<Member>();
+    readonly MappingProviderStore providers;
+    readonly IList<Member> mappedMembers = new List<Member>();
 
     public AutoJoinedSubClassPart(string keyColumn)
         : this(keyColumn, new MappingProviderStore())

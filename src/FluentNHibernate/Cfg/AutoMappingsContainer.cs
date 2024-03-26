@@ -12,9 +12,9 @@ namespace FluentNHibernate.Cfg;
 /// </summary>
 public class AutoMappingsContainer : IEnumerable<AutoPersistenceModel>
 {
-    private readonly IList<AutoPersistenceModel> mappings = new List<AutoPersistenceModel>();
-    private string exportPath;
-    private TextWriter exportTextWriter;
+    readonly IList<AutoPersistenceModel> mappings = new List<AutoPersistenceModel>();
+    string exportPath;
+    TextWriter exportTextWriter;
 
     internal AutoMappingsContainer()
     {}

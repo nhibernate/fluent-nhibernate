@@ -8,7 +8,7 @@ namespace FluentNHibernate.MappingModel.Output;
 public class XmlDiscriminatorWriter(IXmlWriterServiceLocator serviceLocator)
     : NullMappingModelVisitor, IXmlWriter<DiscriminatorMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(DiscriminatorMapping mappingModel)
     {

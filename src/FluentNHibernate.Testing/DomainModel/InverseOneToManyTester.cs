@@ -21,7 +21,7 @@ public class InverseOneToManyTester
         _source.BuildSchema();
     }
 
-    private ISessionSource _source;
+    ISessionSource _source;
 
     [Test]
     public void Should_handle_inverse_collections()

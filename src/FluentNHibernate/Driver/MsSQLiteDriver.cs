@@ -45,7 +45,7 @@ public class MsSQLiteDriver : ReflectionBasedDriver
         return connection;
     }
 
-    private static void Connection_StateChange(object sender, StateChangeEventArgs e)
+    static void Connection_StateChange(object sender, StateChangeEventArgs e)
     {
         if ((e.OriginalState == ConnectionState.Broken || e.OriginalState == ConnectionState.Closed || e.OriginalState == ConnectionState.Connecting) &&
             e.CurrentState == ConnectionState.Open)

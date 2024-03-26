@@ -78,7 +78,7 @@ public class JoinPartTester
             .Element("class/join/key/column").HasAttribute("name", "JoinTargetID");
     }
 
-    private class JoinConvention : IJoinConvention
+    class JoinConvention : IJoinConvention
     {
         public void Apply(IJoinInstance instance)
         {
@@ -124,7 +124,7 @@ public class JoinPartTester
             .Element("class/join/sql-delete").Exists();
     }
 
-    private class JoinTarget
+    class JoinTarget
     {
         public string Name { get; set; }
         public string CustomerName { get; set; }

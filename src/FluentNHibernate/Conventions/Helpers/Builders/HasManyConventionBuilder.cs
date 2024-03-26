@@ -6,7 +6,7 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Builders;
 
-internal class HasManyConventionBuilder : IConventionBuilder<IHasManyConvention, IOneToManyCollectionInspector, IOneToManyCollectionInstance>
+class HasManyConventionBuilder : IConventionBuilder<IHasManyConvention, IOneToManyCollectionInspector, IOneToManyCollectionInstance>
 {
     public IHasManyConvention Always(Action<IOneToManyCollectionInstance> convention)
     {

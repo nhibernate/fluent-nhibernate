@@ -7,7 +7,7 @@ namespace FluentNHibernate.Testing.ConventionsTests;
 [TestFixture]
 public class ConventionsCollectionTests
 {
-    private ConventionsCollection collection;
+    ConventionsCollection collection;
 
     [SetUp]
     public void CreateCollection()

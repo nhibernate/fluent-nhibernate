@@ -40,7 +40,7 @@ public class ExpressionToSql
         throw new InvalidOperationException("Unable to convert expression to SQL");
     }
 
-    private static string Convert<T>(Expression<Func<T, object>> expression, MemberExpression body)
+    static string Convert<T>(Expression<Func<T, object>> expression, MemberExpression body)
     {
         // TODO: should really do something about conventions and overridden names here
         var member = body.Member;
@@ -59,12 +59,12 @@ public class ExpressionToSql
     /// Gets the value of a method call.
     /// </summary>
     /// <param name="body">Method call expression</param>
-    private static string Convert(MethodCallExpression body)
+    static string Convert(MethodCallExpression body)
     {
         return Convert(body.Method.Invoke(body.Object, null));
     }
 
-    private static string Convert<T>(Expression<Func<T, object>> expression, UnaryExpression body)
+    static string Convert<T>(Expression<Func<T, object>> expression, UnaryExpression body)
     {
 
         if (body.Operand is ConstantExpression constant)
@@ -79,7 +79,7 @@ public class ExpressionToSql
         throw new InvalidOperationException("Unable to convert expression to SQL");
     }
 
-    private static string Convert(ConstantExpression expression)
+    static string Convert(ConstantExpression expression)
     {
         if (expression.Type.IsEnum)
             return Convert((int)expression.Value);
@@ -87,7 +87,7 @@ public class ExpressionToSql
         return Convert(expression.Value);
     }
 
-    private static Expression<Func<T, object>> CreateExpression<T>(Expression body)
+    static Expression<Func<T, object>> CreateExpression<T>(Expression body)
     {
         var expression = body;
         var parameter = Expression.Parameter(typeof(T), "x");
@@ -98,7 +98,7 @@ public class ExpressionToSql
         return (Expression<Func<T, object>>)Expression.Lambda(typeof(Func<T, object>), expression, parameter);
     }
 
-    private static string Convert<T>(BinaryExpression expression)
+    static string Convert<T>(BinaryExpression expression)
     {
         var left = Convert(CreateExpression<T>(expression.Left));
         var right = Convert(CreateExpression<T>(expression.Right));
@@ -130,7 +130,7 @@ public class ExpressionToSql
         return left + " " + op + " " + right;
     }
 
-    private static string Convert(object value)
+    static string Convert(object value)
     {
         if (value is string)
             return "'" + value + "'";

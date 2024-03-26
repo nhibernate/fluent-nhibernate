@@ -111,6 +111,6 @@ public class SubclassMutablePropertyModelGenerationTests : BaseModelFixture
             .ModelShouldMatch(x => x.EntityName.ShouldEqual("entity1"));
     }
 
-    private class FakeProxyType
+    class FakeProxyType
     {}
 }

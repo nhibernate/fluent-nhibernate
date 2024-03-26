@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class JoinInspector(JoinMapping mapping) : IJoinInspector
 {
-    private readonly InspectorModelMapper<IJoinInspector, JoinMapping> propertyMappings = new InspectorModelMapper<IJoinInspector, JoinMapping>();
+    readonly InspectorModelMapper<IJoinInspector, JoinMapping> propertyMappings = new InspectorModelMapper<IJoinInspector, JoinMapping>();
 
     public Type EntityType => mapping.ContainingEntityType;
 

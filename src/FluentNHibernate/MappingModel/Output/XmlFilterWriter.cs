@@ -6,7 +6,7 @@ namespace FluentNHibernate.MappingModel.Output;
 
 public class XmlFilterWriter : NullMappingModelVisitor, IXmlWriter<FilterMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(FilterMapping mappingModel)
     {

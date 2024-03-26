@@ -80,7 +80,7 @@ public partial class AutoPersistenceModelTests
             .Element("class/id/generator").HasAttribute("class", "assigned");
     }
 
-    private class JoinedSubclassConvention : IJoinedSubclassConvention
+    class JoinedSubclassConvention : IJoinedSubclassConvention
     {
         public void Apply(IJoinedSubclassInstance instance)
         {
@@ -89,7 +89,7 @@ public partial class AutoPersistenceModelTests
         }
     }
 
-    private class TestIdConvention : IIdConvention
+    class TestIdConvention : IIdConvention
     {
         public void Apply(IIdentityInstance instance)
         {
@@ -97,7 +97,7 @@ public partial class AutoPersistenceModelTests
         }
     }
 
-    private class TestIdGeneratorConvention : IIdConvention
+    class TestIdGeneratorConvention : IIdConvention
     {
         public void Apply(IIdentityInstance instance)
         {
@@ -105,7 +105,7 @@ public partial class AutoPersistenceModelTests
         }
     }
 
-    private class TestClassConvention : IClassConvention
+    class TestClassConvention : IClassConvention
     {
         public void Apply(IClassInstance instance)
         {
@@ -113,7 +113,7 @@ public partial class AutoPersistenceModelTests
         }
     }
 
-    private class TestM2OConvention : IReferenceConvention
+    class TestM2OConvention : IReferenceConvention
     {
         public void Apply(IManyToOneInstance instance)
         {
@@ -121,7 +121,7 @@ public partial class AutoPersistenceModelTests
         }
     }
 
-    private class TestO2MConvention : IHasManyConvention
+    class TestO2MConvention : IHasManyConvention
     {
         public void Apply(IOneToManyCollectionInstance instance)
         {

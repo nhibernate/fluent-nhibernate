@@ -8,7 +8,7 @@ namespace FluentNHibernate.Conventions.Instances;
 public class IndexManyToManyInstance(IndexManyToManyMapping mapping)
     : IndexManyToManyInspector(mapping), IIndexManyToManyInstance
 {
-    private readonly IndexManyToManyMapping mapping = mapping;
+    readonly IndexManyToManyMapping mapping = mapping;
 
     /// <summary>
     /// Adds a column to the index if columns have not yet been specified

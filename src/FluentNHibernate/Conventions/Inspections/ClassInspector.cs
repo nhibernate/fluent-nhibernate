@@ -10,8 +10,8 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class ClassInspector : IClassInspector
 {
-    private readonly ClassMapping mapping;
-    private readonly InspectorModelMapper<IClassInspector, ClassMapping> propertyMappings = new InspectorModelMapper<IClassInspector, ClassMapping>();
+    readonly ClassMapping mapping;
+    readonly InspectorModelMapper<IClassInspector, ClassMapping> propertyMappings = new InspectorModelMapper<IClassInspector, ClassMapping>();
 
     public ClassInspector(ClassMapping mapping)
     {

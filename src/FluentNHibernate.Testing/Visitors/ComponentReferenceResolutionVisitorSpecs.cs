@@ -35,8 +35,8 @@ public class when_the_component_reference_resolution_visitor_processes_a_compone
         referenceComponentMapping.IsAssociated.ShouldBeTrue();
     }
 
-    private ReferenceComponentMapping referenceComponentMapping;
-    private ExternalComponentMapping externalComponentMapping;
+    ReferenceComponentMapping referenceComponentMapping;
+    ExternalComponentMapping externalComponentMapping;
 }
 
 [TestFixture]

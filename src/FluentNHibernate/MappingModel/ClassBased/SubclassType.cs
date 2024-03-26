@@ -11,7 +11,7 @@ public class SubclassType: IEquatable<SubclassType>
 
     readonly string elementName;
 
-    private SubclassType(string elementName)
+    SubclassType(string elementName)
     {
         this.elementName = elementName;
     }

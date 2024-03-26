@@ -9,8 +9,8 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class IdentityInstance(IdMapping mapping) : IdentityInspector(mapping), IIdentityInstance
 {
-    private readonly IdMapping mapping = mapping;
-    private bool nextBool = true;
+    readonly IdMapping mapping = mapping;
+    bool nextBool = true;
 
     public void Column(string columnName)
     {

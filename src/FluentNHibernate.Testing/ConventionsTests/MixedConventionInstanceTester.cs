@@ -23,7 +23,7 @@ public class MixedConventionInstanceTester
             .Element("class/property[@name='LineOne']/column").HasAttribute("name", "prop-col");
     }
 
-    private class CustomConvention : IIdConvention, IPropertyConvention
+    class CustomConvention : IIdConvention, IPropertyConvention
     {
         public void Apply(IIdentityInstance instance)
         {

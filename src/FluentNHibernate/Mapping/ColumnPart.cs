@@ -5,7 +5,7 @@ namespace FluentNHibernate.Mapping;
 
 public class ColumnPart(ColumnMapping columnMapping)
 {
-    private bool nextBool = true;
+    bool nextBool = true;
 
     /// <summary>
     /// Inverts the next boolean

@@ -6,7 +6,7 @@ namespace FluentNHibernate.Testing;
 
 public class SingleConnectionSessionSourceForSQLiteInMemoryTesting : SessionSource
 {
-    private ISession session;
+    ISession session;
 
     public SingleConnectionSessionSourceForSQLiteInMemoryTesting(IDictionary<string, string> properties, PersistenceModel model) : base(properties, model)
     {

@@ -40,17 +40,17 @@ public class SubclassMapForSubclassSubPartModelGenerationTests : BaseModelFixtur
             .Components.Count().ShouldEqual(1);
     }
 
-    private class Parent
+    class Parent
     {
         public int Id { get; set; }
     }
 
-    private class Child : Parent
+    class Child : Parent
     {
         public Component Component { get; set; }
     }
 
-    private class Component
+    class Component
     {
         public string Name { get; set; }
     }

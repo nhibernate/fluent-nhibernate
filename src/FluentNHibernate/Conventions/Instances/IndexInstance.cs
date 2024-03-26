@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class IndexInstance(IndexMapping mapping) : IndexInspector(mapping), IIndexInstance
 {
-    private readonly IndexMapping mapping = mapping;
+    readonly IndexMapping mapping = mapping;
 
     /// <summary>
     /// Adds a column to the index if columns have not yet been specified

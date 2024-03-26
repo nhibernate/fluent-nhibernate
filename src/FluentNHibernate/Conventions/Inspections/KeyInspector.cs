@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class KeyInspector(KeyMapping mapping) : IKeyInspector
 {
-    private readonly InspectorModelMapper<IKeyInspector, KeyMapping> propertyMappings = new InspectorModelMapper<IKeyInspector, KeyMapping>();
+    readonly InspectorModelMapper<IKeyInspector, KeyMapping> propertyMappings = new InspectorModelMapper<IKeyInspector, KeyMapping>();
 
     public Type EntityType => mapping.ContainingEntityType;
 

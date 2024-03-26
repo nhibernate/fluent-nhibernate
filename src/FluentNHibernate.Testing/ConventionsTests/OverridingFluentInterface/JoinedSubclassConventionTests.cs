@@ -13,9 +13,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
 [TestFixture]
 public class JoinedSubclassConventionTests
 {
-    private PersistenceModel model;
-    private IMappingProvider mapping;
-    private Type mappingType;
+    PersistenceModel model;
+    IMappingProvider mapping;
+    Type mappingType;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -145,12 +145,12 @@ public class JoinedSubclassConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IJoinedSubclassInstance> convention)
+    void Convention(Action<IJoinedSubclassInstance> convention)
     {
         model.Conventions.Add(new JoinedSubclassConventionBuilder().Always(convention));
     }
 
-    private void Mapping(Action<SubclassMap<ExampleInheritedClass>> mappingDefinition)
+    void Mapping(Action<SubclassMap<ExampleInheritedClass>> mappingDefinition)
     {
         var classMap = new ClassMap<ExampleClass>();
         classMap.Id(x => x.Id);
@@ -164,7 +164,7 @@ public class JoinedSubclassConventionTests
         mappingType = typeof(ExampleClass);
     }
 
-    private void VerifyModel(Action<SubclassMapping> modelVerification)
+    void VerifyModel(Action<SubclassMapping> modelVerification)
     {
         model.Add(mapping);
 

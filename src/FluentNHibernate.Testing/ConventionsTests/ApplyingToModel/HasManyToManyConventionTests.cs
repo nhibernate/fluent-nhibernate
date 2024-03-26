@@ -13,7 +13,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class HasManyToManyConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -230,12 +230,12 @@ public class HasManyToManyConventionTests
         
     #region Helpers
 
-    private void Convention(Action<IManyToManyCollectionInstance> convention)
+    void Convention(Action<IManyToManyCollectionInstance> convention)
     {
         model.Conventions.Add(new ManyToManyCollectionConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<CollectionMapping> modelVerification)
+    void VerifyModel(Action<CollectionMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleInheritedClass>();
         classMap.Id(x => x.Id);

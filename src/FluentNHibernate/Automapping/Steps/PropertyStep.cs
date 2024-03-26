@@ -22,7 +22,7 @@ public class PropertyStep(IConventionFinder conventionFinder, IAutomappingConfig
         return IsMappableToColumnType(member);
     }
 
-    private bool HasExplicitTypeConvention(Member property)
+    bool HasExplicitTypeConvention(Member property)
     {
         // todo: clean this up!
         //        What it's doing is finding if there are any IUserType conventions
@@ -53,7 +53,7 @@ public class PropertyStep(IConventionFinder conventionFinder, IAutomappingConfig
         return conventions.FirstOrDefault() is not null;
     }
 
-    private static bool IsMappableToColumnType(Member property)
+    static bool IsMappableToColumnType(Member property)
     {
         return property.PropertyType.Namespace == "System"
                || property.PropertyType.FullName == "System.Drawing.Bitmap"
@@ -65,7 +65,7 @@ public class PropertyStep(IConventionFinder conventionFinder, IAutomappingConfig
         classMap.AddProperty(GetPropertyMapping(classMap.Type, member));
     }
 
-    private PropertyMapping GetPropertyMapping(Type type, Member property)
+    PropertyMapping GetPropertyMapping(Type type, Member property)
     {
         var mapping = new PropertyMapping
         {

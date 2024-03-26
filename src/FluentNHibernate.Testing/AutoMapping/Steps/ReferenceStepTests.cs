@@ -37,7 +37,7 @@ public class ReferenceStepTests
         ShouldMap(x => x.Entity);
     }
 
-    private ReferenceStep mapper;
+    ReferenceStep mapper;
 
     [SetUp]
     public void CreateMapper()

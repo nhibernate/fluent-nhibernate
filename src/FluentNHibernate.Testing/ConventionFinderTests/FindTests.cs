@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing.ConventionFinderTests;
 [TestFixture]
 public class FindTests
 {
-    private DefaultConventionFinder finder;
+    DefaultConventionFinder finder;
 
     [SetUp]
     public void CreateConventionFinder()

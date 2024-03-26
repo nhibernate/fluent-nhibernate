@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlOneToOneWriterTester
 {
-    private XmlOneToOneWriter writer;
+    XmlOneToOneWriter writer;
 
     [Test]
     public void ShouldWriteAccessAttribute()

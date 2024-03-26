@@ -12,8 +12,8 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
 [TestFixture]
 public class KeyPropertyConventionTests
 {
-    private PersistenceModel model;
-    private IMappingProvider mapping;
+    PersistenceModel model;
+    IMappingProvider mapping;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -33,12 +33,12 @@ public class KeyPropertyConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IKeyPropertyInstance> convention)
+    void Convention(Action<IKeyPropertyInstance> convention)
     {
         model.Conventions.Add(new KeyPropertyConventionBuilder().Always(convention));
     }
 
-    private void Mapping(Action<KeyPropertyPart> mappingDefinition)
+    void Mapping(Action<KeyPropertyPart> mappingDefinition)
     {
         var classMap = new ClassMap<ExampleClass>();
         var map = classMap.CompositeId()
@@ -48,7 +48,7 @@ public class KeyPropertyConventionTests
         mapping = classMap;
     }
 
-    private void VerifyModel(Action<KeyPropertyMapping> modelVerification)
+    void VerifyModel(Action<KeyPropertyMapping> modelVerification)
     {
         model.Add(mapping);
 

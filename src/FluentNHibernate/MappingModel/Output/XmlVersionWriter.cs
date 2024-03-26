@@ -7,7 +7,7 @@ namespace FluentNHibernate.MappingModel.Output;
 public class XmlVersionWriter(IXmlWriterServiceLocator serviceLocator)
     : NullMappingModelVisitor, IXmlWriter<VersionMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(VersionMapping mappingModel)
     {

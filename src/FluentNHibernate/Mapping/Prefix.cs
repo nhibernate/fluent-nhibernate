@@ -10,7 +10,7 @@ public class Prefix
     public static readonly Prefix m = new Prefix("-m");
     public static readonly Prefix mUnderscore = new Prefix("-m-underscore");
 
-    private Prefix(string value)
+    Prefix(string value)
     {
         this.Value = value;
     }

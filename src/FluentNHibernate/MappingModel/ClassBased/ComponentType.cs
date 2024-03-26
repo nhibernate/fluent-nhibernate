@@ -10,7 +10,7 @@ public class ComponentType : IEquatable<ComponentType>
 
     readonly string elementName;
 
-    private ComponentType(string elementName)
+    ComponentType(string elementName)
     {
         this.elementName = elementName;
     }

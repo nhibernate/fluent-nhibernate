@@ -9,7 +9,7 @@ namespace FluentNHibernate.MappingModel.Output;
 public class XmlHibernateMappingWriter(IXmlWriterServiceLocator serviceLocator)
     : NullMappingModelVisitor, IXmlWriter<HibernateMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(HibernateMapping mapping)
     {

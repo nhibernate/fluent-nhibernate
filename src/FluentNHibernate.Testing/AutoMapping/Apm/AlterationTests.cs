@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.Automapping.Apm;
 [TestFixture]
 public class AlterationTests
 {
-    private AutoPersistenceModel model;
+    AutoPersistenceModel model;
 
     [SetUp]
     public void CreateAutoMapper()

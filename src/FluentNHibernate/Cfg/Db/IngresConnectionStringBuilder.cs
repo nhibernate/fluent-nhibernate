@@ -4,11 +4,11 @@ namespace FluentNHibernate.Cfg.Db;
 
 public class IngresConnectionStringBuilder : ConnectionStringBuilder
 {
-    private string server;
-    private string database;
-    private string port;
-    private string username;
-    private string password;
+    string server;
+    string database;
+    string port;
+    string username;
+    string password;
 
     public IngresConnectionStringBuilder Server(string server)
     {

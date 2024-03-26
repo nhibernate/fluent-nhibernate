@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlGeneratorWriterTester
 {
-    private XmlGeneratorWriter writer;
+    XmlGeneratorWriter writer;
 
     [Test]
     public void ShouldWriteRegionAttribute()

@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class ManyToManyCollectionInstance : CollectionInstance, IManyToManyCollectionInstance
 {
-    private readonly CollectionMapping mapping;
+    readonly CollectionMapping mapping;
 
     public ManyToManyCollectionInstance(CollectionMapping mapping)
         : base(mapping)

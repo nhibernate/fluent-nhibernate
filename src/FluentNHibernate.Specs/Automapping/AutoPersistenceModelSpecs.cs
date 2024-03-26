@@ -62,7 +62,7 @@ public class when_the_automapper_is_ran_to_completion
     static FluentConfiguration setup;
     static Exception ex;
 
-    private static IPersistenceConfigurer CreateStandardInMemoryConfiguration()
+    static IPersistenceConfigurer CreateStandardInMemoryConfiguration()
     {
 #if NETFRAMEWORK
         var configuration = SQLiteConfiguration.Standard.InMemory();

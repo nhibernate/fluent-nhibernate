@@ -1,7 +1,7 @@
 namespace FluentNHibernate.Testing.FluentInterfaceTests;
 
-internal class CustomProxy
+class CustomProxy
 {}
 
-internal class SecondCustomProxy : CustomProxy
+class SecondCustomProxy : CustomProxy
 {}

@@ -83,7 +83,7 @@ public class CompositeIdOverrides
         });
     }
 
-    private void VerifyMapping(AutoPersistenceModel model, Action<CompositeIdMapping> verifier)
+    void VerifyMapping(AutoPersistenceModel model, Action<CompositeIdMapping> verifier)
     {
         var idMapping = model.BuildMappings()
                 .First()
@@ -97,20 +97,20 @@ public class CompositeIdOverrides
     }
 }
 
-internal class CompositeIdEntity
+class CompositeIdEntity
 {
     public int ObjectId { get; set; }
     public int SecondId { get; set; }
     public Child Child { get; set; }
 }
 
-internal class CompositeIdEntityWithEnum
+class CompositeIdEntityWithEnum
 {
     public SomeEnum FirstId { get; set; }
     public SomeEnum SecondId { get; set; }
 }
 
-internal enum SomeEnum
+enum SomeEnum
 {
     PossiblityOne,
     PossibilityTwo

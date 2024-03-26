@@ -122,7 +122,7 @@ public class DefaultConventionFinder : IConventionFinder
         Conventions.Add(typeof(T), instance);
     }
 
-    private void Add(Type type, MissingConstructor missingConstructor)
+    void Add(Type type, MissingConstructor missingConstructor)
     {
         if (missingConstructor == MissingConstructor.Throw && !HasValidConstructor(type))
             throw new MissingConstructorException(type);
@@ -135,12 +135,12 @@ public class DefaultConventionFinder : IConventionFinder
         log.ConventionDiscovered(type);
     }
 
-    private bool AllowMultiplesOf(Type type)
+    bool AllowMultiplesOf(Type type)
     {
         return Attribute.GetCustomAttribute(type, typeof(MultipleAttribute), true) is not null;
     }
 
-    private object Instantiate(Type type)
+    object Instantiate(Type type)
     {
         object instance = null;
 
@@ -156,7 +156,7 @@ public class DefaultConventionFinder : IConventionFinder
         return instance;
     }
 
-    private bool HasValidConstructor(Type type)
+    bool HasValidConstructor(Type type)
     {
         foreach (var constructor in type.GetConstructors())
         {
@@ -166,21 +166,21 @@ public class DefaultConventionFinder : IConventionFinder
         return false;
     }
 
-    private bool IsFinderConstructor(ConstructorInfo constructor)
+    bool IsFinderConstructor(ConstructorInfo constructor)
     {
         var parameters = constructor.GetParameters();
 
         return parameters.Length == 1 && parameters[0].ParameterType == typeof (IConventionFinder);
     }
 
-    private bool IsParameterlessConstructor(ConstructorInfo constructor)
+    bool IsParameterlessConstructor(ConstructorInfo constructor)
     {
         var parameters = constructor.GetParameters();
 
         return parameters.Length == 0;
     }
 
-    private enum MissingConstructor
+    enum MissingConstructor
     {
         Throw,
         Ignore

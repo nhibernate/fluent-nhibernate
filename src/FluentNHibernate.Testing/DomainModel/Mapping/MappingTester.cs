@@ -12,8 +12,8 @@ public class MappingTester<T>
 {
     protected XmlElement currentElement;
     protected XmlDocument document;
-    private readonly PersistenceModel model;
-    private string currentPath;
+    readonly PersistenceModel model;
+    string currentPath;
 
     public MappingTester(): this(new PersistenceModel())
     {}

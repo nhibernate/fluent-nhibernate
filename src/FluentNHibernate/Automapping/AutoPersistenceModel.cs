@@ -135,7 +135,7 @@ public class AutoPersistenceModel : PersistenceModel
         return base.BuildMappings();
     }
 
-    private void CompileMappings()
+    void CompileMappings()
     {
         if (autoMappingsCreated)
             return;
@@ -179,7 +179,7 @@ public class AutoPersistenceModel : PersistenceModel
         autoMappingsCreated = true;
     }
 
-    private int InheritanceHierarchyDepth(Type type)
+    int InheritanceHierarchyDepth(Type type)
     {
         var depth = 0;
         var parent = type;
@@ -200,7 +200,7 @@ public class AutoPersistenceModel : PersistenceModel
         base.Configure(configuration);
     }
 
-    private void AddMapping(Type type)
+    void AddMapping(Type type)
     {
         Type typeToMap = GetTypeToMap(type);
 
@@ -218,7 +218,7 @@ public class AutoPersistenceModel : PersistenceModel
         Add(new PassThroughMappingProvider(mapping));
     }
 
-    private Type GetTypeToMap(Type type)
+    Type GetTypeToMap(Type type)
     {
         while (ShouldMapParent(type))
         {
@@ -228,12 +228,12 @@ public class AutoPersistenceModel : PersistenceModel
         return type;
     }
 
-    private bool ShouldMapParent(Type type)
+    bool ShouldMapParent(Type type)
     {
         return ShouldMap(type.BaseType) && !cfg.IsConcreteBaseType(type.BaseType);
     }
 
-    private bool ShouldMap(Type type)
+    bool ShouldMap(Type type)
     {
         if (includedTypes.Contains(type))
             return true; // inclusions take precedence over everything
@@ -390,7 +390,7 @@ public class AutoPersistenceModel : PersistenceModel
     }
 
     //called reflectively from method above
-    private void OverrideHelper<T>(AutoMapping<T> x, IAutoMappingOverride<T> mappingOverride)
+    void OverrideHelper<T>(AutoMapping<T> x, IAutoMappingOverride<T> mappingOverride)
     {
         mappingOverride.Override(x);
     }

@@ -44,13 +44,13 @@ public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_two_m
     static CollectionMapping membership_queues_in_user;
     static CollectionMapping supervised_queues_in_user;
 
-    private class User
+    class User
     {
         public IEnumerable<Queue> GetMembershipQueues() { yield break; }
         public IEnumerable<Queue> GetSupervisedQueues() { yield break; }
     }
 
-    private class Queue
+    class Queue
     {
         public IEnumerable<User> GetMembers() { yield break; }
         public IEnumerable<User> GetSupervisors() { yield break; }
@@ -91,13 +91,13 @@ public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_two_m
     static CollectionMapping eggs_in_queue;
     static Exception ex;
 
-    private class User
+    class User
     {
         public IEnumerable<Queue> Bacon { get; set; }
         public IEnumerable<Queue> Eggs { get; set; }
     }
 
-    private class Queue
+    class Queue
     {
         public IEnumerable<User> Fish { get; set; }
         public IEnumerable<User> Chips { get; set; }
@@ -138,13 +138,13 @@ public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_two_m
     static CollectionMapping eueues_in_user;
     static Exception ex;
 
-    private class User
+    class User
     {
         public IEnumerable<Queue> GetWueues() { yield break; }
         public IEnumerable<Queue> GetEueues() { yield break; }
     }
 
-    private class Queue
+    class Queue
     {
         public IEnumerable<User> GetDsers() { yield break; }
         public IEnumerable<User> GetFsers() { yield break; }
@@ -180,12 +180,12 @@ public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_a_man
     static CollectionMapping users2_in_queue;
     static CollectionMapping queues_in_user;
 
-    private class User
+    class User
     {
         public IEnumerable<Queue> GetQueues() { yield break; }
     }
 
-    private class Queue
+    class Queue
     {
         public IEnumerable<User> GetUsers() { yield break; }
         public IEnumerable<User> GetUsers2() { yield break; }
@@ -215,7 +215,7 @@ public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_a_sel
     static CollectionMapping ancestors;
     static CollectionMapping descendants;
 
-    private class TreeNode
+    class TreeNode
     {
         public IEnumerable<TreeNode> Ancestors { get; set; }
         public IEnumerable<TreeNode> Descendants { get; set; }
@@ -245,12 +245,12 @@ public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_two_c
     static CollectionMapping users_in_queue;
     static CollectionMapping queues_in_user;
 
-    private class User
+    class User
     {
         public IEnumerable<Queue> GetQueues() { yield break; }
     }
 
-    private class Queue
+    class Queue
     {
         public IEnumerable<User> GetUsers() { yield break; }
     }

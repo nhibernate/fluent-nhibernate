@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.Testing.Values;
 
 public abstract class With_property_entity : Specification
 {
-    private Accessor property;
+    Accessor property;
     protected PropertyEntity target;
     protected Property<PropertyEntity, string> sut;
 
@@ -158,7 +158,7 @@ public class When_a_property_is_set_with_a_custom_setter_that_fails : With_prope
 
 public abstract class With_initialized_property : Specification
 {
-    private Accessor property;
+    Accessor property;
     protected PropertyEntity target;
     protected Property<PropertyEntity, string> sut;
 
@@ -263,7 +263,7 @@ public class When_the_checked_property_is_not_equal_to_the_expected_value_with_a
 [TestFixture]
 public class When_a_property_is_checked_with_a_custom_equality_comparer_that_fails : With_initialized_property
 {
-    private InvalidOperationException exception;
+    InvalidOperationException exception;
 
     public override void establish_context()
     {

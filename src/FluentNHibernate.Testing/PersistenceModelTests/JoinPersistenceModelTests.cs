@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.PersistenceModelTests;
 [TestFixture]
 public class JoinPersistenceModelTests
 {
-    private Configuration cfg;
+    Configuration cfg;
 
     [SetUp]
     public void CreateConfig()
@@ -36,7 +36,7 @@ public class JoinPersistenceModelTests
             .JoinClosureIterator.Count().ShouldEqual(1);
     }
 
-    private class Target
+    class Target
     {
         public int Id { get; set; }
         public string Property { get; set; }

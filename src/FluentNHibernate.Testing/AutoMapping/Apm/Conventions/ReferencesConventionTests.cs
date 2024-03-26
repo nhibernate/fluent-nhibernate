@@ -23,7 +23,7 @@ public class ReferencesConventionTests
             .Columns.First().Name.ShouldEqual("xxx");
     }
 
-    private class FKConvention : ForeignKeyConvention
+    class FKConvention : ForeignKeyConvention
     {
         protected override string GetKeyName(Member property, Type type)
         {

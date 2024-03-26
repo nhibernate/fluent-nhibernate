@@ -9,8 +9,8 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class JoinedSubclassInstance(SubclassMapping mapping) : JoinedSubclassInspector(mapping), IJoinedSubclassInstance
 {
-    private readonly SubclassMapping mapping = mapping;
-    private bool nextBool = true;
+    readonly SubclassMapping mapping = mapping;
+    bool nextBool = true;
 
     public new IKeyInstance Key
     {

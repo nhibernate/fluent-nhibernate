@@ -7,7 +7,7 @@ using FluentNHibernate.Conventions.Inspections;
 namespace FluentNHibernate.Conventions.Helpers.Builders;
 
 [Obsolete("Use CollectionConventionBuilder")]
-internal class MapConventionBuilder : IConventionBuilder<IMapConvention, IMapInspector, IMapInstance>
+class MapConventionBuilder : IConventionBuilder<IMapConvention, IMapInspector, IMapInstance>
 {
     public IMapConvention Always(Action<IMapInstance> convention)
     {

@@ -58,7 +58,7 @@ public class AutoMappingExpressions
 #pragma warning disable 612,618
 // disabled obsolete warnings for this class
 
-internal class ExpressionBasedAutomappingConfiguration(AutoMappingExpressions expressions)
+class ExpressionBasedAutomappingConfiguration(AutoMappingExpressions expressions)
     : DefaultAutomappingConfiguration
 {
     public override bool ShouldMap(Member member)

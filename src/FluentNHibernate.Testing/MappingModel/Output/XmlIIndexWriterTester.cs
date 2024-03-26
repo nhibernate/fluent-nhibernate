@@ -7,7 +7,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlIIndexWriterTester
 {
-    private IXmlWriter<IIndexMapping> writer;
+    IXmlWriter<IIndexMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()

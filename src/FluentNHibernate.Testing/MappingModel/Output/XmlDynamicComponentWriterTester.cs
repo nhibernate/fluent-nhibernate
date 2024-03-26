@@ -10,9 +10,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlDynamicComponentWriterTester
 {
-    private IXmlWriter<IComponentMapping> writer;
+    IXmlWriter<IComponentMapping> writer;
 
-    private XmlWriterTestHelper<IComponentMapping> create_helper()
+    XmlWriterTestHelper<IComponentMapping> create_helper()
     {
         var helper = new XmlWriterTestHelper<IComponentMapping>();
         helper.CreateInstance(() => new ComponentMapping(ComponentType.DynamicComponent));

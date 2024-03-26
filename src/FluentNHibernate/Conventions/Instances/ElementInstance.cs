@@ -8,7 +8,7 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class ElementInstance(ElementMapping mapping) : ElementInspector(mapping), IElementInstance
 {
-    private readonly ElementMapping mapping = mapping;
+    readonly ElementMapping mapping = mapping;
 
     public void Column(string columnName)
     {

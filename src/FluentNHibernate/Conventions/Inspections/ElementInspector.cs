@@ -8,7 +8,7 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class ElementInspector(ElementMapping mapping) : IElementInspector
 {
-    private readonly InspectorModelMapper<IElementInspector, ElementMapping> mappedProperties = new InspectorModelMapper<IElementInspector, ElementMapping>();
+    readonly InspectorModelMapper<IElementInspector, ElementMapping> mappedProperties = new InspectorModelMapper<IElementInspector, ElementMapping>();
 
     public Type EntityType => mapping.ContainingEntityType;
 

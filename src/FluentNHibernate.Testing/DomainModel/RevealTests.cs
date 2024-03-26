@@ -50,12 +50,12 @@ public class RevealTests
 public class StringTarget
 {
     public int Id { get; set; }
-    private Double DoubleProperty { get; set; }
-    private int IntProperty { get; set; }
-    private string PrivateProperty { get; set; }
+    Double DoubleProperty { get; set; }
+    int IntProperty { get; set; }
+    string PrivateProperty { get; set; }
     protected string ProtectedProperty { get; set; }
     protected string PublicProperty { get; set; }
-    private IList<ExampleClass> PrivateCollection { get; set; }
-    private IDictionary PrivateDictionary { get; set; }
-    private ExampleClass PrivateObject { get; set; }
+    IList<ExampleClass> PrivateCollection { get; set; }
+    IDictionary PrivateDictionary { get; set; }
+    ExampleClass PrivateObject { get; set; }
 }
