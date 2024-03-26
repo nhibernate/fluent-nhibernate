@@ -11,7 +11,7 @@ namespace Examples.FirstProject;
 
 class Program
 {
-    private const string DbFile = "firstProgram.db";
+    const string DbFile = "firstProgram.db";
 
     static void Main()
     {
@@ -76,7 +76,7 @@ class Program
         Console.ReadKey();
     }
 
-    private static ISessionFactory CreateSessionFactory()
+    static ISessionFactory CreateSessionFactory()
     {
         return Fluently.Configure()
             .Database(SQLiteConfiguration.Standard
@@ -87,7 +87,7 @@ class Program
             .BuildSessionFactory();
     }
 
-    private static void BuildSchema(Configuration config)
+    static void BuildSchema(Configuration config)
     {
         // delete the existing db on each run
         if (File.Exists(DbFile))
@@ -99,7 +99,7 @@ class Program
             .Create(false, true);
     }
 
-    private static void WriteStorePretty(Store store)
+    static void WriteStorePretty(Store store)
     {
         Console.WriteLine(store.Name);
         Console.WriteLine("  Products:");

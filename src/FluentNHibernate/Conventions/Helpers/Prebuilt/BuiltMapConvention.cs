@@ -6,5 +6,5 @@ using FluentNHibernate.Conventions.Instances;
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
 
 [Obsolete("Use BuiltCollectionConvention")]
-internal class BuiltMapConvention(Action<IAcceptanceCriteria<IMapInspector>> accept, Action<IMapInstance> convention)
+class BuiltMapConvention(Action<IAcceptanceCriteria<IMapInspector>> accept, Action<IMapInstance> convention)
     : BuiltConventionBase<IMapInspector, IMapInstance>(accept, convention), IMapConvention, IMapConventionAcceptance;

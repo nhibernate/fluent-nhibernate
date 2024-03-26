@@ -9,7 +9,7 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class ManyToManyInstance(ManyToManyMapping mapping) : ManyToManyInspector(mapping), IManyToManyInstance
 {
-    private readonly ManyToManyMapping mapping = mapping;
+    readonly ManyToManyMapping mapping = mapping;
 
     public void Column(string columnName)
     {

@@ -66,7 +66,7 @@ public class XmlClasslikeNodeSorter : BaseXmlNodeSorter
             new XmlCollectionNodeSorter().Sort(node);
     }
 
-    private bool IsCollection(string name)
+    bool IsCollection(string name)
     {
         return name == "bag" || name == "set" || name == "list" || name == "map" ||
                name == "array" || name == "primitive-array";

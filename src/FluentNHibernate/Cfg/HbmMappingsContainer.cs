@@ -10,8 +10,8 @@ namespace FluentNHibernate.Cfg;
 /// </summary>
 public class HbmMappingsContainer
 {
-    private readonly IList<Type> classes = new List<Type>();
-    private readonly IList<Assembly> assemblies = new List<Assembly>();
+    readonly IList<Type> classes = new List<Type>();
+    readonly IList<Assembly> assemblies = new List<Assembly>();
 
     internal HbmMappingsContainer()
     {}

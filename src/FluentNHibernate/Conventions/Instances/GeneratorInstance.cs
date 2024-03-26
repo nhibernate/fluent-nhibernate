@@ -9,7 +9,7 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class GeneratorInstance(GeneratorMapping mapping, Type type) : GeneratorInspector(mapping), IGeneratorInstance
 {
-    private readonly GeneratorBuilder builder = new(mapping, type, Layer.Conventions);
+    readonly GeneratorBuilder builder = new(mapping, type, Layer.Conventions);
 
     /// <summary>
     /// generates identifiers of any integral type that are unique only when no other 

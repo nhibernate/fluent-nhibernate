@@ -7,7 +7,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping;
 [TestFixture]
 public class VersionTester
 {
-    private ClassMap<VersionTarget> _classMap;
+    ClassMap<VersionTarget> _classMap;
 
     [SetUp]
     public void SetUp()

@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlIndexManyToManyWriterTester
 {
-    private IXmlWriter<IndexManyToManyMapping> writer;
+    IXmlWriter<IndexManyToManyMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()

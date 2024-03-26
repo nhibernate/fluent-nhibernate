@@ -77,14 +77,14 @@ public class ProxyConvention(Func<Type, Type> mapPersistentTypeToProxyInterfaceT
         }
     }
 
-    private Type GetProxyType(Type persistentType)
+    Type GetProxyType(Type persistentType)
     {
         return !persistentType.IsAbstract
             ? mapPersistentTypeToProxyInterfaceType(persistentType)
             : null;
     }
 
-    private Type GetPersistentType(Type proxyType)
+    Type GetPersistentType(Type proxyType)
     {
         return proxyType.IsInterface
             ? mapProxyInterfaceTypeToPersistentType(proxyType)

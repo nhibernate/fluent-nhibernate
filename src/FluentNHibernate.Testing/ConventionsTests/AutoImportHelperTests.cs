@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing.ConventionsTests;
 [TestFixture]
 public class AutoImportHelperTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -28,7 +28,7 @@ public class AutoImportHelperTests
             .AutoImport.ShouldEqual(false);
     }
 
-    private class Target
+    class Target
     {
         public int Id { get; set; }
     }

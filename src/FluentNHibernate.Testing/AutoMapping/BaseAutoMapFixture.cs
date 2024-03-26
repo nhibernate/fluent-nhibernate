@@ -8,8 +8,8 @@ namespace FluentNHibernate.Testing.Automapping;
 
 public abstract class BaseAutoMapFixture
 {
-    private Configuration cfg;
-    private AutoPersistenceModel apm;
+    Configuration cfg;
+    AutoPersistenceModel apm;
 
     [SetUp]
     public void CreateDatabaseCfg()

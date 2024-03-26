@@ -10,9 +10,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlJoinedSubclassWriterTester
 {
-    private IXmlWriter<SubclassMapping> writer;
+    IXmlWriter<SubclassMapping> writer;
 
-    private XmlWriterTestHelper<SubclassMapping> create_helper()
+    XmlWriterTestHelper<SubclassMapping> create_helper()
     {
         var helper = new XmlWriterTestHelper<SubclassMapping>();
         helper.CreateInstance(() => new SubclassMapping(SubclassType.JoinedSubclass));

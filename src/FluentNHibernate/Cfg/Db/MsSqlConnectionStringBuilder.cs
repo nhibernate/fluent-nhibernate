@@ -4,11 +4,11 @@ namespace FluentNHibernate.Cfg.Db;
 
 public class MsSqlConnectionStringBuilder : ConnectionStringBuilder
 {
-    private string server;
-    private string database;
-    private string username;
-    private string password;
-    private bool trustedConnection;
+    string server;
+    string database;
+    string username;
+    string password;
+    bool trustedConnection;
 
     public MsSqlConnectionStringBuilder Server(string server)
     {

@@ -13,7 +13,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class ArrayConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -168,13 +168,13 @@ public class ArrayConventionTests
     #region Helpers
 
 #pragma warning disable 612,618
-    private void Convention(Action<IArrayInstance> convention)
+    void Convention(Action<IArrayInstance> convention)
     {
         model.Conventions.Add(new ArrayConventionBuilder().Always(convention));
     }
 #pragma warning restore 612,618
 
-    private void VerifyModel(Action<CollectionMapping> modelVerification)
+    void VerifyModel(Action<CollectionMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleParentClass>();
         classMap.Id(x => x.Id);

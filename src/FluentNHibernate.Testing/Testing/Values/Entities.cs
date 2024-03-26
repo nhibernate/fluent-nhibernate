@@ -6,7 +6,7 @@ namespace FluentNHibernate.Testing.Testing.Values;
 
 public class ListEntity
 {
-    private readonly IList<string> backingField = new List<string>();
+    readonly IList<string> backingField = new List<string>();
 
     //Set = new HashedSet();
 
@@ -40,7 +40,7 @@ public class ReferenceEntity
 
 public class PropertyEntity
 {
-    private string backingField;
+    string backingField;
 
     public string GetterAndSetter { get; set; }
     public string GetterAndPrivateSetter { get; private set; }

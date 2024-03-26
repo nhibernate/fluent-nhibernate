@@ -8,9 +8,9 @@ public class Polymorphism : IEquatable<Polymorphism>
     public static readonly Polymorphism Implicit = new Polymorphism("implicit");
     public static readonly Polymorphism Explicit = new Polymorphism("explicit");
 
-    private readonly string value;
+    readonly string value;
 
-    private Polymorphism(string value)
+    Polymorphism(string value)
     {
         this.value = value;
     }

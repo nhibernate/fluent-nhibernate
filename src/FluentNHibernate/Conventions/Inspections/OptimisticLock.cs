@@ -10,9 +10,9 @@ public class OptimisticLock : IEquatable<OptimisticLock>
     public static readonly OptimisticLock Dirty = new OptimisticLock("dirty");
     public static readonly OptimisticLock All = new OptimisticLock("all");
 
-    private readonly string value;
+    readonly string value;
 
-    private OptimisticLock(string value)
+    OptimisticLock(string value)
     {
         this.value = value;
     }

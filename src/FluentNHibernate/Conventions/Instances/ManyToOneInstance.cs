@@ -9,8 +9,8 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class ManyToOneInstance(ManyToOneMapping mapping) : ManyToOneInspector(mapping), IManyToOneInstance
 {
-    private readonly ManyToOneMapping mapping = mapping;
-    private bool nextBool = true;
+    readonly ManyToOneMapping mapping = mapping;
+    bool nextBool = true;
 
     public void Column(string columnName)
     {

@@ -7,11 +7,11 @@ namespace FluentNHibernate.Mapping;
 /// </summary>
 public class AccessStrategyBuilder
 {
-    private const string InvalidPrefixCamelCaseFieldM = "m is not a valid prefix for a CamelCase Field.";
-    private const string InvalidPrefixCamelCaseFieldMUnderscore = "m_ is not a valid prefix for a CamelCase Field.";
-    private const string InvalidPrefixLowerCaseFieldM = "m is not a valid prefix for a LowerCase Field.";
-    private const string InvalidPrefixLowerCaseFieldMUnderscore = "m_ is not a valid prefix for a LowerCase Field.";
-    private const string InvalidPrefixPascalCaseFieldNone = "None is not a valid prefix for a PascalCase Field.";
+    const string InvalidPrefixCamelCaseFieldM = "m is not a valid prefix for a CamelCase Field.";
+    const string InvalidPrefixCamelCaseFieldMUnderscore = "m_ is not a valid prefix for a CamelCase Field.";
+    const string InvalidPrefixLowerCaseFieldM = "m is not a valid prefix for a LowerCase Field.";
+    const string InvalidPrefixLowerCaseFieldMUnderscore = "m_ is not a valid prefix for a LowerCase Field.";
+    const string InvalidPrefixPascalCaseFieldNone = "None is not a valid prefix for a PascalCase Field.";
         
     internal Action<string> setValue;
 

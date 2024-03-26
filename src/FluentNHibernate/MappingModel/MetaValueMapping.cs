@@ -8,7 +8,7 @@ namespace FluentNHibernate.MappingModel;
 [Serializable]
 public class MetaValueMapping : MappingBase, IEquatable<MetaValueMapping>
 {
-    private readonly AttributeStore attributes;
+    readonly AttributeStore attributes;
 
     public MetaValueMapping()
         : this(new AttributeStore())

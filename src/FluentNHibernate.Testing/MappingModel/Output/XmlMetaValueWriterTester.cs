@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlMetaValueWriterTester
 {
-    private XmlMetaValueWriter writer;
+    XmlMetaValueWriter writer;
 
     [Test]
     public void ShouldWriteValueAttribute()

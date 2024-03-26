@@ -15,9 +15,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
 [TestFixture]
 public class HasManyToManyConventionTests
 {
-    private PersistenceModel model;
-    private IMappingProvider mapping;
-    private Type mappingType;
+    PersistenceModel model;
+    IMappingProvider mapping;
+    Type mappingType;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -267,12 +267,12 @@ public class HasManyToManyConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IManyToManyCollectionInstance> convention)
+    void Convention(Action<IManyToManyCollectionInstance> convention)
     {
         model.Conventions.Add(new ManyToManyCollectionConventionBuilder().Always(convention));
     }
 
-    private void Mapping<TChild>(Expression<Func<ExampleInheritedClass, IEnumerable<TChild>>> property, Action<ManyToManyPart<TChild>> mappingDefinition)
+    void Mapping<TChild>(Expression<Func<ExampleInheritedClass, IEnumerable<TChild>>> property, Action<ManyToManyPart<TChild>> mappingDefinition)
     {
         var classMap = new ClassMap<ExampleInheritedClass>();
         classMap.Id(x => x.Id);
@@ -284,7 +284,7 @@ public class HasManyToManyConventionTests
         mappingType = typeof(ExampleInheritedClass);
     }
 
-    private void VerifyModel(Action<CollectionMapping> modelVerification)
+    void VerifyModel(Action<CollectionMapping> modelVerification)
     {
         model.Add(mapping);
 

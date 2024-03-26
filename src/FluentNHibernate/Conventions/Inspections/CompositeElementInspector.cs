@@ -8,7 +8,7 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class CompositeElementInspector(CompositeElementMapping mapping) : ICompositeElementInspector
 {
-    private readonly InspectorModelMapper<ICompositeElementInspector, CompositeElementMapping> mappedProperties = new InspectorModelMapper<ICompositeElementInspector, CompositeElementMapping>();
+    readonly InspectorModelMapper<ICompositeElementInspector, CompositeElementMapping> mappedProperties = new InspectorModelMapper<ICompositeElementInspector, CompositeElementMapping>();
 
     public Type EntityType => mapping.ContainingEntityType;
 

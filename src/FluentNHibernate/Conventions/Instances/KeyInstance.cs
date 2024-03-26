@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class KeyInstance(KeyMapping mapping) : KeyInspector(mapping), IKeyInstance
 {
-    private readonly KeyMapping mapping = mapping;
+    readonly KeyMapping mapping = mapping;
 
     public void Column(string columnName)
     {

@@ -5,7 +5,7 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class AnyInstance(AnyMapping mapping) : AnyInspector(mapping), IAnyInstance
 {
-    private readonly AnyMapping mapping = mapping;
+    readonly AnyMapping mapping = mapping;
 
     public new IAccessInstance Access
     {

@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class OneToManyInstance(OneToManyMapping mapping) : OneToManyInspector(mapping), IOneToManyInstance
 {
-    private readonly OneToManyMapping mapping = mapping;
+    readonly OneToManyMapping mapping = mapping;
 
     public new INotFoundInstance NotFound
     {

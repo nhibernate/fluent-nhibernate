@@ -69,12 +69,12 @@ public class PersistenceSpecificationTester
         }
     }
 
-    private PersistenceSpecification<Cat> spec;
-    private ISession session;
-    private ITransaction transaction;
-    private Cat cat;
-    private Cat identicalCat;
-    private ISessionSource sessionSource;
+    PersistenceSpecification<Cat> spec;
+    ISession session;
+    ITransaction transaction;
+    Cat cat;
+    Cat identicalCat;
+    ISessionSource sessionSource;
 
     [SetUp]
     public void Setup()
@@ -189,7 +189,7 @@ public class PersistenceSpecificationTester
 [TestFixture]
 public class PersistenceSpecificationConstructorTests
 {
-    private ISessionSource sessionSource;
+    ISessionSource sessionSource;
 
     [SetUp]
     public void Setup()
@@ -251,7 +251,7 @@ public class PersistenceSpecificationConstructorTests
 
     public class PrivateConstructorClass
     {
-        private PrivateConstructorClass() { }
+        PrivateConstructorClass() { }
     }
 
     public class NoParameterlessConstructorClass

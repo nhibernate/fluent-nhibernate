@@ -6,7 +6,7 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class ParentInspector(ParentMapping mapping) : IParentInspector
 {
-    private readonly InspectorModelMapper<IPropertyInspector, ParentMapping> mappedProperties = new InspectorModelMapper<IPropertyInspector, ParentMapping>();
+    readonly InspectorModelMapper<IPropertyInspector, ParentMapping> mappedProperties = new InspectorModelMapper<IPropertyInspector, ParentMapping>();
 
     public Type EntityType => mapping.ContainingEntityType;
 

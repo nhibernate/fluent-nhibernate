@@ -10,7 +10,7 @@ namespace FluentNHibernate.Conventions.Instances;
 public class DynamicComponentInstance(ComponentMapping mapping)
     : DynamicComponentInspector(mapping), IDynamicComponentInstance
 {
-    private bool nextBool = true;
+    bool nextBool = true;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public IDynamicComponentInstance Not

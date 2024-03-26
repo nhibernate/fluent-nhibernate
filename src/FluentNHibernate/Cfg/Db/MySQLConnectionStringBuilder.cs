@@ -4,11 +4,11 @@ namespace FluentNHibernate.Cfg.Db;
 
 public class MySQLConnectionStringBuilder : ConnectionStringBuilder
 {
-    private string server;
-    private int? port;
-    private string database;
-    private string username;
-    private string password;
+    string server;
+    int? port;
+    string database;
+    string username;
+    string password;
 
     public MySQLConnectionStringBuilder Server(string server)
     {

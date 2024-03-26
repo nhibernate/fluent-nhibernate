@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping;
 [TestFixture]
 public class ManyToManyIntegrationTester
 {
-    private class ManyToManyPersistenceModel : PersistenceModel
+    class ManyToManyPersistenceModel : PersistenceModel
     {
         public override void Configure(Configuration configuration)
         {
@@ -17,7 +17,7 @@ public class ManyToManyIntegrationTester
             base.Configure(configuration);
         }
 
-        private class ChildObjectMap : ClassMap<ChildObject>
+        class ChildObjectMap : ClassMap<ChildObject>
         {
             public ChildObjectMap()
             {
@@ -25,7 +25,7 @@ public class ManyToManyIntegrationTester
             }
         }
 
-        private class ManyToManyTargetMap : ClassMap<ManyToManyTarget>
+        class ManyToManyTargetMap : ClassMap<ManyToManyTarget>
         {
             public ManyToManyTargetMap()
             {

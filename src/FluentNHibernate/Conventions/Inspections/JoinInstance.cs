@@ -6,8 +6,8 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class JoinInstance(JoinMapping mapping) : JoinInspector(mapping), IJoinInstance
 {
-    private readonly JoinMapping mapping = mapping;
-    private bool nextBool = true;
+    readonly JoinMapping mapping = mapping;
+    bool nextBool = true;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public IJoinInstance Not

@@ -47,10 +47,10 @@ public class when_creating_the_mapping_for_a_component_using_component_map
     It should_add_references_to_the_references_collection = () =>
         mapping.References.ShouldContain(x => x.Name == "a_reference");
 
-    private static ComponentMap<Target> component;
-    private static ComponentMapping mapping;
+    static ComponentMap<Target> component;
+    static ComponentMapping mapping;
 
-    private class Target
+    class Target
     {
         public string a_property { get; set; }
         public Target an_any { get; set; }
@@ -83,16 +83,16 @@ public class when_mapping_a_component_in_an_entity_without_defining_any_mappings
     It should_store_the_property_in_the_reference_component_mapping = () =>
         (mapping as ReferenceComponentMapping).Member.Name.Should().Be("Component");
 
-    private static ClassMap<Target> classmap;
-    private static IComponentMapping mapping;
+    static ClassMap<Target> classmap;
+    static IComponentMapping mapping;
 
-    private class Target
+    class Target
     {
         public int Id { get; set; }
         public Component Component { get; set;}
     }
 
-    private class Component {}
+    class Component {}
 }
 
 public class when_compiling_the_mappings_with_a_reference_component_in_a_subclass
@@ -131,21 +131,21 @@ public class when_compiling_the_mappings_with_a_reference_component_in_a_subclas
         component_mapping.Properties.ShouldContain(x => x.Name == "Property");
     };
 
-    private static FluentNHibernate.PersistenceModel persistence_model;
-    private static IEnumerable<HibernateMapping> mappings;
-    private static ClassMapping class_mapping;
+    static FluentNHibernate.PersistenceModel persistence_model;
+    static IEnumerable<HibernateMapping> mappings;
+    static ClassMapping class_mapping;
 
-    private class Target
+    class Target
     {
         public int Id { get; set; }
     }
 
-    private class TargetChild : Target
+    class TargetChild : Target
     {
         public Component Component { get; set; }
     }
 
-    private class Component
+    class Component
     {
         public string Property { get; set; }
     }
@@ -167,7 +167,7 @@ public class when_compiling_the_mappings_with_a_nested_reference_component_in_a_
     static ComponentMap<Component> component_map;
     static Exception ex;
 
-    private class Component
+    class Component
     {
         public Component Compo { get; set; }
     }
@@ -203,17 +203,17 @@ public class when_compiling_the_mappings_with_a_reference_component_and_a_relate
         component_mapping.Properties.ShouldContain(x => x.Name == "Property");
     };
 
-    private static FluentNHibernate.PersistenceModel persistence_model;
-    private static IEnumerable<HibernateMapping> mappings;
-    private static ClassMapping class_mapping;
+    static FluentNHibernate.PersistenceModel persistence_model;
+    static IEnumerable<HibernateMapping> mappings;
+    static ClassMapping class_mapping;
 
-    private class Target
+    class Target
     {
         public int Id { get; set; }
         public Component Component { get; set; }
     }
 
-    private class Component
+    class Component
     {
         public string Property { get; set; }
     }
@@ -259,18 +259,18 @@ public class when_compiling_the_mappings_with_two_of_the_same_reference_componen
             .Should().Contain("B_PROP");
     };
 
-    private static FluentNHibernate.PersistenceModel persistence_model;
-    private static IEnumerable<HibernateMapping> mappings;
-    private static ClassMapping class_mapping;
+    static FluentNHibernate.PersistenceModel persistence_model;
+    static IEnumerable<HibernateMapping> mappings;
+    static ClassMapping class_mapping;
 
-    private class Target
+    class Target
     {
         public int Id { get; set; }
         public Component ComponentA { get; set; }
         public Component ComponentB { get; set; }
     }
 
-    private class Component
+    class Component
     {
         public string Property { get; set; }
     }
@@ -316,23 +316,23 @@ public class when_compiling_the_mappings_with_multiple_nested_component_mappings
             .Should().Contain("A_PROP2");
     };
 
-    private static FluentNHibernate.PersistenceModel persistence_model;
-    private static IEnumerable<HibernateMapping> mappings;
-    private static ClassMapping class_mapping;
+    static FluentNHibernate.PersistenceModel persistence_model;
+    static IEnumerable<HibernateMapping> mappings;
+    static ClassMapping class_mapping;
 
-    private class Target
+    class Target
     {
         public int Id { get; set; }
         public Component Component { get; set; }
     }
 
-    private class Component
+    class Component
     {
         public NestedComponent NestedComponent1 { get; set; }
         public NestedComponent NestedComponent2 { get; set; }
     }
 
-    private class NestedComponent
+    class NestedComponent
     {
         public string Property { get; set; }
     }

@@ -10,7 +10,7 @@ namespace FluentNHibernate.Testing.DomainModel;
 [TestFixture]
 public class ConnectedTester
 {
-    private ISessionSource source;
+    ISessionSource source;
 
     [SetUp]
     public void SetUp()

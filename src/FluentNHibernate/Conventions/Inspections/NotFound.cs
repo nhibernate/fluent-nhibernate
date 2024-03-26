@@ -8,9 +8,9 @@ public class NotFound : IEquatable<NotFound>
     public static readonly NotFound Ignore = new NotFound("ignore");
     public static readonly NotFound Exception = new NotFound("exception");
 
-    private readonly string value;
+    readonly string value;
 
-    private NotFound(string value)
+    NotFound(string value)
     {
         this.value = value;
     }

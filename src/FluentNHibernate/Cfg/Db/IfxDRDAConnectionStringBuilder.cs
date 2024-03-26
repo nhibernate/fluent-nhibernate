@@ -2,17 +2,17 @@ namespace FluentNHibernate.Cfg.Db;
 
 public class IfxDRDAConnectionStringBuilder : ConnectionStringBuilder
 {
-    private string authentication = "";
-    private string database = "";
-    private string hostVarParameter = "";
-    private string isolationLevel = "";
-    private string maxPoolSize = "";
-    private string minPoolSize = "";
-    private string password = "";
-    private string pooling = "";
-    private string server = "";
-    private string username = "";
-    private string otherOptions = "";
+    string authentication = "";
+    string database = "";
+    string hostVarParameter = "";
+    string isolationLevel = "";
+    string maxPoolSize = "";
+    string minPoolSize = "";
+    string password = "";
+    string pooling = "";
+    string server = "";
+    string username = "";
+    string otherOptions = "";
 
     /// <summary>
     /// The type of authentication to be used. Acceptable values:

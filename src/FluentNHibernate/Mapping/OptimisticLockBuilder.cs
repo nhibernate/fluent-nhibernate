@@ -4,7 +4,7 @@ namespace FluentNHibernate.Mapping;
 
 public class OptimisticLockBuilder
 {
-    private readonly Action<string> setter;
+    readonly Action<string> setter;
 
     protected OptimisticLockBuilder(Action<string> setter)
     {

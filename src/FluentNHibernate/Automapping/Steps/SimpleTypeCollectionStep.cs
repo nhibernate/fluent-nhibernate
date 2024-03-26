@@ -59,7 +59,7 @@ public class SimpleTypeCollectionStep(IAutomappingConfiguration cfg) : IAutomapp
             mapping.Set(x => x.Access, Layer.Defaults, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
     }
 
-    private void SetElement(Member property, ClassMappingBase classMap, CollectionMapping mapping)
+    void SetElement(Member property, ClassMappingBase classMap, CollectionMapping mapping)
     {
         var element = new ElementMapping
         {

@@ -6,7 +6,7 @@ namespace FluentNHibernate.MappingModel.Output;
 
 public class XmlOneToOneWriter : NullMappingModelVisitor, IXmlWriter<OneToOneMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(OneToOneMapping mappingModel)
     {

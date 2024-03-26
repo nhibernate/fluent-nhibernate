@@ -13,7 +13,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class JoinedSubclassConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -120,12 +120,12 @@ public class JoinedSubclassConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IJoinedSubclassInstance> convention)
+    void Convention(Action<IJoinedSubclassInstance> convention)
     {
         model.Conventions.Add(new JoinedSubclassConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<SubclassMapping> modelVerification)
+    void VerifyModel(Action<SubclassMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleClass>();
         classMap.Id(x => x.Id);

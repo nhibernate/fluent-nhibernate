@@ -13,9 +13,9 @@ public class Include : IEquatable<Include>
         return new Include(value);
     }
 
-    private readonly string value;
+    readonly string value;
 
-    private Include(string value)
+    Include(string value)
     {
         this.value = value;
     }

@@ -10,7 +10,7 @@ public class TypeReference: IEquatable<TypeReference>
 {
     public static readonly TypeReference Empty = new TypeReference("nop");
 
-    private readonly Type innerType;
+    readonly Type innerType;
 
     public TypeReference(string name)
     {

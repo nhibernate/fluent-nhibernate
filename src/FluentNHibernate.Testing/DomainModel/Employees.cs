@@ -18,7 +18,7 @@ public class CasualEmployee : Employee
 
 public class Money
 {
-    private Money()
+    Money()
     { }
 
     public Money(decimal amount, string currency)

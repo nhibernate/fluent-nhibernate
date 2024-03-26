@@ -12,7 +12,7 @@ public interface IGeneratorInspector : IInspector
 
 public class GeneratorInspector(GeneratorMapping mapping) : IGeneratorInspector
 {
-    private readonly InspectorModelMapper<IGeneratorInspector, GeneratorMapping> propertyMappings = new InspectorModelMapper<IGeneratorInspector, GeneratorMapping>();
+    readonly InspectorModelMapper<IGeneratorInspector, GeneratorMapping> propertyMappings = new InspectorModelMapper<IGeneratorInspector, GeneratorMapping>();
 
     public Type EntityType => mapping.ContainingEntityType;
 

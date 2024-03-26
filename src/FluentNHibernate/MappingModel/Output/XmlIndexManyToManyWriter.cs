@@ -8,7 +8,7 @@ namespace FluentNHibernate.MappingModel.Output;
 public class XmlIndexManyToManyWriter(IXmlWriterServiceLocator serviceLocator)
     : NullMappingModelVisitor, IXmlWriter<IndexManyToManyMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(IndexManyToManyMapping mappingModel)
     {

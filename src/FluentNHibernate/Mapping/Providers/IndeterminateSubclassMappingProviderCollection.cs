@@ -9,8 +9,8 @@ namespace FluentNHibernate.Mapping.Providers;
 /// </summary>
 public class IndeterminateSubclassMappingProviderCollection : IIndeterminateSubclassMappingProviderCollection
 {
-    private readonly List<IIndeterminateSubclassMappingProvider> providers = new List<IIndeterminateSubclassMappingProvider>(); 
-    private readonly HashSet<Type> mappedTypes = new HashSet<Type>(); 
+    readonly List<IIndeterminateSubclassMappingProvider> providers = new List<IIndeterminateSubclassMappingProvider>();
+    readonly HashSet<Type> mappedTypes = new HashSet<Type>(); 
 
     public IEnumerator<IIndeterminateSubclassMappingProvider> GetEnumerator()
     {

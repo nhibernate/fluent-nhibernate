@@ -9,8 +9,8 @@ namespace FluentNHibernate.MappingModel.Identity;
 [Serializable]
 public class CompositeIdMapping(AttributeStore attributes) : MappingBase, IIdentityMapping, IEquatable<CompositeIdMapping>
 {
-    private readonly AttributeStore attributes = attributes;
-    private readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
+    readonly AttributeStore attributes = attributes;
+    readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
 
     public CompositeIdMapping()
         : this(new AttributeStore())

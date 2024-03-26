@@ -83,14 +83,14 @@ public class Access : IEquatable<Access>
         return Using(typeof(T));
     }
 
-    private readonly string value;
+    readonly string value;
 
-    private Access(string value)
+    Access(string value)
     {
         this.value = value;
     }
 
-    private Access(string value, NamingStrategy strategy)
+    Access(string value, NamingStrategy strategy)
     {
         this.value = value + "." + strategy;
     }

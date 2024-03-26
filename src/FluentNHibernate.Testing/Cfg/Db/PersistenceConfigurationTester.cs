@@ -8,8 +8,9 @@ namespace FluentNHibernate.Testing.Cfg.Db;
 public class PersistenceConfigurationTester
 {
     #region Test Setup
-    private ConfigTester _config;
-    private Configuration _nhibConfig;
+
+    ConfigTester _config;
+    Configuration _nhibConfig;
 
     [SetUp]
     public void SetUp()

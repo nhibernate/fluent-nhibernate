@@ -8,8 +8,8 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class ManyToManyInspector : IManyToManyInspector
 {
-    private readonly InspectorModelMapper<IManyToManyInspector, ManyToManyMapping> mappedProperties = new InspectorModelMapper<IManyToManyInspector, ManyToManyMapping>();
-    private readonly ManyToManyMapping mapping;
+    readonly InspectorModelMapper<IManyToManyInspector, ManyToManyMapping> mappedProperties = new InspectorModelMapper<IManyToManyInspector, ManyToManyMapping>();
+    readonly ManyToManyMapping mapping;
 
     public ManyToManyInspector(ManyToManyMapping mapping)
     {

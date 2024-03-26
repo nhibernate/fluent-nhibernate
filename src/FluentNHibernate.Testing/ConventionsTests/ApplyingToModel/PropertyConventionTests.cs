@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class PropertyConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -206,12 +206,12 @@ public class PropertyConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IPropertyInstance> convention)
+    void Convention(Action<IPropertyInstance> convention)
     {
         model.Conventions.Add(new PropertyConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<PropertyMapping> modelVerification)
+    void VerifyModel(Action<PropertyMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleClass>();
         classMap.Id(x => x.Id);

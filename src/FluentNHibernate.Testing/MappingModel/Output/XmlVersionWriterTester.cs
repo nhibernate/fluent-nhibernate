@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlVersionWriterTester
 {
-    private IXmlWriter<VersionMapping> writer;
+    IXmlWriter<VersionMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()

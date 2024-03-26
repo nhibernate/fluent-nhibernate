@@ -9,8 +9,8 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class KeyManyToOneInspector : IKeyManyToOneInspector
 {
-    private readonly InspectorModelMapper<IKeyManyToOneInspector, KeyManyToOneMapping> mappedProperties = new InspectorModelMapper<IKeyManyToOneInspector, KeyManyToOneMapping>();
-    private readonly KeyManyToOneMapping mapping;
+    readonly InspectorModelMapper<IKeyManyToOneInspector, KeyManyToOneMapping> mappedProperties = new InspectorModelMapper<IKeyManyToOneInspector, KeyManyToOneMapping>();
+    readonly KeyManyToOneMapping mapping;
 
     public KeyManyToOneInspector(KeyManyToOneMapping mapping)
     {

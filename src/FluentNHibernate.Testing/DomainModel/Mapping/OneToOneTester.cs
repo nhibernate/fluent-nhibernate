@@ -84,10 +84,12 @@ public class OneToOneTester
             .HasAttribute("class", typeof (UserLoginInfo).AssemblyQualifiedName);
     }
 
-        
-    private interface IUserLoginInfo {}
-    private class UserLoginInfo : IUserLoginInfo { }
-    private class User
+
+    interface IUserLoginInfo {}
+
+    class UserLoginInfo : IUserLoginInfo { }
+
+    class User
     {
         public int Id { get; set; }
         public IUserLoginInfo LoginInfo => null;

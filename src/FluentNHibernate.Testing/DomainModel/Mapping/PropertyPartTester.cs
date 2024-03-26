@@ -603,7 +603,7 @@ public class FieldTarget
 public class PrivatePropertyTarget
 {
     public int Id { get; set; }
-    private string Name { get; set; }
+    string Name { get; set; }
     public PropertyReferenceTarget Reference { get; set; }
     public IList<PropertyReferenceTarget> References { get; set; }
     public ComponentTarget Component { get; set; }

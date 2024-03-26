@@ -16,7 +16,7 @@ public class when_the_component_column_prefix_visitor_processes_a_reference_comp
     PersistenceModel model;
     IEnumerable<HibernateMapping> mappings;
     ClassMapping target_mapping;
-    private const string column_prefix = "{property}_";
+    const string column_prefix = "{property}_";
 
     public override void establish_context()
     {
@@ -57,8 +57,8 @@ public class when_the_component_column_prefix_visitor_processes_a_reference_comp
     PersistenceModel model;
     IEnumerable<HibernateMapping> mappings;
     ClassMapping target_mapping;
-    private const string first_prefix = "first_";
-    private const string second_prefix = "second_";
+    const string first_prefix = "first_";
+    const string second_prefix = "second_";
 
     public override void establish_context()
     {
@@ -105,10 +105,10 @@ public class when_the_component_column_prefix_visitor_processes_a_reference_comp
 [TestFixture]
 public class when_the_component_column_prefix_visitor_processes_a_reference_component_after_already_processed_another : ComponentColumnPrefixVisitorSpec
 {
-    private const string column_prefix = "prefix_";
-    private ComponentColumnPrefixVisitor visitor;
-    private ReferenceComponentMapping reference_with_a_prefix;
-    private ReferenceComponentMapping reference_without_a_prefix;
+    const string column_prefix = "prefix_";
+    ComponentColumnPrefixVisitor visitor;
+    ReferenceComponentMapping reference_with_a_prefix;
+    ReferenceComponentMapping reference_without_a_prefix;
 
     public override void establish_context()
     {
@@ -144,7 +144,7 @@ public class when_the_component_column_prefix_visitor_processes_a_reference_comp
     PersistenceModel model;
     IEnumerable<HibernateMapping> mappings;
     ClassMapping target_mapping;
-    private const string column_prefix = "prefix_";
+    const string column_prefix = "prefix_";
 
     public override void establish_context()
     {

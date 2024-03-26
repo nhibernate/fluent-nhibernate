@@ -9,8 +9,8 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class IdentityInspector : ColumnBasedInspector, IIdentityInspector
 {
-    private readonly InspectorModelMapper<IIdentityInspector, IdMapping> propertyMappings = new InspectorModelMapper<IIdentityInspector, IdMapping>();
-    private readonly IdMapping mapping;
+    readonly InspectorModelMapper<IIdentityInspector, IdMapping> propertyMappings = new InspectorModelMapper<IIdentityInspector, IdMapping>();
+    readonly IdMapping mapping;
 
     public IdentityInspector(IdMapping mapping)
         : base(mapping.Columns)

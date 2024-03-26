@@ -4,7 +4,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests;
 
 public class ModelTester<TFluentClass, TModel>(Func<TFluentClass> instantiatePart, Func<TFluentClass, TModel> getModel)
 {
-    private TFluentClass fluentClass;
+    TFluentClass fluentClass;
 
     public ModelTester<TFluentClass, TModel> Mapping(Action<TFluentClass> action)
     {

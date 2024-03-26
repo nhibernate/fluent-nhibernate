@@ -6,7 +6,7 @@ namespace FluentNHibernate.MappingModel.Output;
 public class XmlStoredProcedureWriter(IXmlWriterServiceLocator serviceLocator)
     : XmlClassWriterBase(serviceLocator), IXmlWriter<StoredProcedureMapping>
 {
-    private readonly IXmlWriterServiceLocator serviceLocator = serviceLocator;
+    readonly IXmlWriterServiceLocator serviceLocator = serviceLocator;
 
     public XmlDocument Write(StoredProcedureMapping mappingModel)
     {

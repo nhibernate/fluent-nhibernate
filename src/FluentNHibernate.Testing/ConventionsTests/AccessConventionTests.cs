@@ -12,13 +12,13 @@ namespace FluentNHibernate.Testing.ConventionsTests;
 [TestFixture]
 public class AccessConventionTests
 {
-    private string expectedAccess = "backfield";
+    string expectedAccess = "backfield";
 
-    private ClassMapping compositeId;
-    private ClassMapping manyToMany;
-    private ClassMapping manyToOne;
-    private ClassMapping oneToOne;
-    private ClassMapping parent;
+    ClassMapping compositeId;
+    ClassMapping manyToMany;
+    ClassMapping manyToOne;
+    ClassMapping oneToOne;
+    ClassMapping parent;
 
 
     [SetUp]
@@ -128,7 +128,7 @@ public class AccessConventionTests
         Assert.That(parent.Anys.First(x => x.Name.Equals("Any")).Access, Is.EqualTo(expectedAccess));
     }
 
-    private class BackfieldAccessConvention : AccessConvention
+    class BackfieldAccessConvention : AccessConvention
     {
         protected override void Apply(Type owner, string name, FluentNHibernate.Conventions.Instances.IAccessInstance access)
         {

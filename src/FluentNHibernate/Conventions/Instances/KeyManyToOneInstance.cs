@@ -6,8 +6,8 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class KeyManyToOneInstance(KeyManyToOneMapping mapping) : KeyManyToOneInspector(mapping), IKeyManyToOneInstance
 {
-    private readonly KeyManyToOneMapping mapping = mapping;
-    private bool nextBool = true;
+    readonly KeyManyToOneMapping mapping = mapping;
+    bool nextBool = true;
 
     public new IAccessInstance Access
     {

@@ -83,7 +83,8 @@ public class PersonCard
     {
         public int Id { get; set; }
     }
-    private class PrivateAddress
+
+    class PrivateAddress
     {
         public int Id { get; set; }
     }

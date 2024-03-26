@@ -195,7 +195,7 @@ public class ManyToManyTableNameTests
         leftMapping.Collections.First().TableName.ShouldEqual("RightUni");
     }
 
-    private class TestTableNameConvention : ManyToManyTableNameConvention
+    class TestTableNameConvention : ManyToManyTableNameConvention
     {
         protected override string GetBiDirectionalTableName(IManyToManyCollectionInspector collection, IManyToManyCollectionInspector otherSide)
         {

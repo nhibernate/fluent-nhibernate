@@ -6,5 +6,5 @@ using FluentNHibernate.Conventions.Instances;
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
 
 [Obsolete("Use BuiltCollectionConvention")]
-internal class BuiltListConvention(Action<IAcceptanceCriteria<IListInspector>> accept, Action<IListInstance> convention)
+class BuiltListConvention(Action<IAcceptanceCriteria<IListInspector>> accept, Action<IListInstance> convention)
     : BuiltConventionBase<IListInspector, IListInstance>(accept, convention), IListConvention, IListConventionAcceptance;

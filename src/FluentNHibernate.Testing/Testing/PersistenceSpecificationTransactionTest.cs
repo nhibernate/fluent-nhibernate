@@ -8,14 +8,14 @@ namespace FluentNHibernate.Testing.Testing;
 [TestFixture]
 public class PersistenceSpecificationTransactionTest
 {
-    private class Cat
+    class Cat
     {
         public long Id { get; set; }
         public string Name { get; set; }
         public CatType CatType { get; set; }
     }
 
-    private class CatType
+    class CatType
     {
         public string Name { get; set; }
     }

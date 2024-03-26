@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.MappingModel;
 [TestFixture]
 public class ClassMappingTester
 {
-    private ClassMapping mapping;
+    ClassMapping mapping;
 
     [SetUp]
     public void SetUp()

@@ -31,7 +31,7 @@ public class SubclassMapForJoinedSubclassConventionTests
         subclass.Key.Columns.Count().ShouldEqual(1);
     }
 
-    private class SCKeyConvention : IJoinedSubclassConvention
+    class SCKeyConvention : IJoinedSubclassConvention
     {
         public void Apply(IJoinedSubclassInstance instance)
         {
@@ -39,11 +39,11 @@ public class SubclassMapForJoinedSubclassConventionTests
         }
     }
 
-    private class Parent 
+    class Parent 
     {
         public int Id { get; set; }
     }
 
-    private class Child : Parent
+    class Child : Parent
     {}
 }

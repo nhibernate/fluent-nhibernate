@@ -8,8 +8,8 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class VersionInspector : ColumnBasedInspector, IVersionInspector
 {
-    private readonly InspectorModelMapper<IVersionInspector, VersionMapping> propertyMappings = new InspectorModelMapper<IVersionInspector, VersionMapping>();
-    private readonly VersionMapping mapping;
+    readonly InspectorModelMapper<IVersionInspector, VersionMapping> propertyMappings = new InspectorModelMapper<IVersionInspector, VersionMapping>();
+    readonly VersionMapping mapping;
 
     public VersionInspector(VersionMapping mapping)
         : base(mapping.Columns)

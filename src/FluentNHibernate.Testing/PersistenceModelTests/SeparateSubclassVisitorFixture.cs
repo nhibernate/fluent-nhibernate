@@ -11,8 +11,8 @@ namespace FluentNHibernate.Testing.PersistenceModelTests;
 [TestFixture]
 public class SeparateSubclassVisitorFixture
 {
-    private IIndeterminateSubclassMappingProviderCollection providers;
-    private ClassMapping fooMapping;
+    IIndeterminateSubclassMappingProviderCollection providers;
+    ClassMapping fooMapping;
 
     [SetUp]
     public void SetUp()
@@ -151,47 +151,47 @@ public class SeparateSubclassVisitorFixture
         fooMapping.Subclasses.First().SubclassType.ShouldEqual(SubclassType.UnionSubclass);
     }
 
-    private SeparateSubclassVisitor CreateSut()
+    SeparateSubclassVisitor CreateSut()
     {
         return new SeparateSubclassVisitor(providers);
     }
 
 
-    private interface IFoo
+    interface IFoo
     { }
 
-    private class Base : IFoo
+    class Base : IFoo
     { }
 
-    private abstract class BaseImpl : Base
+    abstract class BaseImpl : Base
     { }
 
-    private class Foo<T> : BaseImpl, IFoo
+    class Foo<T> : BaseImpl, IFoo
     { }
 
-    private class FooMap : ClassMap<IFoo>
+    class FooMap : ClassMap<IFoo>
     { }
 
-    private class BaseMap : ClassMap<Base>
+    class BaseMap : ClassMap<Base>
     { }
 
-    private class BaseImplMap : SubclassMap<BaseImpl>
+    class BaseImplMap : SubclassMap<BaseImpl>
     { }
 
-    private abstract class GenericFooMap<T> : SubclassMap<Foo<T>>
+    abstract class GenericFooMap<T> : SubclassMap<Foo<T>>
     { }
 
-    private class StringFooMap : GenericFooMap<string>
+    class StringFooMap : GenericFooMap<string>
     { }
 
 
-    private interface IStand
+    interface IStand
     { }
 
-    private class StandAlone : IStand
+    class StandAlone : IStand
     { }
 
-    private class StandAloneMap : SubclassMap<StandAlone>
+    class StandAloneMap : SubclassMap<StandAlone>
     { }
 
     class ExtendsParent

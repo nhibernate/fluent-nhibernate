@@ -40,13 +40,13 @@ public class MappingProviderStore
     public IList<IFilterMappingProvider> Filters { get; set; }
     public IList<IStoredProcedureMappingProvider> StoredProcedures { get; set; }
     public IList<IJoinMappingProvider> Joins { get; set; }
-    private IIdentityMappingProvider _id;
-    private ICompositeIdMappingProvider _compositeId;
-    private INaturalIdMappingProvider _naturalId;
-    private IVersionMappingProvider _version;
-    private IDiscriminatorMappingProvider _discriminator;
-    private TuplizerMapping _tupilizerMapping;
-    private readonly IList<Tuple<ProviderType, object>> _orderedProviders;
+    IIdentityMappingProvider _id;
+    ICompositeIdMappingProvider _compositeId;
+    INaturalIdMappingProvider _naturalId;
+    IVersionMappingProvider _version;
+    IDiscriminatorMappingProvider _discriminator;
+    TuplizerMapping _tupilizerMapping;
+    readonly IList<Tuple<ProviderType, object>> _orderedProviders;
 
 
     public IIdentityMappingProvider Id {
@@ -116,7 +116,7 @@ public class MappingProviderStore
         get { return _orderedProviders.Select(x => x); }
     }
 
-    private IList<T> NewObservedList<T>() {
+    IList<T> NewObservedList<T>() {
 
         ProviderType TypeSelector(object mappingStoreCollection) 
         {
@@ -168,7 +168,7 @@ public class MappingProviderStore
         return observableList;
     }
 
-    private IDictionary<TKey, TVal> NewObservedDictionary<TKey, TVal>() {
+    IDictionary<TKey, TVal> NewObservedDictionary<TKey, TVal>() {
         var observedDictionary = new ObservableDictionary<TKey,TVal>();
         observedDictionary.CollectionChanged += (sender, args) => {
             switch (args.Action) {
@@ -203,7 +203,7 @@ public class MappingProviderStore
         return observedDictionary;            
     }
 
-    private void ReplaceOrAddProvider(ProviderType type, object oldObj, object newObj) {
+    void ReplaceOrAddProvider(ProviderType type, object oldObj, object newObj) {
         var index = _orderedProviders.IndexOf(Tuple.Create(type, oldObj));
         var newObjTuple = Tuple.Create(type, newObj);
         if (index > 0)

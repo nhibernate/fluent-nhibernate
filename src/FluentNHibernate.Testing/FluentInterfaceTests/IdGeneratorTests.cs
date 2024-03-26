@@ -81,14 +81,14 @@ public class IdGeneratorTests : BaseModelFixture
             .ModelShouldMatch(x => ((IdMapping)x.Id).Generator.Class.ShouldEqual(typeof(CustomGenerator).AssemblyQualifiedName));
     }
 
-    private class IdentityExamples
+    class IdentityExamples
     {
         public string String { get; set; }
         public int Int { get; set; }
         public Guid Guid { get; set; }
     }
 
-    private class IdConvention : IIdConvention
+    class IdConvention : IIdConvention
     {
         public void Apply(IIdentityInstance instance)
         {
@@ -96,7 +96,7 @@ public class IdGeneratorTests : BaseModelFixture
         }
     }
 
-    private class CustomGenerator : IIdentifierGenerator
+    class CustomGenerator : IIdentifierGenerator
     {
         public object Generate(ISessionImplementor session, object obj)
         {

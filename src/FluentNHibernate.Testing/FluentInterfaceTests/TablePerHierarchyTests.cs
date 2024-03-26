@@ -67,8 +67,8 @@ public class DerivedMapping : SubclassMap<Derived>
 
 public abstract class BaseManualMapFixture
 {
-    private Configuration cfg;
-    private PersistenceModel model;
+    Configuration cfg;
+    PersistenceModel model;
 
     [SetUp]
     public void CreateDatabaseCfg()

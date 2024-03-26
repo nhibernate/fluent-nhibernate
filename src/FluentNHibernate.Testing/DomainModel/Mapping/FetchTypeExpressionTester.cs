@@ -9,7 +9,7 @@ public class FetchTypeExpressionTester
 {
     #region Test Setup
     public FetchTypeExpression<object> _fetchType;
-    private string fetchValue;
+    string fetchValue;
 		
     [SetUp]
     public virtual void SetUp()
@@ -24,7 +24,7 @@ public class FetchTypeExpressionTester
         return this;
     }
 
-    private void should_set_the_fetch_value_to(string expected)
+    void should_set_the_fetch_value_to(string expected)
     {
         fetchValue.ShouldEqual(expected);
     }

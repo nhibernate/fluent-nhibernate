@@ -4,9 +4,9 @@ using FluentNHibernate.Diagnostics;
 
 namespace FluentNHibernate.Testing;
 
-internal class StubTypeSource : ITypeSource
+class StubTypeSource : ITypeSource
 {
-    private readonly IEnumerable<Type> types;
+    readonly IEnumerable<Type> types;
 
     public StubTypeSource(params Type[] types)
     {

@@ -6,5 +6,5 @@ using FluentNHibernate.Conventions.Instances;
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
 
 [Obsolete("Use BuiltCollectionConvention")]
-internal class BuiltArrayConvention(Action<IAcceptanceCriteria<IArrayInspector>> accept, Action<IArrayInstance> convention)
+class BuiltArrayConvention(Action<IAcceptanceCriteria<IArrayInspector>> accept, Action<IArrayInstance> convention)
     : BuiltConventionBase<IArrayInspector, IArrayInstance>(accept, convention), IArrayConvention, IArrayConventionAcceptance;

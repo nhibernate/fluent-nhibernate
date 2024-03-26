@@ -15,8 +15,8 @@ namespace FluentNHibernate.Testing.Cfg;
 [TestFixture]
 public class MappingConfigurationTests
 {
-    private Configuration cfg;
-    private MappingConfiguration mapping;
+    Configuration cfg;
+    MappingConfiguration mapping;
     IDiagnosticLogger logger;
 
     [SetUp]

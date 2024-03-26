@@ -8,7 +8,7 @@ namespace FluentNHibernate.Visitors;
 
 public class ComponentColumnPrefixVisitor : DefaultMappingModelVisitor
 {
-    private Stack<string> prefixes = new Stack<string>();
+    Stack<string> prefixes = new Stack<string>();
 
     public override void Visit(IComponentMapping mapping)
     {
@@ -23,12 +23,12 @@ public class ComponentColumnPrefixVisitor : DefaultMappingModelVisitor
             columnMapping.Set(x => x.Name, Layer.UserSupplied, GetPrefix() + columnMapping.Name);
     }
 
-    private string GetPrefix()
+    string GetPrefix()
     {
         return string.Join("", prefixes.Reverse().ToArray());
     }
 
-    private void StorePrefix(IComponentMapping mapping)
+    void StorePrefix(IComponentMapping mapping)
     {
         var prefix = mapping.HasColumnPrefix 
             ? mapping.ColumnPrefix.Replace("{property}", mapping.Member.Name) 
@@ -37,7 +37,7 @@ public class ComponentColumnPrefixVisitor : DefaultMappingModelVisitor
         prefixes.Push(prefix);
     }
 
-    private void ResetPrefix()
+    void ResetPrefix()
     {
         if (prefixes.Count > 0)
             prefixes.Pop();

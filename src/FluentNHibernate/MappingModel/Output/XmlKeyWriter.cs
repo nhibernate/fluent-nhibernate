@@ -6,7 +6,7 @@ namespace FluentNHibernate.MappingModel.Output;
 
 public class XmlKeyWriter(IXmlWriterServiceLocator serviceLocator) : NullMappingModelVisitor, IXmlWriter<KeyMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(KeyMapping mappingModel)
     {

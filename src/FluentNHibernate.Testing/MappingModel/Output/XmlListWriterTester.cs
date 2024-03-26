@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlListWriterTester
 {
-    private IXmlWriter<CollectionMapping> writer;
+    IXmlWriter<CollectionMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()

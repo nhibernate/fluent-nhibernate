@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlCompositeElementWriterTester
 {
-    private IXmlWriter<CompositeElementMapping> writer;
+    IXmlWriter<CompositeElementMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()

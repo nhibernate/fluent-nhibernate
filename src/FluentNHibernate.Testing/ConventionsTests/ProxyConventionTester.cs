@@ -157,20 +157,20 @@ public class ProxyConventionTester
             .MustNotHaveHappened();
     }
 
-    private static ProxyConvention GetConvention()
+    static ProxyConvention GetConvention()
     {
         return new ProxyConvention(PersistentTypeToProxy,
             ProxyToPersistentType);
     }
 
-    private static Type PersistentTypeToProxy(Type type)
+    static Type PersistentTypeToProxy(Type type)
     {
         return type == typeof(ProxiedObject)
             ? typeof(IProxiedObject)
             : null;
     }
 
-    private static Type ProxyToPersistentType(Type type)
+    static Type ProxyToPersistentType(Type type)
     {
         return type == typeof(IProxiedObject)
             ? typeof(ProxiedObject)

@@ -8,13 +8,13 @@ namespace FluentNHibernate.Automapping;
 
 public class AutoMappingAlterationCollection : IEnumerable<IAutoMappingAlteration>
 {
-    private readonly List<IAutoMappingAlteration> alterations = new List<IAutoMappingAlteration>();
+    readonly List<IAutoMappingAlteration> alterations = new List<IAutoMappingAlteration>();
 
     /// <summary>
     /// Creates an instance of an IAutoMappingAlteration from a type instance, then adds it to the alterations collection.
     /// </summary>
     /// <param name="type">Type of an IAutoMappingAlteration</param>
-    private void Add(Type type)
+    void Add(Type type)
     {
         Add((IAutoMappingAlteration)Activator.CreateInstance(type));
     }

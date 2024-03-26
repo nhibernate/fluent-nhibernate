@@ -7,7 +7,7 @@ namespace FluentNHibernate.Automapping.Steps;
 
 public class ReferenceStep(IAutomappingConfiguration cfg) : IAutomappingStep
 {
-    private readonly Func<Member, bool> findPropertyconvention = p => (
+    readonly Func<Member, bool> findPropertyconvention = p => (
         p.PropertyType.Namespace != "System" && // ignore clr types (won't be entities)
         p.PropertyType.Namespace != "System.Collections.Generic" &&
         p.PropertyType.Namespace != "Iesi.Collections.Generic" &&
@@ -25,7 +25,7 @@ public class ReferenceStep(IAutomappingConfiguration cfg) : IAutomappingStep
         classMap.AddReference(manyToOne);
     }
 
-    private ManyToOneMapping CreateMapping(Member member)
+    ManyToOneMapping CreateMapping(Member member)
     {
         var mapping = new ManyToOneMapping { Member = member };
 

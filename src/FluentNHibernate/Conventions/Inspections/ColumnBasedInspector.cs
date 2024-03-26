@@ -12,7 +12,7 @@ public abstract class ColumnBasedInspector(IEnumerable<ColumnMapping> columns)
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    private T GetValueFromColumns<T>(Func<ColumnMapping, object> property)
+    T GetValueFromColumns<T>(Func<ColumnMapping, object> property)
     {
         var column = columns.FirstOrDefault();
 

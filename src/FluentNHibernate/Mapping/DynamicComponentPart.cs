@@ -7,14 +7,14 @@ namespace FluentNHibernate.Mapping;
 
 public class DynamicComponentPart<T> : ComponentPartBase<T, DynamicComponentPart<T>>, IComponentMappingProvider
 {
-    private readonly Type entity;
-    private readonly MappingProviderStore providers;
+    readonly Type entity;
+    readonly MappingProviderStore providers;
 
     public DynamicComponentPart(Type entity, Member member)
         : this(entity, member, new AttributeStore(), new MappingProviderStore())
     {}
 
-    private DynamicComponentPart(Type entity, Member member, AttributeStore underlyingStore, MappingProviderStore providers)
+    DynamicComponentPart(Type entity, Member member, AttributeStore underlyingStore, MappingProviderStore providers)
         : base(underlyingStore, member, providers)
     {
         this.entity = entity;

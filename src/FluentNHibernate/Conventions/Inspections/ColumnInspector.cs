@@ -5,7 +5,7 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class ColumnInspector(Type containingEntityType, ColumnMapping mapping) : IColumnInspector
 {
-    private readonly InspectorModelMapper<IColumnInspector, ColumnMapping> propertyMappings = new InspectorModelMapper<IColumnInspector, ColumnMapping>();
+    readonly InspectorModelMapper<IColumnInspector, ColumnMapping> propertyMappings = new InspectorModelMapper<IColumnInspector, ColumnMapping>();
 
     public Type EntityType { get; } = containingEntityType;
 

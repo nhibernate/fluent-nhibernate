@@ -7,7 +7,7 @@ namespace FluentNHibernate.MappingModel.Output;
 public class XmlReferenceComponentWriter(IXmlWriterServiceLocator serviceLocator)
     : BaseXmlComponentWriter(serviceLocator), IXmlWriter<ReferenceComponentMapping>
 {
-    private IXmlWriter<IComponentMapping> innerWriter = serviceLocator.GetWriter<IComponentMapping>();
+    IXmlWriter<IComponentMapping> innerWriter = serviceLocator.GetWriter<IComponentMapping>();
 
     public XmlDocument Write(ReferenceComponentMapping mappingModel)
     {

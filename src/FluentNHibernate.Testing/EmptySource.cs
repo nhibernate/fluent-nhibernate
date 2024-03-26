@@ -4,7 +4,7 @@ using FluentNHibernate.Diagnostics;
 
 namespace FluentNHibernate.Testing;
 
-internal class EmptySource : ITypeSource
+class EmptySource : ITypeSource
 {
     public IEnumerable<Type> GetTypes()
     {

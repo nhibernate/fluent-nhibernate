@@ -11,7 +11,7 @@ public class CascadeExpressionTester
 
     protected CascadeExpression<object> _cascade;
     protected string cascadeValue;
-    private Func<object> _currentCascadeAction;
+    Func<object> _currentCascadeAction;
 
     [SetUp]
     public virtual void SetUp()

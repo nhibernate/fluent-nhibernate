@@ -8,7 +8,7 @@ namespace FluentNHibernate.MappingModel;
 [Serializable]
 public class OneToOneMapping(AttributeStore attributes) : MappingBase, IEquatable<OneToOneMapping>
 {
-    private readonly AttributeStore attributes = attributes;
+    readonly AttributeStore attributes = attributes;
 
     public OneToOneMapping()
         : this(new AttributeStore())

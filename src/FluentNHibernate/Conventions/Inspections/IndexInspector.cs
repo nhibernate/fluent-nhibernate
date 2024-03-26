@@ -8,7 +8,7 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class IndexInspector(IndexMapping mapping) : IIndexInspector
 {
-    private readonly InspectorModelMapper<IIndexInspector, IndexMapping> mappedProperties = new InspectorModelMapper<IIndexInspector, IndexMapping>();
+    readonly InspectorModelMapper<IIndexInspector, IndexMapping> mappedProperties = new InspectorModelMapper<IIndexInspector, IndexMapping>();
 
     public Type EntityType => mapping.ContainingEntityType;
 

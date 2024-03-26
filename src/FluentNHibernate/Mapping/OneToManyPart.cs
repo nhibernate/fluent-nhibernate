@@ -10,11 +10,11 @@ namespace FluentNHibernate.Mapping;
 
 public class OneToManyPart<TChild> : ToManyBase<OneToManyPart<TChild>, TChild>
 {
-    private readonly Type entity;
-    private IndexManyToManyPart manyToManyIndex;
-    private readonly Type childType;
-    private Type valueType;
-    private bool isTernary;
+    readonly Type entity;
+    IndexManyToManyPart manyToManyIndex;
+    readonly Type childType;
+    Type valueType;
+    bool isTernary;
 
     public OneToManyPart(Type entity, Member property)
         : this(entity, property, property.PropertyType)

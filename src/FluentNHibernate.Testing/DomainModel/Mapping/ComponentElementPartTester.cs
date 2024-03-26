@@ -71,12 +71,12 @@ public class ComponentElementPartTester
             .HasAttribute("name", "Target");
     }
 
-    private class TopLevel
+    class TopLevel
     {
         public IList<Item> Items { get; set; }
     }
 
-    private class Item
+    class Item
     {
         public PropertyTarget Target { get; set; }
         public string SomeString { get; set; }

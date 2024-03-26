@@ -6,7 +6,7 @@ namespace FluentNHibernate.MappingModel.ClassBased;
 [Serializable]
 public abstract class ComponentMappingBase(AttributeStore attributes) : ClassMappingBase(attributes)
 {
-    private readonly AttributeStore attributes = attributes;
+    readonly AttributeStore attributes = attributes;
 
     protected ComponentMappingBase()
         : this(new AttributeStore())

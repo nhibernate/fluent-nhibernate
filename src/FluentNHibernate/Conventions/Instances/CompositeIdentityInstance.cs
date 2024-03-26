@@ -9,8 +9,8 @@ namespace FluentNHibernate.Conventions.Instances;
 public class CompositeIdentityInstance(CompositeIdMapping mapping)
     : CompositeIdentityInspector(mapping), ICompositeIdentityInstance
 {
-    private readonly CompositeIdMapping mapping = mapping;
-    private bool nextBool = true;
+    readonly CompositeIdMapping mapping = mapping;
+    bool nextBool = true;
 
 
     public new void UnsavedValue(string unsavedValue)

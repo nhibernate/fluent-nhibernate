@@ -8,7 +8,7 @@ namespace FluentNHibernate.MappingModel.Output;
 public class XmlKeyManyToOneWriter(IXmlWriterServiceLocator serviceLocator)
     : NullMappingModelVisitor, IXmlWriter<KeyManyToOneMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(KeyManyToOneMapping mappingModel)
     {

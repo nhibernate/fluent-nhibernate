@@ -150,6 +150,6 @@ public class SubclassMapForSubclassMutablePropertyModelGenerationTests : BaseMod
             .ModelShouldMatch(x => x.EntityName.ShouldEqual("name1"));
     }
 
-    private class FakeProxyType
+    class FakeProxyType
     {}
 }

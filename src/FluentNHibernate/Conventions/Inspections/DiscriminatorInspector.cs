@@ -7,8 +7,8 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class DiscriminatorInspector : ColumnBasedInspector, IDiscriminatorInspector
 {
-    private readonly InspectorModelMapper<IDiscriminatorInspector, DiscriminatorMapping> propertyMappings = new InspectorModelMapper<IDiscriminatorInspector, DiscriminatorMapping>();
-    private readonly DiscriminatorMapping mapping;
+    readonly InspectorModelMapper<IDiscriminatorInspector, DiscriminatorMapping> propertyMappings = new InspectorModelMapper<IDiscriminatorInspector, DiscriminatorMapping>();
+    readonly DiscriminatorMapping mapping;
 
     public DiscriminatorInspector(DiscriminatorMapping mapping)
         : base(mapping.Columns)
