@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures.Basic;
 using FluentNHibernate.Testing.Fixtures.MixedMappingsInSameLocation;
@@ -220,9 +218,9 @@ public class ValidFluentConfigurationTests
 [TestFixture]
 public class InvalidFluentConfigurationTests
 {
-    private const string ExceptionMessage = "An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.";
-    private const string ExceptionDatabaseMessage = "Database was not configured through Database method.";
-    private const string ExceptionMappingMessage = "No mappings were configured through the Mappings method.";
+    const string ExceptionMessage = "An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.";
+    const string ExceptionDatabaseMessage = "Database was not configured through Database method.";
+    const string ExceptionMappingMessage = "No mappings were configured through the Mappings method.";
 
     [Test]
     public void BuildSessionFactoryShouldThrowIfCalledBeforeAnythingSetup()
@@ -302,7 +300,7 @@ public class InvalidFluentConfigurationTests
 [TestFixture]
 public class FluentConfigurationWriteMappingsTests
 {
-    private string ExportPath;
+    string ExportPath;
 
     [SetUp]
     public void CreateTempDir()
@@ -439,7 +437,7 @@ public class FluentConfigurationWriteMappingsTests
             .BuildConfiguration();
     }
 
-    private static bool HbmFor<T>(string path)
+    static bool HbmFor<T>(string path)
     {
         return Path.GetFileName(path) == typeof(T).FullName + ".hbm.xml";
     }

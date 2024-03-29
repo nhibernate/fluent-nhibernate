@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
 
@@ -16,6 +13,5 @@ public class BuiltProxyConvention : ProxyConvention
 
     protected BuiltProxyConvention(Func<Type, Type> mapPersistentTypeToProxyInterfaceType, Func<Type, Type> mapProxyInterfaceTypeToPersistentType) : base(mapPersistentTypeToProxyInterfaceType, mapProxyInterfaceTypeToPersistentType)
     {
-            
     }
 }

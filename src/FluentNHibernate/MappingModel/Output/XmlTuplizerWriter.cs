@@ -7,7 +7,7 @@ namespace FluentNHibernate.MappingModel.Output;
 
 public class XmlTuplizerWriter : NullMappingModelVisitor, IXmlWriter<TuplizerMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(TuplizerMapping mappingModel)
     {

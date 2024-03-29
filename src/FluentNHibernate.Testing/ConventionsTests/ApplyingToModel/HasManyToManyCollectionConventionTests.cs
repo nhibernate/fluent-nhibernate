@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Testing.FluentInterfaceTests;
 using NUnit.Framework;
@@ -17,7 +13,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class HasManyToManyCollectionConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -187,12 +183,12 @@ public class HasManyToManyCollectionConventionTests
 
     #region Helpers
 
-    private void Convention(Action<ICollectionInstance> convention)
+    void Convention(Action<ICollectionInstance> convention)
     {
         model.Conventions.Add(new CollectionConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<CollectionMapping> modelVerification)
+    void VerifyModel(Action<CollectionMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleInheritedClass>();
         classMap.Id(x => x.Id);
@@ -202,7 +198,7 @@ public class HasManyToManyCollectionConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleInheritedClass)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleInheritedClass)) is not null)
             .Classes.First()
             .Collections.First();
 

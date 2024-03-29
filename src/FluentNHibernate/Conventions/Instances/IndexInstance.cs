@@ -5,15 +5,9 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class IndexInstance : IndexInspector, IIndexInstance
+public class IndexInstance(IndexMapping mapping) : IndexInspector(mapping), IIndexInstance
 {
-    private readonly IndexMapping mapping;
-
-    public IndexInstance(IndexMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly IndexMapping mapping = mapping;
 
     /// <summary>
     /// Adds a column to the index if columns have not yet been specified
@@ -22,7 +16,7 @@ public class IndexInstance : IndexInspector, IIndexInstance
     public void Column(string columnName)
     {
         var originalColumn = mapping.Columns.FirstOrDefault();
-        var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
+        var column = originalColumn is null ? new ColumnMapping() : originalColumn.Clone();
         column.Set(x => x.Name, Layer.Conventions, columnName);
 
         mapping.AddColumn(Layer.Conventions, column);

@@ -7,7 +7,7 @@ using FluentNHibernate.Conventions.Inspections;
 namespace FluentNHibernate.Conventions.Helpers.Builders;
 
 [Obsolete("Use CollectionConventionBuilder")]
-internal class ListConventionBuilder : IConventionBuilder<IListConvention, IListInspector, IListInstance>
+class ListConventionBuilder : IConventionBuilder<IListConvention, IListInspector, IListInstance>
 {
     public IListConvention Always(Action<IListInstance> convention)
     {

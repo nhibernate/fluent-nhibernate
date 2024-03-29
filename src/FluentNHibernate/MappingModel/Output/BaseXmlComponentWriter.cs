@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml;
-using FluentNHibernate.Mapping;
+﻿using System.Xml;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output;
 
-public abstract class BaseXmlComponentWriter : XmlClassWriterBase
+public abstract class BaseXmlComponentWriter(IXmlWriterServiceLocator serviceLocator)
+    : XmlClassWriterBase(serviceLocator)
 {
-    private readonly IXmlWriterServiceLocator serviceLocator;
-
-    protected BaseXmlComponentWriter(IXmlWriterServiceLocator serviceLocator)
-        : base(serviceLocator)
-    {
-        this.serviceLocator = serviceLocator;
-    }
+    readonly IXmlWriterServiceLocator serviceLocator = serviceLocator;
 
     protected XmlDocument WriteComponent(string element, IComponentMapping mapping)
     {

@@ -3,7 +3,7 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Mapping;
 
-public class Access
+public class Access : IEquatable<Access>
 {
     public static readonly Access Unset = new Access("");
     public static readonly Access Field = new Access("field");
@@ -83,14 +83,14 @@ public class Access
         return Using(typeof(T));
     }
 
-    private readonly string value;
+    readonly string value;
 
-    private Access(string value)
+    Access(string value)
     {
         this.value = value;
     }
 
-    private Access(string value, NamingStrategy strategy)
+    Access(string value, NamingStrategy strategy)
     {
         this.value = value + "." + strategy;
     }
@@ -109,7 +109,7 @@ public class Access
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(Access x, Access y)

@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping;
@@ -27,7 +25,7 @@ public class ManyToManyTarget
     public virtual IDictionary<ChildObject, bool> MapOfChildrenToBools{ get; set; }
     public virtual IDictionary NonGenericTernaryMapOfChildren { get; set; }
 
-    private IList<ChildObject> otherChildren = new List<ChildObject>();
+    IList<ChildObject> otherChildren = new List<ChildObject>();
     public virtual IList<ChildObject> GetOtherChildren() { return otherChildren; }
 }
 

@@ -5,7 +5,7 @@ namespace FluentNHibernate.Mapping;
 
 public class KeyPropertyPart
 {
-    private readonly KeyPropertyMapping mapping;
+    readonly KeyPropertyMapping mapping;
 
     public KeyPropertyPart(KeyPropertyMapping mapping)
     {
@@ -40,5 +40,5 @@ public class KeyPropertyPart
         return this;
     }
 
-    public AccessStrategyBuilder<KeyPropertyPart> Access { get; private set; }
+    public AccessStrategyBuilder<KeyPropertyPart> Access { get; }
 }

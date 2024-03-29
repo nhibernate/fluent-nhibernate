@@ -36,31 +36,23 @@ public static class XmlTestExtensions
         return new XmlElementTester(doc, path);
     }
 
-    public class XmlElementTester
+    public class XmlElementTester(XmlDocument doc, string path)
     {
-        readonly XmlDocument doc;
-        string currentPath;
-        XmlElement currentElement;
-
-        public XmlElementTester(XmlDocument doc, string path)
-        {
-            currentElement = (XmlElement)doc.DocumentElement.SelectSingleNode(path);
-            this.doc = doc;
-            currentPath = path;
-        }
+        readonly XmlDocument doc = doc;
+        XmlElement currentElement = (XmlElement)doc.DocumentElement.SelectSingleNode(path);
 
         public XmlElementTester ShouldExist()
         {
-            if (currentElement == null)
-                throw new SpecificationException(string.Format("Should exist at {0} but does not.", currentPath));
+            if (currentElement is null)
+                throw new SpecificationException(string.Format("Should exist at {0} but does not.", path));
 
             return this;
         }
 
         public XmlElementTester ShouldNotExist()
         {
-            if (currentElement != null)
-                throw new SpecificationException(string.Format("Should not exist at {0} but does.", currentPath));
+            if (currentElement is not null)
+                throw new SpecificationException(string.Format("Should not exist at {0} but does.", path));
 
             return this;
         }
@@ -68,7 +60,7 @@ public static class XmlTestExtensions
         public XmlElementTester HasAttribute(string name)
         {
             if (!currentElement.HasAttribute(name))
-                throw new SpecificationException(string.Format("Should have attribute named {0} at {1} but does not.", name, currentPath));
+                throw new SpecificationException(string.Format("Should have attribute named {0} at {1} but does not.", name, path));
 
             return this;
         }
@@ -81,7 +73,7 @@ public static class XmlTestExtensions
             var actual = currentElement.GetAttribute(name);
 
             if (!actual.Equals(value))
-                throw new SpecificationException(string.Format("Should have attribute named {0} at {1} with value of {2} but was {3}", name, currentPath, value, actual));
+                throw new SpecificationException(string.Format("Should have attribute named {0} at {1} with value of {2} but was {3}", name, path, value, actual));
 
             return this;
         }
@@ -94,7 +86,7 @@ public static class XmlTestExtensions
             var actual = currentElement.GetAttribute(name);
 
             if (!predicate(actual))
-                throw new SpecificationException(string.Format("Should have attribute named {0} at {1} with value matching predicate but does not.", name, currentPath));
+                throw new SpecificationException(string.Format("Should have attribute named {0} at {1} with value matching predicate but does not.", name, path));
 
             return this;
         }
@@ -104,7 +96,7 @@ public static class XmlTestExtensions
             ShouldExist();
 
             if (currentElement.HasAttribute(name))
-                throw new SpecificationException(string.Format("Should not have attribute named {0} at {1} but does.", name, currentPath));
+                throw new SpecificationException(string.Format("Should not have attribute named {0} at {1} but does.", name, path));
 
             return this;
         }

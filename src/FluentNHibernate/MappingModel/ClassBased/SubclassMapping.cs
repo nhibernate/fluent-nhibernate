@@ -6,21 +6,14 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public class SubclassMapping : ClassMappingBase
+public class SubclassMapping(SubclassType subclassType, AttributeStore attributes) : ClassMappingBase(attributes), IEquatable<SubclassMapping>
 {
-    public SubclassType SubclassType { get; private set; }
-    AttributeStore attributes;
+    public SubclassType SubclassType { get; } = subclassType;
+    AttributeStore attributes = attributes;
 
     public SubclassMapping(SubclassType subclassType)
         : this(subclassType, new AttributeStore())
     {}
-
-    public SubclassMapping(SubclassType subclassType, AttributeStore attributes)
-        : base(attributes)
-    {
-        SubclassType = subclassType;
-        this.attributes = attributes;
-    }
 
     /// <summary>
     /// Set which type this subclass extends.
@@ -28,105 +21,51 @@ public class SubclassMapping : ClassMappingBase
     /// instead used as a marker for the <see cref="SeparateSubclassVisitor"/>
     /// to pair things up.
     /// </summary>
-    public Type Extends
-    {
-        get { return attributes.GetOrDefault<Type>("Extends"); }
-    }
+    public Type Extends => attributes.GetOrDefault<Type>("Extends");
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
         visitor.ProcessSubclass(this);
 
-        if (SubclassType == SubclassType.JoinedSubclass && Key != null)
+        if (SubclassType == SubclassType.JoinedSubclass && Key is not null)
             visitor.Visit(Key);
 
         base.AcceptVisitor(visitor);
     }
 
-    public override string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public override string Name => attributes.GetOrDefault<string>("Name");
 
-    public override Type Type
-    {
-        get { return attributes.GetOrDefault<Type>("Type"); }
-    }
+    public override Type Type => attributes.GetOrDefault<Type>("Type");
 
-    public object DiscriminatorValue
-    {
-        get { return attributes.GetOrDefault<object>("DiscriminatorValue"); }
-    }
+    public object DiscriminatorValue => attributes.GetOrDefault<object>("DiscriminatorValue");
 
-    public bool Lazy
-    {
-        get { return attributes.GetOrDefault<bool>("Lazy"); }
-    }
+    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
 
-    public string Proxy
-    {
-        get { return attributes.GetOrDefault<string>("Proxy"); }
-    }
+    public string Proxy => attributes.GetOrDefault<string>("Proxy");
 
-    public bool DynamicUpdate
-    {
-        get { return attributes.GetOrDefault<bool>("DynamicUpdate"); }
-    }
+    public bool DynamicUpdate => attributes.GetOrDefault<bool>("DynamicUpdate");
 
-    public bool DynamicInsert
-    {
-        get { return attributes.GetOrDefault<bool>("DynamicInsert"); }
-    }
+    public bool DynamicInsert => attributes.GetOrDefault<bool>("DynamicInsert");
 
-    public bool SelectBeforeUpdate
-    {
-        get { return attributes.GetOrDefault<bool>("SelectBeforeUpdate"); }
-    }
+    public bool SelectBeforeUpdate => attributes.GetOrDefault<bool>("SelectBeforeUpdate");
 
-    public bool Abstract
-    {
-        get { return attributes.GetOrDefault<bool>("Abstract"); }
-    }
+    public bool Abstract => attributes.GetOrDefault<bool>("Abstract");
 
-    public string EntityName
-    {
-        get { return attributes.GetOrDefault<string>("EntityName"); }
-    }
+    public string EntityName => attributes.GetOrDefault<string>("EntityName");
 
-    public string TableName
-    {
-        get { return attributes.GetOrDefault<string>("TableName"); }
-    }
+    public string TableName => attributes.GetOrDefault<string>("TableName");
 
-    public KeyMapping Key
-    {
-        get { return attributes.GetOrDefault<KeyMapping>("Key"); }
-    }
+    public KeyMapping Key => attributes.GetOrDefault<KeyMapping>("Key");
 
-    public string Check
-    {
-        get { return attributes.GetOrDefault<string>("Check"); }
-    }
+    public string Check => attributes.GetOrDefault<string>("Check");
 
-    public string Schema
-    {
-        get { return attributes.GetOrDefault<string>("Schema"); }
-    }
+    public string Schema => attributes.GetOrDefault<string>("Schema");
 
-    public string Subselect
-    {
-        get { return attributes.GetOrDefault<string>("Subselect"); }
-    }
+    public string Subselect => attributes.GetOrDefault<string>("Subselect");
 
-    public TypeReference Persister
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Persister"); }
-    }
+    public TypeReference Persister => attributes.GetOrDefault<TypeReference>("Persister");
 
-    public int BatchSize
-    {
-        get { return attributes.GetOrDefault<int>("BatchSize"); }
-    }
+    public int BatchSize => attributes.GetOrDefault<int>("BatchSize");
 
     public void OverrideAttributes(AttributeStore store)
     {
@@ -152,7 +91,7 @@ public class SubclassMapping : ClassMappingBase
         unchecked
         {
             {
-                return (base.GetHashCode() * 397) ^ (attributes != null
+                return (base.GetHashCode() * 397) ^ (attributes is not null
                     ? attributes.GetHashCode()
                     : 0);
             }

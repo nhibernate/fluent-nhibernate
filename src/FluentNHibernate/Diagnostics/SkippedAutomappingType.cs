@@ -2,7 +2,7 @@
 
 namespace FluentNHibernate.Diagnostics;
 
-public class SkippedAutomappingType
+public class SkippedAutomappingType : IEquatable<SkippedAutomappingType>
 {
     public Type Type { get; set; }
     public string Reason { get; set; }
@@ -11,7 +11,7 @@ public class SkippedAutomappingType
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.Type, Type) && Equals(other.Reason, Reason);
+        return other.Type == Type && Equals(other.Reason, Reason);
     }
 
     public override bool Equals(object obj)
@@ -26,7 +26,7 @@ public class SkippedAutomappingType
     {
         unchecked
         {
-            return ((Type != null ? Type.GetHashCode() : 0) * 397) ^ (Reason != null ? Reason.GetHashCode() : 0);
+            return ((Type is not null ? Type.GetHashCode() : 0) * 397) ^ (Reason is not null ? Reason.GetHashCode() : 0);
         }
     }
 }

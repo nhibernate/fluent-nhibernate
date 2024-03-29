@@ -7,21 +7,10 @@ namespace FluentNHibernate.Mapping;
 /// Access strategy mapping builder.
 /// </summary>
 /// <typeparam name="T">Mapping part to be applied to</typeparam>
-public class AccessStrategyBuilder<T> : AccessStrategyBuilder
+/// <param name="parent">Instance of the parent mapping part.</param>
+/// <param name="setter">Setter for altering the model</param>
+public class AccessStrategyBuilder<T>(T parent, Action<string> setter) : AccessStrategyBuilder(setter)
 {
-    private readonly T parent;
-
-    /// <summary>
-    /// Access strategy mapping builder.
-    /// </summary>
-    /// <param name="parent">Instance of the parent mapping part.</param>
-    /// <param name="setter">Setter for altering the model</param>
-    public AccessStrategyBuilder(T parent, Action<string> setter)
-        : base(setter)
-    {
-        this.parent = parent;
-    }
-
     /// <summary>
     /// Sets the access-strategy to property.
     /// </summary>

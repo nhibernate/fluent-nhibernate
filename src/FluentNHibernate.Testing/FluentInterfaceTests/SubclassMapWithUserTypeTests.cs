@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
@@ -58,14 +57,14 @@ public class MediaMap : ClassMap<Media>
 
 public class Image : Media
 {
-    private IList<string> contexts = new List<string>();
+    IList<string> contexts = new List<string>();
 
     public virtual string Title { get; set; }
     public virtual string Description { get; set; }
     public virtual int Width { get; set; }
     public virtual int Height { get; set; }
 
-    public virtual IList<string> Contexts { get { return contexts; } }
+    public virtual IList<string> Contexts => contexts;
 }
 
 public class ImageMap : SubclassMap<Image>
@@ -114,7 +113,7 @@ public class ImageContextsUserType : IUserType
     {
         IList<string> contexts = value as IList<string>;
 
-        if (contexts != null)
+        if (contexts is not null)
         {
             NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Icon"), index, session);
             NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Promo"), index + 1, session);
@@ -143,14 +142,9 @@ public class ImageContextsUserType : IUserType
         throw new NotImplementedException();
     }
 
-    public Type ReturnedType
-    {
-        get { return typeof(IList<string>); }
-    }
-    public bool IsMutable
-    {
-        get { throw new NotImplementedException(); }
-    }
+    public Type ReturnedType => typeof(IList<string>);
+
+    public bool IsMutable => throw new NotImplementedException();
 
     public SqlType[] SqlTypes
     {

@@ -1,43 +1,21 @@
 using System;
-using System.Reflection;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class CacheInspector : ICacheInspector
+public class CacheInspector(CacheMapping mapping) : ICacheInspector
 {
-    private readonly InspectorModelMapper<ICacheInspector, CacheMapping> propertyMappings = new InspectorModelMapper<ICacheInspector, CacheMapping>();
-    private readonly CacheMapping mapping;
+    readonly InspectorModelMapper<ICacheInspector, CacheMapping> propertyMappings = new InspectorModelMapper<ICacheInspector, CacheMapping>();
 
-    public CacheInspector(CacheMapping mapping)
-    {
-        this.mapping = mapping;
-    }
+    public string Usage => mapping.Usage;
 
-    public string Usage
-    {
-        get { return mapping.Usage; }
-    }
+    public string Region => mapping.Region;
 
-    public string Region
-    {
-        get { return mapping.Region; }
-    }
+    public Include Include => Include.FromString(mapping.Include);
 
-    public Include Include
-    {
-        get { return Include.FromString(mapping.Include); }
-    }
+    public Type EntityType => mapping.ContainedEntityType;
 
-    public Type EntityType
-    {
-        get { return mapping.ContainedEntityType; }
-    }
-
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Usage; }
-    }
+    public string StringIdentifierForModel => mapping.Usage;
 
     public bool IsSet(Member property)
     {

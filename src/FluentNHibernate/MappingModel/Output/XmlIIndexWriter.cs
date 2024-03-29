@@ -4,15 +4,10 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output;
 
-public class XmlIIndexWriter : NullMappingModelVisitor, IXmlWriter<IIndexMapping>
+public class XmlIIndexWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<IIndexMapping>
 {
-    private readonly IXmlWriterServiceLocator serviceLocator;
-    private XmlDocument document;
-
-    public XmlIIndexWriter(IXmlWriterServiceLocator serviceLocator)
-    {
-        this.serviceLocator = serviceLocator;
-    }
+    XmlDocument document;
 
     public XmlDocument Write(IIndexMapping mappingModel)
     {

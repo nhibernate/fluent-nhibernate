@@ -7,17 +7,10 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class DynamicComponentInstance : DynamicComponentInspector, IDynamicComponentInstance
+public class DynamicComponentInstance(ComponentMapping mapping)
+    : DynamicComponentInspector(mapping), IDynamicComponentInstance
 {
-    private readonly ComponentMapping mapping;
-    private bool nextBool;
-
-    public DynamicComponentInstance(ComponentMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-        nextBool = true;
-    }
+    bool nextBool = true;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public IDynamicComponentInstance Not
@@ -61,11 +54,11 @@ public class DynamicComponentInstance : DynamicComponentInspector, IDynamicCompo
 
     public new IEnumerable<IOneToOneInstance> OneToOnes
     {
-        get { return mapping.OneToOnes.Select(x => new OneToOneInstance(x)).Cast<IOneToOneInstance>(); }
+        get { return mapping.OneToOnes.Select(x => new OneToOneInstance(x)); }
     }
 
     public new IEnumerable<IPropertyInstance> Properties
     {
-        get { return mapping.Properties.Select(x => new PropertyInstance(x)).Cast<IPropertyInstance>(); }
+        get { return mapping.Properties.Select(x => new PropertyInstance(x)); }
     }    
 }

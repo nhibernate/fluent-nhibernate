@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FluentNHibernate.Testing.DomainModel.Access;
+﻿namespace FluentNHibernate.Testing.DomainModel.Access;
 
 class CompositeIdModel
 {
@@ -23,6 +18,6 @@ class CompositeIdModel
 
     public virtual bool Equals(CompositeIdModel other)
     {
-        return other != null && other.IdA == this.IdA && other.IdB == this.IdB;
+        return other is not null && other.IdA == this.IdA && other.IdB == this.IdB;
     }
 }

@@ -6,22 +6,15 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Identity;
 
 [Serializable]
-public class IdMapping : ColumnBasedMappingBase, IIdentityMapping
+public class IdMapping(AttributeStore underlyingStore) : ColumnBasedMappingBase(underlyingStore), IIdentityMapping, IEquatable<IdMapping>
 {
     public IdMapping()
         : this(new AttributeStore())
     {}
 
-    public IdMapping(AttributeStore underlyingStore)
-        : base(underlyingStore)
-    {}
-
     public Member Member { get; set; }
 
-    public GeneratorMapping Generator
-    {
-        get { return attributes.GetOrDefault<GeneratorMapping>("Generator"); }
-    }
+    public GeneratorMapping Generator => attributes.GetOrDefault<GeneratorMapping>("Generator");
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -30,29 +23,17 @@ public class IdMapping : ColumnBasedMappingBase, IIdentityMapping
         foreach (var column in Columns)
             visitor.Visit(column);
 
-        if (Generator != null)
+        if (Generator is not null)
             visitor.Visit(Generator);
     }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
-    public string UnsavedValue
-    {
-        get { return attributes.GetOrDefault<string>("UnsavedValue"); }
-    }
+    public string UnsavedValue => attributes.GetOrDefault<string>("UnsavedValue");
 
     public Type ContainingEntityType { get; set; }
 
@@ -70,7 +51,7 @@ public class IdMapping : ColumnBasedMappingBase, IIdentityMapping
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return base.Equals(other) && Equals(other.Member, Member) && Equals(other.ContainingEntityType, ContainingEntityType);
+        return base.Equals(other) && Equals(other.Member, Member) && other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -85,8 +66,8 @@ public class IdMapping : ColumnBasedMappingBase, IIdentityMapping
         unchecked
         {
             int result = base.GetHashCode();
-            result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            result = (result * 397) ^ (Member is not null ? Member.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

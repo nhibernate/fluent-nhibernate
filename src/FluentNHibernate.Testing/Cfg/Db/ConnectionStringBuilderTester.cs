@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using FluentNHibernate.Cfg.Db;
 using NUnit.Framework;
 
@@ -7,7 +6,7 @@ namespace FluentNHibernate.Testing.Cfg.Db;
 [TestFixture]
 public class ConnectionStringBuilderTester
 {
-    private ConnectionStringBuilderDouble builder;
+    ConnectionStringBuilderDouble builder;
 
     [SetUp]
     public void CreateBuilder()
@@ -40,11 +39,8 @@ public class ConnectionStringBuilderTester
     }
 #endif
 
-    private class ConnectionStringBuilderDouble : ConnectionStringBuilder
+    class ConnectionStringBuilderDouble : ConnectionStringBuilder
     {
-        public string ConnectionString
-        {
-            get { return Create(); }
-        }
+        public string ConnectionString => Create();
     }
 }

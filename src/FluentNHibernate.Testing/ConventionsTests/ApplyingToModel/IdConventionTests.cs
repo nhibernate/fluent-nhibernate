@@ -1,14 +1,11 @@
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using NHibernate.Engine;
 using NHibernate.Id;
@@ -19,7 +16,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class IdConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -165,12 +162,12 @@ public class IdConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IIdentityInstance> convention)
+    void Convention(Action<IIdentityInstance> convention)
     {
         model.Conventions.Add(new IdConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<IdMapping> modelVerification)
+    void VerifyModel(Action<IdMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleClass>();
         var map = classMap.Id(x => x.Id);
@@ -179,7 +176,7 @@ public class IdConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) is not null)
             .Classes.First()
             .Id;
 
@@ -188,7 +185,7 @@ public class IdConventionTests
 
     #endregion
 
-    private class CustomGenerator : IIdentifierGenerator
+    class CustomGenerator : IIdentifierGenerator
     {
         public object Generate(ISessionImplementor session, object obj)
         {

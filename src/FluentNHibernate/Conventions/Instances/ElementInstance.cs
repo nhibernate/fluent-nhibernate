@@ -6,20 +6,14 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class ElementInstance : ElementInspector, IElementInstance
+public class ElementInstance(ElementMapping mapping) : ElementInspector(mapping), IElementInstance
 {
-    private readonly ElementMapping mapping;
-
-    public ElementInstance(ElementMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly ElementMapping mapping = mapping;
 
     public void Column(string columnName)
     {
         var originalColumn = mapping.Columns.FirstOrDefault();
-        var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
+        var column = originalColumn is null ? new ColumnMapping() : originalColumn.Clone();
 
         column.Set(x => x.Name, Layer.Conventions, columnName);
 

@@ -1,14 +1,12 @@
-using System.Collections.Generic;
 using System.Xml;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
-using NHibernate.Type;
 
 namespace FluentNHibernate.MappingModel.Output;
 
 public class XmlFilterDefinitionWriter : NullMappingModelVisitor, IXmlWriter<FilterDefinitionMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(FilterDefinitionMapping mappingModel)
     {

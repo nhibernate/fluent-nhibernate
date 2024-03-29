@@ -6,14 +6,10 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class VersionMapping : ColumnBasedMappingBase
+public class VersionMapping(AttributeStore underlyingStore) : ColumnBasedMappingBase(underlyingStore)
 {
     public VersionMapping()
         : this(new AttributeStore())
-    {}
-
-    public VersionMapping(AttributeStore underlyingStore)
-        : base(underlyingStore)
     {}
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -23,30 +19,15 @@ public class VersionMapping : ColumnBasedMappingBase
         Columns.Each(visitor.Visit);
     }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
-    public string UnsavedValue
-    {
-        get { return attributes.GetOrDefault<string>("UnsavedValue"); }
-    }
+    public string UnsavedValue => attributes.GetOrDefault<string>("UnsavedValue");
 
-    public string Generated
-    {
-        get { return attributes.GetOrDefault<string>("Generated"); }
-    }
+    public string Generated => attributes.GetOrDefault<string>("Generated");
 
     public Type ContainingEntityType { get; set; }
 
@@ -54,7 +35,7 @@ public class VersionMapping : ColumnBasedMappingBase
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return base.Equals(other) && Equals(other.ContainingEntityType, ContainingEntityType);
+        return base.Equals(other) && other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -69,7 +50,7 @@ public class VersionMapping : ColumnBasedMappingBase
         unchecked
         {
             {
-                return (base.GetHashCode() * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+                return (base.GetHashCode() * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             }
         }
     }

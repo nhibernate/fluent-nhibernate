@@ -8,16 +8,9 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class CollectionStep : IAutomappingStep
+public class CollectionStep(IAutomappingConfiguration cfg) : IAutomappingStep
 {
-    readonly IAutomappingConfiguration cfg;
-    readonly AutoKeyMapper keys;
-
-    public CollectionStep(IAutomappingConfiguration cfg)
-    {
-        this.cfg = cfg;
-        keys = new AutoKeyMapper();
-    }
+    readonly AutoKeyMapper keys = new();
 
     public bool ShouldMap(Member member)
     {

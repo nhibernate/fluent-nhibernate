@@ -4,7 +4,6 @@ using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Testing.FluentInterfaceTests;
 using NUnit.Framework;
@@ -14,7 +13,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class JoinedSubclassConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -121,12 +120,12 @@ public class JoinedSubclassConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IJoinedSubclassInstance> convention)
+    void Convention(Action<IJoinedSubclassInstance> convention)
     {
         model.Conventions.Add(new JoinedSubclassConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<SubclassMapping> modelVerification)
+    void VerifyModel(Action<SubclassMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleClass>();
         classMap.Id(x => x.Id);
@@ -137,7 +136,7 @@ public class JoinedSubclassConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) is not null)
             .Classes.First()
             .Subclasses.First();
 

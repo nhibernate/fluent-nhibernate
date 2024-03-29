@@ -6,6 +6,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{83F176
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 		FluentKey.snk = FluentKey.snk
+		..\global.json = ..\global.json
+		..\appveyor.yml = ..\appveyor.yml
+		..\.editorconfig = ..\.editorconfig
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{3D285AE0-E5CF-4923-B543-0D70E5C6DE18}"

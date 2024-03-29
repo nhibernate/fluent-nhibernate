@@ -5,20 +5,12 @@ using FluentNHibernate.MappingModel.Collections;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public abstract class ColumnBasedMappingBase : MappingBase, IHasColumnMappings
+public abstract class ColumnBasedMappingBase(AttributeStore underlyingStore) : MappingBase, IHasColumnMappings
 {
     readonly LayeredColumns columns = new LayeredColumns();
-    protected readonly AttributeStore attributes;
+    protected readonly AttributeStore attributes = underlyingStore.Clone();
 
-    protected ColumnBasedMappingBase(AttributeStore underlyingStore)
-    {
-        attributes = underlyingStore.Clone();
-    }
-
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get { return columns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> Columns => columns.Columns;
 
     public void AddColumn(int layer, ColumnMapping mapping)
     {
@@ -50,7 +42,7 @@ public abstract class ColumnBasedMappingBase : MappingBase, IHasColumnMappings
     {
         unchecked
         {
-            return ((columns != null ? columns.GetHashCode() : 0) * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+            return ((columns is not null ? columns.GetHashCode() : 0) * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
         }
     }
 }

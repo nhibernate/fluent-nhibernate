@@ -7,26 +7,18 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Identity;
 
 [Serializable]
-public class GeneratorMapping : MappingBase
+public class GeneratorMapping : MappingBase, IEquatable<GeneratorMapping>
 {
     readonly AttributeStore attributes = new AttributeStore();
-
-    public GeneratorMapping()
-    {
-        Params = new Dictionary<string, string>();
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
         visitor.ProcessGenerator(this);
     }
 
-    public string Class
-    {
-        get { return attributes.GetOrDefault<string>("Class"); }
-    }
+    public string Class => attributes.GetOrDefault<string>("Class");
 
-    public IDictionary<string, string> Params { get; private set; }
+    public IDictionary<string, string> Params { get; } = new Dictionary<string, string>();
     public Type ContainingEntityType { get; set; }
 
     public bool Equals(GeneratorMapping other)
@@ -35,7 +27,7 @@ public class GeneratorMapping : MappingBase
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.Params.ContentEquals(Params) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -50,9 +42,9 @@ public class GeneratorMapping : MappingBase
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (Params != null ? Params.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (Params is not null ? Params.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

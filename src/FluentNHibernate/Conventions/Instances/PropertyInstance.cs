@@ -7,17 +7,11 @@ using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class PropertyInstance : PropertyInspector, IPropertyInstance
+public class PropertyInstance(PropertyMapping mapping) : PropertyInspector(mapping), IPropertyInstance
 {
-    private readonly PropertyMapping mapping;
-    private bool nextBool = true;
+    readonly PropertyMapping mapping = mapping;
+    bool nextBool = true;
     const int layer = Layer.Conventions;
-
-    public PropertyInstance(PropertyMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
 
     /// <inheritdoc />
     public new void Insert()
@@ -149,7 +143,7 @@ public class PropertyInstance : PropertyInspector, IPropertyInstance
     public void Column(string columnName)
     {
         var originalColumn = mapping.Columns.FirstOrDefault();
-        var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
+        var column = originalColumn is null ? new ColumnMapping() : originalColumn.Clone();
 
         column.Set(x => x.Name, layer, columnName);
 
@@ -198,7 +192,7 @@ public class PropertyInstance : PropertyInspector, IPropertyInstance
             column.Set(x => x.Check, layer, constraint);
     }
 
-    private void AddColumnsForCompositeUserType(string columnPrefix)
+    void AddColumnsForCompositeUserType(string columnPrefix)
     {
         var inst = (ICompositeUserType)Activator.CreateInstance(mapping.Type.GetUnderlyingSystemType());
 

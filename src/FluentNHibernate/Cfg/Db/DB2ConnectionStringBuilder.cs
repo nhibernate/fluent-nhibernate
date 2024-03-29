@@ -4,10 +4,10 @@ namespace FluentNHibernate.Cfg.Db;
 
 public class DB2ConnectionStringBuilder : ConnectionStringBuilder
 {
-    private string server;
-    private string database;
-    private string username;
-    private string password;
+    string server;
+    string database;
+    string username;
+    string password;
 
     public DB2ConnectionStringBuilder Server(string server)
     {

@@ -11,17 +11,9 @@ using NHibernate.Type;
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class PropertyStep : IAutomappingStep
+public class PropertyStep(IConventionFinder conventionFinder, IAutomappingConfiguration cfg)
+    : IAutomappingStep
 {
-    private readonly IConventionFinder conventionFinder;
-    private readonly IAutomappingConfiguration cfg;
-
-    public PropertyStep(IConventionFinder conventionFinder, IAutomappingConfiguration cfg)
-    {
-        this.conventionFinder = conventionFinder;
-        this.cfg = cfg;
-    }
-
     public bool ShouldMap(Member member)
     {
         if (HasExplicitTypeConvention(member))
@@ -30,7 +22,7 @@ public class PropertyStep : IAutomappingStep
         return IsMappableToColumnType(member);
     }
 
-    private bool HasExplicitTypeConvention(Member property)
+    bool HasExplicitTypeConvention(Member property)
     {
         // todo: clean this up!
         //        What it's doing is finding if there are any IUserType conventions
@@ -47,9 +39,8 @@ public class PropertyStep : IAutomappingStep
 
                 var criteria = new ConcreteAcceptanceCriteria<IPropertyInspector>();
                 var acceptance = c as IConventionAcceptance<IPropertyInspector>;
-                    
-                if (acceptance != null)
-                    acceptance.Accept(criteria);
+
+                acceptance?.Accept(criteria);
 
                 var propertyMapping = new PropertyMapping
                 {
@@ -59,10 +50,10 @@ public class PropertyStep : IAutomappingStep
                 return criteria.Matches(new PropertyInspector(propertyMapping));
             });
 
-        return conventions.FirstOrDefault() != null;
+        return conventions.FirstOrDefault() is not null;
     }
 
-    private static bool IsMappableToColumnType(Member property)
+    static bool IsMappableToColumnType(Member property)
     {
         return property.PropertyType.Namespace == "System"
                || property.PropertyType.FullName == "System.Drawing.Bitmap"
@@ -74,7 +65,7 @@ public class PropertyStep : IAutomappingStep
         classMap.AddProperty(GetPropertyMapping(classMap.Type, member));
     }
 
-    private PropertyMapping GetPropertyMapping(Type type, Member property)
+    PropertyMapping GetPropertyMapping(Type type, Member property)
     {
         var mapping = new PropertyMapping
         {
@@ -118,7 +109,7 @@ public class PropertyStep : IAutomappingStep
         if (property.PropertyType.IsEnum())
             type = new TypeReference(typeof(EnumStringType<>).MakeGenericType(property.PropertyType));
 
-        if (property.PropertyType.IsNullable() && property.PropertyType.IsEnum())
+        if (property.PropertyType.IsNullableType() && property.PropertyType.IsEnum())
             type = new TypeReference(typeof(EnumStringType<>).MakeGenericType(property.PropertyType.GetGenericArguments()[0]));
 
         return type;

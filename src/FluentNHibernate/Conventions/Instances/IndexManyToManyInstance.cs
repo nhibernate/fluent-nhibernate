@@ -5,15 +5,10 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class IndexManyToManyInstance :IndexManyToManyInspector, IIndexManyToManyInstance
+public class IndexManyToManyInstance(IndexManyToManyMapping mapping)
+    : IndexManyToManyInspector(mapping), IIndexManyToManyInstance
 {
-    private readonly IndexManyToManyMapping mapping;
-
-    public IndexManyToManyInstance(IndexManyToManyMapping mapping) 
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly IndexManyToManyMapping mapping = mapping;
 
     /// <summary>
     /// Adds a column to the index if columns have not yet been specified
@@ -22,7 +17,7 @@ public class IndexManyToManyInstance :IndexManyToManyInspector, IIndexManyToMany
     public void Column(string columnName)
     {
         var originalColumn = mapping.Columns.FirstOrDefault();
-        var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
+        var column = originalColumn is null ? new ColumnMapping() : originalColumn.Clone();
         column.Set(x => x.Name, Layer.Conventions, columnName);
 
         mapping.AddColumn(Layer.Conventions, column);

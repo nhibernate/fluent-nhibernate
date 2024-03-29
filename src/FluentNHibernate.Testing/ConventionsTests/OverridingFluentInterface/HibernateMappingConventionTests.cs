@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
@@ -14,9 +12,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
 [TestFixture]
 public class HibernateMappingConventionTests
 {
-    private PersistenceModel model;
-    private IMappingProvider mapping;
-    private Type mappingType;
+    PersistenceModel model;
+    IMappingProvider mapping;
+    Type mappingType;
 
     [SetUp]
     public void CreatePersistanceModel()
@@ -86,12 +84,12 @@ public class HibernateMappingConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IHibernateMappingInstance> convention)
+    void Convention(Action<IHibernateMappingInstance> convention)
     {
         model.Conventions.Add(new HibernateMappingConventionBuilder().Always(convention));
     }
 
-    private void Mapping(Action<HibernateMappingPart> mappingDefinition)
+    void Mapping(Action<HibernateMappingPart> mappingDefinition)
     {
         var classMap = new ClassMap<ExampleClass>();
         classMap.Id(x => x.Id);
@@ -102,13 +100,13 @@ public class HibernateMappingConventionTests
         mappingType = typeof(ExampleClass);
     }
 
-    private void VerifyModel(Action<HibernateMapping> modelVerification)
+    void VerifyModel(Action<HibernateMapping> modelVerification)
     {
         model.Add(mapping);
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) != null);
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) is not null);
 
         modelVerification(modelInstance);
     }

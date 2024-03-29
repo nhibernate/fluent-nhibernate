@@ -6,28 +6,17 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class FilterMapping : IMapping
+public class FilterMapping(AttributeStore attributes) : IMapping, IEquatable<FilterMapping>
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public FilterMapping()
         : this(new AttributeStore())
     { }
 
-    public FilterMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
-
-    public string Condition
-    {
-        get { return attributes.GetOrDefault<string>("Condition"); }
-    }
+    public string Condition => attributes.GetOrDefault<string>("Condition");
 
     public void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -56,7 +45,7 @@ public class FilterMapping : IMapping
 
     public override int GetHashCode()
     {
-        return (attributes != null ? attributes.GetHashCode() : 0);
+        return (attributes is not null ? attributes.GetHashCode() : 0);
     }
 
     public void Set<T>(Expression<Func<FilterMapping, T>> expression, int layer, T value)

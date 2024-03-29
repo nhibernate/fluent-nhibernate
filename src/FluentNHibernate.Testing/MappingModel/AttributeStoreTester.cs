@@ -6,17 +6,11 @@ namespace FluentNHibernate.Testing.MappingModel;
 [TestFixture]
 public class AttributeStoreTester
 {
-    private sealed class TestStore : AttributeStore
+    sealed class TestStore : AttributeStore
     {
-        public bool IsSomething
-        {
-            get { return this.GetOrDefault<bool>("IsSomething"); }
-        }
+        public bool IsSomething => this.GetOrDefault<bool>("IsSomething");
 
-        public string Name
-        {
-            get { return this.GetOrDefault<string>("Name"); }
-        }
+        public string Name => this.GetOrDefault<string>("Name");
     }
 
     [Test]

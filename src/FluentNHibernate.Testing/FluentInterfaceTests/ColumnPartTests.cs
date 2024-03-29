@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 
@@ -11,8 +7,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests;
 [TestFixture]
 public class ColumnPartTests
 {
-    private ColumnMapping mapping;
-    private ColumnPart columnPart;
+    ColumnMapping mapping;
+    ColumnPart columnPart;
 
     [SetUp]
     public void SetUp()

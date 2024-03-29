@@ -7,18 +7,12 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances;
 #pragma warning disable 612,618
-public class CollectionInstance : CollectionInspector, ICollectionInstance,
+public class CollectionInstance(CollectionMapping mapping) : CollectionInspector(mapping), ICollectionInstance,
     IArrayInstance, IBagInstance, IListInstance, IMapInstance, ISetInstance
 #pragma warning restore 612,618
 {
-    readonly CollectionMapping mapping;
+    readonly CollectionMapping mapping = mapping;
     protected bool nextBool = true;
-
-    public CollectionInstance(CollectionMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public new IRelationshipInstance Relationship
     {
@@ -93,7 +87,7 @@ public class CollectionInstance : CollectionInspector, ICollectionInstance,
     {
         get
         {
-            if (mapping.Index == null)
+            if (mapping.Index is null)
                 return new IndexInstance(new IndexMapping());
 
             if (mapping.Index is IndexMapping)
@@ -184,7 +178,7 @@ public class CollectionInstance : CollectionInspector, ICollectionInstance,
     void ICollectionInstance.AsList()
     {
         mapping.Collection = Collection.List;
-        if (mapping.Index == null)
+        if (mapping.Index is null)
         {
             var indexMapping = new IndexMapping();
             var columnMapping = new ColumnMapping();
@@ -218,7 +212,7 @@ public class CollectionInstance : CollectionInspector, ICollectionInstance,
     {
         get
         {
-            if (mapping.Cache == null)
+            if (mapping.Cache is null)
                 // conventions are hitting it, user must want a cache
                 mapping.Set(x => x.Cache, Layer.Conventions, new CacheMapping());
 
@@ -236,16 +230,13 @@ public class CollectionInstance : CollectionInspector, ICollectionInstance,
         get { return new AccessInstance(value => mapping.Set(x => x.Access, Layer.Conventions, value)); }
     }
 
-    public new IKeyInstance Key
-    {
-        get { return new KeyInstance(mapping.Key); }
-    }
+    public new IKeyInstance Key => new KeyInstance(mapping.Key);
 
     public new IElementInstance Element
     {
         get
         {
-            if (mapping.Element == null)
+            if (mapping.Element is null)
                 mapping.Set(x => x.Element, Layer.Conventions, new ElementMapping());
                 
             return new ElementInstance(mapping.Element);

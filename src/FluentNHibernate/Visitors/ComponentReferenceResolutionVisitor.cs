@@ -29,24 +29,15 @@ public class ComponentMapComponentReferenceResolver : IComponentReferenceResolve
 
         var provider = providers.SingleOrDefault();
 
-        if (provider == null)
-            return null;
-
-        return provider.GetComponentMapping();
+        return provider?.GetComponentMapping();
     }
 }
 
-public class ComponentReferenceResolutionVisitor : DefaultMappingModelVisitor
+public class ComponentReferenceResolutionVisitor(
+    IEnumerable<IComponentReferenceResolver> resolvers,
+    IEnumerable<IExternalComponentMappingProvider> componentProviders)
+    : DefaultMappingModelVisitor
 {
-    readonly IEnumerable<IComponentReferenceResolver> resolvers;
-    readonly IEnumerable<IExternalComponentMappingProvider> componentProviders;
-
-    public ComponentReferenceResolutionVisitor(IEnumerable<IComponentReferenceResolver> resolvers, IEnumerable<IExternalComponentMappingProvider> componentProviders)
-    {
-        this.resolvers = resolvers;
-        this.componentProviders = componentProviders;
-    }
-
     public override void ProcessComponent(ReferenceComponentMapping mapping)
     {
         var context = new ComponentResolutionContext
@@ -57,9 +48,9 @@ public class ComponentReferenceResolutionVisitor : DefaultMappingModelVisitor
         };
         var component = resolvers
             .Select(x => x.Resolve(context, componentProviders))
-            .FirstOrDefault(x => x != null);
+            .FirstOrDefault(x => x is not null);
 
-        if (component == null)
+        if (component is null)
             throw new MissingExternalComponentException(mapping.Type, mapping.ContainingEntityType, mapping.Member);
 
         mapping.AssociateExternalMapping(component);

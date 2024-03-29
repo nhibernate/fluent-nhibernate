@@ -4,33 +4,22 @@ using System;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class ImportMapping : MappingBase
+public class ImportMapping(AttributeStore attributes) : MappingBase, IEquatable<ImportMapping>
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public ImportMapping()
         : this(new AttributeStore())
     {}
-
-    public ImportMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
         visitor.ProcessImport(this);
     }
 
-    public string Rename
-    {
-        get { return attributes.GetOrDefault<string>("Rename"); }
-    }
+    public string Rename => attributes.GetOrDefault<string>("Rename");
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
     public bool Equals(ImportMapping other)
     {
@@ -49,7 +38,7 @@ public class ImportMapping : MappingBase
 
     public override int GetHashCode()
     {
-        return (attributes != null ? attributes.GetHashCode() : 0);
+        return (attributes is not null ? attributes.GetHashCode() : 0);
     }
 
     public override bool IsSpecified(string attribute)

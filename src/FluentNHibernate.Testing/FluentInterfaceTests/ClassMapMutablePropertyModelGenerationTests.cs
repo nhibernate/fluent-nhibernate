@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
-using FluentNHibernate.Testing.DomainModel.Mapping;
+﻿using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests;

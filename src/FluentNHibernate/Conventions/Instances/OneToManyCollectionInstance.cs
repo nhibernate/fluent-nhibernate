@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class OneToManyCollectionInstance : CollectionInstance, IOneToManyCollectionInstance
 {
-    private readonly CollectionMapping mapping;
+    readonly CollectionMapping mapping;
 
     public OneToManyCollectionInstance(CollectionMapping mapping)
         : base(mapping)
@@ -16,22 +16,16 @@ public class OneToManyCollectionInstance : CollectionInstance, IOneToManyCollect
         this.mapping = mapping;
     }
 
-    IOneToManyInspector IOneToManyCollectionInspector.Relationship
-    {
-        get { return Relationship; }
-    }
+    IOneToManyInspector IOneToManyCollectionInspector.Relationship => Relationship;
 
-    IManyToOneInspector IOneToManyCollectionInspector.OtherSide
-    {
-        get { return OtherSide; }
-    }
+    IManyToOneInspector IOneToManyCollectionInspector.OtherSide => OtherSide;
 
     public IManyToOneInstance OtherSide
     {
         get
         {
             var otherSide = mapping.OtherSide as ManyToOneMapping;
-            if (otherSide == null)
+            if (otherSide is null)
                 return null;
 
             return new ManyToOneInstance(otherSide);
@@ -48,8 +42,5 @@ public class OneToManyCollectionInstance : CollectionInstance, IOneToManyCollect
         }
     }
 
-    public new IOneToManyInstance Relationship
-    {
-        get { return new OneToManyInstance((OneToManyMapping)mapping.Relationship); }
-    }
+    public new IOneToManyInstance Relationship => new OneToManyInstance((OneToManyMapping)mapping.Relationship);
 }

@@ -4,10 +4,10 @@ namespace FluentNHibernate.Cfg.Db;
 
 public class SybaseSQLAnywhereConnectionStringBuilder : ConnectionStringBuilder
 {
-    private string server;
-    private string links;
-    private string username;
-    private string password; 
+    string server;
+    string links;
+    string username;
+    string password; 
 
     public SybaseSQLAnywhereConnectionStringBuilder Server(string server)
     {

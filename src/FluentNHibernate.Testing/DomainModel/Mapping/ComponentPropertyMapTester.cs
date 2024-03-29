@@ -55,7 +55,7 @@ public class ComponentPropertyMapTester
             .Element("//property/column").HasAttribute("name", "column_name");
     }
 
-    private MappingTester<T> Model<T>(Action<ClassMap<T>> mapping)
+    MappingTester<T> Model<T>(Action<ClassMap<T>> mapping)
     {
         return new MappingTester<T>()
             .ForMapping(mapping);
@@ -257,20 +257,11 @@ public class ComponentPropertyMapTester
             throw new NotImplementedException();
         }
 
-        public SqlType[] SqlTypes
-        {
-            get { return null; }
-        }
+        public SqlType[] SqlTypes => null;
 
-        public Type ReturnedType
-        {
-            get { return null; }
-        }
+        public Type ReturnedType => null;
 
-        public bool IsMutable
-        {
-            get { return false; }
-        }
+        public bool IsMutable => false;
     }
     #endregion
 }

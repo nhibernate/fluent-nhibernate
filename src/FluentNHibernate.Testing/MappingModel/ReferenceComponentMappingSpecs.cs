@@ -38,10 +38,12 @@ public class when_a_reference_component_hasnt_been_associated_yet : Specificatio
         referenceComponentMapping.Member.ShouldEqual(memberProperty);
     }
 
-    private Member memberProperty;
-    private ReferenceComponentMapping referenceComponentMapping;
-    private class Target {}
-    private class ComponentTarget {}
+    Member memberProperty;
+    ReferenceComponentMapping referenceComponentMapping;
+
+    class Target {}
+
+    class ComponentTarget {}
 }
 
 [TestFixture]
@@ -119,13 +121,14 @@ public class when_a_reference_component_is_associated_to_a_external_component : 
         referenceComponentMapping.References.ItemsShouldBeEqual(externalComponentMapping.References);
     }
 
-    private ReferenceComponentMapping referenceComponentMapping;
-    private ExternalComponentMapping externalComponentMapping;
-    private Member memberProperty;
-    private ParentMapping parentMapping;
+    ReferenceComponentMapping referenceComponentMapping;
+    ExternalComponentMapping externalComponentMapping;
+    Member memberProperty;
+    ParentMapping parentMapping;
 
-    private class ComponentTarget { }
-    private class Target
+    class ComponentTarget { }
+
+    class Target
     {
         public ComponentTarget Component { get; set; }
     }

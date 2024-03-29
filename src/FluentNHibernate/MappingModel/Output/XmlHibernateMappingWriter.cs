@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Xml;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Output.Sorting;
 using FluentNHibernate.Utils;
@@ -9,15 +6,10 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output;
 
-public class XmlHibernateMappingWriter : NullMappingModelVisitor, IXmlWriter<HibernateMapping>
+public class XmlHibernateMappingWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<HibernateMapping>
 {
-    private readonly IXmlWriterServiceLocator serviceLocator;
-    private XmlDocument document;
-
-    public XmlHibernateMappingWriter(IXmlWriterServiceLocator serviceLocator)
-    {
-        this.serviceLocator = serviceLocator;
-    }
+    XmlDocument document;
 
     public XmlDocument Write(HibernateMapping mapping)
     {

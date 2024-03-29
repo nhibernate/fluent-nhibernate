@@ -7,7 +7,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Identity;
 
 [Serializable]
-public class KeyManyToOneMapping : MappingBase, ICompositeIdKeyMapping
+public class KeyManyToOneMapping : MappingBase, ICompositeIdKeyMapping, IEquatable<KeyManyToOneMapping>
 {
     readonly AttributeStore attributes = new AttributeStore();
     readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
@@ -20,48 +20,21 @@ public class KeyManyToOneMapping : MappingBase, ICompositeIdKeyMapping
             visitor.Visit(column);
     }
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public string ForeignKey
-    {
-        get { return attributes.GetOrDefault<string>("ForeignKey"); }
-    }
+    public string ForeignKey => attributes.GetOrDefault<string>("ForeignKey");
 
-    public bool Lazy
-    {
-        get { return attributes.GetOrDefault<bool>("Lazy"); }
-    }
+    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
 
-    public string NotFound
-    {
-        get { return attributes.GetOrDefault<string>("NotFound"); }
-    }
+    public string NotFound => attributes.GetOrDefault<string>("NotFound");
 
-    public string EntityName
-    {
-        get { return attributes.GetOrDefault<string>("EntityName"); }
-    }
+    public string EntityName => attributes.GetOrDefault<string>("EntityName");
 
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get
-        {
-            return columns;
-        }
-    }
+    public IEnumerable<ColumnMapping> Columns => columns;
 
     public Type ContainingEntityType { get; set; }
 
@@ -76,7 +49,7 @@ public class KeyManyToOneMapping : MappingBase, ICompositeIdKeyMapping
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.columns.ContentEquals(columns) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -91,9 +64,9 @@ public class KeyManyToOneMapping : MappingBase, ICompositeIdKeyMapping
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (columns != null ? columns.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (columns is not null ? columns.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

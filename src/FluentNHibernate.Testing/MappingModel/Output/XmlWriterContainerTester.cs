@@ -7,7 +7,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlWriterContainerTester
 {
-    private XmlWriterContainer container;
+    XmlWriterContainer container;
 
     [SetUp]
     public void CreateContainer()

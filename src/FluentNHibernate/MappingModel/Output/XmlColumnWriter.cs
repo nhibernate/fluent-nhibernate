@@ -6,7 +6,7 @@ namespace FluentNHibernate.MappingModel.Output;
 
 public class XmlColumnWriter : NullMappingModelVisitor, IXmlWriter<ColumnMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(ColumnMapping mappingModel)
     {

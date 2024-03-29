@@ -7,21 +7,15 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class IdentityInstance : IdentityInspector, IIdentityInstance
+public class IdentityInstance(IdMapping mapping) : IdentityInspector(mapping), IIdentityInstance
 {
-    private readonly IdMapping mapping;
-    private bool nextBool = true;
-
-    public IdentityInstance(IdMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly IdMapping mapping = mapping;
+    bool nextBool = true;
 
     public void Column(string columnName)
     {
         var originalColumn = mapping.Columns.FirstOrDefault();
-        var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
+        var column = originalColumn is null ? new ColumnMapping() : originalColumn.Clone();
 
         column.Set(x => x.Name, Layer.Conventions, columnName);
 

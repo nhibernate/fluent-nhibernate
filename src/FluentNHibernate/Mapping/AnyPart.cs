@@ -18,8 +18,6 @@ public class AnyPart<T> : IAnyMappingProvider
     private readonly AttributeStore attributes = new AttributeStore();
     private readonly Type entity;
     private readonly Member member;
-    private readonly AccessStrategyBuilder<AnyPart<T>> access;
-    private readonly CascadeExpression<AnyPart<T>> cascade;
     private readonly IList<string> typeColumns = new List<string>();
     private readonly IList<string> identifierColumns = new List<string>();
     private readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
@@ -30,11 +28,11 @@ public class AnyPart<T> : IAnyMappingProvider
     {
         this.entity = entity;
         this.member = member;
-        access = new AccessStrategyBuilder<AnyPart<T>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
-        cascade = new CascadeExpression<AnyPart<T>>(this, value =>
+        Access = new AccessStrategyBuilder<AnyPart<T>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+        Cascade = new CascadeExpression<AnyPart<T>>(this, value =>
         {
             var current = attributes.Get("Cascade") as string;
-            attributes.Set("Cascade", Layer.UserSupplied, current == null ? value : string.Format("{0},{1}", current, value));
+            attributes.Set("Cascade", Layer.UserSupplied, current is null ? value : string.Format("{0},{1}", current, value));
         });
 
         SetDefaultAccess();
@@ -53,18 +51,12 @@ public class AnyPart<T> : IAnyMappingProvider
     /// <summary>
     /// Defines how NHibernate will access the object for persisting/hydrating (Defaults to Property)
     /// </summary>
-    public AccessStrategyBuilder<AnyPart<T>> Access
-    {
-        get { return access; }
-    }
+    public AccessStrategyBuilder<AnyPart<T>> Access { get; }
 
     /// <summary>
     /// Cascade style (Defaults to none)
     /// </summary>
-    public CascadeExpression<AnyPart<T>> Cascade
-    {
-        get { return cascade; }
-    }
+    public CascadeExpression<AnyPart<T>> Cascade { get; }
 
     public AnyPart<T> IdentityType(Expression<Func<T, object>> expression)
     {

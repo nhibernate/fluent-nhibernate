@@ -8,16 +8,9 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class SimpleTypeCollectionStep : IAutomappingStep
+public class SimpleTypeCollectionStep(IAutomappingConfiguration cfg) : IAutomappingStep
 {
-    readonly IAutomappingConfiguration cfg;
-    readonly AutoKeyMapper keys;
-
-    public SimpleTypeCollectionStep(IAutomappingConfiguration cfg)
-    {
-        this.cfg = cfg;
-        keys = new AutoKeyMapper();
-    }
+    readonly AutoKeyMapper keys = new();
 
     public bool ShouldMap(Member member)
     {
@@ -66,7 +59,7 @@ public class SimpleTypeCollectionStep : IAutomappingStep
             mapping.Set(x => x.Access, Layer.Defaults, cfg.GetAccessStrategyForReadOnlyProperty(member).ToString());
     }
 
-    private void SetElement(Member property, ClassMappingBase classMap, CollectionMapping mapping)
+    void SetElement(Member property, ClassMappingBase classMap, CollectionMapping mapping)
     {
         var element = new ElementMapping
         {

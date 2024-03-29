@@ -1,5 +1,4 @@
-﻿using System;
-using FluentNHibernate.Conventions.AcceptanceCriteria;
+﻿using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
 
 namespace FluentNHibernate.Conventions.Helpers;

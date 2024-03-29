@@ -1,19 +1,12 @@
-using System.Reflection;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class DynamicComponentInspector : ComponentBaseInspector, IDynamicComponentInspector
+public class DynamicComponentInspector(IComponentMapping mapping)
+    : ComponentBaseInspector(mapping), IDynamicComponentInspector
 {
-    private readonly InspectorModelMapper<IDynamicComponentInspector, ComponentMapping> mappedProperties = new InspectorModelMapper<IDynamicComponentInspector, ComponentMapping>();
-    private readonly IComponentMapping mapping;
-
-    public DynamicComponentInspector(IComponentMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly InspectorModelMapper<IDynamicComponentInspector, ComponentMapping> mappedProperties = new InspectorModelMapper<IDynamicComponentInspector, ComponentMapping>();
+    readonly IComponentMapping mapping = mapping;
 
     public override bool IsSet(Member property)
     {

@@ -5,20 +5,14 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class KeyInstance : KeyInspector, IKeyInstance
+public class KeyInstance(KeyMapping mapping) : KeyInspector(mapping), IKeyInstance
 {
-    private readonly KeyMapping mapping;
-
-    public KeyInstance(KeyMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly KeyMapping mapping = mapping;
 
     public void Column(string columnName)
     {
         var originalColumn = mapping.Columns.FirstOrDefault();
-        var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
+        var column = originalColumn is null ? new ColumnMapping() : originalColumn.Clone();
 
         column.Set(x => x.Name, Layer.Conventions, columnName);
 
@@ -40,8 +34,7 @@ public class KeyInstance : KeyInspector, IKeyInstance
         get
         {
             return mapping.Columns
-                .Select(x => new ColumnInstance(mapping.ContainingEntityType, x))
-                .Cast<IColumnInstance>();
+                .Select(x => new ColumnInstance(mapping.ContainingEntityType, x));
         }
     }
 

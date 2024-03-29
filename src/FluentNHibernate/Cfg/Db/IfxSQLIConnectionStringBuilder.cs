@@ -2,19 +2,19 @@ namespace FluentNHibernate.Cfg.Db;
 
 public class IfxSQLIConnectionStringBuilder : ConnectionStringBuilder
 {
-    private string clientLocale = "";
-    private string database = "";
-    private string databaseLocale = "";
-    private bool delimident = true;
-    private string host = "";
-    private string maxPoolSize = "";
-    private string minPoolSize = "";
-    private string password = "";
-    private string pooling = "";
-    private string server = "";
-    private string service = "";
-    private string username = "";
-    private string otherOptions = "";
+    string clientLocale = "";
+    string database = "";
+    string databaseLocale = "";
+    bool delimident = true;
+    string host = "";
+    string maxPoolSize = "";
+    string minPoolSize = "";
+    string password = "";
+    string pooling = "";
+    string server = "";
+    string service = "";
+    string username = "";
+    string otherOptions = "";
 
     /// <summary>
     /// Client locale, default value is en_us.CP1252 (Windows)

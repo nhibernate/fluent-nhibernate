@@ -1,12 +1,10 @@
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.MappingModel.Identity;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
@@ -14,7 +12,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class ManyToOneConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -172,12 +170,12 @@ public class ManyToOneConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IManyToOneInstance> convention)
+    void Convention(Action<IManyToOneInstance> convention)
     {
         model.Conventions.Add(new ReferenceConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<ManyToOneMapping> modelVerification)
+    void VerifyModel(Action<ManyToOneMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleClass>();
         classMap.Id(x => x.Id);
@@ -187,7 +185,7 @@ public class ManyToOneConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) is not null)
             .Classes.First()
             .References.First();
 

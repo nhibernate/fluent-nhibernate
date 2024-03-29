@@ -5,25 +5,18 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public abstract class ColumnBasedInspector
+public abstract class ColumnBasedInspector(IEnumerable<ColumnMapping> columns)
 {
-    private readonly IEnumerable<ColumnMapping> columns;
-
-    protected ColumnBasedInspector(IEnumerable<ColumnMapping> columns)
-    {
-        this.columns = columns;
-    }
-
     /// <summary>
     /// Gets the requested value off the first column, as all columns are (currently) created equal
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    private T GetValueFromColumns<T>(Func<ColumnMapping, object> property)
+    T GetValueFromColumns<T>(Func<ColumnMapping, object> property)
     {
         var column = columns.FirstOrDefault();
 
-        if (column != null)
+        if (column is not null)
             return (T)property(column);
 
         return default(T);

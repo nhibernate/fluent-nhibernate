@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
 using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
@@ -22,7 +21,7 @@ public class InverseOneToManyTester
         _source.BuildSchema();
     }
 
-    private ISessionSource _source;
+    ISessionSource _source;
 
     [Test]
     public void Should_handle_inverse_collections()

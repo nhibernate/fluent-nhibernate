@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing.Automapping.Apm;
 [TestFixture]
 public class AlterationCollectionTests
 {
-    private AutoMappingAlterationCollection alterations;
+    AutoMappingAlterationCollection alterations;
 
     [SetUp]
     public void CreateAlterationsContainer()

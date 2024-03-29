@@ -6,35 +6,31 @@ using NHibernate.Type;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class TypeReference
+public class TypeReference: IEquatable<TypeReference>
 {
     public static readonly TypeReference Empty = new TypeReference("nop");
 
-    private readonly Type innerType;
-    private readonly string innerName;
+    readonly Type innerType;
 
     public TypeReference(string name)
     {
         innerType = Type.GetType(name, false, true);
-        innerName = name;
+        Name = name;
     }
 
     public TypeReference(Type type)
     {
         innerType = type;
-        innerName = type.Name;
+        Name = type.Name;
     }
 
-    public string Name
-    {
-        get { return innerName; }
-    }
+    public string Name { get; }
 
     public bool IsEnum
     {
         get
         {
-            if (innerType == null)
+            if (innerType is null)
                 return false;
 
             if (innerType.IsGenericType)
@@ -60,7 +56,7 @@ public class TypeReference
     {
         get
         {
-            if (innerType == null)
+            if (innerType is null)
                 return false;
 
             return innerType.IsGenericType;
@@ -71,7 +67,7 @@ public class TypeReference
     {
         get
         {
-            if (innerType == null)
+            if (innerType is null)
                 return false;
 
             return innerType.IsGenericTypeDefinition;
@@ -80,47 +76,35 @@ public class TypeReference
 
     public Type GetGenericTypeDefinition()
     {
-        if (innerType == null)
-            return null;
-
-        return innerType.GetGenericTypeDefinition();
+        return innerType?.GetGenericTypeDefinition();
     }
 
-    public Type GenericTypeDefinition
-    {
-        get { return GetGenericTypeDefinition(); }
-    }
+    public Type GenericTypeDefinition => GetGenericTypeDefinition();
 
-    public bool IsNullable
-    {
-        get { return GenericTypeDefinition == typeof(Nullable<>); }
-    }
+    public bool IsNullable => GenericTypeDefinition == typeof(Nullable<>);
 
     public Type[] GetGenericArguments()
     {
-        if (innerType == null)
+        if (innerType is null)
             return Array.Empty<Type>();
 
         return innerType.GetGenericArguments();
     }
 
-    public IEnumerable<Type> GenericArguments
-    {
-        get { return GetGenericArguments(); }
-    }
+    public IEnumerable<Type> GenericArguments => GetGenericArguments();
 
     public override string ToString()
     {
-        return innerType == null ? innerName : innerType.AssemblyQualifiedName;
+        return innerType is null ? Name : innerType.AssemblyQualifiedName;
     }
 
     public bool Equals(TypeReference other)
     {
         if(ReferenceEquals(other, null))
             return false;
-        if (other.innerType == null && innerType == null)
-            return other.innerName.Equals(innerName);                        
-        if (other.innerType != null)
+        if (other.innerType is null && innerType is null)
+            return other.Name.Equals(Name);                        
+        if (other.innerType is not null)
             return other.innerType.Equals(innerType);
 
         return false;
@@ -137,12 +121,12 @@ public class TypeReference
     {
         if (ReferenceEquals(other, null))
             return false;
-        return other.Equals(innerName);
+        return other.Equals(Name);
     }
 
     public override bool Equals(object obj)
     {
-        if(obj == null)
+        if(obj is null)
             return false;
         if (obj.GetType() == typeof(TypeReference))
             return Equals((TypeReference)obj);
@@ -158,7 +142,7 @@ public class TypeReference
     {
         unchecked
         {
-            return ((innerType != null ? innerType.GetHashCode() : 0) * 397) ^ (innerName != null ? innerName.GetHashCode() : 0);
+            return ((innerType is not null ? innerType.GetHashCode() : 0) * 397) ^ (Name is not null ? Name.GetHashCode() : 0);
         }
     }
 
@@ -169,9 +153,9 @@ public class TypeReference
 
     public static bool operator ==(TypeReference original, Type type)
     {
-        if (type == null)
+        if (type is null)
             return false;
-        if (original == (Type)null || original.innerType == null)
+        if (original == (Type)null || original.innerType is null)
             return false;
 
         return original.innerType == type;

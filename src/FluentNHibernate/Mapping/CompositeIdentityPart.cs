@@ -14,7 +14,6 @@ namespace FluentNHibernate.Mapping;
 public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
 {
     readonly Action<Member> onMemberMapped;
-    readonly AccessStrategyBuilder<CompositeIdentityPart<T>> access;
     readonly AttributeStore attributes = new AttributeStore();
     readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
     bool nextBool = true;
@@ -22,7 +21,7 @@ public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
     public CompositeIdentityPart(Action<Member> onMemberMapped)
     {
         this.onMemberMapped = onMemberMapped;
-        access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+        Access = new AccessStrategyBuilder<CompositeIdentityPart<T>>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
     }
 
     public CompositeIdentityPart(string name, Action<Member> onMemberMapped)
@@ -84,7 +83,7 @@ public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
         key.Set(x => x.Name, Layer.Defaults, member.Name);
         key.Set(x => x.Type, Layer.Defaults, new TypeReference(type));
 
-        if (customMapping != null)
+        if (customMapping is not null)
         {
             var part = new KeyPropertyPart(key);
             customMapping(part);
@@ -162,8 +161,7 @@ public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
 
         var keyPart = new KeyManyToOnePart(key);
 
-        if (customMapping != null)
-            customMapping(keyPart);
+        customMapping?.Invoke(keyPart);
 
         keys.Add(key);            
 
@@ -173,20 +171,14 @@ public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
     public virtual CompositeIdentityPart<T> CustomType<CType>()
     {
         var key = keys.Where(x => x is KeyPropertyMapping).Cast<KeyPropertyMapping>().LastOrDefault();
-        if (key != null)
-        {
-            key.Set(x => x.Type, Layer.Defaults, new TypeReference(typeof(CType)));
-        }
+        key?.Set(x => x.Type, Layer.Defaults, new TypeReference(typeof(CType)));
         return this;
     }
 
     /// <summary>
     /// Set the access and naming strategy for this identity.
     /// </summary>
-    public AccessStrategyBuilder<CompositeIdentityPart<T>> Access
-    {
-        get { return access; }
-    }
+    public AccessStrategyBuilder<CompositeIdentityPart<T>> Access { get; }
 
     /// <summary>
     /// Invert the next boolean operation

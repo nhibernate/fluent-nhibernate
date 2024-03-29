@@ -7,19 +7,14 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Identity;
 
 [Serializable]
-public class CompositeIdMapping : MappingBase, IIdentityMapping
+public class CompositeIdMapping(AttributeStore attributes) : MappingBase, IIdentityMapping, IEquatable<CompositeIdMapping>
 {
-    private readonly AttributeStore attributes;
-    private readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
+    readonly AttributeStore attributes = attributes;
+    readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
 
     public CompositeIdMapping()
         : this(new AttributeStore())
     {}
-
-    public CompositeIdMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -34,35 +29,17 @@ public class CompositeIdMapping : MappingBase, IIdentityMapping
         }
     }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public bool Mapped
-    {
-        get { return attributes.GetOrDefault<bool>("Mapped") || !string.IsNullOrEmpty(Name); }
-    }
+    public bool Mapped => attributes.GetOrDefault<bool>("Mapped") || !string.IsNullOrEmpty(Name);
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public string UnsavedValue
-    {
-        get { return attributes.GetOrDefault<string>("UnsavedValue"); }
-    }
+    public string UnsavedValue => attributes.GetOrDefault<string>("UnsavedValue");
 
-    public IEnumerable<ICompositeIdKeyMapping> Keys
-    {
-        get { return keys; }
-    }
+    public IEnumerable<ICompositeIdKeyMapping> Keys => keys;
 
     public Type ContainingEntityType { get; set; }
 
@@ -77,7 +54,7 @@ public class CompositeIdMapping : MappingBase, IIdentityMapping
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.keys.ContentEquals(keys) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -92,9 +69,9 @@ public class CompositeIdMapping : MappingBase, IIdentityMapping
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (keys != null ? keys.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (keys is not null ? keys.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

@@ -1,14 +1,16 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class OnDelete
+public class OnDelete : IEquatable<OnDelete>
 {
     public static readonly OnDelete Unset = new OnDelete("");
     public static readonly OnDelete Cascade = new OnDelete("cascade");
     public static readonly OnDelete NoAction = new OnDelete("noaction");
 
-    private readonly string value;
+    readonly string value;
 
-    private OnDelete(string value)
+    OnDelete(string value)
     {
         this.value = value;
     }
@@ -27,7 +29,7 @@ public class OnDelete
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(OnDelete x, OnDelete y)

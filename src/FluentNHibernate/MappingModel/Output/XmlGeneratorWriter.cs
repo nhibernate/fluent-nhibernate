@@ -7,7 +7,7 @@ namespace FluentNHibernate.MappingModel.Output;
 
 public class XmlGeneratorWriter : NullMappingModelVisitor, IXmlWriter<GeneratorMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(GeneratorMapping mappingModel)
     {

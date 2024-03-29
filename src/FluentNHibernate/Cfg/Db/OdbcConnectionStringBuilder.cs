@@ -2,10 +2,10 @@ namespace FluentNHibernate.Cfg.Db;
 
 public class OdbcConnectionStringBuilder : ConnectionStringBuilder
 {
-    private string dsn = "";
-    private string username = "";
-    private string password = "";
-    private string otherOptions = "";
+    string dsn = "";
+    string username = "";
+    string password = "";
+    string otherOptions = "";
 
     public OdbcConnectionStringBuilder Dsn(string dsn)
     {

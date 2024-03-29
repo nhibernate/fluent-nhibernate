@@ -16,15 +16,11 @@ public class PersistenceSpecificationTester
         public long Id { get; set; }
         public string Name { get; set; }
         public Kitten FirstKitten { get; set; }
-        public IList<Kitten> AllKittens { get; set; }
+        public IList<Kitten> AllKittens { get; set; } = new List<Kitten>();
         public Bitmap Picture { get; set; }
 
-        public Cat()
-        {
-            AllKittens = new List<Kitten>();
-        }
+        public IEnumerable<Kitten> EnumerableOfKittens => AllKittens;
 
-        public IEnumerable<Kitten> EnumerableOfKittens { get { return AllKittens; } }
         public void AddKitten(Kitten kitten)
         {
             AllKittens.Add(kitten);
@@ -73,12 +69,12 @@ public class PersistenceSpecificationTester
         }
     }
 
-    private PersistenceSpecification<Cat> spec;
-    private ISession session;
-    private ITransaction transaction;
-    private Cat cat;
-    private Cat identicalCat;
-    private ISessionSource sessionSource;
+    PersistenceSpecification<Cat> spec;
+    ISession session;
+    ITransaction transaction;
+    Cat cat;
+    Cat identicalCat;
+    ISessionSource sessionSource;
 
     [SetUp]
     public void Setup()
@@ -176,8 +172,7 @@ public class PersistenceSpecificationTester
     [Test]
     public void VerifyTheMappings_returns_instance()
     {
-        var cat = spec.CheckProperty(x => x.FirstKitten, this.cat.FirstKitten).VerifyTheMappings();
-        cat.ShouldNotBeNull();
+        spec.CheckProperty(x => x.FirstKitten, this.cat.FirstKitten).VerifyTheMappings().ShouldNotBeNull();
     }
 
     [Test]
@@ -194,7 +189,7 @@ public class PersistenceSpecificationTester
 [TestFixture]
 public class PersistenceSpecificationConstructorTests
 {
-    private ISessionSource sessionSource;
+    ISessionSource sessionSource;
 
     [SetUp]
     public void Setup()
@@ -256,7 +251,7 @@ public class PersistenceSpecificationConstructorTests
 
     public class PrivateConstructorClass
     {
-        private PrivateConstructorClass() { }
+        PrivateConstructorClass() { }
     }
 
     public class NoParameterlessConstructorClass

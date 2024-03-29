@@ -2,17 +2,8 @@ using System;
 
 namespace FluentNHibernate.Mapping;
 
-public class FetchTypeExpression<TParent> 
+public class FetchTypeExpression<TParent>(TParent parent, Action<string> setter)
 {
-    private readonly TParent parent;
-    private readonly Action<string> setter;
-
-    public FetchTypeExpression(TParent parent, Action<string> setter)
-    {
-        this.parent = parent;
-        this.setter = setter;
-    }
-
     /// <summary>
     /// Join fetching
     /// </summary>

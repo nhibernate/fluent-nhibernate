@@ -8,23 +8,15 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class HibernateMapping : MappingBase
+public class HibernateMapping(AttributeStore attributes) : MappingBase, IEquatable<HibernateMapping>
 {
-    readonly IList<ClassMapping> classes;
-    readonly IList<FilterDefinitionMapping> filters;
-    readonly IList<ImportMapping> imports;
-    readonly AttributeStore attributes;
+    readonly IList<ClassMapping> classes = new List<ClassMapping>();
+    readonly IList<FilterDefinitionMapping> filters = new List<FilterDefinitionMapping>();
+    readonly IList<ImportMapping> imports = new List<ImportMapping>();
+    readonly AttributeStore attributes = attributes;
 
     public HibernateMapping(): this(new AttributeStore())
     {}
-
-    public HibernateMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-        classes = new List<ClassMapping>();
-        filters = new List<FilterDefinitionMapping>();
-        imports = new List<ImportMapping>();
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -40,20 +32,11 @@ public class HibernateMapping : MappingBase
             visitor.Visit(filterMapping);
     }
 
-    public IEnumerable<ClassMapping> Classes
-    {
-        get { return classes; }
-    }
+    public IEnumerable<ClassMapping> Classes => classes;
 
-    public IEnumerable<FilterDefinitionMapping> Filters
-    {
-        get { return filters; }
-    }
+    public IEnumerable<FilterDefinitionMapping> Filters => filters;
 
-    public IEnumerable<ImportMapping> Imports
-    {
-        get { return imports; }
-    }
+    public IEnumerable<ImportMapping> Imports => imports;
 
     public void AddClass(ClassMapping classMapping)
     {
@@ -70,45 +53,21 @@ public class HibernateMapping : MappingBase
         imports.Add(importMapping);
     }
 
-    public string Catalog
-    {
-        get { return attributes.GetOrDefault<string>("Catalog"); }
-    }
+    public string Catalog => attributes.GetOrDefault<string>("Catalog");
 
-    public string DefaultAccess
-    {
-        get { return attributes.GetOrDefault<string>("DefaultAccess"); }
-    }
+    public string DefaultAccess => attributes.GetOrDefault<string>("DefaultAccess");
 
-    public string DefaultCascade
-    {
-        get { return attributes.GetOrDefault<string>("DefaultCascade"); }
-    }
+    public string DefaultCascade => attributes.GetOrDefault<string>("DefaultCascade");
 
-    public bool AutoImport
-    {
-        get { return attributes.GetOrDefault<bool>("AutoImport"); }
-    }
+    public bool AutoImport => attributes.GetOrDefault<bool>("AutoImport");
 
-    public string Schema
-    {
-        get { return attributes.GetOrDefault<string>("Schema"); }
-    }
+    public string Schema => attributes.GetOrDefault<string>("Schema");
 
-    public bool DefaultLazy
-    {
-        get { return attributes.GetOrDefault<bool>("DefaultLazy"); }
-    }
+    public bool DefaultLazy => attributes.GetOrDefault<bool>("DefaultLazy");
 
-    public string Namespace
-    {
-        get { return attributes.GetOrDefault<string>("Namespace"); }
-    }
+    public string Namespace => attributes.GetOrDefault<string>("Namespace");
 
-    public string Assembly
-    {
-        get { return attributes.GetOrDefault<string>("Assembly"); }
-    }
+    public string Assembly => attributes.GetOrDefault<string>("Assembly");
 
     public bool Equals(HibernateMapping other)
     {
@@ -132,10 +91,10 @@ public class HibernateMapping : MappingBase
     {
         unchecked
         {
-            int result = (classes != null ? classes.GetHashCode() : 0);
-            result = (result * 397) ^ (filters != null ? filters.GetHashCode() : 0);
-            result = (result * 397) ^ (imports != null ? imports.GetHashCode() : 0);
-            result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+            int result = (classes is not null ? classes.GetHashCode() : 0);
+            result = (result * 397) ^ (filters is not null ? filters.GetHashCode() : 0);
+            result = (result * 397) ^ (imports is not null ? imports.GetHashCode() : 0);
+            result = (result * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
             return result;
         }
     }

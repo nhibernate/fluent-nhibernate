@@ -9,8 +9,5 @@ class ReadOnlyEnumerableEntity
 
     public int Id { get; set; }
     public IEnumerable<EntityChild> AutoPropertyCollection { get; private set; }
-    public IEnumerable<EntityChild> BackingFieldCollection
-    {
-        get { return backingFieldCollection; }
-    }
+    public IEnumerable<EntityChild> BackingFieldCollection => backingFieldCollection;
 }

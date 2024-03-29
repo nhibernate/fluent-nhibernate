@@ -4,15 +4,10 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output;
 
-public class XmlArrayWriter : BaseXmlCollectionWriter, IXmlWriter<CollectionMapping>
+public class XmlArrayWriter(IXmlWriterServiceLocator serviceLocator)
+    : BaseXmlCollectionWriter(serviceLocator), IXmlWriter<CollectionMapping>
 {
-    readonly IXmlWriterServiceLocator serviceLocator;
-
-    public XmlArrayWriter(IXmlWriterServiceLocator serviceLocator)
-        : base(serviceLocator)
-    {
-        this.serviceLocator = serviceLocator;
-    }
+    readonly IXmlWriterServiceLocator serviceLocator = serviceLocator;
 
     public XmlDocument Write(CollectionMapping mappingModel)
     {

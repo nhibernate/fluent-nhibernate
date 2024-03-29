@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
@@ -12,7 +8,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlNaturalIdWriterTester
 {
-    private IXmlWriter<NaturalIdMapping> writer;
+    IXmlWriter<NaturalIdMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()

@@ -6,14 +6,10 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class PropertyMapping : ColumnBasedMappingBase
+public class PropertyMapping(AttributeStore underlyingStore) : ColumnBasedMappingBase(underlyingStore), IEquatable<PropertyMapping>
 {
     public PropertyMapping()
         : this(new AttributeStore())
-    {}
-
-    public PropertyMapping(AttributeStore underlyingStore)
-        : base(underlyingStore)
     {}
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -26,50 +22,23 @@ public class PropertyMapping : ColumnBasedMappingBase
 
     public Type ContainingEntityType { get; set; }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public bool Insert
-    {
-        get { return attributes.GetOrDefault<bool>("Insert"); }
-    }
+    public bool Insert => attributes.GetOrDefault<bool>("Insert");
 
-    public bool Update
-    {
-        get { return attributes.GetOrDefault<bool>("Update"); }
-    }
+    public bool Update => attributes.GetOrDefault<bool>("Update");
 
-    public string Formula
-    {
-        get { return attributes.GetOrDefault<string>("Formula"); }
-    }
+    public string Formula => attributes.GetOrDefault<string>("Formula");
 
-    public bool Lazy
-    {
-        get { return attributes.GetOrDefault<bool>("Lazy"); }
-    }
+    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
 
-    public bool OptimisticLock
-    {
-        get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
-    }
+    public bool OptimisticLock => attributes.GetOrDefault<bool>("OptimisticLock");
 
-    public string Generated
-    {
-        get { return attributes.GetOrDefault<string>("Generated"); }
-    }
+    public string Generated => attributes.GetOrDefault<string>("Generated");
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
     public Member Member { get; set; }
 
@@ -78,7 +47,7 @@ public class PropertyMapping : ColumnBasedMappingBase
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
         return base.Equals(other) &&
-               Equals(other.ContainingEntityType, ContainingEntityType) &&
+               other.ContainingEntityType == ContainingEntityType &&
                Equals(other.Member, Member);
     }
 
@@ -94,7 +63,7 @@ public class PropertyMapping : ColumnBasedMappingBase
     {
         unchecked
         {
-            return ((ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0) * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+            return ((ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0) * 397) ^ (Member is not null ? Member.GetHashCode() : 0);
         }
     }
 

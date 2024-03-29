@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace FluentNHibernate.Utils;
 
@@ -14,8 +12,8 @@ public static class StringLikeness
     public static int EditDistance(string x, string y)
     {
         // Validate parameters
-        if (x == null) throw new ArgumentNullException("x");
-        if (y == null) throw new ArgumentNullException("y");
+        if (x is null) throw new ArgumentNullException(nameof(x));
+        if (y is null) throw new ArgumentNullException(nameof(y));
 
         // Convert the parameters into IList instances
         // in order to obtain indexing capabilities

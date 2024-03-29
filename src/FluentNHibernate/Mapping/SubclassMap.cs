@@ -4,7 +4,6 @@ using System.Diagnostics;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping;
 
@@ -294,7 +293,7 @@ public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMapping
         // TODO: un-hardcode this
         Type baseType = typeof(T).BaseType
                         ?? attributes.Get("Extends") as Type;
-        if (baseType != null)
+        if (baseType is not null)
         {
             var key = new KeyMapping();
             key.AddColumn(Layer.Defaults, new ColumnMapping(baseType.Name + "_id"));
@@ -348,15 +347,9 @@ public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMapping
         return mapping;
     }
 
-    Type IIndeterminateSubclassMappingProvider.EntityType
-    {
-        get { return EntityType; }
-    }
+    Type IIndeterminateSubclassMappingProvider.EntityType => EntityType;
 
-    Type IIndeterminateSubclassMappingProvider.Extends
-    {
-        get { return attributes.GetOrDefault<Type>("Extends"); }
-    }
+    Type IIndeterminateSubclassMappingProvider.Extends => attributes.GetOrDefault<Type>("Extends");
 
     void GenerateNestedSubclasses(SubclassMapping mapping)
     {

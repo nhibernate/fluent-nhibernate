@@ -6,7 +6,7 @@ namespace FluentNHibernate.MappingModel.Output;
 
 public class XmlImportWriter : NullMappingModelVisitor, IXmlWriter<ImportMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(ImportMapping mappingModel)
     {

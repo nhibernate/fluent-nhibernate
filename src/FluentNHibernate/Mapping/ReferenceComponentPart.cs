@@ -10,17 +10,9 @@ namespace FluentNHibernate.Mapping;
 /// and are reusable.
 /// </summary>
 /// <typeparam name="T">Component type</typeparam>
-public class ReferenceComponentPart<T> : IReferenceComponentMappingProvider
+public class ReferenceComponentPart<T>(Member property, Type containingEntityType) : IReferenceComponentMappingProvider
 {
-    private readonly Member property;
-    private readonly Type containingEntityType;
     private string columnPrefix;
-
-    public ReferenceComponentPart(Member property, Type containingEntityType)
-    {
-        this.property = property;
-        this.containingEntityType = containingEntityType;
-    }
 
     /// <summary>
     /// Sets the prefix for any columns defined within the component. To refer to the property
@@ -46,8 +38,5 @@ public class ReferenceComponentPart<T> : IReferenceComponentMappingProvider
         return new ReferenceComponentMapping(ComponentType.Component, property, typeof(T), containingEntityType, columnPrefix);
     }
 
-    Type IReferenceComponentMappingProvider.Type
-    {
-        get { return typeof(T); }
-    }
+    Type IReferenceComponentMappingProvider.Type => typeof(T);
 }

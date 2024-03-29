@@ -1,13 +1,10 @@
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
@@ -15,7 +12,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class VersionConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -145,12 +142,12 @@ public class VersionConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IVersionInstance> convention)
+    void Convention(Action<IVersionInstance> convention)
     {
         model.Conventions.Add(new VersionConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<VersionMapping> modelVerification)
+    void VerifyModel(Action<VersionMapping> modelVerification)
     {
         var classMap = new ClassMap<ValidVersionClass>();
         classMap.Id(x => x.Id);
@@ -160,7 +157,7 @@ public class VersionConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ValidVersionClass)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ValidVersionClass)) is not null)
             .Classes.First()
             .Version;
 

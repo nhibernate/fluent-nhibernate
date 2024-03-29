@@ -6,7 +6,6 @@ using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Testing.FluentInterfaceTests;
 using NUnit.Framework;
@@ -16,9 +15,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
 [TestFixture]
 public class HasManyConventionTests
 {
-    private PersistenceModel model;
-    private IMappingProvider mapping;
-    private Type mappingType;
+    PersistenceModel model;
+    IMappingProvider mapping;
+    Type mappingType;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -258,12 +257,12 @@ public class HasManyConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IOneToManyCollectionInstance> convention)
+    void Convention(Action<IOneToManyCollectionInstance> convention)
     {
         model.Conventions.Add(new OneToManyCollectionConventionBuilder().Always(convention));
     }
 
-    private void Mapping<TChild>(Expression<Func<ExampleInheritedClass, IEnumerable<TChild>>> property, Action<OneToManyPart<TChild>> mappingDefinition)
+    void Mapping<TChild>(Expression<Func<ExampleInheritedClass, IEnumerable<TChild>>> property, Action<OneToManyPart<TChild>> mappingDefinition)
     {
         var classMap = new ClassMap<ExampleInheritedClass>();
         classMap.Id(x => x.Id);
@@ -275,13 +274,13 @@ public class HasManyConventionTests
         mappingType = typeof(ExampleInheritedClass);
     }
 
-    private void VerifyModel(Action<CollectionMapping> modelVerification)
+    void VerifyModel(Action<CollectionMapping> modelVerification)
     {
         model.Add(mapping);
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) is not null)
             .Classes.First()
             .Collections.First();
 

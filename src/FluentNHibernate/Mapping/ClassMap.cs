@@ -30,14 +30,9 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
 {
     protected readonly AttributeStore attributes;
     readonly MappingProviderStore providers;
-    readonly OptimisticLockBuilder<ClassMap<T>> optimisticLock;
 
     readonly IList<ImportPart> imports = new List<ImportPart>();
     bool nextBool = true;
-
-    readonly HibernateMappingPart hibernateMappingPart = new HibernateMappingPart();
-    readonly PolymorphismBuilder<ClassMap<T>> polymorphism;
-    readonly SchemaActionBuilder<ClassMap<T>> schemaAction;
 
     public ClassMap()
         : this(new AttributeStore(), new MappingProviderStore())
@@ -48,9 +43,9 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     {
         this.attributes = attributes;
         this.providers = providers;
-        optimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => attributes.Set("OptimisticLock", Layer.UserSupplied, value));
-        polymorphism = new PolymorphismBuilder<ClassMap<T>>(this, value => attributes.Set("Polymorphism", Layer.UserSupplied, value));
-        schemaAction = new SchemaActionBuilder<ClassMap<T>>(this, value => attributes.Set("SchemaAction", Layer.UserSupplied, value));
+        OptimisticLock = new OptimisticLockBuilder<ClassMap<T>>(this, value => attributes.Set("OptimisticLock", Layer.UserSupplied, value));
+        Polymorphism = new PolymorphismBuilder<ClassMap<T>>(this, value => attributes.Set("Polymorphism", Layer.UserSupplied, value));
+        SchemaAction = new SchemaActionBuilder<ClassMap<T>>(this, value => attributes.Set("SchemaAction", Layer.UserSupplied, value));
         Cache = new CachePart(typeof(T));
     }
 
@@ -60,7 +55,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     /// <example>
     /// Cache.ReadWrite();
     /// </example>
-    public CachePart Cache { get; private set; }
+    public CachePart Cache { get; }
 
     /// <summary>
     /// Specify settings for the container/hibernate-mapping for this class.
@@ -69,10 +64,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     /// <example>
     /// HibernateMapping.Schema("dto");
     /// </example>
-    public HibernateMappingPart HibernateMapping
-    {
-        get { return hibernateMappingPart; }
-    }
+    public HibernateMappingPart HibernateMapping { get; } = new HibernateMappingPart();
 
     #region Ids
 
@@ -104,7 +96,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
 
         var part = new IdentityPart(EntityType, member);
 
-        if (column != null)
+        if (column is not null)
             part.Column(column);
 
         providers.Id = part;
@@ -145,7 +137,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     {
         var part = new IdentityPart(typeof(T), typeof(TId));
 
-        if (column != null)
+        if (column is not null)
         {
             part.SetName(column);
             part.Column(column);
@@ -427,26 +419,17 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     /// <summary>
     /// Sets the optimistic locking strategy
     /// </summary>
-    public OptimisticLockBuilder<ClassMap<T>> OptimisticLock
-    {
-        get { return optimisticLock; }
-    }
+    public OptimisticLockBuilder<ClassMap<T>> OptimisticLock { get; }
 
     /// <summary>
     /// Sets the polymorphism behaviour
     /// </summary>
-    public PolymorphismBuilder<ClassMap<T>> Polymorphism
-    {
-        get { return polymorphism; }
-    }
+    public PolymorphismBuilder<ClassMap<T>> Polymorphism { get; }
 
     /// <summary>
     /// Sets the schema action behaviour
     /// </summary>
-    public SchemaActionBuilder<ClassMap<T>> SchemaAction
-    {
-        get { return schemaAction; }
-    }
+    public SchemaActionBuilder<ClassMap<T>> SchemaAction { get; }
 
     /// <summary>
     /// Specifies a check constraint
@@ -470,7 +453,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     /// Specifies a persister to be used with this entity
     /// </summary>
     /// <param name="type">Persister type</param>
-    private void Persister(Type type)
+    void Persister(Type type)
     {
         Persister(type.AssemblyQualifiedName);
     }
@@ -618,7 +601,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
         mapping.Set(x => x.Type, Layer.Defaults, typeof(T));
         mapping.Set(x => x.Name, Layer.Defaults, typeof(T).AssemblyQualifiedName);
 
-        if (providers.Version != null)
+        if (providers.Version is not null)
             mapping.Set(x => x.Version, Layer.Defaults, providers.Version.GetVersionMapping());
 
         foreach (var provider in providers.OrderedProviders) {
@@ -689,7 +672,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
 
     HibernateMapping IMappingProvider.GetHibernateMapping()
     {
-        var hibernateMapping = ((IHibernateMappingProvider)hibernateMappingPart).GetHibernateMapping();
+        var hibernateMapping = ((IHibernateMappingProvider)HibernateMapping).GetHibernateMapping();
 
         foreach (var import in imports)
             hibernateMapping.AddImport(import.GetImportMapping());

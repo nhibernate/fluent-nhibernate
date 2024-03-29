@@ -4,16 +4,10 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class KeyManyToOneInstance : KeyManyToOneInspector, IKeyManyToOneInstance
+public class KeyManyToOneInstance(KeyManyToOneMapping mapping) : KeyManyToOneInspector(mapping), IKeyManyToOneInstance
 {
-    private readonly KeyManyToOneMapping mapping;
-    private bool nextBool = true;
-
-    public KeyManyToOneInstance(KeyManyToOneMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly KeyManyToOneMapping mapping = mapping;
+    bool nextBool = true;
 
     public new IAccessInstance Access
     {

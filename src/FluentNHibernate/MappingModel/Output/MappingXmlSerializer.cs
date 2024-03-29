@@ -9,7 +9,7 @@ public class MappingXmlSerializer
         return BuildXml(mapping);
     }
 
-    private static XmlDocument BuildXml(HibernateMapping rootMapping)
+    static XmlDocument BuildXml(HibernateMapping rootMapping)
     {
         var xmlWriter = XmlWriterFactory.CreateHibernateMappingWriter();
 

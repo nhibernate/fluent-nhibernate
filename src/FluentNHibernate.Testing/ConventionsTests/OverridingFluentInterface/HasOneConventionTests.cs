@@ -1,13 +1,10 @@
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
@@ -15,9 +12,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
 [TestFixture]
 public class HasOneConventionTests
 {
-    private PersistenceModel model;
-    private IMappingProvider mapping;
-    private Type mappingType;
+    PersistenceModel model;
+    IMappingProvider mapping;
+    Type mappingType;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -107,12 +104,12 @@ public class HasOneConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IOneToOneInstance> convention)
+    void Convention(Action<IOneToOneInstance> convention)
     {
         model.Conventions.Add(new HasOneConventionBuilder().Always(convention));
     }
 
-    private void Mapping(Action<OneToOnePart<ExampleParentClass>> mappingDefinition)
+    void Mapping(Action<OneToOnePart<ExampleParentClass>> mappingDefinition)
     {
         var classMap = new ClassMap<ExampleClass>();
         classMap.Id(x => x.Id);
@@ -124,13 +121,13 @@ public class HasOneConventionTests
         mappingType = typeof(ExampleClass);
     }
 
-    private void VerifyModel(Action<OneToOneMapping> modelVerification)
+    void VerifyModel(Action<OneToOneMapping> modelVerification)
     {
         model.Add(mapping);
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) is not null)
             .Classes.First()
             .OneToOnes.First();
 

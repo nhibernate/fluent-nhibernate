@@ -10,7 +10,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests;
 [TestFixture]
 public class WhereTests
 {
-    private class StaticExample
+    class StaticExample
     {
         public static string SomeValue = "SomeValue";
     }
@@ -111,7 +111,7 @@ public class WhereTests
     }
     #region helpers
 
-    private string Where(Expression<Func<Child, bool>> where)
+    string Where(Expression<Func<Child, bool>> where)
     {
         var classMap = new ClassMap<Target>();
         classMap.Id(x => x.Id);
@@ -129,7 +129,7 @@ public class WhereTests
             .Where;
     }
 
-    private string WhereSubChild(Expression<Func<SubChild, bool>> where)
+    string WhereSubChild(Expression<Func<SubChild, bool>> where)
     {
         var classMap = new ClassMap<Target>();
         classMap.Id(x => x.Id);
@@ -147,7 +147,7 @@ public class WhereTests
             .Where;
     }
 
-    private string Where(string where)
+    string Where(string where)
     {
         var classMap = new ClassMap<Target>();
         classMap.Id(x => x.Id);
@@ -167,25 +167,25 @@ public class WhereTests
 
     #endregion
 
-    private class Target
+    class Target
     {
         public int Id { get; set; }
         public IList<Child> Children { get; set;}
         public IList<SubChild> SubChildren { get; set; }
     }
 
-    private class Child
+    class Child
     {
         public string String { get; set; }
         public int Int { get; set; }
         public Enum Enum { get; set; }
     }
 
-    private class SubChild : Child
+    class SubChild : Child
     {
     }
 
-    private enum Enum
+    enum Enum
     {
         One = 1
     }

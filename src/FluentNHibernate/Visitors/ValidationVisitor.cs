@@ -8,15 +8,10 @@ namespace FluentNHibernate.Visitors;
 /// </summary>
 public class ValidationVisitor : DefaultMappingModelVisitor
 {
-    public ValidationVisitor()
-    {
-        Enabled = true;
-    }
-
     public override void ProcessClass(ClassMapping classMapping)
     {
         if (!Enabled) return;
-        if (classMapping.Id == null)
+        if (classMapping.Id is null)
             throw new ValidationException(
                 string.Format("The entity '{0}' doesn't have an Id mapped.", classMapping.Type.Name),
                 "Use the Id method to map your identity property. For example: Id(x => x.Id)",
@@ -30,7 +25,7 @@ public class ValidationVisitor : DefaultMappingModelVisitor
 
         var otherSide = mapping.OtherSide as CollectionMapping;
 
-        if (otherSide == null) return;
+        if (otherSide is null) return;
         if (mapping.Inverse && otherSide.Inverse)
         {
             throw new ValidationException(
@@ -43,5 +38,5 @@ public class ValidationVisitor : DefaultMappingModelVisitor
     /// <summary>
     /// Gets or sets whether validation is performed.
     /// </summary>
-    public bool Enabled { get; set; }
+    public bool Enabled { get; set; } = true;
 }

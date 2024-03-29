@@ -5,29 +5,11 @@ using System.Reflection;
 namespace FluentNHibernate;
 
 [Serializable]
-public sealed class DummyPropertyInfo : PropertyInfo
+public sealed class DummyPropertyInfo(string name, Type type) : PropertyInfo
 {
-    private readonly string name;
-    private readonly Type type;
+    public override Module Module => null;
 
-    public DummyPropertyInfo(string name, Type type)
-    {
-        if (name == null) throw new ArgumentNullException("name");
-        if (type == null) throw new ArgumentNullException("type");
-
-        this.name = name;
-        this.type = type;
-    }
-
-    public override Module Module
-    {
-        get { return null; }
-    }
-
-    public override int MetadataToken
-    {
-        get { return name.GetHashCode(); }
-    }
+    public override int MetadataToken => Name.GetHashCode();
 
     public override object[] GetCustomAttributes(bool inherit)
     {
@@ -67,40 +49,19 @@ public sealed class DummyPropertyInfo : PropertyInfo
         return Array.Empty<ParameterInfo>();
     }
 
-    public override string Name
-    {
-        get { return name; }
-    }
+    public override string Name { get; } = name ?? throw new ArgumentNullException(nameof(name));
 
-    public override Type DeclaringType
-    {
-        get { return type; }
-    }
+    public override Type DeclaringType { get; } = type ?? throw new ArgumentNullException(nameof(type));
 
-    public override Type ReflectedType
-    {
-        get { return null; }
-    }
+    public override Type ReflectedType => null;
 
-    public override Type PropertyType
-    {
-        get { return type; }
-    }
+    public override Type PropertyType => DeclaringType;
 
-    public override PropertyAttributes Attributes
-    {
-        get { return PropertyAttributes.None; }
-    }
+    public override PropertyAttributes Attributes => PropertyAttributes.None;
 
-    public override bool CanRead
-    {
-        get { return false; }
-    }
+    public override bool CanRead => false;
 
-    public override bool CanWrite
-    {
-        get { return false; }
-    }
+    public override bool CanWrite => false;
 
     public override object[] GetCustomAttributes(Type attributeType, bool inherit)
     {

@@ -2,11 +2,9 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using NUnit.Framework;
 
@@ -15,9 +13,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
 [TestFixture]
 public class IdConventionTests
 {
-    private PersistenceModel model;
-    private IMappingProvider mapping;
-    private Type mappingType;
+    PersistenceModel model;
+    IMappingProvider mapping;
+    Type mappingType;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -177,12 +175,12 @@ public class IdConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IIdentityInstance> convention)
+    void Convention(Action<IIdentityInstance> convention)
     {
         model.Conventions.Add(new IdConventionBuilder().Always(convention));
     }
 
-    private void Mapping<T>(Expression<Func<T, object>> property, Action<IdentityPart> mappingDefinition)
+    void Mapping<T>(Expression<Func<T, object>> property, Action<IdentityPart> mappingDefinition)
     {
         var classMap = new ClassMap<T>();
         var map = classMap.Id(property);
@@ -193,13 +191,13 @@ public class IdConventionTests
         mappingType = typeof(T);
     }
 
-    private void VerifyModel(Action<IdMapping> modelVerification)
+    void VerifyModel(Action<IdMapping> modelVerification)
     {
         model.Add(mapping);
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) is not null)
             .Classes.First()
             .Id;
 

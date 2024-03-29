@@ -6,9 +6,9 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class MetaValueMapping : MappingBase
+public class MetaValueMapping : MappingBase, IEquatable<MetaValueMapping>
 {
-    private readonly AttributeStore attributes;
+    readonly AttributeStore attributes;
 
     public MetaValueMapping()
         : this(new AttributeStore())
@@ -24,21 +24,15 @@ public class MetaValueMapping : MappingBase
         visitor.ProcessMetaValue(this);
     }
 
-    public string Value
-    {
-        get { return attributes.GetOrDefault<string>("Value"); }
-    }
+    public string Value => attributes.GetOrDefault<string>("Value");
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
     public Type ContainingEntityType { get; set; }
 
     public bool Equals(MetaValueMapping other)
     {
-        return Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        return Equals(other.attributes, attributes) && other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -51,8 +45,8 @@ public class MetaValueMapping : MappingBase
     {
         unchecked
         {
-            return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^
-                   (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            return ((attributes is not null ? attributes.GetHashCode() : 0) * 397) ^
+                   (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
         }
     }
 

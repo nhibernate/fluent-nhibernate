@@ -10,7 +10,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlReferenceComponentWriterTester
 {
-    private IXmlWriter<ReferenceComponentMapping> writer;
+    IXmlWriter<ReferenceComponentMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()
@@ -28,7 +28,7 @@ public class XmlReferenceComponentWriterTester
         testHelper.VerifyAll(writer);
     }
 
-    private XmlWriterTestHelper<ReferenceComponentMapping> CreateTestHelper()
+    XmlWriterTestHelper<ReferenceComponentMapping> CreateTestHelper()
     {
         var testHelper = new XmlWriterTestHelper<ReferenceComponentMapping>();
 
@@ -36,7 +36,7 @@ public class XmlReferenceComponentWriterTester
         return testHelper;
     }
 
-    private ReferenceComponentMapping CreateInstance()
+    ReferenceComponentMapping CreateInstance()
     {
         var property = new DummyPropertyInfo("ComponentProperty", typeof(ComponentTarget)).ToMember();
         var instance = new ReferenceComponentMapping(ComponentType.Component, property, typeof(ComponentTarget), typeof(Target), null);
@@ -222,6 +222,7 @@ public class XmlReferenceComponentWriterTester
         Assert.Fail();
     }
 
-    private class Target {}
-    private class ComponentTarget {}
+    class Target {}
+
+    class ComponentTarget {}
 }

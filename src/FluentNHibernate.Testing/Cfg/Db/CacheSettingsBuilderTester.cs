@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing.Cfg.Db;
 [TestFixture]
 public class CacheSettingsBuilderTester
 {
-    private CacheSettingsBuilderDouble cache;
+    CacheSettingsBuilderDouble cache;
 
     [SetUp]
     public void CreateCache()
@@ -104,16 +104,13 @@ public class CacheSettingsBuilderTester
         HasProperty("cache.use_query_cache", "true");
     }
 
-    private void HasProperty(string key, string value)
+    void HasProperty(string key, string value)
     {
         cache.Properties.ShouldContain(key, value);
     }
 
-    private class CacheSettingsBuilderDouble : CacheSettingsBuilder
+    class CacheSettingsBuilderDouble : CacheSettingsBuilder
     {
-        public IDictionary<string, string> Properties
-        {
-            get { return Create(); }
-        }
+        public IDictionary<string, string> Properties => Create();
     }
 }

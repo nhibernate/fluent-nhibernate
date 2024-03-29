@@ -1,14 +1,16 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class NotFound
+public class NotFound : IEquatable<NotFound>
 {
     public static readonly NotFound Unset = new NotFound("");
     public static readonly NotFound Ignore = new NotFound("ignore");
     public static readonly NotFound Exception = new NotFound("exception");
 
-    private readonly string value;
+    readonly string value;
 
-    private NotFound(string value)
+    NotFound(string value)
     {
         this.value = value;
     }
@@ -27,7 +29,7 @@ public class NotFound
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(NotFound x, NotFound y)

@@ -1,81 +1,37 @@
 using System;
-using System.Reflection;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class ColumnInspector : IColumnInspector
+public class ColumnInspector(Type containingEntityType, ColumnMapping mapping) : IColumnInspector
 {
-    private readonly ColumnMapping mapping;
-    private readonly InspectorModelMapper<IColumnInspector, ColumnMapping> propertyMappings = new InspectorModelMapper<IColumnInspector, ColumnMapping>();
+    readonly InspectorModelMapper<IColumnInspector, ColumnMapping> propertyMappings = new InspectorModelMapper<IColumnInspector, ColumnMapping>();
 
-    public ColumnInspector(Type containingEntityType, ColumnMapping mapping)
-    {
-        EntityType = containingEntityType;
-        this.mapping = mapping;
-    }
+    public Type EntityType { get; } = containingEntityType;
 
-    public Type EntityType { get; private set; }
+    public string Name => mapping.Name;
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Check => mapping.Check;
 
-    public string Check
-    {
-        get { return mapping.Check; }
-    }
+    public string Index => mapping.Index;
 
-    public string Index
-    {
-        get { return mapping.Index; }
-    }
+    public int Length => mapping.Length;
 
-    public int Length
-    {
-        get { return mapping.Length; }
-    }
+    public bool NotNull => mapping.NotNull;
 
-    public bool NotNull
-    {
-        get { return mapping.NotNull; }
-    }
+    public string SqlType => mapping.SqlType;
 
-    public string SqlType
-    {
-        get { return mapping.SqlType; }
-    }
+    public bool Unique => mapping.Unique;
 
-    public bool Unique
-    {
-        get { return mapping.Unique; }
-    }
+    public string UniqueKey => mapping.UniqueKey;
 
-    public string UniqueKey
-    {
-        get { return mapping.UniqueKey; }
-    }
+    public int Precision => mapping.Precision;
 
-    public int Precision
-    {
-        get { return mapping.Precision; }
-    }
+    public int Scale => mapping.Scale;
 
-    public int Scale
-    {
-        get { return mapping.Scale; }
-    }
+    public string Default => mapping.Default;
 
-    public string Default
-    {
-        get { return mapping.Default; }
-    }
-
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public bool IsSet(Member property)
     {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 
@@ -139,25 +138,13 @@ public class MemberBackingFieldTests
         IEnumerable<Example> lowercasemethod;
         IEnumerable<Example> _UnderscorePascalCaseMethod;
 
-        public string PropertyWithCamelCaseField
-        {
-            get { return propertyWithCamelCaseField; }
-        }
+        public string PropertyWithCamelCaseField => propertyWithCamelCaseField;
 
-        public string PropertyWithLowerCaseField
-        {
-            get { return propertywithlowercasefield; }
-        }
+        public string PropertyWithLowerCaseField => propertywithlowercasefield;
 
-        public string PropertyWithUnderscoreCamelCaseField
-        {
-            get { return _propertyWithUnderscoreCamelCaseField; }
-        }
+        public string PropertyWithUnderscoreCamelCaseField => _propertyWithUnderscoreCamelCaseField;
 
-        public string PropertyWithUnderscorePascalCaseField
-        {
-            get { return _PropertyWithUnderscorePascalCaseField; }
-        }
+        public string PropertyWithUnderscorePascalCaseField => _PropertyWithUnderscorePascalCaseField;
 
         public IEnumerable<Example> CamelCaseMethod()
         {

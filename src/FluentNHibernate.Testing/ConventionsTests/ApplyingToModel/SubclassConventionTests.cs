@@ -4,7 +4,6 @@ using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 
@@ -13,7 +12,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class SubclassConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -71,12 +70,12 @@ public class SubclassConventionTests
 
     #region Helpers
 
-    private void Convention(Action<ISubclassInstance> convention)
+    void Convention(Action<ISubclassInstance> convention)
     {
         model.Conventions.Add(new SubclassConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<SubclassMapping> modelVerification)
+    void VerifyModel(Action<SubclassMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleClass>();
 
@@ -90,7 +89,7 @@ public class SubclassConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) is not null)
             .Classes.First()
             .Subclasses.First();
 

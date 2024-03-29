@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using NUnit.Framework;
@@ -12,8 +9,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests;
 [TestFixture]
 public class KeyPropertyPartTests
 {
-    private KeyPropertyMapping mapping;
-    private KeyPropertyPart part;
+    KeyPropertyMapping mapping;
+    KeyPropertyPart part;
 
     [SetUp]
     public void SetUp()

@@ -7,7 +7,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlCollectionRelationshipWriterTester
 {
-    private IXmlWriter<ICollectionRelationshipMapping> writer;
+    IXmlWriter<ICollectionRelationshipMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()

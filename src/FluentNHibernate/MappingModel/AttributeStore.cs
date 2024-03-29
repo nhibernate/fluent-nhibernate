@@ -5,14 +5,9 @@ using FluentNHibernate.MappingModel.Collections;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class AttributeStore
+public class AttributeStore: IEquatable<AttributeStore>
 {
-    readonly AttributeLayeredValues layeredValues;
-
-    public AttributeStore()
-    {
-        layeredValues = new AttributeLayeredValues();
-    }
+    readonly AttributeLayeredValues layeredValues = new();
 
     public object Get(string property)
     {
@@ -52,7 +47,7 @@ public class AttributeStore
 
     public bool Equals(AttributeStore other)
     {
-        if (other == null) return false;
+        if (other is null) return false;
 
         return other.layeredValues.ContentEquals(layeredValues);
     }
@@ -68,7 +63,7 @@ public class AttributeStore
     {
         unchecked
         {
-            return ((layeredValues != null ? layeredValues.GetHashCode() : 0) * 397);
+            return ((layeredValues is not null ? layeredValues.GetHashCode() : 0) * 397);
         }
     }
 

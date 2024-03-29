@@ -20,10 +20,7 @@ public class FluentMappingsContainer
     PairBiDirectionalManyToManySidesDelegate biDirectionalManyToManyPairer;
 
     [Obsolete("PersistenceModel is no longer available through FluentMappingsContainer. Use MappingConfiguration.UsePersistenceModel to supply a custom PersistenceModel", true)]
-    public PersistenceModel PersistenceModel
-    {
-        get { return null; }
-    }
+    public PersistenceModel PersistenceModel => null;
 
     public FluentMappingsContainer OverrideBiDirectionalManyToManyPairing(PairBiDirectionalManyToManySidesDelegate userControlledPairing)
     {
@@ -69,8 +66,8 @@ public class FluentMappingsContainer
     /// <returns>Fluent mappings configuration</returns>
     public FluentMappingsContainer Add(Type type)
     {
-        if (type == null)
-            throw new ArgumentNullException("type");
+        if (type is null)
+            throw new ArgumentNullException(nameof(type));
 
         types.Add(type);
         WasUsed = true;
@@ -101,10 +98,7 @@ public class FluentMappingsContainer
     /// <summary>
     /// Alter convention discovery
     /// </summary>
-    public SetupConventionFinder<FluentMappingsContainer> Conventions
-    {
-        get { return new SetupConventionFinder<FluentMappingsContainer>(this, conventionFinder); }
-    }
+    public SetupConventionFinder<FluentMappingsContainer> Conventions => new(this, conventionFinder);
 
     /// <summary>
     /// Gets whether any mappings were added
@@ -132,10 +126,10 @@ public class FluentMappingsContainer
         if (!string.IsNullOrEmpty(exportPath))
             model.WriteMappingsTo(exportPath);
 
-        if (exportTextWriter != null)
+        if (exportTextWriter is not null)
             model.WriteMappingsTo(exportTextWriter);
 
-        if (biDirectionalManyToManyPairer != null)
+        if (biDirectionalManyToManyPairer is not null)
             model.BiDirectionalManyToManyPairer = biDirectionalManyToManyPairer;
     }
 }

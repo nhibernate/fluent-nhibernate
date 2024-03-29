@@ -6,7 +6,7 @@ namespace FluentNHibernate.MappingModel.Output;
 
 public class XmlCacheWriter : NullMappingModelVisitor, IXmlWriter<CacheMapping>
 {
-    private XmlDocument document;
+    XmlDocument document;
 
     public XmlDocument Write(CacheMapping mappingModel)
     {

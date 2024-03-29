@@ -2,7 +2,7 @@ using System;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class Include
+public class Include : IEquatable<Include>
 {
     public static readonly Include Unset = new Include("");
     public static readonly Include All = new Include("all");
@@ -13,9 +13,9 @@ public class Include
         return new Include(value);
     }
 
-    private readonly string value;
+    readonly string value;
 
-    private Include(string value)
+    Include(string value)
     {
         this.value = value;
     }
@@ -34,7 +34,7 @@ public class Include
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(Include x, Include y)

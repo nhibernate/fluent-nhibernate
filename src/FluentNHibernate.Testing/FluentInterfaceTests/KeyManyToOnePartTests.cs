@@ -1,5 +1,4 @@
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using NUnit.Framework;
 namespace FluentNHibernate.Testing.FluentInterfaceTests;
@@ -7,9 +6,8 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests;
 [TestFixture]
 public class KeyManyToOnePartTests
 {
-
-    private KeyManyToOneMapping mapping;
-    private KeyManyToOnePart keyPart;
+    KeyManyToOneMapping mapping;
+    KeyManyToOnePart keyPart;
 
     [SetUp]
     public void SetUp()

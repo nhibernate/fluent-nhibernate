@@ -1,6 +1,4 @@
-using System;
 using System.Linq;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
@@ -18,13 +16,13 @@ public class ClassMapFilterPartModelGenerationTests : BaseModelFixture
             .ModelShouldMatch(CheckFirstFilterWithCondition);
     }
 
-    private void CheckFirstFilterWithoutCondition(ClassMapping mapping)
+    void CheckFirstFilterWithoutCondition(ClassMapping mapping)
     {
         if (!mapping.Filters.Any()) Assert.Fail("No filter added");
         if (mapping.Filters.First().Name != "test") Assert.Fail("Wrong filter name added");
     }
 
-    private void CheckFirstFilterWithCondition(ClassMapping mapping)
+    void CheckFirstFilterWithCondition(ClassMapping mapping)
     {
         CheckFirstFilterWithoutCondition(mapping);
         if (mapping.Filters.First().Condition != "Name = :name") Assert.Fail("Wrong filter condition added");

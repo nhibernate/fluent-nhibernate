@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using FakeItEasy;
 using NHibernate;
@@ -9,14 +8,14 @@ namespace FluentNHibernate.Testing.Testing;
 [TestFixture]
 public class PersistenceSpecificationTransactionTest
 {
-    private class Cat
+    class Cat
     {
         public long Id { get; set; }
         public string Name { get; set; }
         public CatType CatType { get; set; }
     }
 
-    private class CatType
+    class CatType
     {
         public string Name { get; set; }
     }
@@ -88,10 +87,10 @@ public class PersistenceSpecificationTransactionTest
     {
         bool IEqualityComparer.Equals(object x, object y)
         {
-            if (x == null || y == null)
+            if (x is null || y is null)
                 return false;
 
-            if (x.GetType().GetProperty("Name") != null && y.GetType().GetProperty("Name") != null)
+            if (x.GetType().GetProperty("Name") is not null && y.GetType().GetProperty("Name") is not null)
             {
                 return x.GetType().GetProperty("Name").GetValue(x, null) == y.GetType().GetProperty("Name").GetValue(x, null);
             }

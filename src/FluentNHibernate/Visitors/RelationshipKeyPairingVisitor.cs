@@ -8,7 +8,7 @@ public class RelationshipKeyPairingVisitor : DefaultMappingModelVisitor
 {
     public override void ProcessManyToOne(ManyToOneMapping thisSide)
     {
-        if (thisSide.OtherSide == null)
+        if (thisSide.OtherSide is null)
             return;
 
         // other side is always going to be a collection for a many-to-one mapping

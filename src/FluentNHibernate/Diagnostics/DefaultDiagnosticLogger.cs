@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace FluentNHibernate.Diagnostics;
 
-public class DefaultDiagnosticLogger : IDiagnosticLogger
+public class DefaultDiagnosticLogger(IDiagnosticMessageDispatcher dispatcher) : IDiagnosticLogger
 {
-    readonly IDiagnosticMessageDispatcher dispatcher;
     readonly List<ScannedSource> scannedSources = new List<ScannedSource>();
     readonly List<Type> classMaps = new List<Type>();
     readonly List<Type> conventions = new List<Type>();
@@ -13,11 +12,6 @@ public class DefaultDiagnosticLogger : IDiagnosticLogger
     readonly List<Type> automappingCandidateTypes = new List<Type>();
     readonly List<AutomappingType> automappingTypes = new List<AutomappingType>();
     bool isDirty;
-
-    public DefaultDiagnosticLogger(IDiagnosticMessageDispatcher dispatcher)
-    {
-        this.dispatcher = dispatcher;
-    }
 
     public void Flush()
     {

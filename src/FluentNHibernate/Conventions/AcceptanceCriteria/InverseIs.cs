@@ -2,8 +2,5 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria;
 
 public class InverseIs
 {
-    public IAcceptanceCriterion Set
-    {
-        get { return new SetCriterion(true); }
-    }
+    public IAcceptanceCriterion Set => new SetCriterion(true);
 }

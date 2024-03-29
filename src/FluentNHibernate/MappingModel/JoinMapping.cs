@@ -9,51 +9,27 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class JoinMapping : IMapping
+public class JoinMapping(AttributeStore attributes) : IMapping, IEquatable<JoinMapping>
 {
-    private readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
-    private readonly MappedMembers mappedMembers;
+    readonly MappedMembers mappedMembers = new();
 
     public JoinMapping()
         : this(new AttributeStore())
     {}
 
-    public JoinMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-        mappedMembers = new MappedMembers();
-    }
+    public KeyMapping Key => attributes.GetOrDefault<KeyMapping>("Key");
 
-    public KeyMapping Key
-    {
-        get { return attributes.GetOrDefault<KeyMapping>("Key"); }
-    }
+    public IEnumerable<PropertyMapping> Properties => mappedMembers.Properties;
 
-    public IEnumerable<PropertyMapping> Properties
-    {
-        get { return mappedMembers.Properties; }
-    }
+    public IEnumerable<ManyToOneMapping> References => mappedMembers.References;
 
-    public IEnumerable<ManyToOneMapping> References
-    {
-        get { return mappedMembers.References; }
-    }
+    public IEnumerable<IComponentMapping> Components => mappedMembers.Components;
 
-    public IEnumerable<IComponentMapping> Components
-    {
-        get { return mappedMembers.Components; }
-    }
+    public IEnumerable<AnyMapping> Anys => mappedMembers.Anys;
 
-    public IEnumerable<AnyMapping> Anys
-    {
-        get { return mappedMembers.Anys; }
-    }
-
-    public IEnumerable<CollectionMapping> Collections
-    {
-        get { return mappedMembers.Collections; }
-    }
+    public IEnumerable<CollectionMapping> Collections => mappedMembers.Collections;
 
     public void AddProperty(PropertyMapping property)
     {
@@ -85,40 +61,19 @@ public class JoinMapping : IMapping
         mappedMembers.AddStoredProcedure(storedProcedureMapping);
     }
 
-    public string TableName
-    {
-        get { return attributes.GetOrDefault<string>("TableName"); }
-    }
+    public string TableName => attributes.GetOrDefault<string>("TableName");
 
-    public string Schema
-    {
-        get { return attributes.GetOrDefault<string>("Schema"); }
-    }
+    public string Schema => attributes.GetOrDefault<string>("Schema");
 
-    public string Catalog
-    {
-        get { return attributes.GetOrDefault<string>("Catalog"); }
-    }
+    public string Catalog => attributes.GetOrDefault<string>("Catalog");
 
-    public string Subselect
-    {
-        get { return attributes.GetOrDefault<string>("Subselect"); }
-    }
+    public string Subselect => attributes.GetOrDefault<string>("Subselect");
 
-    public string Fetch
-    {
-        get { return attributes.GetOrDefault<string>("Fetch"); }
-    }
+    public string Fetch => attributes.GetOrDefault<string>("Fetch");
 
-    public bool Inverse
-    {
-        get { return attributes.GetOrDefault<bool>("Inverse"); }
-    }
+    public bool Inverse => attributes.GetOrDefault<bool>("Inverse");
 
-    public bool Optional
-    {
-        get { return attributes.GetOrDefault<bool>("Optional"); }
-    }
+    public bool Optional => attributes.GetOrDefault<bool>("Optional");
 
     public Type ContainingEntityType { get; set; }
 
@@ -126,7 +81,7 @@ public class JoinMapping : IMapping
     {
         visitor.ProcessJoin(this);
 
-        if (Key != null)
+        if (Key is not null)
             visitor.Visit(Key);
 
         mappedMembers.AcceptVisitor(visitor);
@@ -138,7 +93,7 @@ public class JoinMapping : IMapping
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                Equals(other.mappedMembers, mappedMembers) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -153,9 +108,9 @@ public class JoinMapping : IMapping
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (mappedMembers != null ? mappedMembers.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (mappedMembers is not null ? mappedMembers.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

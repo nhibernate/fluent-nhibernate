@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-
-using FluentNHibernate;
 using FluentNHibernate.Automapping;
 
 namespace FluentNHibernate.Utils.Reflection;
@@ -39,17 +37,17 @@ public static class ReflectionHelper
         return getAccessor(memberExpression);
     }
 
-    private static bool IsIndexedPropertyAccess(Expression expression)
+    static bool IsIndexedPropertyAccess(Expression expression)
     {
         return IsMethodExpression(expression) && expression.ToString().Contains("get_Item");
     }
 
-    private static bool IsMethodExpression(Expression expression)
+    static bool IsMethodExpression(Expression expression)
     {
         return expression is MethodCallExpression || (expression is UnaryExpression && IsMethodExpression((expression as UnaryExpression).Operand));
     }
 
-    private static Member GetMember(Expression expression)
+    static Member GetMember(Expression expression)
     {
         if (IsIndexedPropertyAccess(expression))
             return GetDynamicComponentProperty(expression).ToMember();
@@ -61,13 +59,13 @@ public static class ReflectionHelper
         return memberExpression.Member.ToMember();
     }
 
-    private static PropertyInfo GetDynamicComponentProperty(Expression expression)
+    static PropertyInfo GetDynamicComponentProperty(Expression expression)
     {
         Type desiredConversionType = null;
         MethodCallExpression methodCallExpression = null;
         var nextOperand = expression;
 
-        while (nextOperand != null)
+        while (nextOperand is not null)
         {
             if (nextOperand.NodeType == ExpressionType.Call)
             {
@@ -77,7 +75,7 @@ public static class ReflectionHelper
             }
 
             if (nextOperand.NodeType != ExpressionType.Convert)
-                throw new ArgumentException("Expression not supported", "expression");
+                throw new ArgumentException("Expression not supported", nameof(expression));
 	            
             var unaryExpression = (UnaryExpression)nextOperand;
             desiredConversionType = unaryExpression.Type;
@@ -89,12 +87,12 @@ public static class ReflectionHelper
         return new DummyPropertyInfo((string)constExpression.Value, desiredConversionType);
     }
 
-    private static MemberExpression GetMemberExpression(Expression expression)
+    static MemberExpression GetMemberExpression(Expression expression)
     {
         return GetMemberExpression(expression, true);
     }
 
-    private static MemberExpression GetMemberExpression(Expression expression, bool enforceCheck)
+    static MemberExpression GetMemberExpression(Expression expression, bool enforceCheck)
     {
         MemberExpression memberExpression = null;
         if (expression.NodeType == ExpressionType.Convert)
@@ -107,19 +105,19 @@ public static class ReflectionHelper
             memberExpression = expression as MemberExpression;
         }
 
-        if (enforceCheck && memberExpression == null)
+        if (enforceCheck && memberExpression is null)
         {
-            throw new ArgumentException("Not a member access", "expression");
+            throw new ArgumentException("Not a member access", nameof(expression));
         }
 
         return memberExpression;
     }
 
-    private static Accessor getAccessor(MemberExpression memberExpression)
+    static Accessor getAccessor(MemberExpression memberExpression)
     {
         var list = new List<Member>();
 
-        while (memberExpression != null)
+        while (memberExpression is not null)
         {
             list.Add(memberExpression.Member.ToMember());
             memberExpression = memberExpression.Expression as MemberExpression;

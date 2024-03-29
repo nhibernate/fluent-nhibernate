@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using FakeItEasy;
 using FluentNHibernate.Testing.Testing.Values;
@@ -25,15 +24,12 @@ public class InspectablePersistenceSpecification<T> : PersistenceSpecification<T
     public InspectablePersistenceSpecification(ISession session, IEqualityComparer entityEqualityComparer) : base(session, entityEqualityComparer)
     {}
 
-    public List<Property<T>> AllProperties
-    {
-        get { return allProperties; }
-    }
+    public List<Property<T>> AllProperties => allProperties;
 }
 
 public abstract class With_persistence_specification<T> : Specification
 {
-    private ISession session;
+    ISession session;
     protected InspectablePersistenceSpecification<T> sut;
     protected IEqualityComparer comparer;
 
@@ -139,7 +135,7 @@ public class When_a_checked_property_with_a_custom_setter_is_added : With_persis
 [TestFixture]
 public class When_the_value_setter_of_a_checked_property_is_invoked : When_a_checked_property_with_a_custom_setter_is_added
 {
-    private PropertyEntity entity;
+    PropertyEntity entity;
 
     public override void establish_context()
     {
@@ -225,8 +221,8 @@ public class When_a_checked_reference_with_a_custom_setter_is_added : With_persi
 [TestFixture]
 public class When_the_value_setter_of_a_checked_reference_is_invoked : When_a_checked_reference_with_a_custom_setter_is_added
 {
-    private ReferenceEntity entity;
-    private OtherEntity referenced;
+    ReferenceEntity entity;
+    OtherEntity referenced;
 
     public override void establish_context()
     {
@@ -380,8 +376,8 @@ public class When_a_checked_list_with_a_custom_list_setter_is_added : With_persi
 [TestFixture]
 public class When_the_list_setter_of_a_checked_list_is_invoked : When_a_checked_list_with_a_custom_list_setter_is_added
 {
-    private ReferenceEntity entity;
-    private OtherEntity[] referenced;
+    ReferenceEntity entity;
+    OtherEntity[] referenced;
 
     public override void establish_context()
     {
@@ -441,8 +437,8 @@ public class When_a_checked_list_with_a_custom_list_item_setter_is_added : With_
 [TestFixture]
 public class When_the_list_item_setter_of_a_checked_list_is_invoked : When_a_checked_list_with_a_custom_list_item_setter_is_added
 {
-    private ReferenceEntity entity;
-    private OtherEntity[] referenced;
+    ReferenceEntity entity;
+    OtherEntity[] referenced;
 
     public override void establish_context()
     {
@@ -530,8 +526,8 @@ public class When_a_checked_component_list_with_a_custom_list_setter_is_added : 
 [TestFixture]
 public class When_the_list_setter_of_a_checked_component_list_is_invoked : When_a_checked_component_list_with_a_custom_list_setter_is_added
 {
-    private ReferenceEntity entity;
-    private OtherEntity[] referenced;
+    ReferenceEntity entity;
+    OtherEntity[] referenced;
 
     public override void establish_context()
     {
@@ -591,8 +587,8 @@ public class When_a_checked_component_list_with_a_custom_list_item_setter_is_add
 [TestFixture]
 public class When_the_list_item_setter_of_a_checked_component_list_is_invoked : When_a_checked_component_list_with_a_custom_list_item_setter_is_added
 {
-    private ReferenceEntity entity;
-    private OtherEntity[] referenced;
+    ReferenceEntity entity;
+    OtherEntity[] referenced;
 
     public override void establish_context()
     {

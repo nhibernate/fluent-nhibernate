@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class ComponentConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -62,12 +62,12 @@ public class ComponentConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IComponentInstance> convention)
+    void Convention(Action<IComponentInstance> convention)
     {
         model.Conventions.Add(new ComponentConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<ComponentMapping> modelVerification)
+    void VerifyModel(Action<ComponentMapping> modelVerification)
     {
         var classMap = new ClassMap<PropertyTarget>();
         classMap.Id(x => x.Id);
@@ -77,7 +77,7 @@ public class ComponentConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = (ComponentMapping)generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(PropertyTarget)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(PropertyTarget)) is not null)
             .Classes.First()
             .Components.First(x => x is ComponentMapping);
 

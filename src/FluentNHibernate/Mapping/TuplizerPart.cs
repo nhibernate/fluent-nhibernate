@@ -3,15 +3,8 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping;
 
-public class TuplizerPart
+public class TuplizerPart(TuplizerMapping mapping)
 {
-    readonly TuplizerMapping mapping;
-
-    public TuplizerPart(TuplizerMapping mapping)
-    {
-        this.mapping = mapping;
-    }
-
     /// <summary>
     /// Sets the tuplizer type.
     /// </summary>

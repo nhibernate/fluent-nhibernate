@@ -6,38 +6,24 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class CacheMapping : MappingBase
+public class CacheMapping(AttributeStore attributes) : MappingBase, IEquatable<CacheMapping>
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public CacheMapping()
         : this(new AttributeStore())
     {}
-
-    public CacheMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
         visitor.ProcessCache(this);
     }
 
-    public string Region
-    {
-        get { return attributes.GetOrDefault<string>("Region"); }
-    }
+    public string Region => attributes.GetOrDefault<string>("Region");
 
-    public string Usage
-    {
-        get { return attributes.GetOrDefault<string>("Usage"); }
-    }
+    public string Usage => attributes.GetOrDefault<string>("Usage");
 
-    public string Include
-    {
-        get { return attributes.GetOrDefault<string>("Include"); }
-    }
+    public string Include => attributes.GetOrDefault<string>("Include");
 
     public Type ContainedEntityType { get; set; }
 
@@ -45,7 +31,7 @@ public class CacheMapping : MappingBase
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.attributes, attributes) && Equals(other.ContainedEntityType, ContainedEntityType);
+        return Equals(other.attributes, attributes) && other.ContainedEntityType == ContainedEntityType;
     }
 
     public override bool Equals(object obj)
@@ -60,7 +46,7 @@ public class CacheMapping : MappingBase
     {
         unchecked
         {
-            return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^ (ContainedEntityType != null ? ContainedEntityType.GetHashCode() : 0);
+            return ((attributes is not null ? attributes.GetHashCode() : 0) * 397) ^ (ContainedEntityType is not null ? ContainedEntityType.GetHashCode() : 0);
         }
     }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Collections;
 using NHibernate.Cfg;
@@ -40,12 +39,11 @@ public class OneToManyTarget
     public virtual IDictionary<SomeEntity, ValueObject> EntityMapOfComplexValues { get; set; }
     public virtual IDictionary<SomeEntity, string> EntityMapOfValues { get; set; }
 
-    private IList<ChildObject> otherChildren = new List<ChildObject>();
+    IList<ChildObject> otherChildren = new List<ChildObject>();
     public virtual IList<ChildObject> GetOtherChildren() { return otherChildren; }
 
-    private IList<ChildObject> listToArrayChild = new List<ChildObject>();
-    public virtual ChildObject[] ListToArrayChild { get { return listToArrayChild.ToArray(); } }
-
+    IList<ChildObject> listToArrayChild = new List<ChildObject>();
+    public virtual ChildObject[] ListToArrayChild => listToArrayChild.ToArray();
 }
 
 public class ValueObject
@@ -455,7 +453,7 @@ public class OneToManyTester
             .HasAttribute("access", "field.camelcase");
     }
 
-    private class StaticExample
+    class StaticExample
     {
         public static string SomeValue = "SomeValue";
     }

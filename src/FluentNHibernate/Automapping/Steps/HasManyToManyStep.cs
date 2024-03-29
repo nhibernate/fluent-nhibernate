@@ -10,15 +10,8 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class HasManyToManyStep : IAutomappingStep
+public class HasManyToManyStep(IAutomappingConfiguration cfg) : IAutomappingStep
 {
-    private readonly IAutomappingConfiguration cfg;
-
-    public HasManyToManyStep(IAutomappingConfiguration cfg)
-    {
-        this.cfg = cfg;
-    }
-
     public bool ShouldMap(Member member)
     {
         var type = member.PropertyType;
@@ -28,11 +21,11 @@ public class HasManyToManyStep : IAutomappingStep
         if (type.HasInterface(typeof(IDictionary)) || type.ClosesInterface(typeof(IDictionary<,>)) || type.Closes(typeof(System.Collections.Generic.IDictionary<,>)))
             return false;
 
-        var hasInverse = GetInverseProperty(member) != null;
+        var hasInverse = GetInverseProperty(member) is not null;
         return hasInverse;
     }
 
-    private static Member GetInverseProperty(Member member)
+    static Member GetInverseProperty(Member member)
     {
         var type = member.PropertyType;
         var expectedInversePropertyType = type.GetGenericTypeDefinition()
@@ -52,7 +45,7 @@ public class HasManyToManyStep : IAutomappingStep
         return CollectionMapping.For(collectionType);
     }
 
-    private void ConfigureModel(Member member, CollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
+    void ConfigureModel(Member member, CollectionMapping mapping, ClassMappingBase classMap, Type parentSide)
     {
         // TODO: Make the child type safer
         mapping.ContainingEntityType = classMap.Type;

@@ -7,15 +7,9 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class IdentityStep : IAutomappingStep
+public class IdentityStep(IAutomappingConfiguration cfg) : IAutomappingStep
 {
-    private readonly IAutomappingConfiguration cfg;
     readonly List<Type> identityCompatibleTypes = new List<Type> { typeof(long), typeof(int), typeof(short), typeof(byte) };
-
-    public IdentityStep(IAutomappingConfiguration cfg)
-    {
-        this.cfg = cfg;
-    }
 
     public bool ShouldMap(Member member)
     {

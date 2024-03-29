@@ -2,17 +2,9 @@ using System;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests;
 
-public class ModelTester<TFluentClass, TModel>
+public class ModelTester<TFluentClass, TModel>(Func<TFluentClass> instantiatePart, Func<TFluentClass, TModel> getModel)
 {
-    private readonly Func<TFluentClass> instantiatePart;
-    private readonly Func<TFluentClass, TModel> getModel;
-    private TFluentClass fluentClass;
-
-    public ModelTester(Func<TFluentClass> instantiatePart, Func<TFluentClass, TModel> getModel)
-    {
-        this.instantiatePart = instantiatePart;
-        this.getModel = getModel;
-    }
+    TFluentClass fluentClass;
 
     public ModelTester<TFluentClass, TModel> Mapping(Action<TFluentClass> action)
     {

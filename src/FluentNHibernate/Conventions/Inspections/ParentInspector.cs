@@ -4,41 +4,26 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class ParentInspector : IParentInspector
+public class ParentInspector(ParentMapping mapping) : IParentInspector
 {
-    private readonly InspectorModelMapper<IPropertyInspector, ParentMapping> mappedProperties = new InspectorModelMapper<IPropertyInspector, ParentMapping>();
-    private readonly ParentMapping mapping;
+    readonly InspectorModelMapper<IPropertyInspector, ParentMapping> mappedProperties = new InspectorModelMapper<IPropertyInspector, ParentMapping>();
 
-    public ParentInspector(ParentMapping mapping)
-    {
-        this.mapping = mapping;
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
-
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(mappedProperties.Get(property));
     }
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
     public Access Access
     {
         get
         {
-            if (mapping.Access != null)
+            if (mapping.Access is not null)
                 return Access.FromString(mapping.Access);
              
             return null;

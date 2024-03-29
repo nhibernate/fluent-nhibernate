@@ -1,14 +1,16 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class Polymorphism
+public class Polymorphism : IEquatable<Polymorphism>
 {
     public static readonly Polymorphism Unset = new Polymorphism("");
     public static readonly Polymorphism Implicit = new Polymorphism("implicit");
     public static readonly Polymorphism Explicit = new Polymorphism("explicit");
 
-    private readonly string value;
+    readonly string value;
 
-    private Polymorphism(string value)
+    Polymorphism(string value)
     {
         this.value = value;
     }
@@ -27,7 +29,7 @@ public class Polymorphism
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(Polymorphism x, Polymorphism y)

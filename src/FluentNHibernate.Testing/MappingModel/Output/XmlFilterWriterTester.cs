@@ -1,6 +1,5 @@
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Output;
-using NHibernate;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.MappingModel.Output;

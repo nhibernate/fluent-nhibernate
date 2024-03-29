@@ -2,7 +2,6 @@ using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.MappingModel.Identity;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions;
@@ -24,7 +23,7 @@ public class VersionConventionTests
         classMapping.Version.Columns.First().Name.ShouldEqual("xxx");
     }
 
-    private class VersionConvention : IVersionConvention
+    class VersionConvention : IVersionConvention
     {
         public void Apply(IVersionInstance instance)
         {
@@ -33,7 +32,7 @@ public class VersionConventionTests
     }
 }
 
-internal class VersionTarget
+class VersionTarget
 {
     public int Id { get; set; }
     public byte[] Version { get; set; }

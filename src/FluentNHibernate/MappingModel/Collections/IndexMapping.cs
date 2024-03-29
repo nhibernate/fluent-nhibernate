@@ -7,19 +7,14 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class IndexMapping : MappingBase, IIndexMapping, IHasColumnMappings
+public class IndexMapping(AttributeStore attributes) : MappingBase, IIndexMapping, IHasColumnMappings, IEquatable<IndexMapping>
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
     readonly LayeredColumns columns = new LayeredColumns();
 
     public IndexMapping()
         : this(new AttributeStore())
     {}
-
-    public IndexMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -29,22 +24,13 @@ public class IndexMapping : MappingBase, IIndexMapping, IHasColumnMappings
             visitor.Visit(column);
     }
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
-    public int Offset
-    {
-        get { return attributes.GetOrDefault<int>("Offset"); }
-    }
+    public int Offset => attributes.GetOrDefault<int>("Offset");
 
     public Type ContainingEntityType { get; set; }
 
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get { return columns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> Columns => columns.Columns;
 
     public void AddColumn(int layer, ColumnMapping mapping)
     {
@@ -62,7 +48,7 @@ public class IndexMapping : MappingBase, IIndexMapping, IHasColumnMappings
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.columns.ContentEquals(columns) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -77,9 +63,9 @@ public class IndexMapping : MappingBase, IIndexMapping, IHasColumnMappings
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (columns != null ? columns.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (columns is not null ? columns.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

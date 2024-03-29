@@ -39,7 +39,7 @@ public class ManyToManySelfReferencedInverseIntegrationTester
         }
     }
 
-    private class ManyToManyPersistenceModel : PersistenceModel
+    class ManyToManyPersistenceModel : PersistenceModel
     {
         public override void Configure(Configuration configuration)
         {

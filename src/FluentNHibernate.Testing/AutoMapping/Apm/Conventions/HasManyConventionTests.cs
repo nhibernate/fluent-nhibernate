@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
@@ -40,7 +39,7 @@ public class HasManyConventionTests
             .Key.Columns.First().Name.ShouldEqual("Targetxxx");
     }
 
-    private class FKConvention : ForeignKeyConvention
+    class FKConvention : ForeignKeyConvention
     {
         protected override string GetKeyName(Member property, Type type)
         {
@@ -48,7 +47,7 @@ public class HasManyConventionTests
         }
     }
 
-    private class HasManyConvention : IHasManyConvention
+    class HasManyConvention : IHasManyConvention
     {
         public void Apply(IOneToManyCollectionInstance instance)
         {
@@ -57,14 +56,14 @@ public class HasManyConventionTests
     }
 }
 
-internal class Target
+class Target
 {
     public int Id { get; set; }
     public IList<Child> Children { get; set; }
     public Child Child { get; set; }
 }
 
-internal class Child
+class Child
 {
     public int Id { get; set; }
 }

@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Steps;
 [TestFixture]
 public class VersionStepTests
 {
-    private VersionStep mapper;
+    VersionStep mapper;
 
     [SetUp]
     public void CreateMapper()
@@ -91,19 +91,19 @@ public class VersionStepTests
         mapping.Version.ContainingEntityType.ShouldEqual(typeof(Target));
     }
 
-    private class Target
+    class Target
     {
         public byte[] Version { get; set; }
     }
 
-    private class SubTarget : Target
+    class SubTarget : Target
     {}
 }
 
 [TestFixture]
 public class When_mapping_a_byte_array_version_property_and_the_version_property_is_on_a_base_class
 {
-    private VersionStep mapper;
+    VersionStep mapper;
 
     [SetUp]
     public void CreateMapper()
@@ -161,11 +161,11 @@ public class When_mapping_a_byte_array_version_property_and_the_version_property
         mapping.Version.UnsavedValue.ShouldEqual(null);
     }
 
-    private class Target : BaseEntityClass
+    class Target : BaseEntityClass
     {
     }
 
-    private class BaseEntityClass
+    class BaseEntityClass
     {
         public byte[] Version { get; set; }
     }

@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.Helpers;
-using FluentNHibernate.Conventions.Inspections;
+﻿using FluentNHibernate.Conventions;
 using FluentNHibernate.Testing.ConventionFinderTests;
 using NUnit.Framework;
 
@@ -13,7 +7,7 @@ namespace FluentNHibernate.Testing.ConventionsTests;
 [TestFixture]
 public class ConventionsCollectionTests
 {
-    private ConventionsCollection collection;
+    ConventionsCollection collection;
 
     [SetUp]
     public void CreateCollection()

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions;
 using NUnit.Framework;
@@ -24,7 +23,7 @@ public class ReferencesConventionTests
             .Columns.First().Name.ShouldEqual("xxx");
     }
 
-    private class FKConvention : ForeignKeyConvention
+    class FKConvention : ForeignKeyConvention
     {
         protected override string GetKeyName(Member property, Type type)
         {

@@ -2,7 +2,7 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class Prefix
 {
-    private readonly string value;
+    readonly string value;
 
     protected Prefix(string value)
     {

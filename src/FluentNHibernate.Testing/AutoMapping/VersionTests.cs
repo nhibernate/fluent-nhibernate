@@ -7,7 +7,7 @@ namespace FluentNHibernate.Testing.Automapping;
 [TestFixture]
 public class VersionTests : BaseAutoPersistenceTests
 {
-    private AutoMappingTester<TEntity> VerifyAutoMap<TEntity>()
+    AutoMappingTester<TEntity> VerifyAutoMap<TEntity>()
     {
         var autoMapper = AutoMap.Source(new StubTypeSource(typeof(TEntity)));
 

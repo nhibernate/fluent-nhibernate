@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Linq;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
@@ -13,7 +12,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class DynamicComponentConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -63,12 +62,12 @@ public class DynamicComponentConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IDynamicComponentInstance> convention)
+    void Convention(Action<IDynamicComponentInstance> convention)
     {
         model.Conventions.Add(new DynamicComponentConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<ComponentMapping> modelVerification)
+    void VerifyModel(Action<ComponentMapping> modelVerification)
     {
         var classMap = new ClassMap<PropertyTarget>();
         classMap.Id(x => x.Id);
@@ -83,7 +82,7 @@ public class DynamicComponentConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = (ComponentMapping)generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(PropertyTarget)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(PropertyTarget)) is not null)
             .Classes.First()
             .Components.First(x => x is ComponentMapping);
 

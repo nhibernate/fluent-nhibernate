@@ -10,7 +10,7 @@ public class ManyToManyTableNameVisitor : DefaultMappingModelVisitor
         if (!(mapping.Relationship is ManyToManyMapping))
             return;
 
-        if (mapping.OtherSide == null)
+        if (mapping.OtherSide is null)
         {
             // uni-directional
             mapping.Set(x => x.TableName, Layer.Defaults, mapping.ChildType.Name + "To" + mapping.ContainingEntityType.Name);

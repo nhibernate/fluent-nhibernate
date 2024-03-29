@@ -8,9 +8,9 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class AnyMapping : MappingBase
+public class AnyMapping(AttributeStore attributes) : MappingBase, IEquatable<AnyMapping>
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
     readonly LayeredColumns typeColumns = new LayeredColumns();
     readonly LayeredColumns identifierColumns = new LayeredColumns();
     readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
@@ -18,11 +18,6 @@ public class AnyMapping : MappingBase
     public AnyMapping()
         : this(new AttributeStore())
     {}
-
-    public AnyMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -38,65 +33,29 @@ public class AnyMapping : MappingBase
             visitor.Visit(column);
     }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string IdType
-    {
-        get { return attributes.GetOrDefault<string>("IdType"); }
-    }
+    public string IdType => attributes.GetOrDefault<string>("IdType");
 
-    public TypeReference MetaType
-    {
-        get { return attributes.GetOrDefault<TypeReference>("MetaType"); }
-    }
+    public TypeReference MetaType => attributes.GetOrDefault<TypeReference>("MetaType");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public bool Insert
-    {
-        get { return attributes.GetOrDefault<bool>("Insert"); }
-    }
+    public bool Insert => attributes.GetOrDefault<bool>("Insert");
 
-    public bool Update
-    {
-        get { return attributes.GetOrDefault<bool>("Update"); }
-    }
+    public bool Update => attributes.GetOrDefault<bool>("Update");
 
-    public string Cascade
-    {
-        get { return attributes.GetOrDefault<string>("Cascade"); }
-    }
+    public string Cascade => attributes.GetOrDefault<string>("Cascade");
 
-    public bool Lazy
-    {
-        get { return attributes.GetOrDefault<bool>("Lazy"); }
-    }
+    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
 
-    public bool OptimisticLock
-    {
-        get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
-    }
+    public bool OptimisticLock => attributes.GetOrDefault<bool>("OptimisticLock");
 
-    public IEnumerable<ColumnMapping> TypeColumns
-    {
-        get { return typeColumns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> TypeColumns => typeColumns.Columns;
 
-    public IEnumerable<ColumnMapping> IdentifierColumns
-    {
-        get { return identifierColumns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> IdentifierColumns => identifierColumns.Columns;
 
-    public IEnumerable<MetaValueMapping> MetaValues
-    {
-        get { return metaValues; }
-    }
+    public IEnumerable<MetaValueMapping> MetaValues => metaValues;
 
     public Type ContainingEntityType { get; set; }
 
@@ -121,7 +80,7 @@ public class AnyMapping : MappingBase
                other.typeColumns.ContentEquals(typeColumns) &&
                other.identifierColumns.ContentEquals(identifierColumns) &&
                other.metaValues.ContentEquals(metaValues) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -134,11 +93,11 @@ public class AnyMapping : MappingBase
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (typeColumns != null ? typeColumns.GetHashCode() : 0);
-            result = (result * 397) ^ (identifierColumns != null ? identifierColumns.GetHashCode() : 0);
-            result = (result * 397) ^ (metaValues != null ? metaValues.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (typeColumns is not null ? typeColumns.GetHashCode() : 0);
+            result = (result * 397) ^ (identifierColumns is not null ? identifierColumns.GetHashCode() : 0);
+            result = (result * 397) ^ (metaValues is not null ? metaValues.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

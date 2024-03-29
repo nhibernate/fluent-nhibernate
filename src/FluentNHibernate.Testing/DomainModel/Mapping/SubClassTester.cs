@@ -1,4 +1,3 @@
-using System;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
@@ -617,7 +616,7 @@ public class SubClassTester
         }
     }
 
-    private class ProxyClass
+    class ProxyClass
     {}
 }
 

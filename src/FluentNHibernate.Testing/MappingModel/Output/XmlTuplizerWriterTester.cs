@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlTuplizerWriterTester
 {
-    private IXmlWriter<TuplizerMapping> writer;
+    IXmlWriter<TuplizerMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()

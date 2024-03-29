@@ -47,7 +47,7 @@ internal static class XmlExtensions
     public static void SetAttributeOnChild(this XmlElement element, string childName, string attName, string attValue)
     {
         XmlElement childElement = element[childName];
-        if (childElement == null)
+        if (childElement is null)
         {
             childElement = element.AddElement(childName);
         }

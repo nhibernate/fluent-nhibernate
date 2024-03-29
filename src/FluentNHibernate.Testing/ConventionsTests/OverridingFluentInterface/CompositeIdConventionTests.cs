@@ -2,11 +2,9 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using NUnit.Framework;
 
@@ -15,9 +13,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
 [TestFixture]
 public class CompositeIdConventionTests
 {
-    private PersistenceModel model;
-    private IMappingProvider mapping;
-    private Type mappingType;
+    PersistenceModel model;
+    IMappingProvider mapping;
+    Type mappingType;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -57,12 +55,12 @@ public class CompositeIdConventionTests
 
     #region Helpers
 
-    private void Convention(Action<ICompositeIdentityInstance> convention)
+    void Convention(Action<ICompositeIdentityInstance> convention)
     {
         model.Conventions.Add(new CompositeIdConventionBuilder().Always(convention));
     }
 
-    private void Mapping<T>(Expression<Func<T, object>> property, Action<CompositeIdentityPart<object>> mappingDefinition)
+    void Mapping<T>(Expression<Func<T, object>> property, Action<CompositeIdentityPart<object>> mappingDefinition)
     {
         var classMap = new ClassMap<T>();
         var map = classMap.CompositeId(property);
@@ -73,13 +71,13 @@ public class CompositeIdConventionTests
         mappingType = typeof(T);
     }
 
-    private void VerifyModel(Action<CompositeIdMapping> modelVerification)
+    void VerifyModel(Action<CompositeIdMapping> modelVerification)
     {
         model.Add(mapping);
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) is not null)
             .Classes.First()
             .Id;
 

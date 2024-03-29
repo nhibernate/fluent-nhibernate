@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
@@ -8,19 +7,14 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class ElementMapping : MappingBase, IHasColumnMappings
+public class ElementMapping(AttributeStore attributes) : MappingBase, IHasColumnMappings, IEquatable<ElementMapping>
 {
     readonly LayeredColumns columns = new LayeredColumns();
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public ElementMapping()
         : this(new AttributeStore())
     { }
-
-    public ElementMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -30,20 +24,11 @@ public class ElementMapping : MappingBase, IHasColumnMappings
             visitor.Visit(column);
     }
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
-    public string Formula
-    {
-        get { return attributes.GetOrDefault<string>("Formula"); }
-    }
+    public string Formula => attributes.GetOrDefault<string>("Formula");
 
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get { return columns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> Columns => columns.Columns;
 
     public void AddColumn(int layer, ColumnMapping mapping)
     {
@@ -63,7 +48,7 @@ public class ElementMapping : MappingBase, IHasColumnMappings
         if (ReferenceEquals(this, other)) return true;
         return other.columns.ContentEquals(columns) &&
                Equals(other.attributes, attributes) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -78,9 +63,9 @@ public class ElementMapping : MappingBase, IHasColumnMappings
     {
         unchecked
         {
-            int result = (columns != null ? columns.GetHashCode() : 0);
-            result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (columns is not null ? columns.GetHashCode() : 0);
+            result = (result * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

@@ -4,16 +4,11 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class HibernateMappingInstance : HibernateMappingInspector, IHibernateMappingInstance
+public class HibernateMappingInstance(HibernateMapping mapping)
+    : HibernateMappingInspector(mapping), IHibernateMappingInstance
 {
-    private readonly HibernateMapping mapping;
-    private bool nextBool = true;
-
-    public HibernateMappingInstance(HibernateMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly HibernateMapping mapping = mapping;
+    bool nextBool = true;
 
     public new void Catalog(string catalog)
     {

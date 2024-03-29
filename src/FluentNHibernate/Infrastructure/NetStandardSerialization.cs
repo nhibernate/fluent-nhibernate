@@ -12,6 +12,7 @@ namespace FluentNHibernate.Infrastructure;
 /// </summary>
 public static class NetStandardSerialization
 {
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     public sealed class TypeSerializationSurrogate : ISurrogateProvider
     {
         public void GetObjectData(object obj, SerializationInfo info, StreamingContext context)
@@ -34,13 +35,13 @@ public static class NetStandardSerialization
         [Serializable]
         internal sealed class TypeReference : IObjectReference
         {
-            private readonly string AssemblyName;
+            readonly string AssemblyName;
 
-            private readonly string FullName;
+            readonly string FullName;
 
             public TypeReference(Type type)
             {
-                if (type == null)
+                if (type is null)
                     throw new ArgumentNullException(nameof(type));
 
                 AssemblyName = type.Assembly.FullName;
@@ -55,6 +56,7 @@ public static class NetStandardSerialization
         }
     }
 
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     public sealed class MemberInfoSerializationSurrogate : ISurrogateProvider
     {
         public void GetObjectData(object obj, SerializationInfo info, StreamingContext context) =>
@@ -70,18 +72,18 @@ public static class NetStandardSerialization
         public bool Handles(Type type, StreamingContext context) => typeof(MemberInfo).IsAssignableFrom(type);
 
         [Serializable]
-        private sealed class MemberInfoReference : IObjectReference
+        sealed class MemberInfoReference : IObjectReference
         {
-            private readonly Type DeclaringType = null;
-            private readonly string Name = null;
-            private readonly MemberTypes MemberType = default(MemberTypes);
-            private readonly BindingFlags BindingAttr = default(BindingFlags);
-            private readonly Type[] GenericParameters = null;
-            private readonly Type[] Parameters = null;
+            readonly Type DeclaringType = null;
+            readonly string Name = null;
+            readonly MemberTypes MemberType = default(MemberTypes);
+            readonly BindingFlags BindingAttr = default(BindingFlags);
+            readonly Type[] GenericParameters = null;
+            readonly Type[] Parameters = null;
 
-            private static BindingFlags GetBindingAttr(MemberInfo member)
+            static BindingFlags GetBindingAttr(MemberInfo member)
             {
-                if (member == null) throw new ArgumentNullException(nameof(member));
+                if (member is null) throw new ArgumentNullException(nameof(member));
                 var bindingFlags = default(BindingFlags);
                 switch (member)
                 {
@@ -118,7 +120,7 @@ public static class NetStandardSerialization
                 }
             }
 
-            private bool MatchMethodSignature(MethodBase method)
+            bool MatchMethodSignature(MethodBase method)
             {
                 Debug.Assert(method.Name == Name);
                 var gpa = method.GetGenericArguments();
@@ -142,7 +144,7 @@ public static class NetStandardSerialization
                 if (MemberType == MemberTypes.Method || MemberType == MemberTypes.Constructor)
                 {
                     var methods = DeclaringType.GetMember(Name, MemberType, BindingAttr | BindingFlags.DeclaredOnly);
-                    if (Parameters.Any(t => t == null))
+                    if (Parameters.Any(t => t is null))
                         throw new ArgumentException("Detected null argument type in the method signature.",
                             nameof(Parameters));
                     if (Parameters.Any(t => t.IsGenericParameter))
@@ -166,16 +168,11 @@ public static class NetStandardSerialization
         }
     }
 
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     public sealed class SurrogateSelector : ISurrogateSelector
     {
-        private readonly ISurrogateProvider _typeSerializationProvider;
-        private readonly ISurrogateProvider _memberInfoSerializationProvider;
-
-        public SurrogateSelector()
-        {
-            _typeSerializationProvider = new TypeSerializationSurrogate();
-            _memberInfoSerializationProvider = new MemberInfoSerializationSurrogate();
-        }
+        readonly ISurrogateProvider _typeSerializationProvider = new TypeSerializationSurrogate();
+        readonly ISurrogateProvider _memberInfoSerializationProvider = new MemberInfoSerializationSurrogate();
 
         void ISurrogateSelector.ChainSelector(ISurrogateSelector selector) => throw new NotImplementedException();
 

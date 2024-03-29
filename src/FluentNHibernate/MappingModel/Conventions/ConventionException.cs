@@ -6,21 +6,14 @@ namespace FluentNHibernate.MappingModel.Conventions;
 [Serializable]
 public class ConventionException : Exception
 {
-    private readonly object conventionTarget;
-
     public ConventionException(string message, object conventionTarget) : base(message)
     {
-        this.conventionTarget = conventionTarget;
+        this.ConventionTarget = conventionTarget;
     }
 
-    protected ConventionException(
-        SerializationInfo info,
-        StreamingContext context) : base(info, context)
-    {
-    }
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
+    protected ConventionException(SerializationInfo info, StreamingContext context) : base(info, context)
+    { }
 
-    public object ConventionTarget
-    {
-        get { return conventionTarget; }
-    }
+    public object ConventionTarget { get; }
 }

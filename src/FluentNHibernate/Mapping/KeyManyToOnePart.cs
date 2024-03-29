@@ -7,8 +7,8 @@ namespace FluentNHibernate.Mapping;
 
 public class KeyManyToOnePart
 {
-    private readonly KeyManyToOneMapping mapping;
-    private bool nextBool = true;
+    readonly KeyManyToOneMapping mapping;
+    bool nextBool = true;
 
     public KeyManyToOnePart(KeyManyToOneMapping mapping)
     {
@@ -39,9 +39,9 @@ public class KeyManyToOnePart
     /// <summary>
     /// Defines how NHibernate will access the object for persisting/hydrating (Defaults to Property)
     /// </summary>
-    public AccessStrategyBuilder<KeyManyToOnePart> Access { get; private set; }
+    public AccessStrategyBuilder<KeyManyToOnePart> Access { get; }
 
-    public NotFoundExpression<KeyManyToOnePart> NotFound { get; private set; }
+    public NotFoundExpression<KeyManyToOnePart> NotFound { get; }
 
     public KeyManyToOnePart Lazy()
     {

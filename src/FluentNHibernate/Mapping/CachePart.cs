@@ -4,15 +4,9 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping;
 
-public class CachePart : ICacheMappingProvider
+public class CachePart(Type entityType) : ICacheMappingProvider
 {
-    readonly Type entityType;
     readonly AttributeStore attributes = new AttributeStore();
-
-    public CachePart(Type entityType)
-    {
-        this.entityType = entityType;
-    }
 
     /// <summary>
     /// Sets caching to read-write
@@ -99,10 +93,7 @@ public class CachePart : ICacheMappingProvider
         return this;
     }
 
-    internal bool IsDirty
-    {
-        get { return attributes.IsSpecified("Region") || attributes.IsSpecified("Usage") || attributes.IsSpecified("Include"); }
-    }
+    internal bool IsDirty => attributes.IsSpecified("Region") || attributes.IsSpecified("Usage") || attributes.IsSpecified("Include");
 
     CacheMapping ICacheMappingProvider.GetCacheMapping()
     {

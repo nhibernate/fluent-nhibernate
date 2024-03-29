@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlCacheWriterTester
 {
-    private XmlCacheWriter writer;
+    XmlCacheWriter writer;
 
     [Test]
     public void ShouldWriteRegionAttribute()

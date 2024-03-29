@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Utils;
 
 public class PropertyChain : Accessor
 {
-    private readonly Member[] _chain;
-    private readonly SingleMember innerMember;
+    readonly Member[] _chain;
+    readonly SingleMember innerMember;
 
     public PropertyChain(Member[] members)
     {
@@ -27,7 +25,7 @@ public class PropertyChain : Accessor
     public void SetValue(object target, object propertyValue)
     {
         target = findInnerMostTarget(target);
-        if (target == null)
+        if (target is null)
         {
             return;
         }
@@ -39,7 +37,7 @@ public class PropertyChain : Accessor
     {
         target = findInnerMostTarget(target);
 
-        if (target == null)
+        if (target is null)
         {
             return null;
         }
@@ -47,20 +45,11 @@ public class PropertyChain : Accessor
         return innerMember.GetValue(target);
     }
 
-    public string FieldName
-    {
-        get { return innerMember.FieldName; }
-    }
+    public string FieldName => innerMember.FieldName;
 
-    public Type PropertyType
-    {
-        get { return innerMember.PropertyType; }
-    }
+    public Type PropertyType => innerMember.PropertyType;
 
-    public Member InnerMember
-    {
-        get { return innerMember.InnerMember; }
-    }
+    public Member InnerMember => innerMember.InnerMember;
 
     public Accessor GetChildAccessor<T>(Expression<Func<T, object>> expression)
     {
@@ -90,12 +79,12 @@ public class PropertyChain : Accessor
 
     #endregion
 
-    private object findInnerMostTarget(object target)
+    object findInnerMostTarget(object target)
     {
         foreach (var info in _chain)
         {
             target = info.GetValue(target);
-            if (target == null)
+            if (target is null)
             {
                 return null;
             }

@@ -47,7 +47,7 @@ public static class Reveal
         var member = type.GetInstanceMembers()
             .FirstOrDefault(x => x.Name == propertyName);
 
-        if (member == null)
+        if (member is null)
             throw new UnknownPropertyException(type, propertyName);
 
         var param = Expression.Parameter(member.DeclaringType, "x");

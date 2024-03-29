@@ -6,17 +6,11 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class CompositeIdentityInstance : CompositeIdentityInspector, ICompositeIdentityInstance
+public class CompositeIdentityInstance(CompositeIdMapping mapping)
+    : CompositeIdentityInspector(mapping), ICompositeIdentityInstance
 {
-    private readonly CompositeIdMapping mapping;
-    private bool nextBool = true;
-
-
-    public CompositeIdentityInstance(CompositeIdMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly CompositeIdMapping mapping = mapping;
+    bool nextBool = true;
 
 
     public new void UnsavedValue(string unsavedValue)
@@ -50,8 +44,7 @@ public class CompositeIdentityInstance : CompositeIdentityInspector, ICompositeI
         {
             return mapping.Keys
                 .Where(x => x is KeyPropertyMapping)
-                .Select(x => new KeyPropertyInstance((KeyPropertyMapping)x))
-                .Cast<IKeyPropertyInstance>();
+                .Select(x => new KeyPropertyInstance((KeyPropertyMapping)x));
         }
     }
 
@@ -61,8 +54,7 @@ public class CompositeIdentityInstance : CompositeIdentityInspector, ICompositeI
         {
             return mapping.Keys
                 .Where(x => x is KeyManyToOneMapping)
-                .Select(x => new KeyManyToOneInstance((KeyManyToOneMapping)x))
-                .Cast<IKeyManyToOneInstance>();
+                .Select(x => new KeyManyToOneInstance((KeyManyToOneMapping)x));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlDiscriminatorWriterTester
 {
-    private IXmlWriter<DiscriminatorMapping> writer;
+    IXmlWriter<DiscriminatorMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()

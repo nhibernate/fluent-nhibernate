@@ -10,7 +10,7 @@ namespace FluentNHibernate.Testing.AutoMapping.Overrides;
 [TestFixture]
 public class AutoMappingOverrideAlterationTests
 {
-    private AutoMappingOverrideAlteration alteration;
+    AutoMappingOverrideAlteration alteration;
 
     [SetUp]
     public void CreateOverride()

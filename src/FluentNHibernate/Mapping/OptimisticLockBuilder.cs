@@ -4,7 +4,7 @@ namespace FluentNHibernate.Mapping;
 
 public class OptimisticLockBuilder
 {
-    private readonly Action<string> setter;
+    readonly Action<string> setter;
 
     protected OptimisticLockBuilder(Action<string> setter)
     {
@@ -44,16 +44,8 @@ public class OptimisticLockBuilder
     }
 }
 
-public class OptimisticLockBuilder<TParent> : OptimisticLockBuilder
+public class OptimisticLockBuilder<TParent>(TParent parent, Action<string> setter) : OptimisticLockBuilder(setter)
 {
-    private readonly TParent parent;
-
-    public OptimisticLockBuilder(TParent parent, Action<string> setter)
-        : base(setter)
-    {
-        this.parent = parent;
-    }
-
     /// <summary>
     /// Use no locking strategy
     /// </summary>

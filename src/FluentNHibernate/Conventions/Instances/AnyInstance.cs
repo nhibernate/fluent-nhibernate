@@ -3,14 +3,9 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class AnyInstance : AnyInspector, IAnyInstance
+public class AnyInstance(AnyMapping mapping) : AnyInspector(mapping), IAnyInstance
 {
-    private readonly AnyMapping mapping;
-
-    public AnyInstance(AnyMapping mapping) : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly AnyMapping mapping = mapping;
 
     public new IAccessInstance Access
     {

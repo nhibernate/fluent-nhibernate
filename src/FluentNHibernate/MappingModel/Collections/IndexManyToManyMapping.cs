@@ -7,19 +7,14 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class IndexManyToManyMapping : MappingBase, IIndexMapping, IHasColumnMappings
+public class IndexManyToManyMapping(AttributeStore attributes) : MappingBase, IIndexMapping, IHasColumnMappings, IEquatable<IndexManyToManyMapping>
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
     readonly LayeredColumns columns = new LayeredColumns();
 
     public IndexManyToManyMapping()
         : this(new AttributeStore())
     {}
-
-    public IndexManyToManyMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -31,15 +26,9 @@ public class IndexManyToManyMapping : MappingBase, IIndexMapping, IHasColumnMapp
 
     public Type ContainingEntityType { get; set; }
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get { return columns.Columns; }
-    }
+    public IEnumerable<ColumnMapping> Columns => columns.Columns;
 
     public void AddColumn(int layer, ColumnMapping mapping)
     {
@@ -51,15 +40,9 @@ public class IndexManyToManyMapping : MappingBase, IIndexMapping, IHasColumnMapp
         columns.MakeColumnsEmpty(layer);
     }
 
-    public string ForeignKey
-    {
-        get { return attributes.GetOrDefault<string>("ForeignKey"); }
-    }
+    public string ForeignKey => attributes.GetOrDefault<string>("ForeignKey");
 
-    public string EntityName
-    {
-        get { return attributes.GetOrDefault<string>("EntityName"); }
-    }     
+    public string EntityName => attributes.GetOrDefault<string>("EntityName");
 
     public bool Equals(IndexManyToManyMapping other)
     {
@@ -67,7 +50,7 @@ public class IndexManyToManyMapping : MappingBase, IIndexMapping, IHasColumnMapp
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.columns.ContentEquals(columns) &&
-               Equals(other.ContainingEntityType, ContainingEntityType);
+               other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -82,9 +65,9 @@ public class IndexManyToManyMapping : MappingBase, IIndexMapping, IHasColumnMapp
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (columns != null ? columns.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (columns is not null ? columns.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

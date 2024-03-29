@@ -13,9 +13,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
 [TestFixture]
 public class ArrayConventionTests
 {
-    private PersistenceModel model;
-    private IMappingProvider mapping;
-    private Type mappingType;
+    PersistenceModel model;
+    IMappingProvider mapping;
+    Type mappingType;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -196,13 +196,13 @@ public class ArrayConventionTests
     #region Helpers
 
 #pragma warning disable 612,618
-    private void Convention(Action<IArrayInstance> convention)
+    void Convention(Action<IArrayInstance> convention)
     {
         model.Conventions.Add(new ArrayConventionBuilder().Always(convention));
     }
 #pragma warning restore 612,618
 
-    private void Mapping(Action<OneToManyPart<ExampleClass>> mappingDefinition)
+    void Mapping(Action<OneToManyPart<ExampleClass>> mappingDefinition)
     {
         var classMap = new ClassMap<ExampleParentClass>();
         classMap.Id(x => x.Id);
@@ -215,13 +215,13 @@ public class ArrayConventionTests
         mappingType = typeof(ExampleParentClass);
     }
 
-    private void VerifyModel(Action<CollectionMapping> modelVerification)
+    void VerifyModel(Action<CollectionMapping> modelVerification)
     {
         model.Add(mapping);
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) is not null)
             .Classes.First()
             .Collections.First();
 

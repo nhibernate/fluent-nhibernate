@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Xml;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Diagnostics;
@@ -31,7 +30,7 @@ public class PersistenceModel
         new ComponentMapComponentReferenceResolver()
     };
     private readonly IList<IMappingModelVisitor> visitors = new List<IMappingModelVisitor>();
-    public IConventionFinder Conventions { get; private set; }
+    public IConventionFinder Conventions { get; }
     public bool MergeMappings { get; set; }
     private IEnumerable<HibernateMapping> compiledMappings;
     private ValidationVisitor validationVisitor;
@@ -216,7 +215,7 @@ public class PersistenceModel
 
     private void EnsureMappingsBuilt()
     {
-        if (compiledMappings != null) return;
+        if (compiledMappings is not null) return;
 
         compiledMappings = BuildMappings();
     }
@@ -266,7 +265,7 @@ public class PersistenceModel
             }
             finally
             {
-                if(shouldDispose && xmlWriter != null)
+                if(shouldDispose && xmlWriter is not null)
                     xmlWriter.Close();
             }
         }
@@ -288,7 +287,7 @@ public class PersistenceModel
             var serializer = new MappingXmlSerializer();
             XmlDocument document = serializer.Serialize(mapping);
 
-            if (cfg.GetClassMapping(mapping.Classes.First().Type) == null)
+            if (cfg.GetClassMapping(mapping.Classes.First().Type) is null)
                 cfg.AddDocument(document);
         }
     }
@@ -306,8 +305,8 @@ public class PersistenceModel
     /// </summary>
     public bool ValidationEnabled
     {
-        get { return validationVisitor.Enabled; }
-        set { validationVisitor.Enabled = value; }
+        get => validationVisitor.Enabled;
+        set => validationVisitor.Enabled = value;
     }
 
     internal void ImportProviders(PersistenceModel model)
@@ -340,15 +339,8 @@ public interface IMappingProvider
     IEnumerable<Member> GetIgnoredProperties();
 }
 
-public class PassThroughMappingProvider : IMappingProvider
+public class PassThroughMappingProvider(ClassMapping mapping) : IMappingProvider
 {
-    private readonly ClassMapping mapping;
-
-    public PassThroughMappingProvider(ClassMapping mapping)
-    {
-        this.mapping = mapping;
-    }
-
     public ClassMapping GetClassMapping()
     {
         return mapping;

@@ -3,14 +3,10 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.MappingModel.Output;
 
-public class XmlStoredProcedureWriter : XmlClassWriterBase, IXmlWriter<StoredProcedureMapping>
+public class XmlStoredProcedureWriter(IXmlWriterServiceLocator serviceLocator)
+    : XmlClassWriterBase(serviceLocator), IXmlWriter<StoredProcedureMapping>
 {
-    private readonly IXmlWriterServiceLocator serviceLocator;
-
-    public XmlStoredProcedureWriter(IXmlWriterServiceLocator serviceLocator) : base(serviceLocator)
-    {
-        this.serviceLocator = serviceLocator;
-    }
+    readonly IXmlWriterServiceLocator serviceLocator = serviceLocator;
 
     public XmlDocument Write(StoredProcedureMapping mappingModel)
     {

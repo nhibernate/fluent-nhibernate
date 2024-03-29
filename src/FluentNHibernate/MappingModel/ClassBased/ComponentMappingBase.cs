@@ -4,23 +4,17 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public abstract class ComponentMappingBase : ClassMappingBase
+public abstract class ComponentMappingBase(AttributeStore attributes) : ClassMappingBase(attributes)
 {
-    private readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     protected ComponentMappingBase()
         : this(new AttributeStore())
     {}
 
-    protected ComponentMappingBase(AttributeStore attributes)
-        : base(attributes)
-    {
-        this.attributes = attributes;
-    }
-
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
-        if (Parent != null)
+        if (Parent is not null)
             visitor.Visit(Parent);
 
         base.AcceptVisitor(visitor);
@@ -29,35 +23,17 @@ public abstract class ComponentMappingBase : ClassMappingBase
     public Type ContainingEntityType { get; set; }
     public Member Member { get; set; }
 
-    public ParentMapping Parent
-    {
-        get { return attributes.GetOrDefault<ParentMapping>("Parent"); }
-    }
+    public ParentMapping Parent => attributes.GetOrDefault<ParentMapping>("Parent");
 
-    public bool Unique
-    {
-        get { return attributes.GetOrDefault<bool>("Unique"); }
-    }
+    public bool Unique => attributes.GetOrDefault<bool>("Unique");
 
-    public bool Insert
-    {
-        get { return attributes.GetOrDefault<bool>("Insert"); }
-    }
+    public bool Insert => attributes.GetOrDefault<bool>("Insert");
 
-    public bool Update
-    {
-        get { return attributes.GetOrDefault<bool>("Update"); }
-    }
+    public bool Update => attributes.GetOrDefault<bool>("Update");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public bool OptimisticLock
-    {
-        get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
-    }
+    public bool OptimisticLock => attributes.GetOrDefault<bool>("OptimisticLock");
 
     public bool Equals(ComponentMappingBase other)
     {
@@ -65,7 +41,7 @@ public abstract class ComponentMappingBase : ClassMappingBase
         if (ReferenceEquals(this, other)) return true;
         return base.Equals(other) &&
                Equals(other.attributes, attributes) &&
-               Equals(other.ContainingEntityType, ContainingEntityType) &&
+               other.ContainingEntityType == ContainingEntityType &&
                Equals(other.Member, Member);
     }
 
@@ -81,9 +57,9 @@ public abstract class ComponentMappingBase : ClassMappingBase
         unchecked
         {
             int result = base.GetHashCode();
-            result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
-            result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+            result = (result * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
+            result = (result * 397) ^ (Member is not null ? Member.GetHashCode() : 0);
             return result;
         }
     }

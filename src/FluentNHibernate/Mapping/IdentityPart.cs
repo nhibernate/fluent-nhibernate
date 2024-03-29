@@ -14,7 +14,6 @@ public class IdentityPart : IIdentityMappingProvider
     readonly IList<string> columns = new List<string>();
     Member member;
     readonly Type entityType;
-    readonly AccessStrategyBuilder<IdentityPart> access;
     readonly AttributeStore attributes = new AttributeStore();
     Type identityType;
     bool nextBool = true;
@@ -26,7 +25,7 @@ public class IdentityPart : IIdentityMappingProvider
         this.member = member;
         identityType = member.PropertyType;
 
-        access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+        Access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
         GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, member.PropertyType, entityType);
         SetName(member.Name);
         SetDefaultGenerator();
@@ -38,7 +37,7 @@ public class IdentityPart : IIdentityMappingProvider
         this.entityType = entity;
         this.identityType = identityType;
 
-        access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
+        Access = new AccessStrategyBuilder<IdentityPart>(this, value => attributes.Set("Access", Layer.UserSupplied, value));
         GeneratedBy = new IdentityGenerationStrategyBuilder<IdentityPart>(this, this.identityType, entity);
 
         SetDefaultGenerator();
@@ -61,15 +60,12 @@ public class IdentityPart : IIdentityMappingProvider
     /// Id("PersonId")
     ///   .GeneratedBy.Assigned();
     /// </example>
-    public IdentityGenerationStrategyBuilder<IdentityPart> GeneratedBy { get; private set; }
+    public IdentityGenerationStrategyBuilder<IdentityPart> GeneratedBy { get; }
 
     /// <summary>
     /// Set the access and naming strategy for this identity.
     /// </summary>
-    public AccessStrategyBuilder<IdentityPart> Access
-    {
-        get { return access; }
-    }
+    public AccessStrategyBuilder<IdentityPart> Access { get; }
 
     /// <summary>
     /// Invert the next boolean operation
@@ -249,10 +245,7 @@ public class IdentityPart : IIdentityMappingProvider
         name = newName;
     }
 
-    bool HasNameSpecified
-    {
-        get { return !string.IsNullOrEmpty(name); }
-    }
+    bool HasNameSpecified => !string.IsNullOrEmpty(name);
 
     void SetDefaultGenerator()
     {
@@ -292,7 +285,7 @@ public class IdentityPart : IIdentityMappingProvider
             mapping.AddColumn(Layer.Defaults, columnMapping);
         }
 
-        if (member != null)
+        if (member is not null)
             mapping.Set(x => x.Name, Layer.Defaults, name);
 
         mapping.Set(x => x.Type, Layer.Defaults, new TypeReference(identityType));

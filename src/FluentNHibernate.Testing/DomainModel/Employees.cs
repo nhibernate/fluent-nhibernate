@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FluentNHibernate.Testing.DomainModel;
+﻿namespace FluentNHibernate.Testing.DomainModel;
 
 public abstract class Employee
 {
@@ -23,7 +18,7 @@ public class CasualEmployee : Employee
 
 public class Money
 {
-    private Money()
+    Money()
     { }
 
     public Money(decimal amount, string currency)

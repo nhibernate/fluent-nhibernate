@@ -12,8 +12,8 @@ namespace FluentNHibernate.Testing.ConventionsTests;
 [TestFixture]
 public class OptionalAcceptTests
 {
-    private DefaultConventionFinder conventions;
-    private ConventionVisitor visitor;
+    DefaultConventionFinder conventions;
+    ConventionVisitor visitor;
 
     [SetUp]
     public void CreateVisitor()
@@ -58,7 +58,7 @@ public class OptionalAcceptTests
         mapping.IsSpecified("TableName").ShouldBeTrue();
     }
 
-    private class ConventionWithFailingAccept : IClassConvention, IConventionAcceptance<IClassInspector>
+    class ConventionWithFailingAccept : IClassConvention, IConventionAcceptance<IClassInspector>
     {
         public void Accept(IAcceptanceCriteria<IClassInspector> criteria)
         {
@@ -71,7 +71,7 @@ public class OptionalAcceptTests
         }
     }
 
-    private class ConventionWithSuccessfulAccept : IClassConvention, IConventionAcceptance<IClassInspector>
+    class ConventionWithSuccessfulAccept : IClassConvention, IConventionAcceptance<IClassInspector>
     {
         public void Accept(IAcceptanceCriteria<IClassInspector> criteria)
         {
@@ -84,7 +84,7 @@ public class OptionalAcceptTests
         }
     }
 
-    private class ConventionWithNoAccept : IClassConvention
+    class ConventionWithNoAccept : IClassConvention
     {
         public void Apply(IClassInstance instance)
         {

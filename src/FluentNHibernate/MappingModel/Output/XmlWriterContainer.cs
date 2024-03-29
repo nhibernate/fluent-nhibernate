@@ -110,7 +110,7 @@ public class XmlWriterContainer : Container
             new XmlTuplizerWriter());
     }
 
-    private void RegisterIdWriters()
+    void RegisterIdWriters()
     {
         RegisterWriter<IIdentityMapping>(c =>
             new XmlIdentityBasedWriter(c.Resolve<IXmlWriterServiceLocator>()));
@@ -131,7 +131,7 @@ public class XmlWriterContainer : Container
             new XmlKeyManyToOneWriter(c.Resolve<IXmlWriterServiceLocator>()));
     }
 
-    private void RegisterComponentWriters()
+    void RegisterComponentWriters()
     {
         RegisterWriter<IComponentMapping>(c =>
             new XmlComponentWriter(c.Resolve<IXmlWriterServiceLocator>()));
@@ -140,7 +140,7 @@ public class XmlWriterContainer : Container
             new XmlReferenceComponentWriter(c.Resolve<IXmlWriterServiceLocator>()));
     }
 
-    private void RegisterWriter<T>(Func<Container, object> instantiate)
+    void RegisterWriter<T>(Func<Container, object> instantiate)
     {
         Register<IXmlWriter<T>>(instantiate);
     }

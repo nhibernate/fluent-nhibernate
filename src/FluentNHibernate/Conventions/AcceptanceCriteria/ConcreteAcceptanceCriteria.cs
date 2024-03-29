@@ -11,7 +11,7 @@ namespace FluentNHibernate.Conventions.AcceptanceCriteria;
 public class ConcreteAcceptanceCriteria<TInspector> : IAcceptanceCriteria<TInspector>
     where TInspector : IInspector
 {
-    private readonly List<IExpectation> expectations = new List<IExpectation>();
+    readonly List<IExpectation> expectations = new List<IExpectation>();
 
     public IAcceptanceCriteria<TInspector> SameAs<T>() where T : IConventionAcceptance<TInspector>, new()
     {
@@ -98,10 +98,7 @@ public class ConcreteAcceptanceCriteria<TInspector> : IAcceptanceCriteria<TInspe
         return Any(subCriteriaA, subCriteriaB);
     }
 
-    public IEnumerable<IExpectation> Expectations
-    {
-        get { return expectations; }
-    }
+    public IEnumerable<IExpectation> Expectations => expectations;
 
     public bool Matches(IInspector inspector)
     {

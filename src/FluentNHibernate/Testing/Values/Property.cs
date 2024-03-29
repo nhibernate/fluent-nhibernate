@@ -14,42 +14,28 @@ public abstract class Property<T>
     {}
 }
 
-public class Property<T, TProperty> : Property<T>
+public class Property<T, TProperty>(Accessor property, TProperty value) : Property<T>
 {
     private static readonly Action<T, Accessor, TProperty> DefaultValueSetter = (target, propertyAccessor, value) => propertyAccessor.SetValue (target, value);
-    private readonly Accessor _propertyAccessor;
-    private readonly TProperty _value;
     private Action<T, Accessor, TProperty> _valueSetter;
-
-    public Property(Accessor property, TProperty value)
-    {
-        _propertyAccessor = property;
-        _value = value;
-    }
 
     public virtual Action<T, Accessor, TProperty> ValueSetter
     {
         get
         {
-            if (_valueSetter != null)
+            if (_valueSetter is not null)
             {
                 return _valueSetter;
             }
 
             return DefaultValueSetter;
         }
-        set { _valueSetter = value; }
+        set => _valueSetter = value;
     }
 
-    protected Accessor PropertyAccessor
-    {
-        get { return _propertyAccessor; }
-    }
+    protected Accessor PropertyAccessor { get; } = property;
 
-    protected TProperty Value
-    {
-        get { return _value; }
-    }
+    protected TProperty Value { get; } = value;
 
     public override void SetValue(T target)
     {
@@ -59,7 +45,7 @@ public class Property<T, TProperty> : Property<T>
         }
         catch (Exception e)
         {
-            string message = "Error while trying to set property " + _propertyAccessor.Name;
+            string message = "Error while trying to set property " + PropertyAccessor.Name;
             throw new ApplicationException(message, e);
         }
     }
@@ -70,10 +56,10 @@ public class Property<T, TProperty> : Property<T>
 
         bool areEqual;
             
-        if (EntityEqualityComparer != null)
+        if (EntityEqualityComparer is not null)
             areEqual = EntityEqualityComparer.Equals(Value, actual);
-        else if (Value == null)
-            areEqual = actual == null;
+        else if (Value is null)
+            areEqual = actual is null;
         else
             areEqual = Value.Equals(actual);
 
@@ -87,11 +73,11 @@ public class Property<T, TProperty> : Property<T>
     {
         string message;
 
-        string actualToPrint = actual != null ? actual.ToString() : "(null)";
+        string actualToPrint = actual is not null ? actual.ToString() : "(null)";
         string actualTypeToPrint = PropertyAccessor.PropertyType.FullName;
 
-        string valueToPrint = Value != null ? Value.ToString() : "(null)";
-        string valueTypeToPrint = Value != null ? Value.GetType().FullName : "(null)";
+        string valueToPrint = Value is not null ? Value.ToString() : "(null)";
+        string valueTypeToPrint = Value is not null ? Value.GetType().FullName : "(null)";
 
         if (actualToPrint != valueToPrint && actualTypeToPrint != valueTypeToPrint)
         {

@@ -1,4 +1,3 @@
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Output;
@@ -10,7 +9,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlStoredProcedureWriterTester
 {
-    private IXmlWriter<ClassMapping> writer;
+    IXmlWriter<ClassMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()
@@ -33,14 +32,12 @@ public class XmlStoredProcedureWriterTester
     [Test]
     public void ShouldWriteCheckAttribute()
     {
-        IXmlWriter<StoredProcedureMapping> writer;
         var container = new XmlWriterContainer();
-        writer = container.Resolve<IXmlWriter<StoredProcedureMapping>>();
+        var w = container.Resolve<IXmlWriter<StoredProcedureMapping>>();
 
         var testHelper = new XmlWriterTestHelper<StoredProcedureMapping>();
         testHelper.Check(x => x.Check, "none").MapsToAttribute("check");
 
-        testHelper.VerifyAll(writer);
+        testHelper.VerifyAll(w);
     }
-
 }

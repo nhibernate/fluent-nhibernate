@@ -37,14 +37,8 @@ public class Album
     public int ID { get; set; }
     public string Title { get; set;}
     public Artist Artist { get; set; }
-    public ISet<Track> Tracks { get; set; }
-    public ISet<Tag> Tags { get; set; }
-
-    public Album()
-    {
-        Tracks = new HashSet<Track>();
-        Tags =   new HashSet<Tag>();
-    }
+    public ISet<Track> Tracks { get; set; } = new HashSet<Track>();
+    public ISet<Tag> Tags { get; set; } = new HashSet<Tag>();
 }
 
 public class Track

@@ -1,6 +1,8 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class Cascade
+public class Cascade : IEquatable<Cascade>
 {
     public static readonly Cascade Unset = new Cascade("");
     public static readonly Cascade All = new Cascade("all");
@@ -10,10 +12,10 @@ public class Cascade
     public static readonly Cascade Delete = new Cascade("delete");
     public static readonly Cascade Merge = new Cascade("merge");
     public static readonly Cascade Replicate = new Cascade("replicate");
-        
-    private readonly string value;
 
-    private Cascade(string value)
+    readonly string value;
+
+    Cascade(string value)
     {
         this.value = value;
     }
@@ -32,7 +34,7 @@ public class Cascade
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(Cascade x, Cascade y)

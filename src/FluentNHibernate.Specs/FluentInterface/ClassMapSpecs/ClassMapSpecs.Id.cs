@@ -30,7 +30,7 @@ public class when_class_map_is_told_to_map_an_id_without_a_property_or_column : 
 
     static ClassMapping mapping;
 
-    static IdMapping Id { get { return mapping.Id as IdMapping; }}
+    static IdMapping Id => mapping.Id as IdMapping;
 }
 
 public class when_class_map_has_a_composite_id_with_a_key_reference_with_multiple_columns : ProviderSpec

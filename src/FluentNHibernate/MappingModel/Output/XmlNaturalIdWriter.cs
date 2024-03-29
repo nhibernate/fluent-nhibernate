@@ -4,15 +4,10 @@ using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.MappingModel.Output;
 
-public class XmlNaturalIdWriter : NullMappingModelVisitor, IXmlWriter<NaturalIdMapping>
+public class XmlNaturalIdWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<NaturalIdMapping>
 {
-    private IXmlWriterServiceLocator serviceLocator;
-    private XmlDocument document;
-
-    public XmlNaturalIdWriter(IXmlWriterServiceLocator serviceLocator)
-    {
-        this.serviceLocator = serviceLocator;
-    }
+    XmlDocument document;
 
     public XmlDocument Write(NaturalIdMapping mappingModel)
     {

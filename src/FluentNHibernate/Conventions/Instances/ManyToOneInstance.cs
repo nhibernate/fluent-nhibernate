@@ -7,21 +7,15 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class ManyToOneInstance : ManyToOneInspector, IManyToOneInstance
+public class ManyToOneInstance(ManyToOneMapping mapping) : ManyToOneInspector(mapping), IManyToOneInstance
 {
-    private readonly ManyToOneMapping mapping;
-    private bool nextBool = true;
-
-    public ManyToOneInstance(ManyToOneMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly ManyToOneMapping mapping = mapping;
+    bool nextBool = true;
 
     public void Column(string columnName)
     {
         var originalColumn = mapping.Columns.FirstOrDefault();
-        var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
+        var column = originalColumn is null ? new ColumnMapping() : originalColumn.Clone();
 
         column.Set(x => x.Name, Layer.Conventions, columnName);
 

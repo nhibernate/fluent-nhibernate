@@ -6,12 +6,9 @@ namespace FluentNHibernate.MappingModel.ClassBased;
 /// A component that is declared external to a class mapping.
 /// </summary>
 [Serializable]
-public class ExternalComponentMapping : ComponentMapping
+public class ExternalComponentMapping(ComponentType componentType, AttributeStore underlyingStore, Member member)
+    : ComponentMapping(componentType, underlyingStore, member)
 {
     public ExternalComponentMapping(ComponentType componentType): this(componentType, new AttributeStore(), null)
-    {}
-
-    public ExternalComponentMapping(ComponentType componentType, AttributeStore underlyingStore, Member member)
-        : base(componentType, underlyingStore, member)
     {}
 }

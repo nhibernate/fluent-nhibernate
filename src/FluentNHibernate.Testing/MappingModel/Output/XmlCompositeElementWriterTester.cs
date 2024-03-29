@@ -1,9 +1,6 @@
-﻿using System.Linq;
-using System.Xml;
-using FluentNHibernate.MappingModel;
+﻿using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Output;
-using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
@@ -12,7 +9,7 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlCompositeElementWriterTester
 {
-    private IXmlWriter<CompositeElementMapping> writer;
+    IXmlWriter<CompositeElementMapping> writer;
 
     [SetUp]
     public void GetWriterFromContainer()

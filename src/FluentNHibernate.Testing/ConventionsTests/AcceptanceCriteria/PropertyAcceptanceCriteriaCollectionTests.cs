@@ -2,7 +2,6 @@ using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria;
@@ -10,7 +9,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria;
 [TestFixture]
 public class PropertyAcceptanceCriteriaCollectionTests
 {
-    private IAcceptanceCriteria<IPropertyInspector> acceptance;
+    IAcceptanceCriteria<IPropertyInspector> acceptance;
 
     [SetUp]
     public void CreateAcceptanceCriteria()

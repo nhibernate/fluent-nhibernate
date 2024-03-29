@@ -4,21 +4,9 @@ using System.Reflection;
 
 namespace FluentNHibernate;
 
-internal sealed class DummyMethodInfo : MethodInfo
+internal sealed class DummyMethodInfo(string name, Type type) : MethodInfo
 {
-    private readonly string name;
-    private readonly Type type;
-
-    public DummyMethodInfo(string name, Type type)
-    {
-        this.name = name;
-        this.type = type;
-    }
-
-    public override Type ReturnType
-    {
-        get { return type; }
-    }
+    public override Type ReturnType { get; } = type;
 
     public override object[] GetCustomAttributes(bool inherit)
     {
@@ -50,35 +38,17 @@ internal sealed class DummyMethodInfo : MethodInfo
         return null;
     }
 
-    public override ICustomAttributeProvider ReturnTypeCustomAttributes
-    {
-        get { return null; }
-    }
+    public override ICustomAttributeProvider ReturnTypeCustomAttributes => null;
 
-    public override string Name
-    {
-        get { return name; }
-    }
+    public override string Name { get; } = name;
 
-    public override Type DeclaringType
-    {
-        get { return null; }
-    }
+    public override Type DeclaringType => null;
 
-    public override Type ReflectedType
-    {
-        get { return null; }
-    }
+    public override Type ReflectedType => null;
 
-    public override RuntimeMethodHandle MethodHandle
-    {
-        get { return new RuntimeMethodHandle(); }
-    }
+    public override RuntimeMethodHandle MethodHandle => new();
 
-    public override MethodAttributes Attributes
-    {
-        get { return MethodAttributes.Public; }
-    }
+    public override MethodAttributes Attributes => MethodAttributes.Public;
 
     public override object[] GetCustomAttributes(Type attributeType, bool inherit)
     {

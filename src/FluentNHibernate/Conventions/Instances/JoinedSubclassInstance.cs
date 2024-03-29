@@ -7,22 +7,16 @@ using NHibernate.Persister.Entity;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class JoinedSubclassInstance : JoinedSubclassInspector, IJoinedSubclassInstance
+public class JoinedSubclassInstance(SubclassMapping mapping) : JoinedSubclassInspector(mapping), IJoinedSubclassInstance
 {
-    private readonly SubclassMapping mapping;
-    private bool nextBool = true;
-
-    public JoinedSubclassInstance(SubclassMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly SubclassMapping mapping = mapping;
+    bool nextBool = true;
 
     public new IKeyInstance Key
     {
         get
         {
-            if (mapping.Key == null)
+            if (mapping.Key is null)
                 mapping.Set(x => x.Key, Layer.Conventions, new KeyMapping());
 
             return new KeyInstance(mapping.Key);

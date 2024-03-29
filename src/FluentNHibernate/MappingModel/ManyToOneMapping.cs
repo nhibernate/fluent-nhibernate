@@ -8,19 +8,14 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class ManyToOneMapping : MappingBase, IHasColumnMappings, IRelationship
+public class ManyToOneMapping(AttributeStore attributes) : MappingBase, IHasColumnMappings, IRelationship, IEquatable<ManyToOneMapping>
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
     readonly LayeredColumns columns = new LayeredColumns();
 
     public ManyToOneMapping()
         : this(new AttributeStore())
     {}
-
-    public ManyToOneMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -33,80 +28,35 @@ public class ManyToOneMapping : MappingBase, IHasColumnMappings, IRelationship
     public Type ContainingEntityType { get; set; }
     public Member Member { get; set; }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public string Cascade
-    {
-        get { return attributes.GetOrDefault<string>("Cascade"); }
-    }
+    public string Cascade => attributes.GetOrDefault<string>("Cascade");
 
-    public string Fetch
-    {
-        get { return attributes.GetOrDefault<string>("Fetch"); }
-    }
+    public string Fetch => attributes.GetOrDefault<string>("Fetch");
 
-    public bool Update
-    {
-        get { return attributes.GetOrDefault<bool>("Update"); }
-    }
+    public bool Update => attributes.GetOrDefault<bool>("Update");
 
-    public bool Insert
-    {
-        get { return attributes.GetOrDefault<bool>("Insert"); }
-    }
-        
-    public string Formula
-    {
-        get { return attributes.GetOrDefault<string>("Formula"); }
-    }
+    public bool Insert => attributes.GetOrDefault<bool>("Insert");
 
-    public string ForeignKey
-    {
-        get { return attributes.GetOrDefault<string>("ForeignKey"); }
-    }
+    public string Formula => attributes.GetOrDefault<string>("Formula");
 
-    public string PropertyRef
-    {
-        get { return attributes.GetOrDefault<string>("PropertyRef"); }
-    }
+    public string ForeignKey => attributes.GetOrDefault<string>("ForeignKey");
 
-    public string NotFound
-    {
-        get { return attributes.GetOrDefault<string>("NotFound"); }
-    }
+    public string PropertyRef => attributes.GetOrDefault<string>("PropertyRef");
 
-    public string Lazy
-    {
-        get { return attributes.GetOrDefault<string>("Lazy"); }
-    }
+    public string NotFound => attributes.GetOrDefault<string>("NotFound");
 
-    public string EntityName
-    {
-        get { return attributes.GetOrDefault<string>("EntityName"); }
-    }
+    public string Lazy => attributes.GetOrDefault<string>("Lazy");
 
-    public bool OptimisticLock
-    {
-        get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
-    }
+    public string EntityName => attributes.GetOrDefault<string>("EntityName");
 
-    public IEnumerable<ColumnMapping> Columns
-    {
-        get { return columns.Columns; }
-    }
+    public bool OptimisticLock => attributes.GetOrDefault<bool>("OptimisticLock");
+
+    public IEnumerable<ColumnMapping> Columns => columns.Columns;
 
     public void AddColumn(int layer, ColumnMapping mapping)
     {
@@ -134,7 +84,7 @@ public class ManyToOneMapping : MappingBase, IHasColumnMappings, IRelationship
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
                other.columns.ContentEquals(columns) &&
-               Equals(other.ContainingEntityType, ContainingEntityType) &&
+               other.ContainingEntityType == ContainingEntityType &&
                Equals(other.Member, Member);
     }
 
@@ -150,10 +100,10 @@ public class ManyToOneMapping : MappingBase, IHasColumnMappings, IRelationship
     {
         unchecked
         {
-            int result = (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (columns != null ? columns.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
-            result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (columns is not null ? columns.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
+            result = (result * 397) ^ (Member is not null ? Member.GetHashCode() : 0);
             return result;
         }
     }

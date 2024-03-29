@@ -6,18 +6,13 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class TuplizerMapping : MappingBase
+public class TuplizerMapping(AttributeStore attributes) : MappingBase, IEquatable<TuplizerMapping>
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public TuplizerMapping()
         : this(new AttributeStore())
     {}
-
-    public TuplizerMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -29,20 +24,11 @@ public class TuplizerMapping : MappingBase
         return attributes.IsSpecified(attribute);
     }
 
-    public TuplizerMode Mode
-    {
-        get { return attributes.GetOrDefault<TuplizerMode>("Mode"); }
-    }
+    public TuplizerMode Mode => attributes.GetOrDefault<TuplizerMode>("Mode");
 
-    public string EntityName
-    {
-        get { return attributes.GetOrDefault<string>("EntityName"); }
-    }
+    public string EntityName => attributes.GetOrDefault<string>("EntityName");
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
     public bool Equals(TuplizerMapping other)
     {
@@ -61,7 +47,7 @@ public class TuplizerMapping : MappingBase
 
     public override int GetHashCode()
     {
-        return (attributes != null ? attributes.GetHashCode() : 0);
+        return (attributes is not null ? attributes.GetHashCode() : 0);
     }
 
     public void Set<T>(Expression<Func<TuplizerMapping, T>> expression, int layer, T value)

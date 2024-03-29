@@ -1,6 +1,8 @@
-﻿namespace FluentNHibernate.Mapping;
+﻿using System;
 
-public class NamingStrategy
+namespace FluentNHibernate.Mapping;
+
+public class NamingStrategy : IEquatable<NamingStrategy>
 {
     public static readonly NamingStrategy LowerCase = new NamingStrategy("lowercase");
     public static readonly NamingStrategy LowerCaseUnderscore = new NamingStrategy("lowercase-underscore");
@@ -37,7 +39,7 @@ public class NamingStrategy
 
     public override int GetHashCode()
     {
-        return (strategy != null ? strategy.GetHashCode() : 0);
+        return (strategy is not null ? strategy.GetHashCode() : 0);
     }
 
     public override string ToString()

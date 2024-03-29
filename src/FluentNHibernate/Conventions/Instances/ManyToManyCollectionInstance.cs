@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Instances;
 
 public class ManyToManyCollectionInstance : CollectionInstance, IManyToManyCollectionInstance
 {
-    private readonly CollectionMapping mapping;
+    readonly CollectionMapping mapping;
 
     public ManyToManyCollectionInstance(CollectionMapping mapping)
         : base(mapping)
@@ -16,10 +16,7 @@ public class ManyToManyCollectionInstance : CollectionInstance, IManyToManyColle
         this.mapping = mapping;
     }
 
-    IManyToManyInspector IManyToManyCollectionInspector.Relationship
-    {
-        get { return Relationship; }
-    }
+    IManyToManyInspector IManyToManyCollectionInspector.Relationship => Relationship;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public new IManyToManyCollectionInstance Not
@@ -36,25 +33,16 @@ public class ManyToManyCollectionInstance : CollectionInstance, IManyToManyColle
         get
         {
             var otherSide = mapping.OtherSide as CollectionMapping;
-            if (otherSide == null)
+            if (otherSide is null)
                 return null;
 
             return new ManyToManyCollectionInstance(otherSide);
         }
     }
 
-    public new IManyToManyInstance Relationship
-    {
-        get { return new ManyToManyInstance((ManyToManyMapping)mapping.Relationship); }
-    }
+    public new IManyToManyInstance Relationship => new ManyToManyInstance((ManyToManyMapping)mapping.Relationship);
 
-    public new Type ChildType
-    {
-        get { return mapping.ChildType; }
-    }
+    public new Type ChildType => mapping.ChildType;
 
-    IManyToManyCollectionInspector IManyToManyCollectionInspector.OtherSide
-    {
-        get { return OtherSide; }
-    }
+    IManyToManyCollectionInspector IManyToManyCollectionInspector.OtherSide => OtherSide;
 }

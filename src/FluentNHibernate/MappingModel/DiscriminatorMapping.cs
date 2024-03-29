@@ -6,14 +6,10 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class DiscriminatorMapping : ColumnBasedMappingBase
+public class DiscriminatorMapping(AttributeStore underlyingStore) : ColumnBasedMappingBase(underlyingStore), IEquatable<DiscriminatorMapping>
 {
     public DiscriminatorMapping()
         : this(new AttributeStore())
-    {}
-
-    public DiscriminatorMapping(AttributeStore underlyingStore)
-        : base(underlyingStore)
     {}
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
@@ -23,25 +19,13 @@ public class DiscriminatorMapping : ColumnBasedMappingBase
         Columns.Each(visitor.Visit);
     }
 
-    public bool Force
-    {
-        get { return attributes.GetOrDefault<bool>("Force"); }
-    }
+    public bool Force => attributes.GetOrDefault<bool>("Force");
 
-    public bool Insert
-    {
-        get { return attributes.GetOrDefault<bool>("Insert"); }
-    }
+    public bool Insert => attributes.GetOrDefault<bool>("Insert");
 
-    public string Formula
-    {
-        get { return attributes.GetOrDefault<string>("Formula"); }
-    }
+    public string Formula => attributes.GetOrDefault<string>("Formula");
 
-    public TypeReference Type
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Type"); }
-    }
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
 
     public Type ContainingEntityType { get; set; }
 
@@ -49,7 +33,7 @@ public class DiscriminatorMapping : ColumnBasedMappingBase
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.ContainingEntityType, ContainingEntityType) &&
+        return other.ContainingEntityType == ContainingEntityType &&
                other.Columns.ContentEquals(Columns) &&
                Equals(other.attributes, attributes);
     }
@@ -66,7 +50,7 @@ public class DiscriminatorMapping : ColumnBasedMappingBase
     {
         unchecked
         {
-            return ((ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0) * 397) ^ ((Columns != null ? Columns.GetHashCode() : 0) * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+            return ((ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0) * 397) ^ ((Columns is not null ? Columns.GetHashCode() : 0) * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
         }
     }
 

@@ -1,9 +1,7 @@
-using System;
 using System.Linq;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests;
@@ -33,7 +31,7 @@ public class SubclassMapForJoinedSubclassConventionTests
         subclass.Key.Columns.Count().ShouldEqual(1);
     }
 
-    private class SCKeyConvention : IJoinedSubclassConvention
+    class SCKeyConvention : IJoinedSubclassConvention
     {
         public void Apply(IJoinedSubclassInstance instance)
         {
@@ -41,11 +39,11 @@ public class SubclassMapForJoinedSubclassConventionTests
         }
     }
 
-    private class Parent 
+    class Parent 
     {
         public int Id { get; set; }
     }
 
-    private class Child : Parent
+    class Child : Parent
     {}
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.Conventions;
+﻿using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
@@ -14,7 +10,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria;
 [TestFixture]
 public class PropertyAcceptanceCriteriaIsAnyTests
 {
-    private IAcceptanceCriteria<IPropertyInspector> acceptance;
+    IAcceptanceCriteria<IPropertyInspector> acceptance;
 
     [SetUp]
     public void CreateAcceptanceCriteria()

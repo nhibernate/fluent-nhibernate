@@ -1,6 +1,8 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class OptimisticLock
+public class OptimisticLock : IEquatable<OptimisticLock>
 {
     public static readonly OptimisticLock Unset = new OptimisticLock("");
     public static readonly OptimisticLock None = new OptimisticLock("none");
@@ -8,9 +10,9 @@ public class OptimisticLock
     public static readonly OptimisticLock Dirty = new OptimisticLock("dirty");
     public static readonly OptimisticLock All = new OptimisticLock("all");
 
-    private readonly string value;
+    readonly string value;
 
-    private OptimisticLock(string value)
+    OptimisticLock(string value)
     {
         this.value = value;
     }
@@ -29,7 +31,7 @@ public class OptimisticLock
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(OptimisticLock x, OptimisticLock y)

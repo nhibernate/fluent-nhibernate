@@ -6,16 +6,10 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping;
 
-public class IndexPart
+public class IndexPart(Type entity)
 {
-    readonly Type entity;
     readonly List<string> columns = new List<string>();
     readonly AttributeStore attributes = new AttributeStore();
-
-    public IndexPart(Type entity)
-    {
-        this.entity = entity;
-    }
 
     public IndexPart Column(string indexColumnName)
     {

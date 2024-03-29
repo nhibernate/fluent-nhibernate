@@ -6,43 +6,26 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class OneToManyMapping : MappingBase, ICollectionRelationshipMapping
+public class OneToManyMapping(AttributeStore attributes) : MappingBase, ICollectionRelationshipMapping, IEquatable<OneToManyMapping>
 {
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public OneToManyMapping()
         : this(new AttributeStore())
     {}
-
-    public OneToManyMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
         visitor.ProcessOneToMany(this);
     }
 
-    public Type ChildType
-    {
-        get { return attributes.GetOrDefault<Type>("ChildType"); }
-    }
+    public Type ChildType => attributes.GetOrDefault<Type>("ChildType");
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public string NotFound
-    {
-        get { return attributes.GetOrDefault<string>("NotFound"); }
-    }
+    public string NotFound => attributes.GetOrDefault<string>("NotFound");
 
-    public string EntityName
-    {
-        get { return attributes.GetOrDefault<string>("EntityName"); }
-    }
+    public string EntityName => attributes.GetOrDefault<string>("EntityName");
 
     public Type ContainingEntityType { get; set; }
 
@@ -50,7 +33,7 @@ public class OneToManyMapping : MappingBase, ICollectionRelationshipMapping
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        return Equals(other.attributes, attributes) && other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -65,7 +48,7 @@ public class OneToManyMapping : MappingBase, ICollectionRelationshipMapping
     {
         unchecked
         {
-            return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            return ((attributes is not null ? attributes.GetHashCode() : 0) * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
         }
     }
 

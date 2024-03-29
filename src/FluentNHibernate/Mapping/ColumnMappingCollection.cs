@@ -1,20 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping;
 
-public class ColumnMappingCollection<TParent> : IEnumerable<ColumnMapping>
+public class ColumnMappingCollection<TParent>(TParent parent) : IEnumerable<ColumnMapping>
 {
-    private readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
-    private readonly TParent parent;
-
-    public ColumnMappingCollection(TParent parent)
-    {
-        this.parent = parent;
-    }
+    readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
 
     public TParent Add(string name)
     {
@@ -55,10 +48,7 @@ public class ColumnMappingCollection<TParent> : IEnumerable<ColumnMapping>
         return parent;
     }
 
-    public int Count
-    {
-        get { return columns.Count; }
-    }
+    public int Count => columns.Count;
 
     public IEnumerator<ColumnMapping> GetEnumerator()
     {

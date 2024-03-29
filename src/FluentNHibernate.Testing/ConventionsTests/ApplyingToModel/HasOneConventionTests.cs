@@ -1,13 +1,10 @@
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
@@ -15,7 +12,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class HasOneConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -89,12 +86,12 @@ public class HasOneConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IOneToOneInstance> convention)
+    void Convention(Action<IOneToOneInstance> convention)
     {
         model.Conventions.Add(new HasOneConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<OneToOneMapping> modelVerification)
+    void VerifyModel(Action<OneToOneMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleClass>();
         classMap.Id(x => x.Id);
@@ -104,7 +101,7 @@ public class HasOneConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) is not null)
             .Classes.First()
             .OneToOnes.First();
 

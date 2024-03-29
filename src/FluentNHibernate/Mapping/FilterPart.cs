@@ -1,9 +1,6 @@
 using System;
-using System.Xml;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.Utils;
-using FluentNHibernate.Visitors;
 
 namespace FluentNHibernate.Mapping;
 
@@ -16,28 +13,15 @@ public interface IFilter : IFilterMappingProvider
 /// <summary>
 /// Maps to the Filter element in NH 2.0
 /// </summary>
-public class FilterPart : IFilter
+public class FilterPart(string name, string condition) : IFilter, IEquatable<FilterPart>
 {
-    readonly string filterName;
-    readonly string condition;
     readonly AttributeStore attributes = new AttributeStore();
 
     public FilterPart(string name) : this(name, null) { }
 
-    public FilterPart(string name, string condition)
-    {
-        filterName = name;
-        this.condition = condition;
-    }
+    public string Condition { get; } = condition;
 
-    public string Condition
-    {
-        get { return condition; }
-    }
-    public string Name
-    {
-        get { return filterName; }
-    }
+    public string Name { get; } = name;
 
     public override bool Equals(object obj)
     {
@@ -59,16 +43,16 @@ public class FilterPart : IFilter
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.filterName, filterName) && Equals(other.condition, condition) && Equals(other.attributes, attributes);
+        return Equals(other.Name, Name) && Equals(other.Condition, Condition) && Equals(other.attributes, attributes);
     }
 
     public override int GetHashCode()
     {
         unchecked
         {
-            int result = (filterName != null ? filterName.GetHashCode() : 0);
-            result = (result * 397) ^ (condition != null ? condition.GetHashCode() : 0);
-            result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+            int result = (Name is not null ? Name.GetHashCode() : 0);
+            result = (result * 397) ^ (Condition is not null ? Condition.GetHashCode() : 0);
+            result = (result * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
             return result;
         }
     }

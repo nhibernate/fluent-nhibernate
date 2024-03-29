@@ -34,13 +34,13 @@ public class PropertyEnumerablesTests : BaseModelFixture
             .ModelShouldMatch(x => x.Type.GetUnderlyingSystemType().ShouldEqual(typeof(EnumStringType<Enum>)));
     }
 
-    private class Target
+    class Target
     {
         public Enum? NullableEnum { get; set; }
         public Enum Enum { get; set; }
     }
 
-    private enum Enum
+    enum Enum
     {
             
     }

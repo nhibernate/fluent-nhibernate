@@ -6,22 +6,17 @@ using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
-using NHibernate.Criterion;
 
 namespace FluentNHibernate.Mapping;
 
 public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
 {
-    private readonly IList<IFilterMappingProvider> childFilters = new List<IFilterMappingProvider>();
-    private readonly FetchTypeExpression<ManyToManyPart<TChild>> fetch;
-    private readonly NotFoundExpression<ManyToManyPart<TChild>> notFound;
-    private IndexManyToManyPart manyToManyIndex;
-    private IndexPart index;
-    private readonly ColumnMappingCollection<ManyToManyPart<TChild>> childKeyColumns;
-    private readonly ColumnMappingCollection<ManyToManyPart<TChild>> parentKeyColumns;
-    private readonly Type childType;
-    private Type valueType;
-    private bool isTernary;
+    readonly IList<IFilterMappingProvider> childFilters = new List<IFilterMappingProvider>();
+    IndexManyToManyPart manyToManyIndex;
+    IndexPart index;
+    readonly Type childType;
+    Type valueType;
+    bool isTernary;
 
     public ManyToManyPart(Type entity, Member property)
         : this(entity, property, property.PropertyType)
@@ -33,11 +28,11 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
     {
         childType = collectionType;
 
-        fetch = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
-        notFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set("NotFound", Layer.UserSupplied, value));
+        FetchType = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
+        NotFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set("NotFound", Layer.UserSupplied, value));
 
-        childKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
-        parentKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
+        ChildKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
+        ParentKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
     }
 
     /// <summary>
@@ -45,8 +40,8 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
     /// </summary>
     public ManyToManyPart<TChild> ChildKeyColumn(string childKeyColumn)
     {
-        childKeyColumns.Clear(); 
-        childKeyColumns.Add(childKeyColumn);
+        ChildKeyColumns.Clear(); 
+        ChildKeyColumns.Add(childKeyColumn);
         return this;
     }
 
@@ -55,20 +50,14 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
     /// </summary>
     public ManyToManyPart<TChild> ParentKeyColumn(string parentKeyColumn)
     {
-        parentKeyColumns.Clear(); 
-        parentKeyColumns.Add(parentKeyColumn);
+        ParentKeyColumns.Clear(); 
+        ParentKeyColumns.Add(parentKeyColumn);
         return this;
     }
 
-    public ColumnMappingCollection<ManyToManyPart<TChild>> ChildKeyColumns
-    {
-        get { return childKeyColumns; }
-    }
+    public ColumnMappingCollection<ManyToManyPart<TChild>> ChildKeyColumns { get; }
 
-    public ColumnMappingCollection<ManyToManyPart<TChild>> ParentKeyColumns
-    {
-        get { return parentKeyColumns; }
-    }
+    public ColumnMappingCollection<ManyToManyPart<TChild>> ParentKeyColumns { get; }
 
     public ManyToManyPart<TChild> ForeignKeyConstraintNames(string parentForeignKeyName, string childForeignKeyName)
     {
@@ -83,18 +72,15 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         return this;
     }
 
-    public FetchTypeExpression<ManyToManyPart<TChild>> FetchType
-    {
-        get { return fetch; }
-    }
+    public FetchTypeExpression<ManyToManyPart<TChild>> FetchType { get; }
 
-    private void EnsureDictionary()
+    void EnsureDictionary()
     {
         if (!typeof(IDictionary).IsAssignableFrom(childType))
             throw new ArgumentException(member.Name + " must be of type IDictionary to be used in a non-generic ternary association. Type was: " + childType);
     }
 
-    private void EnsureGenericDictionary()
+    void EnsureGenericDictionary()
     {
         if (!(childType.IsGenericType && childType.GetGenericTypeDefinition() == typeof(IDictionary<,>)))
             throw new ArgumentException(member.Name + " must be of type IDictionary<> to be used in a ternary assocation. Type was: " + childType);
@@ -126,8 +112,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         manyToManyIndex.Column(indexColumn);
         manyToManyIndex.Type(indexType);
 
-        if (indexAction != null)
-            indexAction(manyToManyIndex);
+        indexAction?.Invoke(manyToManyIndex);
 
         ChildKeyColumn(valueColumn);
         valueType = typeOfValue;
@@ -155,8 +140,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         manyToManyIndex.Column(indexColumn);
         manyToManyIndex.Type(indexType);
 
-        if (indexAction != null)
-            indexAction(manyToManyIndex);
+        indexAction?.Invoke(manyToManyIndex);
 
         ChildKeyColumn(valueColumn);
         valueType = typeOfValue;
@@ -207,15 +191,9 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         return AsMap(null).AsTernaryAssociation(indexColumn, valueColumn);
     }
 
-    public Type ChildType
-    {
-        get { return typeof(TChild); }
-    }
+    public Type ChildType => typeof(TChild);
 
-    public NotFoundExpression<ManyToManyPart<TChild>> NotFound
-    {
-        get { return notFound; }
-    }
+    public NotFoundExpression<ManyToManyPart<TChild>> NotFound { get; }
 
     protected override ICollectionRelationshipMapping GetRelationship()
     {
@@ -224,7 +202,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
             ContainingEntityType = EntityType,
         };
 
-        if (isTernary && valueType != null)
+        if (isTernary && valueType is not null)
             mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(valueType));
 
         foreach (var filterPart in childFilters)
@@ -366,24 +344,24 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         var collection = base.GetCollectionMapping();
 
         // key columns
-        if (parentKeyColumns.Count == 0)
+        if (ParentKeyColumns.Count == 0)
             collection.Key.AddColumn(Layer.Defaults, new ColumnMapping(EntityType.Name + "_id"));
 
-        foreach (var column in parentKeyColumns)
+        foreach (var column in ParentKeyColumns)
             collection.Key.AddColumn(Layer.UserSupplied, column.Clone());
 
-        if (collection.Relationship != null)
+        if (collection.Relationship is not null)
         {
             // child columns
-            if (childKeyColumns.Count == 0)
+            if (ChildKeyColumns.Count == 0)
                 ((ManyToManyMapping)collection.Relationship).AddColumn(Layer.Defaults, new ColumnMapping(typeof(TChild).Name + "_id"));
 
-            foreach (var column in childKeyColumns)
+            foreach (var column in ChildKeyColumns)
                 ((ManyToManyMapping)collection.Relationship).AddColumn(Layer.UserSupplied, column.Clone());
         }
 
         // HACK: Index only on list and map - shouldn't have to do this!
-        if (index != null)
+        if (index is not null)
         {
 #pragma warning disable 612,618
             collection.Set(x => x.Index, Layer.Defaults, index.GetIndexMapping());
@@ -391,7 +369,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         }
 
         // HACK: shouldn't have to do this!
-        if (manyToManyIndex != null && collection.Collection == Collection.Map)
+        if (manyToManyIndex is not null && collection.Collection == Collection.Map)
 #pragma warning disable 612,618
             collection.Set(x => x.Index, Layer.Defaults, manyToManyIndex.GetIndexMapping());
 #pragma warning restore 612,618

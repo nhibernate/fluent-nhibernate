@@ -1,16 +1,12 @@
 using System;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions.Helpers;
 
 public static class PrimaryKey
 {
-    public static PrimaryKeyNameBuilder Name
-    {
-        get { return new PrimaryKeyNameBuilder(); }
-    }
+    public static PrimaryKeyNameBuilder Name => new();
 }
 
 public class PrimaryKeyNameBuilder

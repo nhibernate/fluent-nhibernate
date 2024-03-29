@@ -5,9 +5,5 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
 
-internal class BuiltPropertyConvention : BuiltConventionBase<IPropertyInspector, IPropertyInstance>, IPropertyConvention, IPropertyConventionAcceptance
-{
-    public BuiltPropertyConvention(Action<IAcceptanceCriteria<IPropertyInspector>> accept, Action<IPropertyInstance> convention)
-        : base(accept, convention)
-    { }
-}
+class BuiltPropertyConvention(Action<IAcceptanceCriteria<IPropertyInspector>> accept, Action<IPropertyInstance> convention)
+    : BuiltConventionBase<IPropertyInspector, IPropertyInstance>(accept, convention), IPropertyConvention, IPropertyConventionAcceptance;

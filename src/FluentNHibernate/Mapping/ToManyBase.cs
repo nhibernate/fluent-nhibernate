@@ -13,9 +13,6 @@ namespace FluentNHibernate.Mapping;
 public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     where T : ToManyBase<T, TChild>, ICollectionMappingProvider
 {
-    readonly AccessStrategyBuilder<T> access;
-    readonly FetchTypeExpression<T> fetch;
-    readonly CollectionCascadeExpression<T> cascade;
     protected ElementPart elementPart;
     protected ICompositeElementMappingProvider componentMapping;
     protected bool nextBool = true;
@@ -23,23 +20,21 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     protected readonly AttributeStore collectionAttributes = new AttributeStore();
     protected readonly KeyMapping keyMapping = new KeyMapping();
     protected readonly AttributeStore relationshipAttributes = new AttributeStore();
-    readonly IList<IFilterMappingProvider> filters = new List<IFilterMappingProvider>();
     Func<AttributeStore, CollectionMapping> collectionBuilder;
     IndexMapping indexMapping;
     protected Member member;
-    readonly Type entity;
 
     protected ToManyBase(Type entity, Member member, Type type)
     {
-        this.entity = entity;
+        this.EntityType = entity;
         this.member = member;
         AsBag();
-        access = new AccessStrategyBuilder<T>((T)this, value => collectionAttributes.Set("Access", Layer.UserSupplied, value));
-        fetch = new FetchTypeExpression<T>((T)this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
-        cascade = new CollectionCascadeExpression<T>((T)this, value =>
+        Access = new AccessStrategyBuilder<T>((T)this, value => collectionAttributes.Set("Access", Layer.UserSupplied, value));
+        Fetch = new FetchTypeExpression<T>((T)this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
+        Cascade = new CollectionCascadeExpression<T>((T)this, value =>
         {
             var current = collectionAttributes.Get("Cascade") as string;
-            collectionAttributes.Set("Cascade", Layer.UserSupplied, current == null ? value : string.Format("{0},{1}", current, value));
+            collectionAttributes.Set("Cascade", Layer.UserSupplied, current is null ? value : string.Format("{0},{1}", current, value));
         });
 
         SetDefaultCollectionType();
@@ -55,10 +50,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     /// Return the type of the owning entity
     /// </summary>
     /// <returns>Type</returns>
-    public Type EntityType
-    {
-        get { return entity; }
-    }
+    public Type EntityType { get; }
 
     /// <summary>
     /// This method is used to set a different key column in this table to be used for joins.
@@ -75,7 +67,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     /// <summary>
     /// Specify caching for this entity.
     /// </summary>
-    public CachePart Cache { get; private set; }
+    public CachePart Cache { get; }
 
     /// <summary>
     /// Specify the lazy-load behaviour
@@ -111,10 +103,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     /// <summary>
     /// Specify the cascade behaviour
     /// </summary>
-    public CollectionCascadeExpression<T> Cascade
-    {
-        get { return cascade; }
-    }
+    public CollectionCascadeExpression<T> Cascade { get; }
 
     /// <summary>
     /// Use a set collection
@@ -405,8 +394,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     {
         var indexPart = new IndexPart(typeof(T));
 
-        if (customIndex != null)
-            customIndex(indexPart);
+        customIndex?.Invoke(indexPart);
 
 #pragma warning disable 612,618
         indexMapping = indexPart.GetIndexMapping();
@@ -418,8 +406,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         indexMapping = new IndexMapping();
         var builder = new ListIndexPart(indexMapping);
 
-        if (customIndex != null)
-            customIndex(builder);
+        customIndex?.Invoke(builder);
     }
 
     /// <summary>
@@ -445,7 +432,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     public T Element(string columnName, Action<ElementPart> customElementMapping)
     {
         Element(columnName);
-        if (customElementMapping != null) customElementMapping(elementPart);
+        customElementMapping?.Invoke(elementPart);
         return (T)this;
     }
 
@@ -486,18 +473,12 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     /// <summary>
     /// Specify the fetching behaviour
     /// </summary>
-    public FetchTypeExpression<T> Fetch
-    {
-        get { return fetch; }
-    }
+    public FetchTypeExpression<T> Fetch { get; }
 
     /// <summary>
     /// Set the access and naming strategy for this one-to-many.
     /// </summary>
-    public AccessStrategyBuilder<T> Access
-    {
-        get { return access; }
-    }
+    public AccessStrategyBuilder<T> Access { get; }
 
     /// <summary>
     /// Specifies whether this collection should be optimistically locked.
@@ -635,7 +616,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     public T ApplyFilter(string name, string condition)
     {
         var part = new FilterPart(name, condition);
-        filters.Add(part);
+        Filters.Add(part);
         return (T)this;
     }
 
@@ -679,10 +660,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         return ApplyFilter<TFilter>(null);
     }
 
-    protected IList<IFilterMappingProvider> Filters
-    {
-        get { return filters; }
-    }
+    protected IList<IFilterMappingProvider> Filters { get; } = new List<IFilterMappingProvider>();
 
     void SetDefaultCollectionType()
     {
@@ -726,18 +704,18 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     {
         var mapping = collectionBuilder(collectionAttributes.Clone());
 
-        mapping.ContainingEntityType = entity;
+        mapping.ContainingEntityType = EntityType;
         mapping.Member = member;
         mapping.Set(x => x.Name, Layer.Defaults, GetDefaultName());
         mapping.Set(x => x.ChildType, Layer.Defaults, typeof(TChild));
         mapping.Set(x => x.Key, Layer.Defaults, keyMapping);
         mapping.Set(x => x.Relationship, Layer.Defaults, GetRelationship());
-        mapping.Key.ContainingEntityType = entity;
+        mapping.Key.ContainingEntityType = EntityType;
 
         if (Cache.IsDirty)
             mapping.Set(x => x.Cache, Layer.Defaults, ((ICacheMappingProvider)Cache).GetCacheMapping());
 
-        if (componentMapping != null)
+        if (componentMapping is not null)
         {
             mapping.Set(x => x.CompositeElement, Layer.Defaults, componentMapping.GetCompositeElementMapping());
             mapping.Set(x => x.Relationship, Layer.Defaults, null); // HACK: bad design
@@ -747,7 +725,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         if (mapping.Collection == Collection.Array || mapping.Collection == Collection.List || mapping.Collection == Collection.Map)
             mapping.Set(x => x.Index, Layer.Defaults, indexMapping);
 
-        if (elementPart != null)
+        if (elementPart is not null)
         {
             mapping.Set(x => x.Element, Layer.Defaults, ((IElementMappingProvider)elementPart).GetElementMapping());
             mapping.Set(x => x.Relationship, Layer.Defaults, null); // HACK: bad design

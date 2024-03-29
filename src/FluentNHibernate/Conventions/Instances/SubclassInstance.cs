@@ -6,16 +6,10 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class SubclassInstance : SubclassInspector, ISubclassInstance
+public class SubclassInstance(SubclassMapping mapping) : SubclassInspector(mapping), ISubclassInstance
 {
-    private readonly SubclassMapping mapping;
-    private bool nextBool = true;
-
-    public SubclassInstance(SubclassMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly SubclassMapping mapping = mapping;
+    bool nextBool = true;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public ISubclassInstance Not

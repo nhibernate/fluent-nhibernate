@@ -7,15 +7,9 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Visitors;
 
-public class SeparateSubclassVisitor : DefaultMappingModelVisitor
+public class SeparateSubclassVisitor(IIndeterminateSubclassMappingProviderCollection subclassProviders)
+    : DefaultMappingModelVisitor
 {
-    private readonly IIndeterminateSubclassMappingProviderCollection subclassProviders;
-
-    public SeparateSubclassVisitor(IIndeterminateSubclassMappingProviderCollection subclassProviders)
-    {
-        this.subclassProviders = subclassProviders;
-    }
-
     public override void ProcessClass(ClassMapping mapping)
     {
         var subclasses = FindClosestSubclasses(mapping.Type);
@@ -36,7 +30,7 @@ public class SeparateSubclassVisitor : DefaultMappingModelVisitor
         base.ProcessSubclass(mapping);
     }
 
-    private IEnumerable<IIndeterminateSubclassMappingProvider> FindClosestSubclasses(Type type)
+    IEnumerable<IIndeterminateSubclassMappingProvider> FindClosestSubclasses(Type type)
     {
         var extendsSubclasses = subclassProviders
             .Where(x => x.Extends == type);
@@ -52,20 +46,20 @@ public class SeparateSubclassVisitor : DefaultMappingModelVisitor
         return subclasses[lowestDistance].Concat(extendsSubclasses);
     }
 
-    private SubclassType GetSubclassType(ClassMapping mapping)
+    SubclassType GetSubclassType(ClassMapping mapping)
     {
         if (mapping.IsUnionSubclass)
         {
             return SubclassType.UnionSubclass;
         }
 
-        if (mapping.Discriminator == null)
+        if (mapping.Discriminator is null)
             return SubclassType.JoinedSubclass;
 
         return SubclassType.Subclass;
     }
 
-    private bool IsMapped(Type type, IIndeterminateSubclassMappingProviderCollection providers)
+    bool IsMapped(Type type, IIndeterminateSubclassMappingProviderCollection providers)
     {
         return providers.IsTypeMapped(type);
     }
@@ -82,7 +76,7 @@ public class SeparateSubclassVisitor : DefaultMappingModelVisitor
     /// <param name="parentType">Starting point, parent type.</param>
     /// <param name="subProviders">List of subclasses</param>
     /// <returns>Dictionary key'd by the distance from the parentType.</returns>
-    private IDictionary<int, IList<IIndeterminateSubclassMappingProvider>> SortByDistanceFrom(Type parentType, IEnumerable<IIndeterminateSubclassMappingProvider> subProviders)
+    IDictionary<int, IList<IIndeterminateSubclassMappingProvider>> SortByDistanceFrom(Type parentType, IEnumerable<IIndeterminateSubclassMappingProvider> subProviders)
     {
         var arranged = new Dictionary<int, IList<IIndeterminateSubclassMappingProvider>>();
 
@@ -114,7 +108,7 @@ public class SeparateSubclassVisitor : DefaultMappingModelVisitor
     /// <param name="evalType"></param>
     /// <param name="level"></param>
     /// <returns></returns>
-    private bool DistanceFromParentInterface(Type parentType, Type evalType, ref int level)
+    bool DistanceFromParentInterface(Type parentType, Type evalType, ref int level)
     {
         if (!evalType.HasInterface(parentType)) return false;
 
@@ -138,7 +132,7 @@ public class SeparateSubclassVisitor : DefaultMappingModelVisitor
     /// <param name="evalType"></param>
     /// <param name="level"></param>
     /// <returns></returns>
-    private bool DistanceFromParentBase(Type parentType, Type evalType, ref int level)
+    bool DistanceFromParentBase(Type parentType, Type evalType, ref int level)
     {
         var evalImplementsParent = false;
         if (evalType == parentType)

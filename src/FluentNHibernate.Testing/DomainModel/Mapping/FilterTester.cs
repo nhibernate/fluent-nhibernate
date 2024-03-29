@@ -183,7 +183,7 @@ public class FilterTester
     }
 }
 
-internal class TestFilter : FilterDefinition
+class TestFilter : FilterDefinition
 {
     public TestFilter()
     {

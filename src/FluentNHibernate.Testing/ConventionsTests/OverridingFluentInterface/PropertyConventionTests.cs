@@ -14,9 +14,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
 [TestFixture]
 public class PropertyConventionTests
 {
-    private PersistenceModel model;
-    private IMappingProvider mapping;
-    private Type mappingType;
+    PersistenceModel model;
+    IMappingProvider mapping;
+    Type mappingType;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -254,12 +254,12 @@ public class PropertyConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IPropertyInstance> convention)
+    void Convention(Action<IPropertyInstance> convention)
     {
         model.Conventions.Add(new PropertyConventionBuilder().Always(convention));
     }
 
-    private void Mapping(Expression<Func<ExampleClass, object>> property, Action<PropertyPart> mappingDefinition)
+    void Mapping(Expression<Func<ExampleClass, object>> property, Action<PropertyPart> mappingDefinition)
     {
         var classMap = new ClassMap<ExampleClass>();
         classMap.Id(x => x.Id);
@@ -271,13 +271,13 @@ public class PropertyConventionTests
         mappingType = typeof(ExampleClass);
     }
 
-    private void VerifyModel(Action<PropertyMapping> modelVerification)
+    void VerifyModel(Action<PropertyMapping> modelVerification)
     {
         model.Add(mapping);
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) is not null)
             .Classes.First()
             .Properties.First();
 

@@ -4,7 +4,6 @@ using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 
@@ -13,9 +12,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.OverridingFluentInterface;
 [TestFixture]
 public class SubclassConventionTests
 {
-    private PersistenceModel model;
-    private IMappingProvider mapping;
-    private Type mappingType;
+    PersistenceModel model;
+    IMappingProvider mapping;
+    Type mappingType;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -95,12 +94,12 @@ public class SubclassConventionTests
 
     #region Helpers
 
-    private void Convention(Action<ISubclassInstance> convention)
+    void Convention(Action<ISubclassInstance> convention)
     {
         model.Conventions.Add(new SubclassConventionBuilder().Always(convention));
     }
 
-    private void Mapping(Action<SubclassMap<ExampleInheritedClass>> mappingDefinition)
+    void Mapping(Action<SubclassMap<ExampleInheritedClass>> mappingDefinition)
     {
         var classMap = new ClassMap<ExampleClass>();
         classMap.Id(x => x.Id);
@@ -116,13 +115,13 @@ public class SubclassConventionTests
         mappingType = typeof(ExampleClass);
     }
 
-    private void VerifyModel(Action<SubclassMapping> modelVerification)
+    void VerifyModel(Action<SubclassMapping> modelVerification)
     {
         model.Add(mapping);
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == mappingType) is not null)
             .Classes.First()
             .Subclasses.First();
 

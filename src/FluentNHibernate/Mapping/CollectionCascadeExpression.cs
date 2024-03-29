@@ -2,18 +2,9 @@ using System;
 
 namespace FluentNHibernate.Mapping;
 
-public class CollectionCascadeExpression<TParent> : CascadeExpression<TParent>
+public class CollectionCascadeExpression<TParent>(TParent parent, Action<string> setter)
+    : CascadeExpression<TParent>(parent, setter)
 {
-    private readonly TParent parent;
-    private readonly Action<string> setter;
-
-    public CollectionCascadeExpression(TParent parent, Action<string> setter)
-        : base(parent, setter)
-    {
-        this.parent = parent;
-        this.setter = setter;
-    }
-
     /// <summary>
     /// Cascade all actions, deleting any orphaned records
     /// </summary>

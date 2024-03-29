@@ -10,15 +10,10 @@ public class Prefix
     public static readonly Prefix m = new Prefix("-m");
     public static readonly Prefix mUnderscore = new Prefix("-m-underscore");
 
-    private readonly string value;
-
-    private Prefix(string value)
+    Prefix(string value)
     {
-        this.value = value;
+        this.Value = value;
     }
 
-    public string Value
-    {
-        get { return value; }
-    }
+    public string Value { get; }
 }

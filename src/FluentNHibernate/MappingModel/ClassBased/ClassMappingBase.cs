@@ -5,18 +5,11 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public abstract class ClassMappingBase : MappingBase, IHasMappedMembers
+public abstract class ClassMappingBase(AttributeStore attributes) : MappingBase, IHasMappedMembers
 {
-    readonly AttributeStore attributes;
-    readonly MappedMembers mappedMembers;
-    readonly IList<SubclassMapping> subclasses;
-
-    protected ClassMappingBase(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-        mappedMembers = new MappedMembers();
-        subclasses = new List<SubclassMapping>();
-    }
+    readonly AttributeStore attributes = attributes;
+    readonly MappedMembers mappedMembers = new();
+    readonly IList<SubclassMapping> subclasses = new List<SubclassMapping>();
 
     public abstract string Name { get; }
     public abstract Type Type { get; }
@@ -31,55 +24,25 @@ public abstract class ClassMappingBase : MappingBase, IHasMappedMembers
 
     #region IHasMappedMembers
 
-    public IEnumerable<ManyToOneMapping> References
-    {
-        get { return mappedMembers.References; }
-    }
+    public IEnumerable<ManyToOneMapping> References => mappedMembers.References;
 
-    public IEnumerable<Collections.CollectionMapping> Collections
-    {
-        get { return mappedMembers.Collections; }
-    }
+    public IEnumerable<Collections.CollectionMapping> Collections => mappedMembers.Collections;
 
-    public IEnumerable<PropertyMapping> Properties
-    {
-        get { return mappedMembers.Properties; }
-    }
+    public IEnumerable<PropertyMapping> Properties => mappedMembers.Properties;
 
-    public IEnumerable<IComponentMapping> Components
-    {
-        get { return mappedMembers.Components; }
-    }
+    public IEnumerable<IComponentMapping> Components => mappedMembers.Components;
 
-    public IEnumerable<OneToOneMapping> OneToOnes
-    {
-        get { return mappedMembers.OneToOnes; }
-    }
+    public IEnumerable<OneToOneMapping> OneToOnes => mappedMembers.OneToOnes;
 
-    public IEnumerable<AnyMapping> Anys
-    {
-        get { return mappedMembers.Anys; }
-    }
+    public IEnumerable<AnyMapping> Anys => mappedMembers.Anys;
 
-    public IEnumerable<JoinMapping> Joins
-    {
-        get { return mappedMembers.Joins; }
-    }
+    public IEnumerable<JoinMapping> Joins => mappedMembers.Joins;
 
-    public IEnumerable<FilterMapping> Filters
-    {
-        get { return mappedMembers.Filters; }
-    }
+    public IEnumerable<FilterMapping> Filters => mappedMembers.Filters;
 
-    public IEnumerable<SubclassMapping> Subclasses
-    {
-        get { return subclasses; }
-    }
+    public IEnumerable<SubclassMapping> Subclasses => subclasses;
 
-    public IEnumerable<StoredProcedureMapping> StoredProcedures
-    {
-        get { return mappedMembers.StoredProcedures; }
-    }
+    public IEnumerable<StoredProcedureMapping> StoredProcedures => mappedMembers.StoredProcedures;
 
     public void AddProperty(PropertyMapping property)
     {
@@ -197,7 +160,7 @@ public abstract class ClassMappingBase : MappingBase, IHasMappedMembers
     {
         unchecked
         {
-            return ((mappedMembers != null ? mappedMembers.GetHashCode() : 0) * 397) ^ (subclasses != null ? subclasses.GetHashCode() : 0);
+            return ((mappedMembers is not null ? mappedMembers.GetHashCode() : 0) * 397) ^ (subclasses is not null ? subclasses.GetHashCode() : 0);
         }
     }
 

@@ -5,34 +5,20 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class NaturalIdMapping : MappingBase
+public class NaturalIdMapping(AttributeStore attributes) : MappingBase
 {
-    private readonly AttributeStore attributes;
-    private readonly IList<PropertyMapping> properties = new List<PropertyMapping>();
-    private readonly IList<ManyToOneMapping> manyToOnes = new List<ManyToOneMapping>();
+    readonly AttributeStore attributes = attributes;
+    readonly IList<PropertyMapping> properties = new List<PropertyMapping>();
+    readonly IList<ManyToOneMapping> manyToOnes = new List<ManyToOneMapping>();
 
     public NaturalIdMapping()
         : this(new AttributeStore()) { }
 
-    public NaturalIdMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-    }
+    public bool Mutable => attributes.GetOrDefault<bool>("Mutable");
 
-    public bool Mutable
-    {
-        get { return attributes.GetOrDefault<bool>("Mutable"); }
-    }
+    public IEnumerable<PropertyMapping> Properties => properties;
 
-    public IEnumerable<PropertyMapping> Properties
-    {
-        get { return properties; }
-    }
-
-    public IEnumerable<ManyToOneMapping> ManyToOnes
-    {
-        get { return manyToOnes; }
-    }
+    public IEnumerable<ManyToOneMapping> ManyToOnes => manyToOnes;
 
     public void AddProperty(PropertyMapping mapping)
     {

@@ -1,15 +1,17 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class Fetch
+public class Fetch : IEquatable<Fetch>
 {
     public static readonly Fetch Unset = new Fetch("");
     public static readonly Fetch Select = new Fetch("select");
     public static readonly Fetch Join = new Fetch("join");
     public static readonly Fetch Subselect = new Fetch("subselect");
-        
-    private readonly string value;
 
-    private Fetch(string value)
+    readonly string value;
+
+    Fetch(string value)
     {
         this.value = value;
     }
@@ -28,7 +30,7 @@ public class Fetch
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(Fetch x, Fetch y)

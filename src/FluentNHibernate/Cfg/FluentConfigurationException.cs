@@ -14,12 +14,13 @@ public class FluentConfigurationException : Exception
         PotentialReasons = new List<string>();
     }
 
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     protected FluentConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
         this.PotentialReasons = info.GetValue("PotentialReasons", typeof(List<string>)) as List<string>;            
     }
 
-    public IList<string> PotentialReasons { get; private set; }
+    public IList<string> PotentialReasons { get; }
 
     public override string Message
     {
@@ -54,10 +55,13 @@ public class FluentConfigurationException : Exception
         return output;
     }
 
+#pragma warning disable 809
     [SecurityCritical]
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         base.GetObjectData(info, context);
         info.AddValue("PotentialReasons", PotentialReasons, typeof(List<string>));
     }
+#pragma warning restore 809
 }

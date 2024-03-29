@@ -5,9 +5,5 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
 
-internal class BuiltHibernateMappingConvention : BuiltConventionBase<IHibernateMappingInspector, IHibernateMappingInstance>, IHibernateMappingConvention
-{
-    public BuiltHibernateMappingConvention(Action<IAcceptanceCriteria<IHibernateMappingInspector>> accept, Action<IHibernateMappingInstance> convention)
-        : base(accept, convention)
-    {}
-}
+class BuiltHibernateMappingConvention(Action<IAcceptanceCriteria<IHibernateMappingInspector>> accept, Action<IHibernateMappingInstance> convention)
+    : BuiltConventionBase<IHibernateMappingInspector, IHibernateMappingInstance>(accept, convention), IHibernateMappingConvention;

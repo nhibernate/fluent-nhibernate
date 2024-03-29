@@ -9,16 +9,9 @@ namespace FluentNHibernate;
 /// <summary>
 /// Facade over an assembly for retrieving type instances.
 /// </summary>
-public class AssemblyTypeSource : ITypeSource
+public class AssemblyTypeSource(Assembly source) : ITypeSource
 {
-    readonly Assembly source;
-
-    public AssemblyTypeSource(Assembly source)
-    {
-        if (source == null) throw new ArgumentNullException("source");
-
-        this.source = source;
-    }
+    readonly Assembly source = source ?? throw new ArgumentNullException(nameof(source));
 
     #region ITypeSource Members
 
@@ -29,7 +22,7 @@ public class AssemblyTypeSource : ITypeSource
 
     public void LogSource(IDiagnosticLogger logger)
     {
-        if (logger == null) throw new ArgumentNullException("logger");
+        if (logger is null) throw new ArgumentNullException(nameof(logger));
 
         logger.LoadedFluentMappingsFromSource(this);
     }

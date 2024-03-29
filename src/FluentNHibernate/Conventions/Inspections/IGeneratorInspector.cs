@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Inspections;
@@ -11,38 +10,20 @@ public interface IGeneratorInspector : IInspector
     IDictionary<string, string> Params { get; }
 }
 
-public class GeneratorInspector : IGeneratorInspector
+public class GeneratorInspector(GeneratorMapping mapping) : IGeneratorInspector
 {
-    private readonly InspectorModelMapper<IGeneratorInspector, GeneratorMapping> propertyMappings = new InspectorModelMapper<IGeneratorInspector, GeneratorMapping>();
-    private readonly GeneratorMapping mapping;
+    readonly InspectorModelMapper<IGeneratorInspector, GeneratorMapping> propertyMappings = new InspectorModelMapper<IGeneratorInspector, GeneratorMapping>();
 
-    public GeneratorInspector(GeneratorMapping mapping)
-    {
-        this.mapping = mapping;
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
-
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Class; }
-    }
+    public string StringIdentifierForModel => mapping.Class;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(propertyMappings.Get(property));
     }
 
-    public string Class
-    {
-        get { return mapping.Class; }
-    }
+    public string Class => mapping.Class;
 
-    public IDictionary<string, string> Params
-    {
-        get { return new Dictionary<string, string>(mapping.Params); }
-    }
+    public IDictionary<string, string> Params => new Dictionary<string, string>(mapping.Params);
 }

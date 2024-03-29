@@ -97,10 +97,7 @@ public class AutoPersistenceModel : PersistenceModel
     /// <summary>
     /// Alter convention discovery
     /// </summary>
-    public new SetupConventionFinder<AutoPersistenceModel> Conventions
-    {
-        get { return new SetupConventionFinder<AutoPersistenceModel>(this, base.Conventions); }
-    }
+    public new SetupConventionFinder<AutoPersistenceModel> Conventions => new(this, base.Conventions);
 
     /// <summary>
     /// Alter some of the configuration options that control how the automapper works.
@@ -138,7 +135,7 @@ public class AutoPersistenceModel : PersistenceModel
         return base.BuildMappings();
     }
 
-    private void CompileMappings()
+    void CompileMappings()
     {
         if (autoMappingsCreated)
             return;
@@ -158,7 +155,7 @@ public class AutoPersistenceModel : PersistenceModel
                 continue;
             }
             // skipped by inline where clause
-            if (whereClause != null && !whereClause(type))
+            if (whereClause is not null && !whereClause(type))
             {
                 log.AutomappingSkippedType(type, "Skipped by Where clause");
                 continue;
@@ -182,12 +179,12 @@ public class AutoPersistenceModel : PersistenceModel
         autoMappingsCreated = true;
     }
 
-    private int InheritanceHierarchyDepth(Type type)
+    int InheritanceHierarchyDepth(Type type)
     {
         var depth = 0;
         var parent = type;
 
-        while (parent != null && parent != typeof(object))
+        while (parent is not null && parent != typeof(object))
         {
             parent = parent.BaseType;
             depth++;
@@ -203,7 +200,7 @@ public class AutoPersistenceModel : PersistenceModel
         base.Configure(configuration);
     }
 
-    private void AddMapping(Type type)
+    void AddMapping(Type type)
     {
         Type typeToMap = GetTypeToMap(type);
 
@@ -221,7 +218,7 @@ public class AutoPersistenceModel : PersistenceModel
         Add(new PassThroughMappingProvider(mapping));
     }
 
-    private Type GetTypeToMap(Type type)
+    Type GetTypeToMap(Type type)
     {
         while (ShouldMapParent(type))
         {
@@ -231,12 +228,12 @@ public class AutoPersistenceModel : PersistenceModel
         return type;
     }
 
-    private bool ShouldMapParent(Type type)
+    bool ShouldMapParent(Type type)
     {
         return ShouldMap(type.BaseType) && !cfg.IsConcreteBaseType(type.BaseType);
     }
 
-    private bool ShouldMap(Type type)
+    bool ShouldMap(Type type)
     {
         if (includedTypes.Contains(type))
             return true; // inclusions take precedence over everything
@@ -295,7 +292,7 @@ public class AutoPersistenceModel : PersistenceModel
 
         var mapping = classProviders.FirstOrDefault(t => finder(t, type));
 
-        if (mapping != null) return mapping;
+        if (mapping is not null) return mapping;
 
         // if we haven't found a map yet then try to find a map of the
         // base type to merge if not a concrete base type
@@ -383,7 +380,7 @@ public class AutoPersistenceModel : PersistenceModel
                 MethodInfo overrideHelperMethod = typeof(AutoPersistenceModel)
                     .GetMethod("OverrideHelper", BindingFlags.NonPublic | BindingFlags.Instance);
 
-                if (overrideHelperMethod == null) return;
+                if (overrideHelperMethod is null) return;
 
                 overrideHelperMethod
                     .MakeGenericMethod(entityType)
@@ -393,7 +390,7 @@ public class AutoPersistenceModel : PersistenceModel
     }
 
     //called reflectively from method above
-    private void OverrideHelper<T>(AutoMapping<T> x, IAutoMappingOverride<T> mappingOverride)
+    void OverrideHelper<T>(AutoMapping<T> x, IAutoMappingOverride<T> mappingOverride)
     {
         mappingOverride.Override(x);
     }
@@ -471,23 +468,11 @@ public class AutoPersistenceModel : PersistenceModel
         return "AutoMappings.hbm.xml";
     }
 
-    bool HasUserDefinedConfiguration
-    {
-        get { return !(cfg is ExpressionBasedAutomappingConfiguration); }
-    }
+    bool HasUserDefinedConfiguration => cfg is not ExpressionBasedAutomappingConfiguration;
 }
 
-public class AutomappedComponentResolver : IComponentReferenceResolver
+public class AutomappedComponentResolver(AutoMapper mapper, IAutomappingConfiguration cfg) : IComponentReferenceResolver
 {
-    readonly AutoMapper mapper;
-    IAutomappingConfiguration cfg;
-
-    public AutomappedComponentResolver(AutoMapper mapper, IAutomappingConfiguration cfg)
-    {
-        this.mapper = mapper;
-        this.cfg = cfg;
-    }
-
     public ExternalComponentMapping Resolve(ComponentResolutionContext context, IEnumerable<IExternalComponentMappingProvider> componentProviders)
     {
         // this will only be called if there was no ComponentMap found

@@ -8,8 +8,9 @@ namespace FluentNHibernate.Testing.Cfg.Db;
 public class PersistenceConfigurationTester
 {
     #region Test Setup
-    private ConfigTester _config;
-    private Configuration _nhibConfig;
+
+    ConfigTester _config;
+    Configuration _nhibConfig;
 
     [SetUp]
     public void SetUp()
@@ -20,7 +21,7 @@ public class PersistenceConfigurationTester
 
     public string ValueOf(string key)
     {
-        if( _nhibConfig == null )
+        if( _nhibConfig is null )
         {
             _nhibConfig = new Configuration();
             _config.ConfigureProperties(_nhibConfig);

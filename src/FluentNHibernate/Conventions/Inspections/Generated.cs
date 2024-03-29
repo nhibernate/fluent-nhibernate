@@ -1,6 +1,8 @@
+using System;
+
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class Generated
+public class Generated : IEquatable<Generated>
 {
     /// <summary>
     /// Use the default value.
@@ -24,9 +26,9 @@ public class Generated
     /// </summary>
     public static readonly Generated Always = new Generated("always");
 
-    private readonly string value;
+    readonly string value;
 
-    private Generated(string value)
+    Generated(string value)
     {
         this.value = value;
     }
@@ -45,7 +47,7 @@ public class Generated
 
     public override int GetHashCode()
     {
-        return (value != null ? value.GetHashCode() : 0);
+        return (value is not null ? value.GetHashCode() : 0);
     }
 
     public static bool operator ==(Generated x, Generated y)

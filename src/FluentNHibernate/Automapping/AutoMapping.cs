@@ -41,19 +41,19 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
         mapping.MergeAttributes(attributes.Clone());
         if (mapping is ClassMapping classMapping)
         {
-            if (providers.Id != null)
+            if (providers.Id is not null)
                 classMapping.Set(x => x.Id, Layer.Defaults, providers.Id.GetIdentityMapping());
 
-            if (providers.NaturalId != null)
+            if (providers.NaturalId is not null)
                 classMapping.Set(x => x.NaturalId, Layer.Defaults, providers.NaturalId.GetNaturalIdMapping());
 
-            if (providers.CompositeId != null)
+            if (providers.CompositeId is not null)
                 classMapping.Set(x => x.Id, Layer.Defaults, providers.CompositeId.GetCompositeIdMapping());
 
-            if (providers.Version != null)
+            if (providers.Version is not null)
                 classMapping.Set(x => x.Version, Layer.Defaults, providers.Version.GetVersionMapping());
 
-            if (providers.Discriminator != null)
+            if (providers.Discriminator is not null)
                 classMapping.Set(x => x.Discriminator, Layer.Defaults, providers.Discriminator.GetDiscriminatorMapping());
 
             if (Cache.IsDirty)
@@ -133,8 +133,7 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
         var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
         var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
 
-        if (action != null)
-            action(joinedclass);
+        action?.Invoke(joinedclass);
 
         providers.Subclasses[typeof(TSubclass)] = joinedclass;
 
@@ -167,8 +166,7 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
         var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
         var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, null, discriminatorValue);
 
-        if (action != null)
-            action(subclass);
+        action?.Invoke(subclass);
 
         // remove any mappings for the same type, then re-add
         providers.Subclasses[typeof(TSubclass)] = subclass;

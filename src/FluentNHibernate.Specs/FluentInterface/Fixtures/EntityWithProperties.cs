@@ -7,6 +7,6 @@ class EntityWithProperties
 
 class EntityWithPrivateProperties
 {
-    private string Name { get; set; }
+    string Name { get; set; }
     string name;
 }

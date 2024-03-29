@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
@@ -14,7 +12,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class PropertyConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -208,12 +206,12 @@ public class PropertyConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IPropertyInstance> convention)
+    void Convention(Action<IPropertyInstance> convention)
     {
         model.Conventions.Add(new PropertyConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<PropertyMapping> modelVerification)
+    void VerifyModel(Action<PropertyMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleClass>();
         classMap.Id(x => x.Id);
@@ -223,7 +221,7 @@ public class PropertyConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) is not null)
             .Classes.First()
             .Properties.First();
 

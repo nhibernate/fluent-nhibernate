@@ -12,7 +12,7 @@ public abstract class ManyToManyTableNameConvention : IHasManyToManyConvention
 {
     public void Apply(IManyToManyCollectionInstance instance)
     {
-        if (instance.OtherSide == null)
+        if (instance.OtherSide is null)
         {
             // uni-directional
             var tableName = GetUniDirectionalTableName(instance);

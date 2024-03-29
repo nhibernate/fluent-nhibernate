@@ -136,7 +136,7 @@ public class ExpressionToSqlTests
         sql.ShouldEqual("'someValue'");
     }
 
-    private const string someValue = "someValue";
+    const string someValue = "someValue";
 
     [Test]
     public void ConvertConst()
@@ -146,7 +146,7 @@ public class ExpressionToSqlTests
         sql.ShouldEqual("'someValue'");
     }
 
-    private class StaticExample
+    class StaticExample
     {
         public static string Value = "someValue";
         public static string Method()
@@ -171,7 +171,7 @@ public class ExpressionToSqlTests
         sql.ShouldEqual("'someValue'");
     }
 
-    private enum Something
+    enum Something
     {
         Else = 10
     }

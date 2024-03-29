@@ -2,7 +2,6 @@ using System;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Mapping;
 
 namespace FluentNHibernate.Conventions;
 
@@ -16,7 +15,7 @@ public abstract class AttributePropertyConvention<T> : IPropertyConvention, IPro
 {
     public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
     {
-        criteria.Expect(property => Attribute.GetCustomAttribute(property.Property.MemberInfo, typeof(T)) as T != null);
+        criteria.Expect(property => Attribute.GetCustomAttribute(property.Property.MemberInfo, typeof(T)) as T is not null);
     }
 
     public void Apply(IPropertyInstance instance)

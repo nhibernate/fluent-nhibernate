@@ -9,6 +9,7 @@ public static class Serialization
     /// Extend <see cref="ISerializationSurrogate"/> with a "tester" method used by <see cref="SurrogateSelector"/>.
     /// Reference Via: https://github.com/CXuesong/BotBuilder.Standard/blob/netcore20%2Bnet45/CSharp/Library/Microsoft.Bot.Builder/Fibers/NetStandardSerialization.cs
     /// </summary>
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     public interface ISurrogateProvider : ISerializationSurrogate
     {
         /// <summary>

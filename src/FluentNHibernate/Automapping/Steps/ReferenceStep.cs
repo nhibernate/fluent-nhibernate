@@ -2,23 +2,16 @@
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class ReferenceStep : IAutomappingStep
+public class ReferenceStep(IAutomappingConfiguration cfg) : IAutomappingStep
 {
-    private readonly Func<Member, bool> findPropertyconvention = p => (
+    readonly Func<Member, bool> findPropertyconvention = p => (
         p.PropertyType.Namespace != "System" && // ignore clr types (won't be entities)
         p.PropertyType.Namespace != "System.Collections.Generic" &&
         p.PropertyType.Namespace != "Iesi.Collections.Generic" &&
         !p.PropertyType.IsEnum);
-    readonly IAutomappingConfiguration cfg;
-
-    public ReferenceStep(IAutomappingConfiguration cfg)
-    {
-        this.cfg = cfg;
-    }
 
     public bool ShouldMap(Member member)
     {
@@ -32,7 +25,7 @@ public class ReferenceStep : IAutomappingStep
         classMap.AddReference(manyToOne);
     }
 
-    private ManyToOneMapping CreateMapping(Member member)
+    ManyToOneMapping CreateMapping(Member member)
     {
         var mapping = new ManyToOneMapping { Member = member };
 

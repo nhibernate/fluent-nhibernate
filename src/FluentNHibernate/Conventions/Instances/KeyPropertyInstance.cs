@@ -4,15 +4,9 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class KeyPropertyInstance : KeyPropertyInspector, IKeyPropertyInstance
+public class KeyPropertyInstance(KeyPropertyMapping mapping) : KeyPropertyInspector(mapping), IKeyPropertyInstance
 {
-    private readonly KeyPropertyMapping mapping;
-
-    public KeyPropertyInstance(KeyPropertyMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly KeyPropertyMapping mapping = mapping;
 
     public new IAccessInstance Access
     {

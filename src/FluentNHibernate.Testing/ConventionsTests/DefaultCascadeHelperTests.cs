@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -9,7 +8,7 @@ namespace FluentNHibernate.Testing.ConventionsTests;
 [TestFixture]
 public class DefaultCascadeHelperTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -29,7 +28,7 @@ public class DefaultCascadeHelperTests
             .DefaultCascade.ShouldEqual("all");
     }
 
-    private class Target
+    class Target
     {
         public int Id { get; set; }
     }

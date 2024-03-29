@@ -4,11 +4,11 @@ namespace FluentNHibernate.Cfg.Db;
 
 public class PostgreSQLConnectionStringBuilder : ConnectionStringBuilder
 {
-    private string host;
-    private int port;
-    private string database;
-    private string username;
-    private string password;
+    string host;
+    int port;
+    string database;
+    string username;
+    string password;
 
     public PostgreSQLConnectionStringBuilder Host(string host)
     {

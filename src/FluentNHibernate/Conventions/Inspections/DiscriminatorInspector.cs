@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
 public class DiscriminatorInspector : ColumnBasedInspector, IDiscriminatorInspector
 {
-    private readonly InspectorModelMapper<IDiscriminatorInspector, DiscriminatorMapping> propertyMappings = new InspectorModelMapper<IDiscriminatorInspector, DiscriminatorMapping>();
-    private readonly DiscriminatorMapping mapping;
+    readonly InspectorModelMapper<IDiscriminatorInspector, DiscriminatorMapping> propertyMappings = new InspectorModelMapper<IDiscriminatorInspector, DiscriminatorMapping>();
+    readonly DiscriminatorMapping mapping;
 
     public DiscriminatorInspector(DiscriminatorMapping mapping)
         : base(mapping.Columns)
@@ -18,35 +17,17 @@ public class DiscriminatorInspector : ColumnBasedInspector, IDiscriminatorInspec
         propertyMappings.Map(x => x.Nullable, "NotNull");
     }
 
-    public bool Insert
-    {
-        get { return mapping.Insert; }
-    }
+    public bool Insert => mapping.Insert;
 
-    public bool Force
-    {
-        get { return mapping.Force; }
-    }
+    public bool Force => mapping.Force;
 
-    public string Formula
-    {
-        get { return mapping.Formula; }
-    }
+    public string Formula => mapping.Formula;
 
-    public TypeReference Type
-    {
-        get { return mapping.Type; }
-    }
+    public TypeReference Type => mapping.Type;
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Type.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Type.Name;
 
     public IEnumerable<IColumnInspector> Columns
     {

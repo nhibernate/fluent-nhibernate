@@ -1,5 +1,4 @@
 using System.Linq;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.Testing.DomainModel;
 using NUnit.Framework;
 
@@ -168,6 +167,6 @@ public class SubclassMapForJoinedSubclassMutablePropertyModelGenerationTests : B
             .ModelShouldMatch(x => x.EntityName.ShouldEqual("name1"));
     }
 
-    private class FakeProxyType
+    class FakeProxyType
     {}
 }

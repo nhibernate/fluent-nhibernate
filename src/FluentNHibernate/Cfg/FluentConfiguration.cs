@@ -23,7 +23,6 @@ public class FluentConfiguration
     const string DefaultProxyFactoryFactoryClassName = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
     const string CurrentSessionContextClassKey = NHibEnvironment.CurrentSessionContextClass;
 
-    readonly Configuration cfg;
     readonly IList<Action<Configuration>> configAlterations = new List<Action<Configuration>>();
     readonly IDiagnosticMessageDispatcher dispatcher = new DefaultDiagnosticMessageDispatcher();
     readonly List<Action<MappingConfiguration>> mappingsBuilders = new List<Action<MappingConfiguration>>();
@@ -40,17 +39,14 @@ public class FluentConfiguration
 
     internal FluentConfiguration(Configuration cfg)
     {
-        this.cfg = cfg;
+        this.Configuration = cfg;
 
 #if NH21
             this.ProxyFactoryFactory(DefaultProxyFactoryFactoryClassName);
 #endif
     }
 
-    internal Configuration Configuration
-    {
-        get { return cfg; }
-    }
+    internal Configuration Configuration { get; }
 
     /// <summary>
     /// Configure diagnostic logging
@@ -213,7 +209,7 @@ public class FluentConfiguration
     /// <returns>Fluent configuration</returns>
     public FluentConfiguration ExposeConfiguration(Action<Configuration> config)
     {
-        if (config != null)
+        if (config is not null)
             configAlterations.Add(config);
 
         return this;
@@ -270,7 +266,7 @@ public class FluentConfiguration
     /// </summary>
     /// <param name="innerException">Inner exception</param>
     /// <returns>FluentConfigurationException with state</returns>
-    private FluentConfigurationException CreateConfigurationException(Exception innerException)
+    FluentConfigurationException CreateConfigurationException(Exception innerException)
     {
         var ex = new FluentConfigurationException(ExceptionMessage, innerException);
 

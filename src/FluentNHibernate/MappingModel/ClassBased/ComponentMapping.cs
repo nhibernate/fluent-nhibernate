@@ -6,7 +6,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public class ComponentMapping : ComponentMappingBase, IComponentMapping
+public class ComponentMapping : ComponentMappingBase, IComponentMapping, IEquatable<ComponentMapping>
 {
     public ComponentType ComponentType { get; set; }
     readonly AttributeStore attributes;
@@ -28,32 +28,17 @@ public class ComponentMapping : ComponentMappingBase, IComponentMapping
         base.AcceptVisitor(visitor);
     }
 
-    public bool HasColumnPrefix
-    {
-        get { return !string.IsNullOrEmpty(ColumnPrefix); }
-    }
+    public bool HasColumnPrefix => !string.IsNullOrEmpty(ColumnPrefix);
 
     public string ColumnPrefix { get; set; }
 
-    public override string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public override string Name => attributes.GetOrDefault<string>("Name");
 
-    public override Type Type
-    {
-        get { return attributes.GetOrDefault<Type>("Type"); }
-    }
+    public override Type Type => attributes.GetOrDefault<Type>("Type");
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public bool Lazy
-    {
-        get { return attributes.GetOrDefault<bool>("Lazy"); }
-    }
+    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
 
     public bool Equals(ComponentMapping other)
     {
@@ -75,7 +60,7 @@ public class ComponentMapping : ComponentMappingBase, IComponentMapping
         unchecked
         {
             {
-                return (base.GetHashCode() * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
+                return (base.GetHashCode() * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
             }
         }
     }

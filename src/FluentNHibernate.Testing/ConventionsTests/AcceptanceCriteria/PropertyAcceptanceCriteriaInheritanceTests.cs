@@ -11,7 +11,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.AcceptanceCriteria;
 [TestFixture]
 public class PropertyAcceptanceCriteriaInheritanceTests
 {
-    private IAcceptanceCriteria<IPropertyInspector> acceptance;
+    IAcceptanceCriteria<IPropertyInspector> acceptance;
 
     [SetUp]
     public void CreateAcceptanceCriteria()
@@ -65,7 +65,7 @@ public class PropertyAcceptanceCriteriaInheritanceTests
             .ShouldBeTrue();
     }
 
-    private class AnotherConvention : IPropertyConvention, IConventionAcceptance<IPropertyInspector>
+    class AnotherConvention : IPropertyConvention, IConventionAcceptance<IPropertyInspector>
     {
         public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
         {

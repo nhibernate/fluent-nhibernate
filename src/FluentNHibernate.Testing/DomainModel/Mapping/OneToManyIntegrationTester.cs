@@ -1,5 +1,4 @@
-﻿using FluentNHibernate.Cfg.Db;
-using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Mapping;
 using NUnit.Framework;
 using NHibernate.Cfg;
 using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
@@ -9,7 +8,7 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping;
 [TestFixture]
 public class OneToManyIntegrationTester
 {
-    private class OneToManyPersistenceModel : PersistenceModel
+    class OneToManyPersistenceModel : PersistenceModel
     {
         public override void Configure(NHibernate.Cfg.Configuration configuration)
         {
@@ -18,7 +17,7 @@ public class OneToManyIntegrationTester
             base.Configure(configuration);
         }
 
-        private class ChildObjectMap : ClassMap<ChildObject>
+        class ChildObjectMap : ClassMap<ChildObject>
         {
             public ChildObjectMap()
             {
@@ -26,7 +25,7 @@ public class OneToManyIntegrationTester
             }
         }
 
-        private class OneToManyTargetMap : ClassMap<OneToManyTarget>
+        class OneToManyTargetMap : ClassMap<OneToManyTarget>
         {
             public OneToManyTargetMap()
             {

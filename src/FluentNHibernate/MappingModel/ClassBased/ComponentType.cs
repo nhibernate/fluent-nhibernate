@@ -3,14 +3,14 @@ using System;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public class ComponentType
+public class ComponentType : IEquatable<ComponentType>
 {
     public static readonly ComponentType Component = new ComponentType("component");
     public static readonly ComponentType DynamicComponent = new ComponentType("dynamic-component");
 
     readonly string elementName;
 
-    private ComponentType(string elementName)
+    ComponentType(string elementName)
     {
         this.elementName = elementName;
     }
@@ -40,7 +40,7 @@ public class ComponentType
 
     public override int GetHashCode()
     {
-        return (elementName != null ? elementName.GetHashCode() : 0);
+        return (elementName is not null ? elementName.GetHashCode() : 0);
     }
 
     public static bool operator ==(ComponentType left, ComponentType right)

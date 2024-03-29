@@ -7,15 +7,8 @@ using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping;
 
-public abstract class ClasslikeMapBase<T>
+public abstract class ClasslikeMapBase<T>(MappingProviderStore providers)
 {
-    readonly MappingProviderStore providers;
-
-    protected ClasslikeMapBase(MappingProviderStore providers)
-    {
-        this.providers = providers;
-    }
-
     /// <summary>
     /// Called when a member is mapped by a builder method.
     /// </summary>
@@ -126,7 +119,7 @@ public abstract class ClasslikeMapBase<T>
 
         var part = new ManyToOnePart<TOther>(EntityType, member);
 
-        if (columnName != null)
+        if (columnName is not null)
             part.Column(columnName);
 
         providers.References.Add(part);
@@ -294,7 +287,7 @@ public abstract class ClasslikeMapBase<T>
 
         var part = new ComponentPart<TComponent>(typeof(T), member);
 
-        if (action != null) action(part);
+        action?.Invoke(part);
 
         providers.Components.Add(part);
 
@@ -314,7 +307,7 @@ public abstract class ClasslikeMapBase<T>
         providers.Components.Add(componentProvider);
     }
 
-    private OneToManyPart<TChild> MapHasMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
+    OneToManyPart<TChild> MapHasMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
     {
         return HasMany<TChild>(expression.ToMember());
     }
@@ -361,7 +354,7 @@ public abstract class ClasslikeMapBase<T>
         return MapHasMany<TChild, object>(memberExpression);
     }
 
-    private ManyToManyPart<TChild> MapHasManyToMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
+    ManyToManyPart<TChild> MapHasManyToMany<TChild, TReturn>(Expression<Func<T, TReturn>> expression)
     {
         return HasManyToMany<TChild>(expression.ToMember());
     }
@@ -446,18 +439,9 @@ public abstract class ClasslikeMapBase<T>
         return part;
     }
 
-    internal IEnumerable<IPropertyMappingProvider> Properties
-    {
-        get { return providers.Properties; }
-    }
+    internal IEnumerable<IPropertyMappingProvider> Properties => providers.Properties;
 
-    internal IEnumerable<IComponentMappingProvider> Components
-    {
-        get { return providers.Components; }
-    }
+    internal IEnumerable<IComponentMappingProvider> Components => providers.Components;
 
-    internal Type EntityType
-    {
-        get { return typeof(T); }
-    }
+    internal Type EntityType => typeof(T);
 }

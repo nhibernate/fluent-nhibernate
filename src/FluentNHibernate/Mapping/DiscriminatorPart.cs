@@ -6,23 +6,12 @@ using NHibernate.UserTypes;
 
 namespace FluentNHibernate.Mapping;
 
-public class DiscriminatorPart : IDiscriminatorMappingProvider
+public class DiscriminatorPart(string columnName, Type entity, Action<Type, ISubclassMappingProvider> setter, TypeReference discriminatorValueType)
+    : IDiscriminatorMappingProvider
 {
-    readonly string columnName;
-    readonly Type entity;
-    readonly Action<Type, ISubclassMappingProvider> setter;
-    readonly TypeReference discriminatorValueType;
     readonly AttributeStore attributes = new AttributeStore();
     readonly AttributeStore columnAttributes = new AttributeStore();
     bool nextBool = true;
-
-    public DiscriminatorPart(string columnName, Type entity, Action<Type, ISubclassMappingProvider> setter, TypeReference discriminatorValueType)
-    {
-        this.columnName = columnName;
-        this.entity = entity;
-        this.setter = setter;
-        this.discriminatorValueType = discriminatorValueType;
-    }
 
     [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
     public DiscriminatorPart SubClass<TSubClass>(object discriminatorValue, Action<SubClassPart<TSubClass>> action)

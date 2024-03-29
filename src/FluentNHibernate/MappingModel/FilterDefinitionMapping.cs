@@ -8,35 +8,19 @@ using NHibernate.Type;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class FilterDefinitionMapping : MappingBase
+public class FilterDefinitionMapping(AttributeStore attributes) : MappingBase, IEquatable<FilterDefinitionMapping>
 {
-    readonly AttributeStore attributes;
-    readonly IDictionary<string, IType> parameters;
+    readonly AttributeStore attributes = attributes;
 
     public FilterDefinitionMapping()
         : this(new AttributeStore())
     { }
 
-    public FilterDefinitionMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-        parameters = new Dictionary<string, IType>();
-    }
+    public IDictionary<string, IType> Parameters { get; } = new Dictionary<string, IType>();
 
-    public IDictionary<string, IType> Parameters
-    {
-        get { return parameters; }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
-
-    public string Condition
-    {
-        get { return attributes.GetOrDefault<string>("Condition"); }
-    }
+    public string Condition => attributes.GetOrDefault<string>("Condition");
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -48,7 +32,7 @@ public class FilterDefinitionMapping : MappingBase
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
         return Equals(other.attributes, attributes) &&
-               other.parameters.ContentEquals(parameters);
+               other.Parameters.ContentEquals(Parameters);
     }
 
     public override bool Equals(object obj)
@@ -63,7 +47,7 @@ public class FilterDefinitionMapping : MappingBase
     {
         unchecked
         {
-            return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^ (parameters != null ? parameters.GetHashCode() : 0);
+            return ((attributes is not null ? attributes.GetHashCode() : 0) * 397) ^ (Parameters is not null ? Parameters.GetHashCode() : 0);
         }
     }
 

@@ -7,17 +7,9 @@ using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class ComponentInstance : ComponentInspector, IComponentInstance
+public class ComponentInstance(ComponentMapping mapping) : ComponentInspector(mapping), IComponentInstance
 {
-    private readonly ComponentMapping mapping;
-    private bool nextBool;
-
-    public ComponentInstance(ComponentMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-        nextBool = true;
-    }
+    bool nextBool = true;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public IComponentInstance Not
@@ -66,10 +58,10 @@ public class ComponentInstance : ComponentInspector, IComponentInstance
 
     public new IEnumerable<IOneToOneInstance> OneToOnes
     {
-        get { return mapping.OneToOnes.Select(x => new OneToOneInstance(x)).Cast<IOneToOneInstance>(); }
+        get { return mapping.OneToOnes.Select(x => new OneToOneInstance(x)); }
     }
     public new IEnumerable<IPropertyInstance> Properties
     {
-        get { return mapping.Properties.Select(x => new PropertyInstance(x)).Cast<IPropertyInstance>(); }
+        get { return mapping.Properties.Select(x => new PropertyInstance(x)); }
     }        
 }

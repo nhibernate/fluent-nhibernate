@@ -15,9 +15,9 @@ public class DiscriminatorValue
     /// </summary>
     public static readonly DiscriminatorValue NotNull = new DiscriminatorValue("not null");
 
-    private readonly string outputValue;
+    readonly string outputValue;
 
-    private DiscriminatorValue(string outputValue)
+    DiscriminatorValue(string outputValue)
     {
         this.outputValue = outputValue;
     }

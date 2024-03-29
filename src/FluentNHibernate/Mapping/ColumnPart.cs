@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Mapping;
 
-public class ColumnPart
+public class ColumnPart(ColumnMapping columnMapping)
 {
-    private ColumnMapping columnMapping;
-    private bool nextBool = true;
-
-    public ColumnPart(ColumnMapping columnMapping)
-    {
-        this.columnMapping = columnMapping;
-    }
+    bool nextBool = true;
 
     /// <summary>
     /// Inverts the next boolean

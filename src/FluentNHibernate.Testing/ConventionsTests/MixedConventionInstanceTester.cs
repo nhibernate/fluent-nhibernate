@@ -1,7 +1,6 @@
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
@@ -24,7 +23,7 @@ public class MixedConventionInstanceTester
             .Element("class/property[@name='LineOne']/column").HasAttribute("name", "prop-col");
     }
 
-    private class CustomConvention : IIdConvention, IPropertyConvention
+    class CustomConvention : IIdConvention, IPropertyConvention
     {
         public void Apply(IIdentityInstance instance)
         {

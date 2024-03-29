@@ -8,17 +8,12 @@ namespace FluentNHibernate.Visitors;
 
 public delegate void PairBiDirectionalManyToManySidesDelegate(CollectionMapping current, IEnumerable<CollectionMapping> possibles, bool wasResolved);
 
-public class RelationshipPairingVisitor : DefaultMappingModelVisitor
+public class RelationshipPairingVisitor(PairBiDirectionalManyToManySidesDelegate userControlledPair)
+    : DefaultMappingModelVisitor
 {
-    readonly PairBiDirectionalManyToManySidesDelegate userControlledPair;
     readonly List<CollectionMapping> manyToManys = new List<CollectionMapping>();
     readonly List<CollectionMapping> oneToManys = new List<CollectionMapping>();
     readonly List<ManyToOneMapping> references = new List<ManyToOneMapping>();
-
-    public RelationshipPairingVisitor(PairBiDirectionalManyToManySidesDelegate userControlledPair)
-    {
-        this.userControlledPair = userControlledPair;
-    }
 
     public override void Visit(IEnumerable<HibernateMapping> mappings)
     {
@@ -52,11 +47,11 @@ public class RelationshipPairingVisitor : DefaultMappingModelVisitor
             var childType = collection.ChildType;
             var reference = orderedRefs
                 .FirstOrDefault(x => 
-                    x.OtherSide == null && 
+                    x.OtherSide is null && 
                     x.Class.GetUnderlyingSystemType() == type &&
                     x.ContainingEntityType == childType);
 
-            if (reference == null) continue;
+            if (reference is null) continue;
 
             collection.OtherSide = reference;
             reference.OtherSide = collection;
@@ -83,7 +78,7 @@ public class RelationshipPairingVisitor : DefaultMappingModelVisitor
         else if (candidatesCount > 1)
             mapping = PairFuzzyMatches(rs, current, candidates);
 
-        if (mapping == null)
+        if (mapping is null)
         {
             // couldn't pair at all, going to defer to the user for this one
             // and if they can't do anything we'll just treat it as uni-directional
@@ -148,7 +143,7 @@ public class RelationshipPairingVisitor : DefaultMappingModelVisitor
 
         var first = likenesses.FirstOrDefault();
 
-        if (first == null || AnyHaveSameLikeness(likenesses, first))
+        if (first is null || AnyHaveSameLikeness(likenesses, first))
         {
             // couldn't find a definitive match, return nothing and we'll handle
             // this further up
@@ -193,10 +188,7 @@ public class RelationshipPairingVisitor : DefaultMappingModelVisitor
             .OrderBy(x => x.Differences)
             .FirstOrDefault();
 
-        if (alternative == null)
-            return null;
-
-        return alternative.Collection;
+        return alternative?.Collection;
     }
 
     static bool AnyHaveSameLikeness(IEnumerable<LikenessContainer> likenesses, LikenessContainer current)
@@ -228,8 +220,8 @@ public class RelationshipPairingVisitor : DefaultMappingModelVisitor
         {
             unchecked
             {
-                int result = (CurrentMemberName != null ? CurrentMemberName.GetHashCode() : 0);
-                result = (result * 397) ^ (MappingMemberName != null ? MappingMemberName.GetHashCode() : 0);
+                int result = (CurrentMemberName is not null ? CurrentMemberName.GetHashCode() : 0);
+                result = (result * 397) ^ (MappingMemberName is not null ? MappingMemberName.GetHashCode() : 0);
                 return result;
             }
         }

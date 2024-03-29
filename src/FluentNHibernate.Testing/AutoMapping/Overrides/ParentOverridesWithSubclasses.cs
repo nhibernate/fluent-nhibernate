@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Automapping;
-using FluentNHibernate.Automapping.Alterations;
-using FluentNHibernate.Automapping.TestFixtures;
-using FluentNHibernate.Testing.Fixtures.AutoMappingAlterations.Model;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.AutoMapping.Overrides;

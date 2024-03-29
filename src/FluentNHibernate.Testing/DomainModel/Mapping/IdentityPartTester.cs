@@ -1,12 +1,6 @@
 using System;
-using System.Diagnostics;
-using System.Reflection;
-using System.Xml;
-using FluentNHibernate.Automapping.TestFixtures.SuperTypes;
 using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
@@ -521,7 +515,7 @@ public class IdentityPartTester
             .DoesntExist();
     }
 
-    private class TestIdConvention : IIdConvention
+    class TestIdConvention : IIdConvention
     {
         public void Apply(IIdentityInstance instance)
         {

@@ -447,7 +447,7 @@ public class RunnableConventionsTests
     #region conventions
 
 #pragma warning disable 612,618
-    private class ArrayConvention : IArrayConvention
+    class ArrayConvention : IArrayConvention
     {
         public void Apply(IArrayInstance instance)
         {
@@ -455,7 +455,7 @@ public class RunnableConventionsTests
         }
     }
 
-    private class BagConvention : IBagConvention
+    class BagConvention : IBagConvention
     {
         public void Apply(IBagInstance instance)
         {
@@ -463,7 +463,7 @@ public class RunnableConventionsTests
         }
     }
 
-    private class ClassConvention : IClassConvention
+    class ClassConvention : IClassConvention
     {
         public void Apply(IClassInstance instance)
         {
@@ -471,7 +471,7 @@ public class RunnableConventionsTests
         }
     }
 
-    private class CollectionConvention : ICollectionConvention
+    class CollectionConvention : ICollectionConvention
     {
         public void Apply(ICollectionInstance instance)
         {
@@ -479,7 +479,7 @@ public class RunnableConventionsTests
         }
     }
 
-    private class ColumnConvention : IColumnConvention
+    class ColumnConvention : IColumnConvention
     {
         public void Apply(IColumnInstance instance)
         {
@@ -487,7 +487,7 @@ public class RunnableConventionsTests
         }
     }
 
-    private class ComponentConvention : IComponentConvention
+    class ComponentConvention : IComponentConvention
     {
         public void Apply(IComponentInstance instance)
         {
@@ -495,7 +495,7 @@ public class RunnableConventionsTests
         }
     }
 
-    private class DynamicComponentConvention : IDynamicComponentConvention
+    class DynamicComponentConvention : IDynamicComponentConvention
     {
         public void Apply(IDynamicComponentInstance instance)
         {
@@ -503,7 +503,7 @@ public class RunnableConventionsTests
         }
     }
 
-    private class HasManyConvention : IHasManyConvention
+    class HasManyConvention : IHasManyConvention
     {
         public void Apply(IOneToManyCollectionInstance instance)
         {
@@ -511,7 +511,7 @@ public class RunnableConventionsTests
         }
     }
 
-    private class HasManyToManyConvention : IHasManyToManyConvention
+    class HasManyToManyConvention : IHasManyToManyConvention
     {
         public void Apply(IManyToManyCollectionInstance instance)
         {
@@ -638,7 +638,7 @@ public class RunnableConventionsTests
 
 #pragma warning restore 612,618
 
-    private class OtherObjectUserType : IUserType
+    class OtherObjectUserType : IUserType
     {
         public OtherObjectUserType()
         {
@@ -692,23 +692,16 @@ public class RunnableConventionsTests
             throw new NotImplementedException();
         }
 
-        public SqlType[] SqlTypes
-        {
-            get { return null; }
-        }
-        public Type ReturnedType
-        {
-            get { return typeof(OtherObject); }
-        }
-        public bool IsMutable
-        {
-            get { return false; }
-        }
+        public SqlType[] SqlTypes => null;
+
+        public Type ReturnedType => typeof(OtherObject);
+
+        public bool IsMutable => false;
     }
 
     #endregion
 
-    private ClassMapping TestConvention<T>(T convention, Func<IMappingProvider> getMapping) where T : IConvention
+    ClassMapping TestConvention<T>(T convention, Func<IMappingProvider> getMapping) where T : IConvention
     {
         var model = new PersistenceModel();
 
@@ -720,7 +713,7 @@ public class RunnableConventionsTests
             .Classes.First();
     }
 
-    private HibernateMapping TestConvention(HibernateMappingConvention convention, Func<IMappingProvider> getMapping)
+    HibernateMapping TestConvention(HibernateMappingConvention convention, Func<IMappingProvider> getMapping)
     {
         var model = new PersistenceModel();
 
@@ -731,7 +724,7 @@ public class RunnableConventionsTests
             .First();
     }
 
-    private class Target
+    class Target
     {
         public OtherObject[] Array { get; set; }
         public IList<OtherObject> Bag { get; set; }
@@ -743,10 +736,10 @@ public class RunnableConventionsTests
         public IDictionary<string, OtherObject> DictionaryBag { get; set; }
     }
 
-    private class TargetSubclass : Target
+    class TargetSubclass : Target
     {}
 
-    private class OtherObject
+    class OtherObject
     {
         public int Id { get; set; }
     }

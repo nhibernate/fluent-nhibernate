@@ -6,17 +6,11 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class VersionInstance : VersionInspector, IVersionInstance
+public class VersionInstance(VersionMapping mapping) : VersionInspector(mapping), IVersionInstance
 {
-    readonly VersionMapping mapping;
+    readonly VersionMapping mapping = mapping;
     bool nextBool = true;
     const int layer = Layer.Conventions;
-
-    public VersionInstance(VersionMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
 
     public new IAccessInstance Access
     {
@@ -42,7 +36,7 @@ public class VersionInstance : VersionInspector, IVersionInstance
     public void Column(string columnName)
     {
         var originalColumn = mapping.Columns.FirstOrDefault();
-        var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
+        var column = originalColumn is null ? new ColumnMapping() : originalColumn.Clone();
 
         column.Set(x => x.Name, layer, columnName);
 

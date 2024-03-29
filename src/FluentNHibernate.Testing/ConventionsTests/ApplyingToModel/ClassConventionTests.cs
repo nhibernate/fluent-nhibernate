@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel;
 [TestFixture]
 public class ClassConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -134,12 +134,12 @@ public class ClassConventionTests
 
     #region Helpers
 
-    private void Convention(Action<IClassInstance> convention)
+    void Convention(Action<IClassInstance> convention)
     {
         model.Conventions.Add(new ClassConventionBuilder().Always(convention));
     }
 
-    private void VerifyModel(Action<ClassMapping> modelVerification)
+    void VerifyModel(Action<ClassMapping> modelVerification)
     {
         var classMap = new ClassMap<ExampleClass>();
         classMap.Id(x => x.Id);
@@ -148,7 +148,7 @@ public class ClassConventionTests
 
         var generatedModels = model.BuildMappings();
         var modelInstance = generatedModels
-            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) != null)
+            .First(x => x.Classes.FirstOrDefault(c => c.Type == typeof(ExampleClass)) is not null)
             .Classes.First();
 
         modelVerification(modelInstance);
@@ -156,6 +156,6 @@ public class ClassConventionTests
 
     #endregion
 
-    private class CustomProxy
+    class CustomProxy
     { }
 }

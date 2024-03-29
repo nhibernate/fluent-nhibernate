@@ -3,7 +3,7 @@ using System;
 namespace FluentNHibernate.MappingModel.ClassBased;
 
 [Serializable]
-public class SubclassType
+public class SubclassType: IEquatable<SubclassType>
 {
     public static readonly SubclassType Subclass = new SubclassType("subclass");
     public static readonly SubclassType JoinedSubclass = new SubclassType("joined-subclass");
@@ -11,7 +11,7 @@ public class SubclassType
 
     readonly string elementName;
 
-    private SubclassType(string elementName)
+    SubclassType(string elementName)
     {
         this.elementName = elementName;
     }
@@ -36,7 +36,7 @@ public class SubclassType
 
     public override int GetHashCode()
     {
-        return (elementName != null ? elementName.GetHashCode() : 0);
+        return (elementName is not null ? elementName.GetHashCode() : 0);
     }
 
     public override string ToString()

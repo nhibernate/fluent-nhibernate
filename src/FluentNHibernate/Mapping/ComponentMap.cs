@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping;
 
@@ -62,8 +61,5 @@ public class ComponentMap<T> : ComponentPartBase<T, ComponentMap<T>>, IExternalC
         return (ExternalComponentMapping) CreateComponentMapping();
     }
 
-    Type IExternalComponentMappingProvider.Type
-    {
-        get { return typeof(T); }
-    }
+    Type IExternalComponentMappingProvider.Type => typeof(T);
 }

@@ -5,9 +5,5 @@ using FluentNHibernate.Conventions.Inspections;
 
 namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
 
-internal class BuiltKeyManyToOneConvention : BuiltConventionBase<IKeyManyToOneInspector, IKeyManyToOneInstance>, IKeyManyToOneConvention, IKeyManyToOneConventionAcceptance
-{
-    public BuiltKeyManyToOneConvention(Action<IAcceptanceCriteria<IKeyManyToOneInspector>> accept, Action<IKeyManyToOneInstance> convention)
-        :base(accept, convention)
-    {}
-}
+class BuiltKeyManyToOneConvention(Action<IAcceptanceCriteria<IKeyManyToOneInspector>> accept, Action<IKeyManyToOneInstance> convention)
+    : BuiltConventionBase<IKeyManyToOneInspector, IKeyManyToOneInstance>(accept, convention), IKeyManyToOneConvention, IKeyManyToOneConventionAcceptance;

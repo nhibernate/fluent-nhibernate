@@ -6,16 +6,10 @@ using FluentNHibernate.MappingModel;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class OneToOneInstance : OneToOneInspector, IOneToOneInstance
+public class OneToOneInstance(OneToOneMapping mapping) : OneToOneInspector(mapping), IOneToOneInstance
 {
-    private readonly OneToOneMapping mapping;
-    private bool nextBool = true;
-
-    public OneToOneInstance(OneToOneMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly OneToOneMapping mapping = mapping;
+    bool nextBool = true;
 
     public new IAccessInstance Access
     {

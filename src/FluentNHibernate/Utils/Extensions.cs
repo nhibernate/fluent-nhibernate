@@ -35,13 +35,19 @@ public static class Extensions
 
     public static bool IsEnum(this Type type)
     {
-        if (type.IsNullable())
+        if (type.IsNullableType())
             return type.GetGenericArguments()[0].IsEnum;
 
         return type.IsEnum;
     }
 
+    [Obsolete("Please use IsNullableType(Type type)")]
     public static bool IsNullable(this Type type)
+    {
+        return type.IsNullableType();
+    }
+
+    public static bool IsNullableType(this Type type)
     {
         return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
     }

@@ -7,27 +7,21 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public class CompositeElementMapping : MappingBase
+public class CompositeElementMapping(AttributeStore attributes) : MappingBase, IEquatable<CompositeElementMapping>
 {
-    readonly MappedMembers mappedMembers;
+    readonly MappedMembers mappedMembers = new();
     readonly List<NestedCompositeElementMapping> compositeElements = new List<NestedCompositeElementMapping>();
-    readonly AttributeStore attributes;
+    readonly AttributeStore attributes = attributes;
 
     public CompositeElementMapping()
         : this(new AttributeStore())
     { }
 
-    public CompositeElementMapping(AttributeStore attributes)
-    {
-        this.attributes = attributes;
-        mappedMembers = new MappedMembers();
-    }
-
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
         visitor.ProcessCompositeElement(this);
 
-        if (Parent != null)
+        if (Parent is not null)
             visitor.Visit(Parent);
 
         foreach (var compositeElement in CompositeElements)
@@ -36,35 +30,20 @@ public class CompositeElementMapping : MappingBase
         mappedMembers.AcceptVisitor(visitor);
     }
 
-    public TypeReference Class
-    {
-        get { return attributes.GetOrDefault<TypeReference>("Class"); }
-    }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
 
-    public ParentMapping Parent
-    {
-        get { return attributes.GetOrDefault<ParentMapping>("Parent"); }
-    }
+    public ParentMapping Parent => attributes.GetOrDefault<ParentMapping>("Parent");
 
-    public IEnumerable<PropertyMapping> Properties
-    {
-        get { return mappedMembers.Properties; }
-    }
+    public IEnumerable<PropertyMapping> Properties => mappedMembers.Properties;
 
     public void AddProperty(PropertyMapping property)
     {
         mappedMembers.AddProperty(property);
     }
 
-    public IEnumerable<ManyToOneMapping> References
-    {
-        get { return mappedMembers.References; }
-    }
+    public IEnumerable<ManyToOneMapping> References => mappedMembers.References;
 
-    public IEnumerable<NestedCompositeElementMapping> CompositeElements
-    {
-        get { return compositeElements; }
-    }
+    public IEnumerable<NestedCompositeElementMapping> CompositeElements => compositeElements;
 
     public Type ContainingEntityType { get; set; }
 
@@ -82,7 +61,7 @@ public class CompositeElementMapping : MappingBase
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Equals(other.mappedMembers, mappedMembers) && Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        return Equals(other.mappedMembers, mappedMembers) && Equals(other.attributes, attributes) && other.ContainingEntityType == ContainingEntityType;
     }
 
     public override bool Equals(object obj)
@@ -97,9 +76,9 @@ public class CompositeElementMapping : MappingBase
     {
         unchecked
         {
-            int result = (mappedMembers != null ? mappedMembers.GetHashCode() : 0);
-            result = (result * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
-            result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            int result = (mappedMembers is not null ? mappedMembers.GetHashCode() : 0);
+            result = (result * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
             return result;
         }
     }

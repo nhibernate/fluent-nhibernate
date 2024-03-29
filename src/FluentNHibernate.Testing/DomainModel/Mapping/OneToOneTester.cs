@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping;
 
@@ -85,16 +84,15 @@ public class OneToOneTester
             .HasAttribute("class", typeof (UserLoginInfo).AssemblyQualifiedName);
     }
 
-        
-    private interface IUserLoginInfo {}
-    private class UserLoginInfo : IUserLoginInfo { }
-    private class User
+
+    interface IUserLoginInfo {}
+
+    class UserLoginInfo : IUserLoginInfo { }
+
+    class User
     {
         public int Id { get; set; }
-        public IUserLoginInfo LoginInfo
-        {
-            get { return null; }
-        }
+        public IUserLoginInfo LoginInfo => null;
     }
 
         

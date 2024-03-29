@@ -7,20 +7,14 @@ using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class ManyToManyInstance : ManyToManyInspector, IManyToManyInstance
+public class ManyToManyInstance(ManyToManyMapping mapping) : ManyToManyInspector(mapping), IManyToManyInstance
 {
-    private readonly ManyToManyMapping mapping;
-
-    public ManyToManyInstance(ManyToManyMapping mapping)
-        : base(mapping)
-    {
-        this.mapping = mapping;
-    }
+    readonly ManyToManyMapping mapping = mapping;
 
     public void Column(string columnName)
     {
         var originalColumn = mapping.Columns.FirstOrDefault();
-        var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
+        var column = originalColumn is null ? new ColumnMapping() : originalColumn.Clone();
 
         column.Set(x => x.Name, Layer.Conventions, columnName);
 
@@ -32,8 +26,7 @@ public class ManyToManyInstance : ManyToManyInspector, IManyToManyInstance
         get
         {
             return mapping.Columns
-                .Select(x => new ColumnInstance(mapping.ContainingEntityType, x))
-                .Cast<IColumnInstance>();
+                .Select(x => new ColumnInstance(mapping.ContainingEntityType, x));
         }
     }
 

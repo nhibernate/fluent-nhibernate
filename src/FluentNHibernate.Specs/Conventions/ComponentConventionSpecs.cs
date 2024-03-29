@@ -31,8 +31,8 @@ public class when_specifying_component_convention
         property.Columns.FirstOrDefault().Name.Should().Be("different");
     };
 
-    private static FluentNHibernate.PersistenceModel model;
-    private static ClassMapping mapping;
+    static FluentNHibernate.PersistenceModel model;
+    static ClassMapping mapping;
 }
 
 public class EntityWithComponent
@@ -49,7 +49,7 @@ public class Address
     public string Line2 { get; set; }
 }
 
-internal class AddressMap : ComponentMap<Address>
+class AddressMap : ComponentMap<Address>
 {
     public AddressMap()
     {

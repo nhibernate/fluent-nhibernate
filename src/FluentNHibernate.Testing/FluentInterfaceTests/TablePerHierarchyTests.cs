@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using FluentNHibernate.Automapping;
-using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.Testing.DomainModel.Mapping;
@@ -71,8 +67,8 @@ public class DerivedMapping : SubclassMap<Derived>
 
 public abstract class BaseManualMapFixture
 {
-    private Configuration cfg;
-    private PersistenceModel model;
+    Configuration cfg;
+    PersistenceModel model;
 
     [SetUp]
     public void CreateDatabaseCfg()

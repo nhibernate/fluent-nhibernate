@@ -14,8 +14,8 @@ public class CacheSettingsBuilder
     protected const string CacheQueryCacheFactoryKey = NHibEnvironment.QueryCacheFactory;
     protected const string CacheRegionPrefixKey = NHibEnvironment.CacheRegionPrefix;
 
-    private readonly IDictionary<string, string> settings = new Dictionary<string, string>();
-    private bool nextBool = true;
+    readonly IDictionary<string, string> settings = new Dictionary<string, string>();
+    bool nextBool = true;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public CacheSettingsBuilder Not

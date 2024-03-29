@@ -6,9 +6,9 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel;
 
 [Serializable]
-public class ParentMapping : MappingBase
+public class ParentMapping : MappingBase, IEquatable<ParentMapping>
 {
-    private readonly AttributeStore attributes;
+    readonly AttributeStore attributes;
 
     public ParentMapping()
         : this(new AttributeStore())
@@ -26,15 +26,9 @@ public class ParentMapping : MappingBase
 
     public Type ContainingEntityType { get; set; }
 
-    public string Name
-    {
-        get { return attributes.GetOrDefault<string>("Name"); }
-    }
+    public string Name => attributes.GetOrDefault<string>("Name");
 
-    public string Access
-    {
-        get { return attributes.GetOrDefault<string>("Access"); }
-    }
+    public string Access => attributes.GetOrDefault<string>("Access");
 
     public override bool Equals(object obj)
     {
@@ -45,15 +39,15 @@ public class ParentMapping : MappingBase
 
     public bool Equals(ParentMapping other)
     {
-        return Equals(other.attributes, attributes) && Equals(other.ContainingEntityType, ContainingEntityType);
+        return Equals(other.attributes, attributes) && other.ContainingEntityType == ContainingEntityType;
     }
 
     public override int GetHashCode()
     {
         unchecked
         {
-            return ((attributes != null ? attributes.GetHashCode() : 0) * 397) ^
-                   (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
+            return ((attributes is not null ? attributes.GetHashCode() : 0) * 397) ^
+                   (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
         }
     }
 

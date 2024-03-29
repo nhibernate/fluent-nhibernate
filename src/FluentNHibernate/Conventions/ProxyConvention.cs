@@ -1,35 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 
 namespace FluentNHibernate.Conventions;
 
-public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneConvention, IReferenceConvention, ICollectionConvention
+public class ProxyConvention(Func<Type, Type> mapPersistentTypeToProxyInterfaceType, Func<Type, Type> mapProxyInterfaceTypeToPersistentType)
+    : IClassConvention, ISubclassConvention, IHasOneConvention, IReferenceConvention, ICollectionConvention
 {
-    private readonly Func<Type, Type> _mapPersistentTypeToProxyInterfaceType;
-    private readonly Func<Type, Type> _mapProxyInterfaceTypeToPersistentType;
-
-    public ProxyConvention(
-        Func<Type, Type> mapPersistentTypeToProxyInterfaceType,
-        Func<Type, Type> mapProxyInterfaceTypeToPersistentType)
-    {
-        if (mapPersistentTypeToProxyInterfaceType == null)
-        {
-            throw new ArgumentNullException("mapPersistentTypeToProxyInterfaceType");
-        }
-
-        if(mapProxyInterfaceTypeToPersistentType == null)
-        {
-            throw new ArgumentNullException("mapProxyInterfaceTypeToPersistentType");
-        }
-
-        this._mapPersistentTypeToProxyInterfaceType = mapPersistentTypeToProxyInterfaceType;
-            
-        this._mapProxyInterfaceTypeToPersistentType = mapProxyInterfaceTypeToPersistentType;
-    }
+    readonly Func<Type, Type> mapPersistentTypeToProxyInterfaceType = mapPersistentTypeToProxyInterfaceType ?? throw new ArgumentNullException(nameof(mapPersistentTypeToProxyInterfaceType));
+    readonly Func<Type, Type> mapProxyInterfaceTypeToPersistentType = mapProxyInterfaceTypeToPersistentType ?? throw new ArgumentNullException(nameof(mapProxyInterfaceTypeToPersistentType));
 
     /// <summary>
     /// Apply changes to the target
@@ -38,7 +17,7 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
     {
         var proxy = GetProxyType(instance.EntityType);
 
-        if(proxy != null)
+        if(proxy is not null)
         {
             instance.Proxy(proxy);
         }
@@ -51,7 +30,7 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
     {
         var proxy = GetProxyType(instance.EntityType);
 
-        if(proxy != null)
+        if(proxy is not null)
         {
             instance.Proxy(proxy);
         }
@@ -63,9 +42,9 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
     public void Apply(IManyToOneInstance instance)
     {
         Type inferredType = instance.Class.GetUnderlyingSystemType();
-        Type persistentType = _mapProxyInterfaceTypeToPersistentType(inferredType);
+        Type persistentType = mapProxyInterfaceTypeToPersistentType(inferredType);
 
-        if (persistentType != null)
+        if (persistentType is not null)
         {
             instance.OverrideInferredClass(persistentType);
         }
@@ -78,7 +57,7 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
     {
         var proxy = GetPersistentType(instance.Relationship.Class.GetUnderlyingSystemType());
 
-        if(proxy != null)
+        if(proxy is not null)
         {
             instance.Relationship.CustomClass(proxy);
         }
@@ -90,25 +69,25 @@ public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneCon
     public void Apply(IOneToOneInstance instance)
     {
         Type inferredType = ((IOneToOneInspector)instance).Class.GetUnderlyingSystemType();
-        Type persistentType = _mapProxyInterfaceTypeToPersistentType(inferredType);
+        Type persistentType = mapProxyInterfaceTypeToPersistentType(inferredType);
 
-        if(persistentType != null)
+        if(persistentType is not null)
         {
             instance.OverrideInferredClass(persistentType);
         }
     }
 
-    private Type GetProxyType(Type persistentType)
+    Type GetProxyType(Type persistentType)
     {
         return !persistentType.IsAbstract
-            ? _mapPersistentTypeToProxyInterfaceType(persistentType)
+            ? mapPersistentTypeToProxyInterfaceType(persistentType)
             : null;
     }
 
-    private Type GetPersistentType(Type proxyType)
+    Type GetPersistentType(Type proxyType)
     {
         return proxyType.IsInterface
-            ? _mapProxyInterfaceTypeToPersistentType(proxyType)
+            ? mapProxyInterfaceTypeToPersistentType(proxyType)
             : null;
     }
 }

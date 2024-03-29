@@ -2,15 +2,8 @@ using System;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class CascadeInstance : ICascadeInstance
+public class CascadeInstance(Action<string> setter) : ICascadeInstance
 {
-    private readonly Action<string> setter;
-
-    public CascadeInstance(Action<string> setter)
-    {
-        this.setter = setter;
-    }
-
     public void All()
     {
         setter("all");

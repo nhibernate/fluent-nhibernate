@@ -12,7 +12,7 @@ namespace FluentNHibernate.Testing.Testing.Values;
 
 public abstract class With_list_entity : Specification
 {
-    private Accessor property;
+    Accessor property;
     protected ListEntity target;
     protected List<ListEntity, string> sut;
     protected string[] listItems;
@@ -450,7 +450,7 @@ public class When_the_checked_list_has_transposed_items_of_the_expected_list_wit
 [TestFixture]
 public class When_a_list_is_checked_with_a_custom_equality_comparer_that_fails : With_initialized_list
 {
-    private InvalidOperationException exception;
+    InvalidOperationException exception;
 
     public override void establish_context()
     {

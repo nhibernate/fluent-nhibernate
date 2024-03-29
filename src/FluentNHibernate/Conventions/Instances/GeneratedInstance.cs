@@ -3,15 +3,8 @@ using System;
 namespace FluentNHibernate.Conventions.Instances;
 
 /// <inheritdoc cref="IGeneratedInstance"/>
-public class GeneratedInstance : IGeneratedInstance
+public class GeneratedInstance(Action<string> setter) : IGeneratedInstance
 {
-    private readonly Action<string> setter;
-
-    public GeneratedInstance(Action<string> setter)
-    {
-        this.setter = setter;
-    }
-
     /// <inheritdoc />
     public void Never()
     {

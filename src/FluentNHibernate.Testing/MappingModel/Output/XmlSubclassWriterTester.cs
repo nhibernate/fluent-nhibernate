@@ -2,7 +2,6 @@
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Output;
-using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
@@ -11,9 +10,9 @@ namespace FluentNHibernate.Testing.MappingModel.Output;
 [TestFixture]
 public class XmlSubclassWriterTester
 {
-    private IXmlWriter<SubclassMapping> writer;
+    IXmlWriter<SubclassMapping> writer;
 
-    private XmlWriterTestHelper<SubclassMapping> create_helper()
+    XmlWriterTestHelper<SubclassMapping> create_helper()
     {
         var helper = new XmlWriterTestHelper<SubclassMapping>();
         helper.CreateInstance(() => new SubclassMapping(SubclassType.Subclass));

@@ -11,13 +11,12 @@ public class ElementPart : IElementMappingProvider
     readonly Type entity;
     readonly AttributeStore attributes = new AttributeStore();
     readonly AttributeStore columnAttributes = new AttributeStore();
-    readonly ColumnMappingCollection<ElementPart> columns;
     bool nextBool = true;
 
     public ElementPart(Type entity)
     {
         this.entity = entity;
-        columns = new ColumnMappingCollection<ElementPart>(this);            
+        Columns = new ColumnMappingCollection<ElementPart>(this);            
     }
 
     /// <summary>
@@ -33,10 +32,7 @@ public class ElementPart : IElementMappingProvider
     /// <summary>
     /// Modify the columns for this element
     /// </summary>
-    public ColumnMappingCollection<ElementPart> Columns
-    {
-        get { return columns; }
-    }
+    public ColumnMappingCollection<ElementPart> Columns { get; }
 
     /// <summary>
     /// Specify the element type

@@ -1,10 +1,8 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel.ClassBased;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests;
@@ -12,7 +10,7 @@ namespace FluentNHibernate.Testing.ConventionsTests;
 [TestFixture]
 public class ForeignKeyConventionTests
 {
-    private PersistenceModel model;
+    PersistenceModel model;
 
     [SetUp]
     public void CreatePersistenceModel()
@@ -107,11 +105,11 @@ public class ForeignKeyConventionTests
             .Key.Columns.First().Name.ShouldEqual("ExampleClass!");
     }
 
-    private class TestForeignKeyConvention : ForeignKeyConvention
+    class TestForeignKeyConvention : ForeignKeyConvention
     {
         protected override string GetKeyName(Member property, Type type)
         {
-            return property == null ? type.Name + "!" : property.Name + "!";
+            return property is null ? type.Name + "!" : property.Name + "!";
         }
     }
 }

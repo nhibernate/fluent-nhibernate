@@ -14,6 +14,7 @@ public class MissingConstructorException : Exception
         : base("'" + type.AssemblyQualifiedName + "' is missing a parameterless constructor.", innerException)
     { }
 
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
     protected MissingConstructorException(SerializationInfo info, StreamingContext context) : base(info, context)
     { }
 }

@@ -2,15 +2,8 @@ using System;
 
 namespace FluentNHibernate.Conventions.Instances;
 
-public class NotFoundInstance : INotFoundInstance
+public class NotFoundInstance(Action<string> setter) : INotFoundInstance
 {
-    private readonly Action<string> setter;
-
-    public NotFoundInstance(Action<string> setter)
-    {
-        this.setter = setter;
-    }
-
     public void Ignore()
     {
         setter("ignore");

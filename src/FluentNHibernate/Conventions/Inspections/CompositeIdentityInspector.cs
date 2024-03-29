@@ -1,47 +1,28 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Conventions.Inspections;
 
-public class CompositeIdentityInspector : ICompositeIdentityInspector
+public class CompositeIdentityInspector(CompositeIdMapping mapping) : ICompositeIdentityInspector
 {
-    private readonly InspectorModelMapper<ICompositeIdentityInspector, CompositeIdMapping> mappedProperties = new InspectorModelMapper<ICompositeIdentityInspector, CompositeIdMapping>();
-    private readonly CompositeIdMapping mapping;
+    readonly InspectorModelMapper<ICompositeIdentityInspector, CompositeIdMapping> mappedProperties = new InspectorModelMapper<ICompositeIdentityInspector, CompositeIdMapping>();
 
-    public CompositeIdentityInspector(CompositeIdMapping mapping)
-    {
-        this.mapping = mapping;
-    }
+    public Type EntityType => mapping.ContainingEntityType;
 
-    public Type EntityType
-    {
-        get { return mapping.ContainingEntityType; }
-    }
-
-    public string StringIdentifierForModel
-    {
-        get { return mapping.Name; }
-    }
+    public string StringIdentifierForModel => mapping.Name;
 
     public bool IsSet(Member property)
     {
         return mapping.IsSpecified(mappedProperties.Get(property));
     }
 
-    public Access Access
-    {
-        get { return Access.FromString(mapping.Access); }
-    }
+    public Access Access => Access.FromString(mapping.Access);
 
-    public TypeReference Class
-    {
-        get { return mapping.Class; }
-    }
+    public TypeReference Class => mapping.Class;
 
     public IEnumerable<IKeyManyToOneInspector> KeyManyToOnes
     {
@@ -49,8 +30,7 @@ public class CompositeIdentityInspector : ICompositeIdentityInspector
         {
             return mapping.Keys
                 .Where(x => x is KeyManyToOneMapping)
-                .Select(x => new KeyManyToOneInspector((KeyManyToOneMapping)x))
-                .Cast<IKeyManyToOneInspector>();
+                .Select(x => new KeyManyToOneInspector((KeyManyToOneMapping)x));
         }
     }
 
@@ -60,23 +40,13 @@ public class CompositeIdentityInspector : ICompositeIdentityInspector
         {
             return mapping.Keys
                 .Where(x => x is KeyPropertyMapping)
-                .Select(x => new KeyPropertyInspector((KeyPropertyMapping)x))
-                .Cast<IKeyPropertyInspector>();
+                .Select(x => new KeyPropertyInspector((KeyPropertyMapping)x));
         }
     }
 
-    public bool Mapped
-    {
-        get { return mapping.Mapped; }
-    }
+    public bool Mapped => mapping.Mapped;
 
-    public string Name
-    {
-        get { return mapping.Name; }
-    }
+    public string Name => mapping.Name;
 
-    public string UnsavedValue
-    {
-        get { return mapping.UnsavedValue; }
-    }
+    public string UnsavedValue => mapping.UnsavedValue;
 }

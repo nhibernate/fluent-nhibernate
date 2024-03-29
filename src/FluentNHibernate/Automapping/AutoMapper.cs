@@ -9,21 +9,14 @@ using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.Automapping;
 
-public class AutoMapper
+public class AutoMapper(
+    IAutomappingConfiguration cfg,
+    IConventionFinder conventionFinder,
+    IEnumerable<InlineOverride> inlineOverrides)
 {
     List<AutoMapType> mappingTypes;
-    readonly IAutomappingConfiguration cfg;
-    readonly IConventionFinder conventionFinder;
-    readonly IEnumerable<InlineOverride> inlineOverrides;
 
-    public AutoMapper(IAutomappingConfiguration cfg, IConventionFinder conventionFinder, IEnumerable<InlineOverride> inlineOverrides)
-    {
-        this.cfg = cfg;
-        this.conventionFinder = conventionFinder;
-        this.inlineOverrides = inlineOverrides;
-    }
-
-    private void ApplyOverrides(Type classType, IList<Member> mappedMembers, ClassMappingBase mapping)
+    void ApplyOverrides(Type classType, IList<Member> mappedMembers, ClassMappingBase mapping)
     {
         var autoMapType = ReflectionHelper.AutomappingTypeForEntityType(classType);
         var autoMap = Activator.CreateInstance(autoMapType, mappedMembers);
@@ -43,24 +36,24 @@ public class AutoMapper
 
         ProcessClass(mapping, classType, mappedMembers);
 
-        if (mappingTypes != null)
+        if (mappingTypes is not null)
             MapInheritanceTree(classType, mapping, mappedMembers);
 
         return mapping;
     }
 
-    private void MapInheritanceTree(Type classType, ClassMappingBase mapping, IList<Member> mappedMembers)
+    void MapInheritanceTree(Type classType, ClassMappingBase mapping, IList<Member> mappedMembers)
     {
         var discriminatorSet = HasDiscriminator(mapping);
         var isDiscriminated = cfg.IsDiscriminated(classType) || discriminatorSet;
         var mappingTypesWithLogicalParents = GetMappingTypesWithLogicalParents();
 
         foreach (var inheritedClass in mappingTypesWithLogicalParents
-                     .Where(x => x.Value != null && x.Value.Type == classType)
+                     .Where(x => x.Value is not null && x.Value.Type == classType)
                      .Select(x => x.Key))
         {
             var tempMapping = mapping as ClassMapping;
-            var tempIsNull = tempMapping == null;
+            var tempIsNull = tempMapping is null;
             if (isDiscriminated && !discriminatorSet && !tempIsNull)
             {
                 var discriminatorColumn = cfg.GetDiscriminatorColumn(classType);
@@ -79,12 +72,12 @@ public class AutoMapper
 
             SubclassMapping subclassMapping;
             var tempSubClassMap = mapping as SubclassMapping;
-            if(!tempIsNull && tempMapping.IsUnionSubclass || tempSubClassMap != null && tempSubClassMap.SubclassType == SubclassType.UnionSubclass)
+            if(!tempIsNull && tempMapping.IsUnionSubclass || tempSubClassMap is not null && tempSubClassMap.SubclassType == SubclassType.UnionSubclass)
             {
                 subclassMapping = new SubclassMapping(SubclassType.UnionSubclass);
                 subclassMapping.Set(x => x.Type, Layer.Defaults, inheritedClass.Type);
             }
-            else if (isDiscriminated || tempSubClassMap != null && tempSubClassMap.SubclassType == SubclassType.Subclass)
+            else if (isDiscriminated || tempSubClassMap is not null && tempSubClassMap.SubclassType == SubclassType.Subclass)
             {
                 subclassMapping = new SubclassMapping(SubclassType.Subclass);
                 subclassMapping.Set(x => x.Type, Layer.Defaults, inheritedClass.Type);
@@ -111,7 +104,7 @@ public class AutoMapper
 
     static bool HasDiscriminator(ClassMappingBase mapping)
     {
-        if (mapping is ClassMapping && ((ClassMapping) mapping).Discriminator != null)
+        if (mapping is ClassMapping && ((ClassMapping) mapping).Discriminator is not null)
             return true;
 
         return false;
@@ -132,7 +125,7 @@ public class AutoMapper
 
     static AutoMapType GetLogicalParent(Type type, IDictionary<Type, AutoMapType> availableTypes)
     {
-        if (type.BaseType == typeof(object) || type.BaseType == null)
+        if (type.BaseType == typeof(object) || type.BaseType is null)
             return null;
 
         AutoMapType baseType;
@@ -143,7 +136,7 @@ public class AutoMapper
         return GetLogicalParent(type.BaseType, availableTypes);
     }
 
-    private void MapSubclass(IList<Member> mappedMembers, SubclassMapping subclass, AutoMapType inheritedClass)
+    void MapSubclass(IList<Member> mappedMembers, SubclassMapping subclass, AutoMapType inheritedClass)
     {
         subclass.Set(x => x.Name, Layer.Defaults, inheritedClass.Type.AssemblyQualifiedName);
         subclass.Set(x => x.Type, Layer.Defaults, inheritedClass.Type);

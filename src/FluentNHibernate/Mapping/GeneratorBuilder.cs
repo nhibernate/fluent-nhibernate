@@ -1,49 +1,37 @@
 using System;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Identity;
 using NHibernate.Id;
 
 namespace FluentNHibernate.Mapping;
 
-internal class GeneratorBuilder
+class GeneratorBuilder(GeneratorMapping mapping, Type identityType, int layer)
 {
-    private readonly Type identityType;
-    private readonly int layer;
-    private readonly GeneratorMapping mapping;
-
-    public GeneratorBuilder(GeneratorMapping mapping, Type identityType, int layer)
-    {
-        this.mapping = mapping;
-        this.identityType = identityType;
-        this.layer = layer;
-    }
-
-    private void SetGenerator(string generator)
+    void SetGenerator(string generator)
     {
         mapping.Set(x => x.Class, layer, generator);
     }
 
-    private void AddGeneratorParam(string name, string value)
+    void AddGeneratorParam(string name, string value)
     {
         mapping.Params.Add(name, value);
     }
 
-    private void EnsureIntegralIdenityType()
+    void EnsureIntegralIdenityType()
     {
         if (!IsIntegralType(identityType)) throw new InvalidOperationException("Identity type must be integral (int, long, uint, ulong)");
     }
 
-    private void EnsureGuidIdentityType()
+    void EnsureGuidIdentityType()
     {
         if (identityType != typeof(Guid) && identityType != typeof(Guid?)) throw new InvalidOperationException("Identity type must be Guid");
     }
 
-    private void EnsureStringIdentityType()
+    void EnsureStringIdentityType()
     {
         if (identityType != typeof(string)) throw new InvalidOperationException("Identity type must be string");
     }
 
-    private static bool IsIntegralType(Type t)
+    static bool IsIntegralType(Type t)
     {
         // do we think we'll encounter more?
         return t == typeof(int) || t == typeof(int?)

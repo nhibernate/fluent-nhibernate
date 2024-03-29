@@ -4,7 +4,7 @@ namespace FluentNHibernate.Cfg.Db;
 
 public class ConnectionStringBuilder
 {
-    private string connectionString;
+    string connectionString;
 
 #if NETFRAMEWORK
         public ConnectionStringBuilder FromAppSetting(string appSettingKey)
