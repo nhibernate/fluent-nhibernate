@@ -120,8 +120,15 @@ Task("Copy-Files")
             msBuildSettings
         );
         PublishProjects(
-            SrcProjects, "netcoreapp2.0",
-            parameters.Paths.Directories.ArtifactsBinNetCoreApp2.FullPath, 
+            SrcProjects, "net6.0",
+            parameters.Paths.Directories.ArtifactsBinNet60.FullPath, 
+            parameters.Version.DotNetAsterix, 
+            parameters.Configuration, 
+            msBuildSettings
+        );
+        PublishProjects(
+            SrcProjects, "net8.0",
+            parameters.Paths.Directories.ArtifactsBinNet80.FullPath, 
             parameters.Version.DotNetAsterix, 
             parameters.Configuration, 
             msBuildSettings

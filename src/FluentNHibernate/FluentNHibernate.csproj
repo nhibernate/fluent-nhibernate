@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461;net6.0;net8.0</TargetFrameworks>
     <PlatformTarget>AnyCpu</PlatformTarget>
     <OutputType>Library</OutputType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -10,10 +10,6 @@
     <AssemblyOriginatorKeyFile>../FluentKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
-    <RuntimeFrameworkVersion>2.0.9</RuntimeFrameworkVersion>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="NHibernate" Version="5.3.3" />
   </ItemGroup>
