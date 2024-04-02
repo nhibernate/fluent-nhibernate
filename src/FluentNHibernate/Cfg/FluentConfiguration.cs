@@ -40,10 +40,6 @@ public class FluentConfiguration
     internal FluentConfiguration(Configuration cfg)
     {
         this.Configuration = cfg;
-
-#if NH21
-            this.ProxyFactoryFactory(DefaultProxyFactoryFactoryClassName);
-#endif
     }
 
     internal Configuration Configuration { get; }
