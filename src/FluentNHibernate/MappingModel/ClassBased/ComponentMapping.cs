@@ -32,13 +32,13 @@ public class ComponentMapping : ComponentMappingBase, IComponentMapping, IEquata
 
     public string ColumnPrefix { get; set; }
 
-    public override string Name => attributes.GetOrDefault<string>("Name");
+    public override string Name => attributes.GetOrDefault<string>();
 
-    public override Type Type => attributes.GetOrDefault<Type>("Type");
+    public override Type Type => attributes.GetOrDefault<Type>();
 
-    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>();
 
-    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
+    public bool Lazy => attributes.GetOrDefault<bool>();
 
     public bool Equals(ComponentMapping other)
     {

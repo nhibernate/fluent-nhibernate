@@ -23,17 +23,17 @@ public abstract class ComponentMappingBase(AttributeStore attributes) : ClassMap
     public Type ContainingEntityType { get; set; }
     public Member Member { get; set; }
 
-    public ParentMapping Parent => attributes.GetOrDefault<ParentMapping>("Parent");
+    public ParentMapping Parent => attributes.GetOrDefault<ParentMapping>();
 
-    public bool Unique => attributes.GetOrDefault<bool>("Unique");
+    public bool Unique => attributes.GetOrDefault<bool>();
 
-    public bool Insert => attributes.GetOrDefault<bool>("Insert");
+    public bool Insert => attributes.GetOrDefault<bool>();
 
-    public bool Update => attributes.GetOrDefault<bool>("Update");
+    public bool Update => attributes.GetOrDefault<bool>();
 
-    public string Access => attributes.GetOrDefault<string>("Access");
+    public string Access => attributes.GetOrDefault<string>();
 
-    public bool OptimisticLock => attributes.GetOrDefault<bool>("OptimisticLock");
+    public bool OptimisticLock => attributes.GetOrDefault<bool>();
 
     public bool Equals(ComponentMappingBase other)
     {

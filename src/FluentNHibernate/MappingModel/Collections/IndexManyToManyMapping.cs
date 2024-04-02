@@ -26,7 +26,7 @@ public class IndexManyToManyMapping(AttributeStore attributes) : MappingBase, II
 
     public Type ContainingEntityType { get; set; }
 
-    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>();
 
     public IEnumerable<ColumnMapping> Columns => columns.Columns;
 
@@ -40,9 +40,9 @@ public class IndexManyToManyMapping(AttributeStore attributes) : MappingBase, II
         columns.MakeColumnsEmpty(layer);
     }
 
-    public string ForeignKey => attributes.GetOrDefault<string>("ForeignKey");
+    public string ForeignKey => attributes.GetOrDefault<string>();
 
-    public string EntityName => attributes.GetOrDefault<string>("EntityName");
+    public string EntityName => attributes.GetOrDefault<string>();
 
     public bool Equals(IndexManyToManyMapping other)
     {

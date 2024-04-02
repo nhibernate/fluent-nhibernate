@@ -54,61 +54,61 @@ public class CollectionMapping : MappingBase, IRelationship, IEquatable<Collecti
             visitor.Visit(Cache);
     }
 
-    public Type ChildType => attributes.GetOrDefault<Type>("ChildType");
+    public Type ChildType => attributes.GetOrDefault<Type>();
 
     public IRelationship OtherSide { get; set; }
 
-    public KeyMapping Key => attributes.GetOrDefault<KeyMapping>("Key");
+    public KeyMapping Key => attributes.GetOrDefault<KeyMapping>();
 
-    public ElementMapping Element => attributes.GetOrDefault<ElementMapping>("Element");
+    public ElementMapping Element => attributes.GetOrDefault<ElementMapping>();
 
-    public CompositeElementMapping CompositeElement => attributes.GetOrDefault<CompositeElementMapping>("CompositeElement");
+    public CompositeElementMapping CompositeElement => attributes.GetOrDefault<CompositeElementMapping>();
 
-    public CacheMapping Cache => attributes.GetOrDefault<CacheMapping>("Cache");
+    public CacheMapping Cache => attributes.GetOrDefault<CacheMapping>();
 
-    public ICollectionRelationshipMapping Relationship => attributes.GetOrDefault<ICollectionRelationshipMapping>("Relationship");
+    public ICollectionRelationshipMapping Relationship => attributes.GetOrDefault<ICollectionRelationshipMapping>();
 
-    public bool Generic => attributes.GetOrDefault<bool>("Generic");
+    public bool Generic => attributes.GetOrDefault<bool>();
 
-    public Lazy Lazy => attributes.GetOrDefault<Lazy>("Lazy");
+    public Lazy Lazy => attributes.GetOrDefault<Lazy>();
 
-    public bool Inverse => attributes.GetOrDefault<bool>("Inverse");
+    public bool Inverse => attributes.GetOrDefault<bool>();
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public string Access => attributes.GetOrDefault<string>("Access");
+    public string Access => attributes.GetOrDefault<string>();
 
-    public string TableName => attributes.GetOrDefault<string>("TableName");
+    public string TableName => attributes.GetOrDefault<string>();
 
-    public string Schema => attributes.GetOrDefault<string>("Schema");
+    public string Schema => attributes.GetOrDefault<string>();
 
-    public string Fetch => attributes.GetOrDefault<string>("Fetch");
+    public string Fetch => attributes.GetOrDefault<string>();
 
-    public string Cascade => attributes.GetOrDefault<string>("Cascade");
+    public string Cascade => attributes.GetOrDefault<string>();
 
-    public string Where => attributes.GetOrDefault<string>("Where");
+    public string Where => attributes.GetOrDefault<string>();
 
-    public bool Mutable => attributes.GetOrDefault<bool>("Mutable");
+    public bool Mutable => attributes.GetOrDefault<bool>();
 
-    public string Subselect => attributes.GetOrDefault<string>("Subselect");
+    public string Subselect => attributes.GetOrDefault<string>();
 
-    public TypeReference Persister => attributes.GetOrDefault<TypeReference>("Persister");
+    public TypeReference Persister => attributes.GetOrDefault<TypeReference>();
 
-    public int BatchSize => attributes.GetOrDefault<int>("BatchSize");
+    public int BatchSize => attributes.GetOrDefault<int>();
 
-    public string Check => attributes.GetOrDefault<string>("Check");
+    public string Check => attributes.GetOrDefault<string>();
 
-    public TypeReference CollectionType => attributes.GetOrDefault<TypeReference>("CollectionType");
+    public TypeReference CollectionType => attributes.GetOrDefault<TypeReference>();
 
-    public bool OptimisticLock => attributes.GetOrDefault<bool>("OptimisticLock");
+    public bool OptimisticLock => attributes.GetOrDefault<bool>();
 
-    public string OrderBy => attributes.GetOrDefault<string>("OrderBy");
+    public string OrderBy => attributes.GetOrDefault<string>();
 
     public Collection Collection { get; set; }
         
-    public string Sort => attributes.GetOrDefault<string>("Sort");
+    public string Sort => attributes.GetOrDefault<string>();
 
-    public IIndexMapping Index => attributes.GetOrDefault<IIndexMapping>("Index");
+    public IIndexMapping Index => attributes.GetOrDefault<IIndexMapping>();
 
     public bool Equals(CollectionMapping other)
     {

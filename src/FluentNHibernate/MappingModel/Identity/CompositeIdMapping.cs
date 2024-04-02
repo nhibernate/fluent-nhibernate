@@ -29,15 +29,15 @@ public class CompositeIdMapping(AttributeStore attributes) : MappingBase, IIdent
         }
     }
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public string Access => attributes.GetOrDefault<string>("Access");
+    public string Access => attributes.GetOrDefault<string>();
 
-    public bool Mapped => attributes.GetOrDefault<bool>("Mapped") || !string.IsNullOrEmpty(Name);
+    public bool Mapped => attributes.GetOrDefault<bool>() || !string.IsNullOrEmpty(Name);
 
-    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>();
 
-    public string UnsavedValue => attributes.GetOrDefault<string>("UnsavedValue");
+    public string UnsavedValue => attributes.GetOrDefault<string>();
 
     public IEnumerable<ICompositeIdKeyMapping> Keys => keys;
 

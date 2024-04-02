@@ -24,9 +24,9 @@ public class IndexMapping(AttributeStore attributes) : MappingBase, IIndexMappin
             visitor.Visit(column);
     }
 
-    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>();
 
-    public int Offset => attributes.GetOrDefault<int>("Offset");
+    public int Offset => attributes.GetOrDefault<int>();
 
     public Type ContainingEntityType { get; set; }
 

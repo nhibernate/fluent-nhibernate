@@ -20,13 +20,13 @@ public class KeyPropertyMapping : MappingBase, ICompositeIdKeyMapping, IEquatabl
             visitor.Visit(column);
     }
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public string Access => attributes.GetOrDefault<string>("Access");
+    public string Access => attributes.GetOrDefault<string>();
 
-    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>();
 
-    public int Length => attributes.GetOrDefault<int>("Length");
+    public int Length => attributes.GetOrDefault<int>();
 
     public IEnumerable<ColumnMapping> Columns => columns;
 

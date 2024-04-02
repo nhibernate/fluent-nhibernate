@@ -24,9 +24,9 @@ public class ElementMapping(AttributeStore attributes) : MappingBase, IHasColumn
             visitor.Visit(column);
     }
 
-    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>();
 
-    public string Formula => attributes.GetOrDefault<string>("Formula");
+    public string Formula => attributes.GetOrDefault<string>();
 
     public IEnumerable<ColumnMapping> Columns => columns.Columns;
 

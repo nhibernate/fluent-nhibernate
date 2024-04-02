@@ -19,13 +19,13 @@ public class DiscriminatorMapping(AttributeStore underlyingStore) : ColumnBasedM
         Columns.Each(visitor.Visit);
     }
 
-    public bool Force => attributes.GetOrDefault<bool>("Force");
+    public bool Force => attributes.GetOrDefault<bool>();
 
-    public bool Insert => attributes.GetOrDefault<bool>("Insert");
+    public bool Insert => attributes.GetOrDefault<bool>();
 
-    public string Formula => attributes.GetOrDefault<string>("Formula");
+    public string Formula => attributes.GetOrDefault<string>();
 
-    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>();
 
     public Type ContainingEntityType { get; set; }
 

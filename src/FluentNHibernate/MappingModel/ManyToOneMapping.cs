@@ -28,33 +28,33 @@ public class ManyToOneMapping(AttributeStore attributes) : MappingBase, IHasColu
     public Type ContainingEntityType { get; set; }
     public Member Member { get; set; }
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public string Access => attributes.GetOrDefault<string>("Access");
+    public string Access => attributes.GetOrDefault<string>();
 
-    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>();
 
-    public string Cascade => attributes.GetOrDefault<string>("Cascade");
+    public string Cascade => attributes.GetOrDefault<string>();
 
-    public string Fetch => attributes.GetOrDefault<string>("Fetch");
+    public string Fetch => attributes.GetOrDefault<string>();
 
-    public bool Update => attributes.GetOrDefault<bool>("Update");
+    public bool Update => attributes.GetOrDefault<bool>();
 
-    public bool Insert => attributes.GetOrDefault<bool>("Insert");
+    public bool Insert => attributes.GetOrDefault<bool>();
 
-    public string Formula => attributes.GetOrDefault<string>("Formula");
+    public string Formula => attributes.GetOrDefault<string>();
 
-    public string ForeignKey => attributes.GetOrDefault<string>("ForeignKey");
+    public string ForeignKey => attributes.GetOrDefault<string>();
 
-    public string PropertyRef => attributes.GetOrDefault<string>("PropertyRef");
+    public string PropertyRef => attributes.GetOrDefault<string>();
 
-    public string NotFound => attributes.GetOrDefault<string>("NotFound");
+    public string NotFound => attributes.GetOrDefault<string>();
 
-    public string Lazy => attributes.GetOrDefault<string>("Lazy");
+    public string Lazy => attributes.GetOrDefault<string>();
 
-    public string EntityName => attributes.GetOrDefault<string>("EntityName");
+    public string EntityName => attributes.GetOrDefault<string>();
 
-    public bool OptimisticLock => attributes.GetOrDefault<bool>("OptimisticLock");
+    public bool OptimisticLock => attributes.GetOrDefault<bool>();
 
     public IEnumerable<ColumnMapping> Columns => columns.Columns;
 

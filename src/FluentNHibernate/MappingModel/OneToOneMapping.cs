@@ -19,25 +19,25 @@ public class OneToOneMapping(AttributeStore attributes) : MappingBase, IEquatabl
         visitor.ProcessOneToOne(this);
     }
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public string Access => attributes.GetOrDefault<string>("Access");
+    public string Access => attributes.GetOrDefault<string>();
 
-    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>();
 
-    public string Cascade => attributes.GetOrDefault<string>("Cascade");
+    public string Cascade => attributes.GetOrDefault<string>();
 
-    public bool Constrained => attributes.GetOrDefault<bool>("Constrained");
+    public bool Constrained => attributes.GetOrDefault<bool>();
 
-    public string Fetch => attributes.GetOrDefault<string>("Fetch");
+    public string Fetch => attributes.GetOrDefault<string>();
 
-    public string ForeignKey => attributes.GetOrDefault<string>("ForeignKey");
+    public string ForeignKey => attributes.GetOrDefault<string>();
 
-    public string PropertyRef => attributes.GetOrDefault<string>("PropertyRef");
+    public string PropertyRef => attributes.GetOrDefault<string>();
 
-    public string Lazy => attributes.GetOrDefault<string>("Lazy");
+    public string Lazy => attributes.GetOrDefault<string>();
 
-    public string EntityName => attributes.GetOrDefault<string>("EntityName");
+    public string EntityName => attributes.GetOrDefault<string>();
 
     public Type ContainingEntityType { get; set; }
 

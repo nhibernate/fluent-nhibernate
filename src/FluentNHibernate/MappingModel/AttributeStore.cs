@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using FluentNHibernate.MappingModel.Collections;
 
 namespace FluentNHibernate.MappingModel;
@@ -75,7 +76,7 @@ public class AttributeStore: IEquatable<AttributeStore>
 
 public static class AttributeStoreExtensions
 {
-    public static T GetOrDefault<T>(this AttributeStore store, string attribute)
+    public static T GetOrDefault<T>(this AttributeStore store, [CallerMemberName] string attribute = default)
     {
         return (T)(store.Get(attribute) ?? default(T));
     }

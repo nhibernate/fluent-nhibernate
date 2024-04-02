@@ -14,9 +14,9 @@ public class FilterMapping(AttributeStore attributes) : IMapping, IEquatable<Fil
         : this(new AttributeStore())
     { }
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public string Condition => attributes.GetOrDefault<string>("Condition");
+    public string Condition => attributes.GetOrDefault<string>();
 
     public void AcceptVisitor(IMappingModelVisitor visitor)
     {

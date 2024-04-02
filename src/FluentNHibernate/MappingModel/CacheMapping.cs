@@ -19,11 +19,11 @@ public class CacheMapping(AttributeStore attributes) : MappingBase, IEquatable<C
         visitor.ProcessCache(this);
     }
 
-    public string Region => attributes.GetOrDefault<string>("Region");
+    public string Region => attributes.GetOrDefault<string>();
 
-    public string Usage => attributes.GetOrDefault<string>("Usage");
+    public string Usage => attributes.GetOrDefault<string>();
 
-    public string Include => attributes.GetOrDefault<string>("Include");
+    public string Include => attributes.GetOrDefault<string>();
 
     public Type ContainedEntityType { get; set; }
 

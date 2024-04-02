@@ -16,7 +16,7 @@ public class GeneratorMapping : MappingBase, IEquatable<GeneratorMapping>
         visitor.ProcessGenerator(this);
     }
 
-    public string Class => attributes.GetOrDefault<string>("Class");
+    public string Class => attributes.GetOrDefault<string>();
 
     public IDictionary<string, string> Params { get; } = new Dictionary<string, string>();
     public Type ContainingEntityType { get; set; }

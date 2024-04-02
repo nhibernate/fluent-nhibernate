@@ -8,9 +8,9 @@ public class AttributeStoreTester
 {
     sealed class TestStore : AttributeStore
     {
-        public bool IsSomething => this.GetOrDefault<bool>("IsSomething");
+        public bool IsSomething => this.GetOrDefault<bool>();
 
-        public string Name => this.GetOrDefault<string>("Name");
+        public string Name => this.GetOrDefault<string>();
     }
 
     [Test]

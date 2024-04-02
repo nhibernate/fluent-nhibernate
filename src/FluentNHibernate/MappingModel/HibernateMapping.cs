@@ -53,21 +53,21 @@ public class HibernateMapping(AttributeStore attributes) : MappingBase, IEquatab
         imports.Add(importMapping);
     }
 
-    public string Catalog => attributes.GetOrDefault<string>("Catalog");
+    public string Catalog => attributes.GetOrDefault<string>();
 
-    public string DefaultAccess => attributes.GetOrDefault<string>("DefaultAccess");
+    public string DefaultAccess => attributes.GetOrDefault<string>();
 
-    public string DefaultCascade => attributes.GetOrDefault<string>("DefaultCascade");
+    public string DefaultCascade => attributes.GetOrDefault<string>();
 
-    public bool AutoImport => attributes.GetOrDefault<bool>("AutoImport");
+    public bool AutoImport => attributes.GetOrDefault<bool>();
 
-    public string Schema => attributes.GetOrDefault<string>("Schema");
+    public string Schema => attributes.GetOrDefault<string>();
 
-    public bool DefaultLazy => attributes.GetOrDefault<bool>("DefaultLazy");
+    public bool DefaultLazy => attributes.GetOrDefault<bool>();
 
-    public string Namespace => attributes.GetOrDefault<string>("Namespace");
+    public string Namespace => attributes.GetOrDefault<string>();
 
-    public string Assembly => attributes.GetOrDefault<string>("Assembly");
+    public string Assembly => attributes.GetOrDefault<string>();
 
     public bool Equals(HibernateMapping other)
     {

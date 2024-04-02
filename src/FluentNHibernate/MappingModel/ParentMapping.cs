@@ -26,9 +26,9 @@ public class ParentMapping : MappingBase, IEquatable<ParentMapping>
 
     public Type ContainingEntityType { get; set; }
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public string Access => attributes.GetOrDefault<string>("Access");
+    public string Access => attributes.GetOrDefault<string>();
 
     public override bool Equals(object obj)
     {

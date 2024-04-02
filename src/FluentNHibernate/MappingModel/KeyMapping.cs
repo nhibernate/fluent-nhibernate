@@ -26,17 +26,17 @@ public class KeyMapping(AttributeStore attributes) : MappingBase, IHasColumnMapp
             visitor.Visit(column);
     }
 
-    public string ForeignKey => attributes.GetOrDefault<string>("ForeignKey");
+    public string ForeignKey => attributes.GetOrDefault<string>();
 
-    public string PropertyRef => attributes.GetOrDefault<string>("PropertyRef");
+    public string PropertyRef => attributes.GetOrDefault<string>();
 
-    public string OnDelete => attributes.GetOrDefault<string>("OnDelete");
+    public string OnDelete => attributes.GetOrDefault<string>();
 
-    public bool NotNull => attributes.GetOrDefault<bool>("NotNull");
+    public bool NotNull => attributes.GetOrDefault<bool>();
 
-    public bool Update => attributes.GetOrDefault<bool>("Update");
+    public bool Update => attributes.GetOrDefault<bool>();
 
-    public bool Unique => attributes.GetOrDefault<bool>("Unique");
+    public bool Unique => attributes.GetOrDefault<bool>();
 
     public IEnumerable<ColumnMapping> Columns => columns.Columns;
 

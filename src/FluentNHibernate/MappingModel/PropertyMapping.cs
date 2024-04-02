@@ -22,23 +22,23 @@ public class PropertyMapping(AttributeStore underlyingStore) : ColumnBasedMappin
 
     public Type ContainingEntityType { get; set; }
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public string Access => attributes.GetOrDefault<string>("Access");
+    public string Access => attributes.GetOrDefault<string>();
 
-    public bool Insert => attributes.GetOrDefault<bool>("Insert");
+    public bool Insert => attributes.GetOrDefault<bool>();
 
-    public bool Update => attributes.GetOrDefault<bool>("Update");
+    public bool Update => attributes.GetOrDefault<bool>();
 
-    public string Formula => attributes.GetOrDefault<string>("Formula");
+    public string Formula => attributes.GetOrDefault<string>();
 
-    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
+    public bool Lazy => attributes.GetOrDefault<bool>();
 
-    public bool OptimisticLock => attributes.GetOrDefault<bool>("OptimisticLock");
+    public bool OptimisticLock => attributes.GetOrDefault<bool>();
 
-    public string Generated => attributes.GetOrDefault<string>("Generated");
+    public string Generated => attributes.GetOrDefault<string>();
 
-    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>();
 
     public Member Member { get; set; }
 
