@@ -42,24 +42,24 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
         if (mapping is ClassMapping classMapping)
         {
             if (providers.Id is not null)
-                classMapping.Set(x => x.Id, Layer.Defaults, providers.Id.GetIdentityMapping());
+                classMapping.Set(x => x.Id, Layer.UserSupplied, providers.Id.GetIdentityMapping());
 
             if (providers.NaturalId is not null)
-                classMapping.Set(x => x.NaturalId, Layer.Defaults, providers.NaturalId.GetNaturalIdMapping());
+                classMapping.Set(x => x.NaturalId, Layer.UserSupplied, providers.NaturalId.GetNaturalIdMapping());
 
             if (providers.CompositeId is not null)
-                classMapping.Set(x => x.Id, Layer.Defaults, providers.CompositeId.GetCompositeIdMapping());
+                classMapping.Set(x => x.Id, Layer.UserSupplied, providers.CompositeId.GetCompositeIdMapping());
 
             if (providers.Version is not null)
-                classMapping.Set(x => x.Version, Layer.Defaults, providers.Version.GetVersionMapping());
+                classMapping.Set(x => x.Version, Layer.UserSupplied, providers.Version.GetVersionMapping());
 
             if (providers.Discriminator is not null)
-                classMapping.Set(x => x.Discriminator, Layer.Defaults, providers.Discriminator.GetDiscriminatorMapping());
+                classMapping.Set(x => x.Discriminator, Layer.UserSupplied, providers.Discriminator.GetDiscriminatorMapping());
 
             if (Cache.IsDirty)
-                classMapping.Set(x => x.Cache, Layer.Defaults, ((ICacheMappingProvider)Cache).GetCacheMapping());
+                classMapping.Set(x => x.Cache, Layer.UserSupplied, ((ICacheMappingProvider)Cache).GetCacheMapping());
 
-            classMapping.Set(x => x.Tuplizer, Layer.Defaults, providers.TuplizerMapping);
+            classMapping.Set(x => x.Tuplizer, Layer.UserSupplied, providers.TuplizerMapping);
         }
 
         foreach (var join in providers.Joins)

@@ -8,6 +8,7 @@ using FluentNHibernate.Specs.ExternalFixtures;
 using FluentNHibernate.Specs.ExternalFixtures.Overrides;
 using Machine.Specifications;
 using FluentAssertions;
+using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Specs.Automapping;
 
@@ -76,6 +77,29 @@ public class when_using_an_automapping_override_to_specify_a_discriminator
         mapping.Subclasses.Count().Should().Be(1);
         mapping.Subclasses.Should().OnlyContain(subclass => subclass.SubclassType == SubclassType.Subclass);
     };
+
+    static AutoPersistenceModel model;
+    static ClassMapping mapping;
+}
+
+public class when_using_an_automapping_override_to_specify_a_different_id
+{
+    Establish context = () =>
+        model = AutoMap.Source(new StubTypeSource(typeof(EntityWithDifferentId)))
+            .Override<EntityWithDifferentId>(map =>
+                map.Id(x => x.DestinationId));
+
+    Because of = () =>
+        mapping = model.BuildMappingFor<EntityWithDifferentId>();
+
+    It should_map_the_id = () =>
+        mapping.Id.Should().NotBeNull();
+
+    It should_map_id_as_id_mapping = () =>
+        mapping.Id.Should().BeOfType<IdMapping>();
+
+    It should_map_id_as_different_id = () =>
+        ((IdMapping)mapping.Id).Name.Should().Be("DestinationId");
 
     static AutoPersistenceModel model;
     static ClassMapping mapping;
