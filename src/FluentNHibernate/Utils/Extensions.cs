@@ -59,12 +59,14 @@ public static class Extensions
 
     public static object InstantiateUsingParameterlessConstructor(this Type type)
     {
-        var constructor = ReflectHelper.GetDefaultConstructor(type);
-
-        if (constructor is null)
-            throw new MissingConstructorException(type);
-
-        return constructor.Invoke(null);
+        try
+        {
+            return Activator.CreateInstance(type, true);
+        }
+        catch (MissingMethodException ex)
+        {
+            throw new MissingConstructorException(type, ex);
+        }
     }
 
     public static bool HasInterface(this Type type, Type interfaceType)
@@ -81,7 +83,7 @@ public static class Extensions
 #if NETFRAMEWORK
             var formatter = new BinaryFormatter();
 #else
-                var formatter = new BinaryFormatter(new NetStandardSerialization.SurrogateSelector(), new StreamingContext());
+            var formatter = new BinaryFormatter(new NetStandardSerialization.SurrogateSelector(), new StreamingContext());
 #endif
 
             formatter.Serialize(stream, obj);
