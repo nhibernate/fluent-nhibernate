@@ -13,12 +13,12 @@ public class ExtensionsTests
 
     class PrivateConstructor
     {
-        private PrivateConstructor() { }
+        PrivateConstructor() { }
     }
 
     class ConstructorWithArguments
     {
-        private ConstructorWithArguments(int number) { }
+        ConstructorWithArguments(int number) { }
     }
 
     [Test]

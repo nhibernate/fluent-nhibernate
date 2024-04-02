@@ -9,9 +9,9 @@ namespace FluentNHibernate.Testing;
 public class PersistenceSpecification<T>
 {
     protected readonly List<Property<T>> allProperties = new List<Property<T>>();
-    private readonly ISession currentSession;
-    private readonly IEqualityComparer entityEqualityComparer;
-    private readonly bool hasExistingTransaction;
+    readonly ISession currentSession;
+    readonly IEqualityComparer entityEqualityComparer;
+    readonly bool hasExistingTransaction;
 
     public PersistenceSpecification(ISessionSource source)
         : this(source.CreateSession())

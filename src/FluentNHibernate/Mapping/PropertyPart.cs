@@ -15,7 +15,7 @@ public class PropertyPart : IPropertyMappingProvider
     readonly AttributeStore attributes = new AttributeStore();
     readonly AttributeStore columnAttributes = new AttributeStore();
 
-    private bool nextBool = true;
+    bool nextBool = true;
 
     public PropertyPart(Member member, Type parentType)
     {
@@ -201,7 +201,7 @@ public class PropertyPart : IPropertyMappingProvider
         return CustomType(TypeMapping.GetTypeString(type));
     }
 
-    private void AddColumnsFromCompositeUserType(Type compositeUserType)
+    void AddColumnsFromCompositeUserType(Type compositeUserType)
     {
         var inst = (ICompositeUserType)Activator.CreateInstance(compositeUserType);
 

@@ -9,7 +9,7 @@ namespace FluentNHibernate.Testing.Values;
 public class List<T, TListElement>(Accessor property, IEnumerable<TListElement> value)
     : Property<T, IEnumerable<TListElement>>(property, value)
 {
-    private Action<T, Accessor, IEnumerable<TListElement>> _valueSetter;
+    Action<T, Accessor, IEnumerable<TListElement>> _valueSetter;
 
     public override Action<T, Accessor, IEnumerable<TListElement>> ValueSetter
     {
@@ -56,7 +56,7 @@ public class List<T, TListElement>(Accessor property, IEnumerable<TListElement> 
         AssertGenericListMatches(actual, Expected);
     }
 
-    private void AssertGenericListMatches(IEnumerable actualEnumerable, IEnumerable<TListElement> expectedEnumerable)
+    void AssertGenericListMatches(IEnumerable actualEnumerable, IEnumerable<TListElement> expectedEnumerable)
     {
         if (actualEnumerable is null)
         {

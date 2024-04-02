@@ -15,13 +15,13 @@ namespace FluentNHibernate.Mapping;
 /// </summary>
 public class AnyPart<T> : IAnyMappingProvider
 {
-    private readonly AttributeStore attributes = new AttributeStore();
-    private readonly Type entity;
-    private readonly Member member;
-    private readonly IList<string> typeColumns = new List<string>();
-    private readonly IList<string> identifierColumns = new List<string>();
-    private readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
-    private bool nextBool = true;
+    readonly AttributeStore attributes = new AttributeStore();
+    readonly Type entity;
+    readonly Member member;
+    readonly IList<string> typeColumns = new List<string>();
+    readonly IList<string> identifierColumns = new List<string>();
+    readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
+    bool nextBool = true;
     bool idTypeSet;
 
     public AnyPart(Type entity, Member member)

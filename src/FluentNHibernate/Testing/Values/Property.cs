@@ -16,8 +16,8 @@ public abstract class Property<T>
 
 public class Property<T, TProperty>(Accessor property, TProperty value) : Property<T>
 {
-    private static readonly Action<T, Accessor, TProperty> DefaultValueSetter = (target, propertyAccessor, value) => propertyAccessor.SetValue (target, value);
-    private Action<T, Accessor, TProperty> _valueSetter;
+    static readonly Action<T, Accessor, TProperty> DefaultValueSetter = (target, propertyAccessor, value) => propertyAccessor.SetValue (target, value);
+    Action<T, Accessor, TProperty> _valueSetter;
 
     public virtual Action<T, Accessor, TProperty> ValueSetter
     {
@@ -69,7 +69,7 @@ public class Property<T, TProperty>(Accessor property, TProperty value) : Proper
         }
     }
 
-    private string GetInequalityComparisonMessage(object actual)
+    string GetInequalityComparisonMessage(object actual)
     {
         string message;
 
