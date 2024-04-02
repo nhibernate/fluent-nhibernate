@@ -24,11 +24,11 @@ public class TuplizerMapping(AttributeStore attributes) : MappingBase, IEquatabl
         return attributes.IsSpecified(attribute);
     }
 
-    public TuplizerMode Mode => attributes.GetOrDefault<TuplizerMode>("Mode");
+    public TuplizerMode Mode => attributes.GetOrDefault<TuplizerMode>();
 
-    public string EntityName => attributes.GetOrDefault<string>("EntityName");
+    public string EntityName => attributes.GetOrDefault<string>();
 
-    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>();
 
     public bool Equals(TuplizerMapping other)
     {

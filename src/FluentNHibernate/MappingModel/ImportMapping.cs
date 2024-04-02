@@ -17,9 +17,9 @@ public class ImportMapping(AttributeStore attributes) : MappingBase, IEquatable<
         visitor.ProcessImport(this);
     }
 
-    public string Rename => attributes.GetOrDefault<string>("Rename");
+    public string Rename => attributes.GetOrDefault<string>();
 
-    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>();
 
     public bool Equals(ImportMapping other)
     {

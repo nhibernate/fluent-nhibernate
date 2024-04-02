@@ -30,27 +30,27 @@ public class ManyToManyMapping(AttributeStore attributes)
             visitor.Visit(filter);
     }
 
-    public Type ChildType => attributes.GetOrDefault<Type>("ChildType");
+    public Type ChildType => attributes.GetOrDefault<Type>();
 
-    public Type ParentType => attributes.GetOrDefault<Type>("ParentType");
+    public Type ParentType => attributes.GetOrDefault<Type>();
 
-    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>();
 
-    public string ForeignKey => attributes.GetOrDefault<string>("ForeignKey");
+    public string ForeignKey => attributes.GetOrDefault<string>();
 
-    public string Fetch => attributes.GetOrDefault<string>("Fetch");
+    public string Fetch => attributes.GetOrDefault<string>();
 
-    public string NotFound => attributes.GetOrDefault<string>("NotFound");
+    public string NotFound => attributes.GetOrDefault<string>();
 
-    public string Where => attributes.GetOrDefault<string>("Where");
+    public string Where => attributes.GetOrDefault<string>();
 
-    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
+    public bool Lazy => attributes.GetOrDefault<bool>();
 
-    public string EntityName => attributes.GetOrDefault<string>("EntityName");
+    public string EntityName => attributes.GetOrDefault<string>();
 
-    public string OrderBy => attributes.GetOrDefault<string>("OrderBy");
+    public string OrderBy => attributes.GetOrDefault<string>();
 
-    public string ChildPropertyRef => attributes.GetOrDefault<string>("ChildPropertyRef");
+    public string ChildPropertyRef => attributes.GetOrDefault<string>();
 
     public Type ContainingEntityType { get; set; }
 

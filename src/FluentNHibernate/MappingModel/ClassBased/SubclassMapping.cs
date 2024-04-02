@@ -21,7 +21,7 @@ public class SubclassMapping(SubclassType subclassType, AttributeStore attribute
     /// instead used as a marker for the <see cref="SeparateSubclassVisitor"/>
     /// to pair things up.
     /// </summary>
-    public Type Extends => attributes.GetOrDefault<Type>("Extends");
+    public Type Extends => attributes.GetOrDefault<Type>();
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -33,39 +33,39 @@ public class SubclassMapping(SubclassType subclassType, AttributeStore attribute
         base.AcceptVisitor(visitor);
     }
 
-    public override string Name => attributes.GetOrDefault<string>("Name");
+    public override string Name => attributes.GetOrDefault<string>();
 
-    public override Type Type => attributes.GetOrDefault<Type>("Type");
+    public override Type Type => attributes.GetOrDefault<Type>();
 
-    public object DiscriminatorValue => attributes.GetOrDefault<object>("DiscriminatorValue");
+    public object DiscriminatorValue => attributes.GetOrDefault<object>();
 
-    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
+    public bool Lazy => attributes.GetOrDefault<bool>();
 
-    public string Proxy => attributes.GetOrDefault<string>("Proxy");
+    public string Proxy => attributes.GetOrDefault<string>();
 
-    public bool DynamicUpdate => attributes.GetOrDefault<bool>("DynamicUpdate");
+    public bool DynamicUpdate => attributes.GetOrDefault<bool>();
 
-    public bool DynamicInsert => attributes.GetOrDefault<bool>("DynamicInsert");
+    public bool DynamicInsert => attributes.GetOrDefault<bool>();
 
-    public bool SelectBeforeUpdate => attributes.GetOrDefault<bool>("SelectBeforeUpdate");
+    public bool SelectBeforeUpdate => attributes.GetOrDefault<bool>();
 
-    public bool Abstract => attributes.GetOrDefault<bool>("Abstract");
+    public bool Abstract => attributes.GetOrDefault<bool>();
 
-    public string EntityName => attributes.GetOrDefault<string>("EntityName");
+    public string EntityName => attributes.GetOrDefault<string>();
 
-    public string TableName => attributes.GetOrDefault<string>("TableName");
+    public string TableName => attributes.GetOrDefault<string>();
 
-    public KeyMapping Key => attributes.GetOrDefault<KeyMapping>("Key");
+    public KeyMapping Key => attributes.GetOrDefault<KeyMapping>();
 
-    public string Check => attributes.GetOrDefault<string>("Check");
+    public string Check => attributes.GetOrDefault<string>();
 
-    public string Schema => attributes.GetOrDefault<string>("Schema");
+    public string Schema => attributes.GetOrDefault<string>();
 
-    public string Subselect => attributes.GetOrDefault<string>("Subselect");
+    public string Subselect => attributes.GetOrDefault<string>();
 
-    public TypeReference Persister => attributes.GetOrDefault<TypeReference>("Persister");
+    public TypeReference Persister => attributes.GetOrDefault<TypeReference>();
 
-    public int BatchSize => attributes.GetOrDefault<int>("BatchSize");
+    public int BatchSize => attributes.GetOrDefault<int>();
 
     public void OverrideAttributes(AttributeStore store)
     {

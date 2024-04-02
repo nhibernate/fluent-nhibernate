@@ -30,9 +30,9 @@ public class CompositeElementMapping(AttributeStore attributes) : MappingBase, I
         mappedMembers.AcceptVisitor(visitor);
     }
 
-    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>();
 
-    public ParentMapping Parent => attributes.GetOrDefault<ParentMapping>("Parent");
+    public ParentMapping Parent => attributes.GetOrDefault<ParentMapping>();
 
     public IEnumerable<PropertyMapping> Properties => mappedMembers.Properties;
 

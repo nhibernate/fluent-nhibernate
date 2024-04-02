@@ -18,9 +18,9 @@ public class FilterDefinitionMapping(AttributeStore attributes) : MappingBase, I
 
     public IDictionary<string, IType> Parameters { get; } = new Dictionary<string, IType>();
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public string Condition => attributes.GetOrDefault<string>("Condition");
+    public string Condition => attributes.GetOrDefault<string>();
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

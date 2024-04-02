@@ -24,9 +24,9 @@ public class MetaValueMapping : MappingBase, IEquatable<MetaValueMapping>
         visitor.ProcessMetaValue(this);
     }
 
-    public string Value => attributes.GetOrDefault<string>("Value");
+    public string Value => attributes.GetOrDefault<string>();
 
-    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>();
 
     public Type ContainingEntityType { get; set; }
 

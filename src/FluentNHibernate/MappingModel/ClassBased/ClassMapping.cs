@@ -15,23 +15,23 @@ public class ClassMapping(AttributeStore attributes) : ClassMappingBase(attribut
         : this(new AttributeStore())
     {}
 
-    public IIdentityMapping Id => attributes.GetOrDefault<IIdentityMapping>("Id");
+    public IIdentityMapping Id => attributes.GetOrDefault<IIdentityMapping>();
 
-    public NaturalIdMapping NaturalId => attributes.GetOrDefault<NaturalIdMapping>("NaturalId");
+    public NaturalIdMapping NaturalId => attributes.GetOrDefault<NaturalIdMapping>();
 
-    public override string Name => attributes.GetOrDefault<string>("Name");
+    public override string Name => attributes.GetOrDefault<string>();
 
-    public override Type Type => attributes.GetOrDefault<Type>("Type");
+    public override Type Type => attributes.GetOrDefault<Type>();
 
-    public CacheMapping Cache => attributes.GetOrDefault<CacheMapping>("Cache");
+    public CacheMapping Cache => attributes.GetOrDefault<CacheMapping>();
 
-    public VersionMapping Version => attributes.GetOrDefault<VersionMapping>("Version");
+    public VersionMapping Version => attributes.GetOrDefault<VersionMapping>();
 
-    public DiscriminatorMapping Discriminator => attributes.GetOrDefault<DiscriminatorMapping>("Discriminator");
+    public DiscriminatorMapping Discriminator => attributes.GetOrDefault<DiscriminatorMapping>();
 
-    public bool IsUnionSubclass => attributes.GetOrDefault<bool>("IsUnionSubclass");
+    public bool IsUnionSubclass => attributes.GetOrDefault<bool>();
 
-    public TuplizerMapping Tuplizer => attributes.GetOrDefault<TuplizerMapping>("Tuplizer");
+    public TuplizerMapping Tuplizer => attributes.GetOrDefault<TuplizerMapping>();
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -58,43 +58,43 @@ public class ClassMapping(AttributeStore attributes) : ClassMappingBase(attribut
         base.AcceptVisitor(visitor);
     }
 
-    public string TableName => attributes.GetOrDefault<string>("TableName");
+    public string TableName => attributes.GetOrDefault<string>();
 
-    public int BatchSize => attributes.GetOrDefault<int>("BatchSize");
+    public int BatchSize => attributes.GetOrDefault<int>();
 
-    public object DiscriminatorValue => attributes.GetOrDefault<object>("DiscriminatorValue");
+    public object DiscriminatorValue => attributes.GetOrDefault<object>();
 
-    public string Schema => attributes.GetOrDefault<string>("Schema");
+    public string Schema => attributes.GetOrDefault<string>();
 
-    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
+    public bool Lazy => attributes.GetOrDefault<bool>();
 
-    public bool Mutable => attributes.GetOrDefault<bool>("Mutable");
+    public bool Mutable => attributes.GetOrDefault<bool>();
 
-    public bool DynamicUpdate => attributes.GetOrDefault<bool>("DynamicUpdate");
+    public bool DynamicUpdate => attributes.GetOrDefault<bool>();
 
-    public bool DynamicInsert => attributes.GetOrDefault<bool>("DynamicInsert");
+    public bool DynamicInsert => attributes.GetOrDefault<bool>();
 
-    public string OptimisticLock => attributes.GetOrDefault<string>("OptimisticLock");
+    public string OptimisticLock => attributes.GetOrDefault<string>();
 
-    public string Polymorphism => attributes.GetOrDefault<string>("Polymorphism");
+    public string Polymorphism => attributes.GetOrDefault<string>();
 
-    public string Persister => attributes.GetOrDefault<string>("Persister");
+    public string Persister => attributes.GetOrDefault<string>();
 
-    public string Where => attributes.GetOrDefault<string>("Where");
+    public string Where => attributes.GetOrDefault<string>();
 
-    public string Check => attributes.GetOrDefault<string>("Check");
+    public string Check => attributes.GetOrDefault<string>();
 
-    public string Proxy => attributes.GetOrDefault<string>("Proxy");
+    public string Proxy => attributes.GetOrDefault<string>();
 
-    public bool SelectBeforeUpdate => attributes.GetOrDefault<bool>("SelectBeforeUpdate");
+    public bool SelectBeforeUpdate => attributes.GetOrDefault<bool>();
 
-    public bool Abstract => attributes.GetOrDefault<bool>("Abstract");
+    public bool Abstract => attributes.GetOrDefault<bool>();
 
-    public string Subselect => attributes.GetOrDefault<string>("Subselect");
+    public string Subselect => attributes.GetOrDefault<string>();
 
-    public string SchemaAction => attributes.GetOrDefault<string>("SchemaAction");
+    public string SchemaAction => attributes.GetOrDefault<string>();
 
-    public string EntityName => attributes.GetOrDefault<string>("EntityName");
+    public string EntityName => attributes.GetOrDefault<string>();
 
     public bool Equals(ClassMapping other)
     {

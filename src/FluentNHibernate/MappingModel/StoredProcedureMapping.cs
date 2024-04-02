@@ -32,9 +32,9 @@ public class StoredProcedureMapping : MappingBase, IEquatable<StoredProcedureMap
         Set(x => x.Check, Layer.Defaults, "none");
     }
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public Type Type => attributes.GetOrDefault<Type>("Type");
+    public Type Type => attributes.GetOrDefault<Type>();
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
@@ -46,11 +46,11 @@ public class StoredProcedureMapping : MappingBase, IEquatable<StoredProcedureMap
         return attributes.IsSpecified(attribute);
     }
 
-    public string Check => attributes.GetOrDefault<string>("Check");
+    public string Check => attributes.GetOrDefault<string>();
 
-    public string SPType => attributes.GetOrDefault<string>("SPType");
+    public string SPType => attributes.GetOrDefault<string>();
 
-    public string Query => attributes.GetOrDefault<string>("Query");
+    public string Query => attributes.GetOrDefault<string>();
 
     public bool Equals(StoredProcedureMapping other)
     {

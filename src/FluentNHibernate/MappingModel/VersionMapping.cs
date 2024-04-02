@@ -19,15 +19,15 @@ public class VersionMapping(AttributeStore underlyingStore) : ColumnBasedMapping
         Columns.Each(visitor.Visit);
     }
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public string Access => attributes.GetOrDefault<string>("Access");
+    public string Access => attributes.GetOrDefault<string>();
 
-    public TypeReference Type => attributes.GetOrDefault<TypeReference>("Type");
+    public TypeReference Type => attributes.GetOrDefault<TypeReference>();
 
-    public string UnsavedValue => attributes.GetOrDefault<string>("UnsavedValue");
+    public string UnsavedValue => attributes.GetOrDefault<string>();
 
-    public string Generated => attributes.GetOrDefault<string>("Generated");
+    public string Generated => attributes.GetOrDefault<string>();
 
     public Type ContainingEntityType { get; set; }
 

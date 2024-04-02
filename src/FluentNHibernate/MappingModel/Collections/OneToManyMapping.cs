@@ -19,13 +19,13 @@ public class OneToManyMapping(AttributeStore attributes) : MappingBase, ICollect
         visitor.ProcessOneToMany(this);
     }
 
-    public Type ChildType => attributes.GetOrDefault<Type>("ChildType");
+    public Type ChildType => attributes.GetOrDefault<Type>();
 
-    public TypeReference Class => attributes.GetOrDefault<TypeReference>("Class");
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>();
 
-    public string NotFound => attributes.GetOrDefault<string>("NotFound");
+    public string NotFound => attributes.GetOrDefault<string>();
 
-    public string EntityName => attributes.GetOrDefault<string>("EntityName");
+    public string EntityName => attributes.GetOrDefault<string>();
 
     public Type ContainingEntityType { get; set; }
 

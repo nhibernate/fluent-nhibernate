@@ -27,29 +27,29 @@ public class ColumnMapping(AttributeStore attributes) : MappingBase, IEquatable<
 
     public Member Member { get; set; }
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public int Length => attributes.GetOrDefault<int>("Length");
+    public int Length => attributes.GetOrDefault<int>();
 
-    public bool NotNull => attributes.GetOrDefault<bool>("NotNull");
+    public bool NotNull => attributes.GetOrDefault<bool>();
 
     public bool Nullable => !NotNull;
 
-    public bool Unique => attributes.GetOrDefault<bool>("Unique");
+    public bool Unique => attributes.GetOrDefault<bool>();
 
-    public string UniqueKey => attributes.GetOrDefault<string>("UniqueKey");
+    public string UniqueKey => attributes.GetOrDefault<string>();
 
-    public string SqlType => attributes.GetOrDefault<string>("SqlType");
+    public string SqlType => attributes.GetOrDefault<string>();
 
-    public string Index => attributes.GetOrDefault<string>("Index");
+    public string Index => attributes.GetOrDefault<string>();
 
-    public string Check => attributes.GetOrDefault<string>("Check");
+    public string Check => attributes.GetOrDefault<string>();
 
-    public int Precision => attributes.GetOrDefault<int>("Precision");
+    public int Precision => attributes.GetOrDefault<int>();
 
-    public int Scale => attributes.GetOrDefault<int>("Scale");
+    public int Scale => attributes.GetOrDefault<int>();
 
-    public string Default => attributes.GetOrDefault<string>("Default");
+    public string Default => attributes.GetOrDefault<string>();
 
     public ColumnMapping Clone()
     {

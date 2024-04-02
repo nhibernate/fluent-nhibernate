@@ -33,23 +33,23 @@ public class AnyMapping(AttributeStore attributes) : MappingBase, IEquatable<Any
             visitor.Visit(column);
     }
 
-    public string Name => attributes.GetOrDefault<string>("Name");
+    public string Name => attributes.GetOrDefault<string>();
 
-    public string IdType => attributes.GetOrDefault<string>("IdType");
+    public string IdType => attributes.GetOrDefault<string>();
 
-    public TypeReference MetaType => attributes.GetOrDefault<TypeReference>("MetaType");
+    public TypeReference MetaType => attributes.GetOrDefault<TypeReference>();
 
-    public string Access => attributes.GetOrDefault<string>("Access");
+    public string Access => attributes.GetOrDefault<string>();
 
-    public bool Insert => attributes.GetOrDefault<bool>("Insert");
+    public bool Insert => attributes.GetOrDefault<bool>();
 
-    public bool Update => attributes.GetOrDefault<bool>("Update");
+    public bool Update => attributes.GetOrDefault<bool>();
 
-    public string Cascade => attributes.GetOrDefault<string>("Cascade");
+    public string Cascade => attributes.GetOrDefault<string>();
 
-    public bool Lazy => attributes.GetOrDefault<bool>("Lazy");
+    public bool Lazy => attributes.GetOrDefault<bool>();
 
-    public bool OptimisticLock => attributes.GetOrDefault<bool>("OptimisticLock");
+    public bool OptimisticLock => attributes.GetOrDefault<bool>();
 
     public IEnumerable<ColumnMapping> TypeColumns => typeColumns.Columns;
 

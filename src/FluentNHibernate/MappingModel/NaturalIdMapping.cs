@@ -14,7 +14,7 @@ public class NaturalIdMapping(AttributeStore attributes) : MappingBase
     public NaturalIdMapping()
         : this(new AttributeStore()) { }
 
-    public bool Mutable => attributes.GetOrDefault<bool>("Mutable");
+    public bool Mutable => attributes.GetOrDefault<bool>();
 
     public IEnumerable<PropertyMapping> Properties => properties;
 

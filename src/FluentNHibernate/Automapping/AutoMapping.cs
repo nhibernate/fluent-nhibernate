@@ -222,16 +222,14 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
     /// <param name="column">Column name</param>
     public void KeyColumn(string column)
     {
-        KeyMapping key;
-
-        if (attributes.IsSpecified("Key"))
-            key = attributes.GetOrDefault<KeyMapping>("Key");
-        else
-            key = new KeyMapping();
+        const string attribute = "Key";
+        var key = attributes.IsSpecified(attribute)
+            ? attributes.GetOrDefault<KeyMapping>(attribute)
+            : new KeyMapping();
 
         key.AddColumn(Layer.UserSupplied, new ColumnMapping(column));
 
-        attributes.Set("Key", Layer.UserSupplied, key);
+        attributes.Set(attribute, Layer.UserSupplied, key);
     }
 
     /// <summary>

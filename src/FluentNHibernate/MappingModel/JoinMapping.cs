@@ -19,7 +19,7 @@ public class JoinMapping(AttributeStore attributes) : IMapping, IEquatable<JoinM
         : this(new AttributeStore())
     {}
 
-    public KeyMapping Key => attributes.GetOrDefault<KeyMapping>("Key");
+    public KeyMapping Key => attributes.GetOrDefault<KeyMapping>();
 
     public IEnumerable<PropertyMapping> Properties => mappedMembers.Properties;
 
@@ -61,19 +61,19 @@ public class JoinMapping(AttributeStore attributes) : IMapping, IEquatable<JoinM
         mappedMembers.AddStoredProcedure(storedProcedureMapping);
     }
 
-    public string TableName => attributes.GetOrDefault<string>("TableName");
+    public string TableName => attributes.GetOrDefault<string>();
 
-    public string Schema => attributes.GetOrDefault<string>("Schema");
+    public string Schema => attributes.GetOrDefault<string>();
 
-    public string Catalog => attributes.GetOrDefault<string>("Catalog");
+    public string Catalog => attributes.GetOrDefault<string>();
 
-    public string Subselect => attributes.GetOrDefault<string>("Subselect");
+    public string Subselect => attributes.GetOrDefault<string>();
 
-    public string Fetch => attributes.GetOrDefault<string>("Fetch");
+    public string Fetch => attributes.GetOrDefault<string>();
 
-    public bool Inverse => attributes.GetOrDefault<bool>("Inverse");
+    public bool Inverse => attributes.GetOrDefault<bool>();
 
-    public bool Optional => attributes.GetOrDefault<bool>("Optional");
+    public bool Optional => attributes.GetOrDefault<bool>();
 
     public Type ContainingEntityType { get; set; }
 
