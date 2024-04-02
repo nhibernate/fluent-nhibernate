@@ -390,7 +390,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         return (T)this;
     }
 
-    private void CreateIndexMapping(Action<IndexPart> customIndex)
+    void CreateIndexMapping(Action<IndexPart> customIndex)
     {
         var indexPart = new IndexPart(typeof(T));
 
@@ -401,7 +401,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
 #pragma warning restore 612,618
     }
 
-    private void CreateListIndexMapping(Action<ListIndexPart> customIndex)
+    void CreateListIndexMapping(Action<ListIndexPart> customIndex)
     {
         indexMapping = new IndexMapping();
         var builder = new ListIndexPart(indexMapping);
@@ -737,7 +737,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         return mapping;
     }
 
-    private string GetDefaultName()
+    string GetDefaultName()
     {
         if (member.IsMethod)
         {

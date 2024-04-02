@@ -29,11 +29,12 @@ public class PersistenceModel
     {
         new ComponentMapComponentReferenceResolver()
     };
-    private readonly IList<IMappingModelVisitor> visitors = new List<IMappingModelVisitor>();
+
+    readonly IList<IMappingModelVisitor> visitors = new List<IMappingModelVisitor>();
     public IConventionFinder Conventions { get; }
     public bool MergeMappings { get; set; }
-    private IEnumerable<HibernateMapping> compiledMappings;
-    private ValidationVisitor validationVisitor;
+    IEnumerable<HibernateMapping> compiledMappings;
+    ValidationVisitor validationVisitor;
     public PairBiDirectionalManyToManySidesDelegate BiDirectionalManyToManyPairer { get; set; }
 
     IDiagnosticMessageDispatcher diagnosticDispatcher = new DefaultDiagnosticMessageDispatcher();
@@ -86,7 +87,7 @@ public class PersistenceModel
         log.LoadedFluentMappingsFromSource(source);
     }
 
-    private static Assembly FindTheCallingAssembly()
+    static Assembly FindTheCallingAssembly()
     {
         StackTrace trace = new StackTrace(false);
 
@@ -150,7 +151,7 @@ public class PersistenceModel
             throw new InvalidOperationException("Unsupported mapping type '" + type.FullName + "'");
     }
 
-    private bool IsMappingOf<T>(Type type)
+    bool IsMappingOf<T>(Type type)
     {
         return !type.IsGenericType && typeof(T).IsAssignableFrom(type);
     }
@@ -171,7 +172,7 @@ public class PersistenceModel
         return hbms;
     }
 
-    private void BuildSeparateMappings(Action<HibernateMapping> add)
+    void BuildSeparateMappings(Action<HibernateMapping> add)
     {
         foreach (var classMap in classProviders)
         {
@@ -190,7 +191,7 @@ public class PersistenceModel
         }
     }
 
-    private void BuildSingleMapping(Action<HibernateMapping> add)
+    void BuildSingleMapping(Action<HibernateMapping> add)
     {
         var hbm = new HibernateMapping();
 
@@ -207,13 +208,13 @@ public class PersistenceModel
             add(hbm);
     }
 
-    private void ApplyVisitors(IEnumerable<HibernateMapping> mappings)
+    void ApplyVisitors(IEnumerable<HibernateMapping> mappings)
     {
         foreach (var visitor in visitors)
             visitor.Visit(mappings);
     }
 
-    private void EnsureMappingsBuilt()
+    void EnsureMappingsBuilt()
     {
         if (compiledMappings is not null) return;
 
@@ -225,7 +226,7 @@ public class PersistenceModel
         return "FluentMappings.hbm.xml";
     }
 
-    private string DetermineMappingFileName(HibernateMapping mapping)
+    string DetermineMappingFileName(HibernateMapping mapping)
     {
         if (MergeMappings)
             return GetMappingFileName();
@@ -246,7 +247,7 @@ public class PersistenceModel
         WriteMappingsTo( _ => new XmlTextWriter(writer), false);
     }
 
-    private void WriteMappingsTo(Func<HibernateMapping, XmlTextWriter> writerBuilder, bool shouldDispose)
+    void WriteMappingsTo(Func<HibernateMapping, XmlTextWriter> writerBuilder, bool shouldDispose)
     {
         EnsureMappingsBuilt();
 

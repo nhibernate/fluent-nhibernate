@@ -15,7 +15,7 @@ public class ReferenceBag<T, TListElement>(Accessor property, IEnumerable<TListE
         AssertGenericListMatches(actual, Expected);
     }
 
-    private void AssertGenericListMatches(IEnumerable actualEnumerable, IEnumerable<TListElement> expectedEnumerable)
+    void AssertGenericListMatches(IEnumerable actualEnumerable, IEnumerable<TListElement> expectedEnumerable)
     {
         if (actualEnumerable is null)
         {

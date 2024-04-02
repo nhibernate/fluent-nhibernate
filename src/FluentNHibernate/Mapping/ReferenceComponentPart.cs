@@ -12,7 +12,7 @@ namespace FluentNHibernate.Mapping;
 /// <typeparam name="T">Component type</typeparam>
 public class ReferenceComponentPart<T>(Member property, Type containingEntityType) : IReferenceComponentMappingProvider
 {
-    private string columnPrefix;
+    string columnPrefix;
 
     /// <summary>
     /// Sets the prefix for any columns defined within the component. To refer to the property

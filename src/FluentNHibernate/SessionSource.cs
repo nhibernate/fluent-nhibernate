@@ -19,7 +19,7 @@ public interface ISessionSource
 
 public class SessionSource : ISessionSource
 {
-    private Dialect dialect;
+    Dialect dialect;
     public Configuration Configuration { get; private set; }
     public ISessionFactory SessionFactory { get; private set; }
 

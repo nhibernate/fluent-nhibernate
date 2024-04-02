@@ -37,11 +37,11 @@ public abstract class PersistenceConfiguration<TThisConfiguration, TConnectionSt
     protected const string AdoNetBatchSizeKey = NHibEnvironment.BatchSize;
     protected const string CurrentSessionContextClassKey = "current_session_context_class";
 
-    private readonly Dictionary<string, string> values = new Dictionary<string, string>();
+    readonly Dictionary<string, string> values = new Dictionary<string, string>();
 
-    private bool nextBoolSettingValue = true;
-    private readonly TConnectionString connectionString;
-    private readonly CacheSettingsBuilder cache = new CacheSettingsBuilder();
+    bool nextBoolSettingValue = true;
+    readonly TConnectionString connectionString;
+    readonly CacheSettingsBuilder cache = new CacheSettingsBuilder();
 
     protected PersistenceConfiguration()
     {
@@ -71,7 +71,7 @@ public abstract class PersistenceConfiguration<TThisConfiguration, TConnectionSt
             yield return ConnectionProviderKey;
     }
 
-    private static IEnumerable<string> KeysToPreserve(NHibConfiguration nhibernateConfig, IDictionary<string, string> settings)
+    static IEnumerable<string> KeysToPreserve(NHibConfiguration nhibernateConfig, IDictionary<string, string> settings)
     {
         var @default = new NHibConfiguration();
         return nhibernateConfig.Properties
