@@ -20,7 +20,7 @@ namespace FluentNHibernate.Automapping;
 public class AutoPersistenceModel : PersistenceModel
 {
     readonly IAutomappingConfiguration cfg;
-    readonly AutoMappingExpressions expressions = new AutoMappingExpressions();
+    readonly AutoMappingExpressions expressions = new();
     readonly AutoMapper autoMapper;
     readonly List<ITypeSource> sources = new List<ITypeSource>();
     Func<Type, bool>? whereClause;
@@ -229,10 +229,8 @@ public class AutoPersistenceModel : PersistenceModel
             {
                 return type;
             }
-            else
-            {
-                type = parent;
-            }
+
+            type = parent;
         }
     }
 
