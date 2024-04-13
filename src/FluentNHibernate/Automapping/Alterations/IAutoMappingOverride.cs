@@ -1,4 +1,7 @@
-﻿namespace FluentNHibernate.Automapping.Alterations;
+﻿#if USE_NULLABLE
+#nullable enable
+#endif
+namespace FluentNHibernate.Automapping.Alterations;
 
 /// <summary>
 /// A mapping override for an auto mapped entity.

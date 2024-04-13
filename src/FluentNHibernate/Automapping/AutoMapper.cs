@@ -1,3 +1,6 @@
+#if USE_NULLABLE
+#nullable enable
+#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +17,12 @@ public class AutoMapper(
     IConventionFinder conventionFinder,
     IEnumerable<InlineOverride> inlineOverrides)
 {
-    List<AutoMapType> mappingTypes;
+    List<AutoMapType>? mappingTypes;
 
     void ApplyOverrides(Type classType, IList<Member> mappedMembers, ClassMappingBase mapping)
     {
         var autoMapType = ReflectionHelper.AutomappingTypeForEntityType(classType);
-        var autoMap = Activator.CreateInstance(autoMapType, mappedMembers);
+        var autoMap = Activator.CreateInstance(autoMapType, mappedMembers)!;
 
         inlineOverrides
             .Where(x => x.CanOverride(classType))
@@ -37,24 +40,23 @@ public class AutoMapper(
         ProcessClass(mapping, classType, mappedMembers);
 
         if (mappingTypes is not null)
-            MapInheritanceTree(classType, mapping, mappedMembers);
+            MapInheritanceTree(classType, mapping, mappedMembers, mappingTypes);
 
         return mapping;
     }
 
-    void MapInheritanceTree(Type classType, ClassMappingBase mapping, IList<Member> mappedMembers)
+    void MapInheritanceTree(Type classType, ClassMappingBase mapping, IList<Member> mappedMembers, List<AutoMapType> mappingTypes)
     {
         var discriminatorSet = HasDiscriminator(mapping);
         var isDiscriminated = cfg.IsDiscriminated(classType) || discriminatorSet;
-        var mappingTypesWithLogicalParents = GetMappingTypesWithLogicalParents();
+        var mappingTypesWithLogicalParents = GetMappingTypesWithLogicalParents(mappingTypes);
 
         foreach (var inheritedClass in mappingTypesWithLogicalParents
                      .Where(x => x.Value is not null && x.Value.Type == classType)
                      .Select(x => x.Key))
         {
             var tempMapping = mapping as ClassMapping;
-            var tempIsNull = tempMapping is null;
-            if (isDiscriminated && !discriminatorSet && !tempIsNull)
+            if (isDiscriminated && !discriminatorSet && tempMapping is not null)
             {
                 var discriminatorColumn = cfg.GetDiscriminatorColumn(classType);
                 var discriminator = new DiscriminatorMapping
@@ -72,7 +74,7 @@ public class AutoMapper(
 
             SubclassMapping subclassMapping;
             var tempSubClassMap = mapping as SubclassMapping;
-            if(!tempIsNull && tempMapping.IsUnionSubclass || tempSubClassMap is not null && tempSubClassMap.SubclassType == SubclassType.UnionSubclass)
+            if(tempMapping is not null && tempMapping.IsUnionSubclass || tempSubClassMap is not null && tempSubClassMap.SubclassType == SubclassType.UnionSubclass)
             {
                 subclassMapping = new SubclassMapping(SubclassType.UnionSubclass);
                 subclassMapping.Set(x => x.Type, Layer.Defaults, inheritedClass.Type);
@@ -102,7 +104,7 @@ public class AutoMapper(
         }
     }
 
-    static bool HasDiscriminator(ClassMappingBase mapping)
+    static bool HasDiscriminator(ClassMappingBase? mapping)
     {
         if (mapping is ClassMapping && ((ClassMapping) mapping).Discriminator is not null)
             return true;
@@ -110,27 +112,25 @@ public class AutoMapper(
         return false;
     }
 
-    Dictionary<AutoMapType, AutoMapType> GetMappingTypesWithLogicalParents()
+    Dictionary<AutoMapType, AutoMapType?> GetMappingTypesWithLogicalParents(List<AutoMapType> mappingTypes)
     {
         var excludedTypes = mappingTypes
             .Where(x => cfg.IsConcreteBaseType(x.Type.BaseType))
             .ToArray();
         var availableTypes = mappingTypes.Except(excludedTypes).ToDictionary(x => x.Type);
-        var mappingTypesWithLogicalParents = new Dictionary<AutoMapType, AutoMapType>();
+        var mappingTypesWithLogicalParents = new Dictionary<AutoMapType, AutoMapType?>();
 
         foreach (var type in availableTypes)
             mappingTypesWithLogicalParents.Add(type.Value, GetLogicalParent(type.Key, availableTypes));
         return mappingTypesWithLogicalParents;
     }
 
-    static AutoMapType GetLogicalParent(Type type, IDictionary<Type, AutoMapType> availableTypes)
+    static AutoMapType? GetLogicalParent(Type type, IDictionary<Type, AutoMapType> availableTypes)
     {
         if (type.BaseType == typeof(object) || type.BaseType is null)
             return null;
 
-        AutoMapType baseType;
-
-        if (availableTypes.TryGetValue(type.BaseType, out baseType))
+        if (availableTypes.TryGetValue(type.BaseType, out var baseType))
             return baseType;
 
         return GetLogicalParent(type.BaseType, availableTypes);
@@ -205,7 +205,7 @@ public class AutoMapper(
     public void FlagAsMapped(Type type)
     {
         mappingTypes
-            .Where(x => x.Type == type)
+            ?.Where(x => x.Type == type)
             .Each(x => x.IsMapped = true);
     }
 }

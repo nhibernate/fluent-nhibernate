@@ -1,3 +1,6 @@
+#if USE_NULLABLE
+#nullable enable
+#endif
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +19,7 @@ public class AutoMappingAlterationCollection : IEnumerable<IAutoMappingAlteratio
     /// <param name="type">Type of an IAutoMappingAlteration</param>
     void Add(Type type)
     {
-        Add((IAutoMappingAlteration)Activator.CreateInstance(type));
+        Add((IAutoMappingAlteration)Activator.CreateInstance(type)!);
     }
 
     /// <summary>

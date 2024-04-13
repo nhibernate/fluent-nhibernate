@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if USE_NULLABLE
+#nullable enable
+#endif
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +28,7 @@ public class HasManyToManyStep(IAutomappingConfiguration cfg) : IAutomappingStep
         return hasInverse;
     }
 
-    static Member GetInverseProperty(Member member)
+    static Member? GetInverseProperty(Member member)
     {
         var type = member.PropertyType;
         var expectedInversePropertyType = type.GetGenericTypeDefinition()
@@ -108,7 +111,7 @@ public class HasManyToManyStep(IAutomappingConfiguration cfg) : IAutomappingStep
 
     public void Map(ClassMappingBase classMap, Member member)
     {
-        var inverseProperty = GetInverseProperty(member);
+        var inverseProperty = GetInverseProperty(member) ?? throw new InvalidOperationException($"Could not determine inverse property of {member}");
         var parentSide = cfg.GetParentSideForManyToMany(member.DeclaringType, inverseProperty.DeclaringType);
         var mapping = GetCollection(member);
 

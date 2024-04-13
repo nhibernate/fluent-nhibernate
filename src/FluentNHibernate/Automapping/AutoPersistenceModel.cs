@@ -1,3 +1,6 @@
+#if USE_NULLABLE
+#nullable enable
+#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +20,10 @@ namespace FluentNHibernate.Automapping;
 public class AutoPersistenceModel : PersistenceModel
 {
     readonly IAutomappingConfiguration cfg;
-    readonly AutoMappingExpressions expressions;
+    readonly AutoMappingExpressions expressions = new AutoMappingExpressions();
     readonly AutoMapper autoMapper;
     readonly List<ITypeSource> sources = new List<ITypeSource>();
-    Func<Type, bool> whereClause;
+    Func<Type, bool>? whereClause;
     readonly List<AutoMapType> mappingTypes = new List<AutoMapType>();
     bool autoMappingsCreated;
     readonly AutoMappingAlterationCollection alterations = new AutoMappingAlterationCollection();
@@ -30,7 +33,6 @@ public class AutoPersistenceModel : PersistenceModel
 
     public AutoPersistenceModel()
     {
-        expressions = new AutoMappingExpressions();
         cfg = new ExpressionBasedAutomappingConfiguration(expressions);
         autoMapper = new AutoMapper(cfg, Conventions, inlineOverrides);
 
@@ -220,17 +222,29 @@ public class AutoPersistenceModel : PersistenceModel
 
     Type GetTypeToMap(Type type)
     {
-        while (ShouldMapParent(type))
+        while (true)
         {
-            type = type.BaseType;
+            var parent = GetParentIfMappable(type);
+            if (parent is null)
+            {
+                return type;
+            }
+            else
+            {
+                type = parent;
+            }
         }
-
-        return type;
     }
 
-    bool ShouldMapParent(Type type)
+    Type? GetParentIfMappable(Type type)
     {
-        return ShouldMap(type.BaseType) && !cfg.IsConcreteBaseType(type.BaseType);
+        var parent = type.BaseType;
+        if (parent != null && ShouldMap(parent) && !cfg.IsConcreteBaseType(parent))
+        {
+            return parent;
+        }
+
+        return null;
     }
 
     bool ShouldMap(Type type)
@@ -263,14 +277,14 @@ public class AutoPersistenceModel : PersistenceModel
         return true;
     }
 
-    public IMappingProvider FindMapping<T>()
+    public IMappingProvider? FindMapping<T>()
     {
         return FindMapping(typeof(T));
     }
 
-    public IMappingProvider FindMapping(Type type)
+    public IMappingProvider? FindMapping(Type? type)
     {
-        Func<IMappingProvider, Type, bool> finder = (provider, expectedType) =>
+        Func<IMappingProvider, Type?, bool> finder = (provider, expectedType) =>
         {
             var mappingType = provider.GetType();
             if (mappingType.IsGenericType)
@@ -278,14 +292,14 @@ public class AutoPersistenceModel : PersistenceModel
                 // instance of a generic type (probably AutoMapping<T>)
                 return mappingType.GetGenericArguments()[0] == expectedType;
             }
-            if (mappingType.BaseType.IsGenericType &&
+            if (mappingType.BaseType?.IsGenericType == true &&
                 mappingType.BaseType.GetGenericTypeDefinition() == typeof(ClassMap<>))
             {
                 // base type is a generic type of ClassMap<T>, so we've got a XXXMap instance
                 return mappingType.BaseType.GetGenericArguments()[0] == expectedType;
             }
-            if (provider is PassThroughMappingProvider)
-                return provider.GetClassMapping().Type == expectedType;
+            if (provider is PassThroughMappingProvider passThroughProvider)
+                return passThroughProvider.GetClassMapping().Type == expectedType;
 
             return false;
         };
@@ -297,9 +311,9 @@ public class AutoPersistenceModel : PersistenceModel
         // if we haven't found a map yet then try to find a map of the
         // base type to merge if not a concrete base type
 
-        if (type.BaseType != typeof(object) && !cfg.IsConcreteBaseType(type.BaseType))
+        if (type?.BaseType != typeof(object) && !cfg.IsConcreteBaseType(type?.BaseType))
         {
-            return FindMapping(type.BaseType);
+            return FindMapping(type?.BaseType);
         }
 
         return null;
@@ -377,7 +391,7 @@ public class AutoPersistenceModel : PersistenceModel
 
                 var overrideInstance = Activator.CreateInstance(overrideType);
 
-                MethodInfo overrideHelperMethod = typeof(AutoPersistenceModel)
+                var overrideHelperMethod = typeof(AutoPersistenceModel)
                     .GetMethod("OverrideHelper", BindingFlags.NonPublic | BindingFlags.Instance);
 
                 if (overrideHelperMethod is null) return;

@@ -1,3 +1,6 @@
+#if USE_NULLABLE
+#nullable enable
+#endif
 using System;
 using System.Collections.Generic;
 using FluentNHibernate.Mapping;
@@ -48,7 +51,7 @@ public class AutoSubClassPart<T> : SubClassPart<T>, IAutoClasslike
     public void JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
     {
         var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
-        var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
+        var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn)!;
 
         action(joinedclass);
 
@@ -58,7 +61,7 @@ public class AutoSubClassPart<T> : SubClassPart<T>, IAutoClasslike
     public IAutoClasslike JoinedSubClass(Type type, string keyColumn)
     {
         var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(type);
-        var joinedclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn);
+        var joinedclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn)!;
 
         providers.Subclasses[type] = joinedclass;
 
@@ -68,7 +71,7 @@ public class AutoSubClassPart<T> : SubClassPart<T>, IAutoClasslike
     public void SubClass<TSubclass>(string discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
     {
         var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
-        var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, discriminatorValue);
+        var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, discriminatorValue)!;
 
         action?.Invoke(subclass);
 
@@ -78,19 +81,19 @@ public class AutoSubClassPart<T> : SubClassPart<T>, IAutoClasslike
     public IAutoClasslike SubClass(Type type, string discriminatorValue)
     {
         var genericType = typeof(AutoSubClassPart<>).MakeGenericType(type);
-        var subclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, discriminatorValue);
+        var subclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, discriminatorValue)!;
 
         providers.Subclasses[type] = subclass;
 
         return (IAutoClasslike)subclass;
     }
 
-    public ClassMapping GetClassMapping()
+    public ClassMapping? GetClassMapping()
     {
         return null;
     }
 
-    public HibernateMapping GetHibernateMapping()
+    public HibernateMapping? GetHibernateMapping()
     {
         return null;
     }

@@ -1,3 +1,6 @@
+#if USE_NULLABLE
+#nullable enable
+#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,7 +110,7 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
         return this;
     }
 
-    IPropertyIgnorer IPropertyIgnorer.IgnoreProperties(string first, params string[] others)
+    IPropertyIgnorer IPropertyIgnorer.IgnoreProperties(string first, params string[]? others)
     {
         var options = (others ?? Array.Empty<string>()).Concat(new[] { first }).ToArray();
 
@@ -127,11 +130,11 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
     }
 
     [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
-    public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>> action)
+    public AutoJoinedSubClassPart<TSubclass> JoinedSubClass<TSubclass>(string keyColumn, Action<AutoJoinedSubClassPart<TSubclass>>? action)
         where TSubclass : T
     {
         var genericType = typeof(AutoJoinedSubClassPart<>).MakeGenericType(typeof(TSubclass));
-        var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn);
+        var joinedclass = (AutoJoinedSubClassPart<TSubclass>)Activator.CreateInstance(genericType, keyColumn)!;
 
         action?.Invoke(joinedclass);
 
@@ -144,7 +147,7 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
     public IAutoClasslike JoinedSubClass(Type type, string keyColumn)
     {
         var genericType = typeof (AutoJoinedSubClassPart<>).MakeGenericType(type);
-        var joinedclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn);
+        var joinedclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, keyColumn)!;
 
         // remove any mappings for the same type, then re-add
         providers.Subclasses[type] = joinedclass;
@@ -160,11 +163,11 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
     }
 
     [Obsolete("Inline definitions of subclasses are depreciated. Please create a derived class from SubclassMap in the same way you do with ClassMap.")]
-    public AutoSubClassPart<TSubclass> SubClass<TSubclass>(object discriminatorValue, Action<AutoSubClassPart<TSubclass>> action)
+    public AutoSubClassPart<TSubclass> SubClass<TSubclass>(object discriminatorValue, Action<AutoSubClassPart<TSubclass>>? action)
         where TSubclass : T
     {
         var genericType = typeof(AutoSubClassPart<>).MakeGenericType(typeof(TSubclass));
-        var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, null, discriminatorValue);
+        var subclass = (AutoSubClassPart<TSubclass>)Activator.CreateInstance(genericType, null, discriminatorValue)!;
 
         action?.Invoke(subclass);
 
@@ -185,7 +188,7 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
     public IAutoClasslike SubClass(Type type, string discriminatorValue)
     {
         var genericType = typeof(AutoSubClassPart<>).MakeGenericType(type);
-        var subclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, null, discriminatorValue);
+        var subclass = (ISubclassMappingProvider)Activator.CreateInstance(genericType, null, discriminatorValue)!;
 
         // remove any mappings for the same type, then re-add
         providers.Subclasses[type] = subclass;
@@ -194,7 +197,7 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
     }
 
     // hide the base one D:
-    new void Join(string table, Action<JoinPart<T>> action)
+    new void Join(string? table, Action<JoinPart<T>>? action)
     {}
 
     public void Join(string table, Action<AutoJoinPart<T>> action)
@@ -209,7 +212,7 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
 #pragma warning disable 809
     // hide this - imports aren't supported in overrides
     [Obsolete("Imports aren't supported in overrides.", true)]
-    public new ImportPart ImportType<TImport>()
+    public new ImportPart? ImportType<TImport>()
     {
         return null;
     }

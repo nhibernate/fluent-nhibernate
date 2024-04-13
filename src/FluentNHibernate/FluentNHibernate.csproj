@@ -9,6 +9,17 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../FluentKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+
+  <!--Uncomment nullable, remove Define Constant and the config check once nullable migration is complete -->
+  <PropertyGroup Condition="'$(TargetFramework)'!='netstandard2.0' and '$(TargetFramework)'!='net461' and '$(Configuration)'=='DEBUG'">
+    <DefineConstants>USE_NULLABLE</DefineConstants>
+    <!--<Nullable>enable</Nullable>-->
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0' or '$(TargetFramework)'=='net461' or '$(Configuration)'!='DEBUG'">
+    <NoWarn>$(NoWarn);CS8632</NoWarn>
+  </PropertyGroup>
+
   
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
     <RuntimeFrameworkVersion>2.0.9</RuntimeFrameworkVersion>

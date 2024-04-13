@@ -1,4 +1,7 @@
-﻿using FluentNHibernate.MappingModel.ClassBased;
+﻿#if USE_NULLABLE
+#nullable enable
+#endif
+using FluentNHibernate.MappingModel.ClassBased;
 
 namespace FluentNHibernate.Automapping.Steps;
 
