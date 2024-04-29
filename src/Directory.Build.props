@@ -31,6 +31,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
-    <PackageReference Include="Polyfill" Version="4.2.0" PrivateAssets="All"/>
+    <PackageReference Include="Polyfill" Version="5.2.2" PrivateAssets="All"/>
   </ItemGroup>
 </Project>
