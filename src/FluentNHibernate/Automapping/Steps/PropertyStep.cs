@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if USE_NULLABLE
+#nullable enable
+#endif
+using System;
 using System.Linq;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;

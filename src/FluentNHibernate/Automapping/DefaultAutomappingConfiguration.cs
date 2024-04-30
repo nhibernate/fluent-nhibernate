@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if USE_NULLABLE
+#nullable enable
+#endif
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using FluentNHibernate.Automapping.Alterations;
@@ -37,10 +40,10 @@ public class DefaultAutomappingConfiguration : IAutomappingConfiguration
 
     public virtual Type GetParentSideForManyToMany(Type left, Type right)
     {
-        return left.FullName.CompareTo(right.FullName) < 0 ? left : right;
+        return string.Compare(left.FullName, right.FullName) < 0 ? left : right;
     }
 
-    public virtual bool IsConcreteBaseType(Type type)
+    public virtual bool IsConcreteBaseType(Type? type)
     {
         return false;
     }

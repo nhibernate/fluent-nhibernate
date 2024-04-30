@@ -1,4 +1,7 @@
-﻿namespace FluentNHibernate.Automapping.Alterations;
+﻿#if USE_NULLABLE
+#nullable enable
+#endif
+namespace FluentNHibernate.Automapping.Alterations;
 
 /// <summary>
 /// Provides a mechanism for altering an AutoPersistenceModel prior to

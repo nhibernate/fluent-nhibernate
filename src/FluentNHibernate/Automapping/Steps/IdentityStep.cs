@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if USE_NULLABLE
+#nullable enable
+#endif
+using System;
 using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;

@@ -1,3 +1,6 @@
+#if USE_NULLABLE
+#nullable enable
+#endif
 using System;
 using FluentNHibernate.MappingModel.ClassBased;
 

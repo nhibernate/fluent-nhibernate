@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if USE_NULLABLE
+#nullable enable
+#endif
+using System;
 using System.Collections.Generic;
 using FluentNHibernate.Automapping.Steps;
 using FluentNHibernate.Conventions;
@@ -80,7 +83,7 @@ public interface IAutomappingConfiguration
     /// </summary>
     /// <param name="type">Type</param>
     /// <returns>Base type is concrete?</returns>
-    bool IsConcreteBaseType(Type type);
+    bool IsConcreteBaseType(Type? type);
 
     /// <summary>
     /// Specifies that a particular type should be mapped as a component rather than

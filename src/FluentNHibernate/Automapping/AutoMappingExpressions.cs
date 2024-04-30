@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if USE_NULLABLE
+#nullable enable
+#endif
+using System;
 
 namespace FluentNHibernate.Automapping;
 
@@ -8,51 +11,51 @@ public class AutoMappingExpressions
     /// Determines whether a member is to be automapped. 
     /// </summary>
     [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override ShouldMap(Member)")]
-    public Func<Member, bool> FindMembers;
+    public Func<Member, bool>? FindMembers;
 
     /// <summary>
     /// Determines whether a member is the identity of an entity.
     /// </summary>
     [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override IsId")]
-    public Func<Member, bool> FindIdentity;
+    public Func<Member, bool>? FindIdentity;
 
     [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override GetParentSideForManyToMany")]
-    public Func<Type, Type, Type> GetParentSideForManyToMany;
+    public Func<Type, Type, Type>? GetParentSideForManyToMany;
 
     [Obsolete("Use IgnoreBase<T> or IgnoreBase(Type): AutoMap.AssemblyOf<Entity>().IgnoreBase(typeof(Parent<>))", true)]
-    public Func<Type, bool> IsBaseType;
+    public Func<Type, bool>? IsBaseType;
 
     [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override IsConcreteBaseType")]
-    public Func<Type, bool> IsConcreteBaseType;
+    public Func<Type?, bool>? IsConcreteBaseType;
         
     [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override IsComponent")]
-    public Func<Type, bool> IsComponentType;
+    public Func<Type, bool>? IsComponentType;
 
     [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override GetComponentColumnPrefix")]
-    public Func<Member, string> GetComponentColumnPrefix;
+    public Func<Member, string>? GetComponentColumnPrefix;
 
     [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override IsDiscriminated")]
-    public Func<Type, bool> IsDiscriminated;
+    public Func<Type, bool>? IsDiscriminated;
 
     [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override GetDiscriminatorColumn")]
-    public Func<Type, string> DiscriminatorColumn;
+    public Func<Type, string>? DiscriminatorColumn;
 
 #pragma warning disable 612,618
     [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override IsDiscriminated", true)]
-    public Func<Type, SubclassStrategy> SubclassStrategy;
+    public Func<Type, SubclassStrategy>? SubclassStrategy;
 #pragma warning restore 612,618
 
     /// <summary>
     /// Determines whether an abstract class is a layer supertype or part of a mapped inheritance hierarchy.
     /// </summary>
     [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override AbstractClassIsLayerSupertype")]
-    public Func<Type, bool> AbstractClassIsLayerSupertype;
+    public Func<Type, bool>? AbstractClassIsLayerSupertype;
 
     /// <summary>
     /// Specifies the value column used in a table of simple types. 
     /// </summary>
     [Obsolete("Use an instance of IAutomappingConfiguration for configuration, and override SimpleTypeCollectionValueColumn")]
-    public Func<Member, string> SimpleTypeCollectionValueColumn;
+    public Func<Member, string>? SimpleTypeCollectionValueColumn;
 }
 
 #pragma warning disable 612,618
@@ -85,7 +88,7 @@ class ExpressionBasedAutomappingConfiguration(AutoMappingExpressions expressions
         return base.GetParentSideForManyToMany(left, right);
     }
 
-    public override bool IsConcreteBaseType(Type type)
+    public override bool IsConcreteBaseType(Type? type)
     {
         if (expressions.IsConcreteBaseType is not null)
             return expressions.IsConcreteBaseType(type);
