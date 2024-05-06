@@ -15,7 +15,7 @@ public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
 {
     readonly Action<Member> onMemberMapped;
     readonly AttributeStore attributes = new AttributeStore();
-    readonly IList<ICompositeIdKeyMapping> keys = new List<ICompositeIdKeyMapping>();
+    readonly List<ICompositeIdKeyMapping> keys = [];
     bool nextBool = true;
 
     public CompositeIdentityPart(Action<Member> onMemberMapped)

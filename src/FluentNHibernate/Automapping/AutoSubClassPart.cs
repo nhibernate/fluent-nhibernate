@@ -11,7 +11,7 @@ public class AutoSubClassPart<T> : SubClassPart<T>, IAutoClasslike
 #pragma warning restore 612,618
 {
     readonly MappingProviderStore providers;
-    readonly IList<Member> mappedMembers = new List<Member>();
+    readonly List<Member> mappedMembers = [];
 
     public AutoSubClassPart(DiscriminatorPart parent, string discriminatorValue)
         : this(parent, discriminatorValue, new MappingProviderStore())

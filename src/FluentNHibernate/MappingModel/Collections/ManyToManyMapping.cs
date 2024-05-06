@@ -12,8 +12,9 @@ public class ManyToManyMapping(AttributeStore attributes)
 {
     readonly AttributeStore attributes = attributes;
     readonly LayeredColumns columns = new LayeredColumns();
+    readonly List<FilterMapping> childFilters = [];
 
-    public IList<FilterMapping> ChildFilters { get; } = new List<FilterMapping>();
+    public IList<FilterMapping> ChildFilters => childFilters;
 
     public ManyToManyMapping()
         : this(new AttributeStore())

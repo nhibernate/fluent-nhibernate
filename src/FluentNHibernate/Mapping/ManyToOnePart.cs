@@ -10,7 +10,7 @@ namespace FluentNHibernate.Mapping;
 
 public class ManyToOnePart<TOther> : IManyToOneMappingProvider
 {
-    readonly IList<string> columns = new List<string>();
+    readonly List<string> columns = [];
     bool nextBool = true;
     readonly AttributeStore attributes = new AttributeStore();
     readonly AttributeStore columnAttributes = new AttributeStore();

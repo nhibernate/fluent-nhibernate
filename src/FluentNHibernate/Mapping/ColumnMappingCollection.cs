@@ -7,7 +7,7 @@ namespace FluentNHibernate.Mapping;
 
 public class ColumnMappingCollection<TParent>(TParent parent) : IEnumerable<ColumnMapping>
 {
-    readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
+    readonly List<ColumnMapping> columns = [];
 
     public TParent Add(string name)
     {
