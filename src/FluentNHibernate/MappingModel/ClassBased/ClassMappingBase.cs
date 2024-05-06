@@ -9,7 +9,7 @@ public abstract class ClassMappingBase(AttributeStore attributes) : MappingBase,
 {
     readonly AttributeStore attributes = attributes;
     readonly MappedMembers mappedMembers = new();
-    readonly IList<SubclassMapping> subclasses = new List<SubclassMapping>();
+    readonly List<SubclassMapping> subclasses = [];
 
     public abstract string Name { get; }
     public abstract Type Type { get; }

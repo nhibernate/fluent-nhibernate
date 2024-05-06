@@ -13,7 +13,7 @@ namespace FluentNHibernate.Mapping;
 public class JoinPart<T> : ClasslikeMapBase<T>, IJoinMappingProvider
 {
     readonly MappingProviderStore providers;
-    readonly IList<string> columns = new List<string>();
+    readonly List<string> columns = [];
     readonly AttributeStore attributes = new AttributeStore();
     bool nextBool = true;
 

@@ -8,7 +8,7 @@ namespace FluentNHibernate.Mapping;
 
 public class IndexManyToManyPart(Type entity)
 {
-    readonly IList<string> columns = new List<string>();
+    readonly List<string> columns = [];
     readonly AttributeStore attributes = new AttributeStore();
 
     public IndexManyToManyPart Column(string indexColumnName)

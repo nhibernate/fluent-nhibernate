@@ -23,6 +23,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     Func<AttributeStore, CollectionMapping> collectionBuilder;
     IndexMapping indexMapping;
     protected Member member;
+    readonly List<IFilterMappingProvider> filters = [];
 
     protected ToManyBase(Type entity, Member member, Type type)
     {
@@ -660,7 +661,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         return ApplyFilter<TFilter>(null);
     }
 
-    protected IList<IFilterMappingProvider> Filters { get; } = new List<IFilterMappingProvider>();
+    protected IList<IFilterMappingProvider> Filters => filters;
 
     void SetDefaultCollectionType()
     {

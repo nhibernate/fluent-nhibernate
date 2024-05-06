@@ -11,7 +11,7 @@ namespace FluentNHibernate.Mapping;
 
 public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
 {
-    readonly IList<IFilterMappingProvider> childFilters = new List<IFilterMappingProvider>();
+    readonly List<IFilterMappingProvider> childFilters = [];
     IndexManyToManyPart manyToManyIndex;
     IndexPart index;
     readonly Type childType;

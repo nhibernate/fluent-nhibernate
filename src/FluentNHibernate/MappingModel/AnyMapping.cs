@@ -13,7 +13,7 @@ public class AnyMapping(AttributeStore attributes) : MappingBase, IEquatable<Any
     readonly AttributeStore attributes = attributes;
     readonly LayeredColumns typeColumns = new LayeredColumns();
     readonly LayeredColumns identifierColumns = new LayeredColumns();
-    readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
+    readonly List<MetaValueMapping> metaValues = [];
 
     public AnyMapping()
         : this(new AttributeStore())

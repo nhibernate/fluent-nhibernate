@@ -18,9 +18,9 @@ public class AnyPart<T> : IAnyMappingProvider
     readonly AttributeStore attributes = new AttributeStore();
     readonly Type entity;
     readonly Member member;
-    readonly IList<string> typeColumns = new List<string>();
-    readonly IList<string> identifierColumns = new List<string>();
-    readonly IList<MetaValueMapping> metaValues = new List<MetaValueMapping>();
+    readonly List<string> typeColumns = [];
+    readonly List<string> identifierColumns = [];
+    readonly List<MetaValueMapping> metaValues = [];
     bool nextBool = true;
     bool idTypeSet;
 

@@ -10,9 +10,9 @@ namespace FluentNHibernate.MappingModel;
 [Serializable]
 public class HibernateMapping(AttributeStore attributes) : MappingBase, IEquatable<HibernateMapping>
 {
-    readonly IList<ClassMapping> classes = new List<ClassMapping>();
-    readonly IList<FilterDefinitionMapping> filters = new List<FilterDefinitionMapping>();
-    readonly IList<ImportMapping> imports = new List<ImportMapping>();
+    readonly List<ClassMapping> classes = [];
+    readonly List<FilterDefinitionMapping> filters = [];
+    readonly List<ImportMapping> imports = [];
     readonly AttributeStore attributes = attributes;
 
     public HibernateMapping(): this(new AttributeStore())

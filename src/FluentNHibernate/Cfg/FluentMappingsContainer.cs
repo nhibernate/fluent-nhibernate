@@ -12,8 +12,8 @@ namespace FluentNHibernate.Cfg;
 /// </summary>
 public class FluentMappingsContainer
 {
-    readonly IList<Assembly> assemblies = new List<Assembly>();
-    readonly List<Type> types = new List<Type>();
+    readonly List<Assembly> assemblies = [];
+    readonly List<Type> types = [];
     readonly IConventionFinder conventionFinder = new DefaultConventionFinder();
     string exportPath;
     TextWriter exportTextWriter;
