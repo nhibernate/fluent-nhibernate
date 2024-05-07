@@ -3,7 +3,6 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Visitors;
 
@@ -76,7 +75,8 @@ public abstract class DefaultMappingModelVisitor : NullMappingModelVisitor
 
     public override void Visit(IEnumerable<HibernateMapping> mappings)
     {
-        mappings.Each(x => x.AcceptVisitor(this));
+        foreach (var mapping in mappings)
+            mapping.AcceptVisitor(this);
     }
 
     public override void Visit(AnyMapping mapping)
