@@ -1,7 +1,6 @@
 ﻿using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Automapping.Steps;
 
@@ -30,11 +29,12 @@ public class VersionStep(IAutomappingConfiguration cfg) : IAutomappingStep
 
         if (IsSqlTimestamp(member))
         {
-            version.Columns.Each(column =>
+            foreach (var column in version.Columns)
             {
                 column.Set(x => x.SqlType, Layer.Defaults, "timestamp");
                 column.Set(x => x.NotNull, Layer.Defaults, true);
-            });
+            }
+
             version.Set(x => x.UnsavedValue, Layer.Defaults, null);
         }
 

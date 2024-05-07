@@ -170,9 +170,9 @@ public class AnyPart<T> : IAnyMappingProvider
             mapping.Set(x => x.MetaType, Layer.Defaults, new TypeReference(member.PropertyType));
         }
 
-        if (metaValues.Count() > 0)
+        if (metaValues.Count > 0)
         {
-            metaValues.Each(mapping.AddMetaValue);
+            metaValues.ForEach(mapping.AddMetaValue);
             mapping.Set(x => x.MetaType, Layer.Defaults, new TypeReference(typeof(string)));
         }
 

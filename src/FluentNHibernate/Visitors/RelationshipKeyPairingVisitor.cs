@@ -1,6 +1,5 @@
 ﻿using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Visitors;
 
@@ -15,6 +14,7 @@ public class RelationshipKeyPairingVisitor : DefaultMappingModelVisitor
         var otherSide = (CollectionMapping)thisSide.OtherSide;
 
         otherSide.Key.MakeColumnsEmpty(Layer.Defaults);
-        thisSide.Columns.Each(x => otherSide.Key.AddColumn(Layer.Defaults, x.Clone()));
+        foreach (var column in thisSide.Columns)
+            otherSide.Key.AddColumn(Layer.Defaults, column.Clone());
     }
 }

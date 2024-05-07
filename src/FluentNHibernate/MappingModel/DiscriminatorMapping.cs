@@ -16,7 +16,8 @@ public class DiscriminatorMapping(AttributeStore underlyingStore) : ColumnBasedM
     {
         visitor.ProcessDiscriminator(this);
 
-        Columns.Each(visitor.Visit);
+        foreach (var column in Columns)
+            visitor.Visit(column);
     }
 
     public bool Force => attributes.GetOrDefault<bool>();

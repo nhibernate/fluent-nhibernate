@@ -282,7 +282,8 @@ public abstract class BiDirectionalManyToManyPairingVisitorSpec
 
     protected static void Visit(params CollectionMapping[] mappings)
     {
-        mappings.Each(visitor.Visit);
+        foreach (var item in mappings)
+            visitor.Visit(item);
         visitor.Visit(Array.Empty<HibernateMapping>()); // simulate end of visit
     }
 }

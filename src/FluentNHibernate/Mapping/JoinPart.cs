@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
-using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping;
 
@@ -49,7 +48,7 @@ public class JoinPart<T> : ClasslikeMapBase<T>, IJoinMappingProvider
     public JoinPart<T> KeyColumn(params string[] columnNames)
     {
         columns.Clear(); // only one supported currently
-        columnNames.Each(columns.Add);
+        columns.AddRange(columnNames);
         return this;
     }
 

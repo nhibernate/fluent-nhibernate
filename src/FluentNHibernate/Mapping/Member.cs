@@ -355,12 +355,12 @@ public static class MemberExtensions
     {
         var members = new HashSet<Member>(new MemberEqualityComparer());
 
-        type.GetInstanceProperties().Each(x => members.Add(x));
-        type.GetInstanceFields().Each(x => members.Add(x));
-        type.GetInstanceMethods().Each(x => members.Add(x));
+        members.UnionWith(type.GetInstanceProperties());
+        members.UnionWith(type.GetInstanceFields());
+        members.UnionWith(type.GetInstanceMethods());
 
         if (type.BaseType is not null && type.BaseType != typeof(object))
-            type.BaseType.GetInstanceMembers().Each(x => members.Add(x));
+            members.UnionWith(type.BaseType.GetInstanceMembers());
 
         return members;
     }

@@ -252,7 +252,7 @@ public class CompositeIdentityPart<T> : ICompositeIdMappingProvider
             ContainingEntityType = typeof(T)
         };
 
-        keys.Each(mapping.AddKey);
+        keys.ForEach(mapping.AddKey);
 
         return mapping;
     }

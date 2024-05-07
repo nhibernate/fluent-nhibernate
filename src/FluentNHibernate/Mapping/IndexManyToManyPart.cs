@@ -47,7 +47,7 @@ public class IndexManyToManyPart(Type entity)
             ContainingEntityType = entity
         };
 
-        columns.Each(name =>
+        columns.ForEach(name =>
         {
             var columnMapping = new ColumnMapping();
             columnMapping.Set(x => x.Name, Layer.Defaults, name);
