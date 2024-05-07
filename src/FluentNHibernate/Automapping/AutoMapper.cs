@@ -4,7 +4,6 @@ using System.Linq;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Utils;
 using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.Automapping;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.MappingModel;
@@ -90,7 +91,9 @@ public class RelationshipPairingVisitor(PairBiDirectionalManyToManySidesDelegate
 
         // both collections have been paired, so remove them
         // from the available collections
-        PairManyToManys(rs.Except(mapping, (CollectionMapping)mapping.OtherSide));
+        IEnumerable<CollectionMapping> collectionMappings = [mapping, (CollectionMapping)mapping.OtherSide];
+        var mappings = rs.Except(collectionMappings);
+        PairManyToManys(mappings);
     }
 
     static string GetMemberName(Member member)
@@ -194,11 +197,11 @@ public class RelationshipPairingVisitor(PairBiDirectionalManyToManySidesDelegate
     static bool AnyHaveSameLikeness(IEnumerable<LikenessContainer> likenesses, LikenessContainer current)
     {
         return likenesses
-            .Except(current)
+            .Where(x => !Equals(x, current))
             .Any(x => x.Differences == current.Differences);
     }
 
-    class LikenessContainer
+    class LikenessContainer : IEquatable<LikenessContainer>
     {
         public CollectionMapping Collection { get; set; }
         public string CurrentMemberName { get; set; }
@@ -207,13 +210,14 @@ public class RelationshipPairingVisitor(PairBiDirectionalManyToManySidesDelegate
 
         public override bool Equals(object obj)
         {
-            if (obj is LikenessContainer)
-            {
-                return ((LikenessContainer)obj).CurrentMemberName == CurrentMemberName &&
-                       ((LikenessContainer)obj).MappingMemberName == MappingMemberName;
-            }
+            return obj is LikenessContainer other && Equals(other);
+        }
 
-            return false;
+        public bool Equals(LikenessContainer other)
+        {
+            return other != null &&
+                   other.CurrentMemberName == CurrentMemberName &&
+                   other.MappingMemberName == MappingMemberName;
         }
 
         public override int GetHashCode()
