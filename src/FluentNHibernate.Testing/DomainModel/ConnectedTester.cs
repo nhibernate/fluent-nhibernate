@@ -106,8 +106,9 @@ public sealed class NestedSubClassMap : ClassMap<SuperRecord>
 
 #pragma warning restore 612, 618
 
-public class SuperRecord  : Entity
+public class SuperRecord
 {
+    public virtual long Id { get; set; }
     public virtual string Name { get; set; }
 }
 
@@ -121,8 +122,9 @@ public class Child2Record : ChildRecord
     public virtual string Third { get; set; }
 }
 
-public class Record : Entity
+public class Record
 {
+    public virtual long Id { get; set; }
     public virtual string Name { get; set; }
     public virtual int Age { get; set; }
     public virtual string Location { get; set; }
@@ -136,8 +138,9 @@ public class BinaryRecordMap : ClassMap<BinaryRecord>
         Map(x => x.BinaryValue).Not.Nullable();
     }
 }
-public class BinaryRecord : Entity
+public class BinaryRecord
 {
+    public virtual long Id { get; set; }
     public virtual byte[] BinaryValue { get; set; }
 }
 
@@ -149,8 +152,11 @@ public class CachedRecordMap : ClassMap<CachedRecord>
         Id(x => x.Id, "id");
     }
 }
-public class CachedRecord : Entity
-{ }
+
+public class CachedRecord
+{
+    public virtual long Id { get; set; }
+}
 
 public class RecordFilter : FilterDefinition
 {
@@ -171,8 +177,9 @@ public sealed class RecordWithNullablePropertyMap : ClassMap<RecordWithNullableP
     }
 }
 
-public class RecordWithNullableProperty : Entity
+public class RecordWithNullableProperty
 {
+    public virtual long Id { get; set; }
     public virtual string Name { get; set; }
     public virtual int? Age { get; set; }
     public virtual string Location { get; set; }

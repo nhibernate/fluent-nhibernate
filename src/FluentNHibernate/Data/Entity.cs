@@ -3,6 +3,7 @@
 namespace FluentNHibernate.Data;
 
 [Serializable]
+[Obsolete("This base class is problematic as it does not consider transient entities and a requirement to have immutable GetHashCode()")]
 public abstract class Entity : IEquatable<Entity>
 {
     public virtual long Id { get; set; }
