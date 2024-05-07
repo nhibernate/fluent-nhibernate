@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel;
 
-[TestFixture, Obsolete]
+[TestFixture, Obsolete("Testing obsolete FluentNHibernate.Data.Entity")]
 public class EntityEquality
 {
     [Test]
