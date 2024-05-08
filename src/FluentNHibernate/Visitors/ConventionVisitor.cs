@@ -15,13 +15,13 @@ namespace FluentNHibernate.Visitors;
 
 public class ConventionVisitor : DefaultMappingModelVisitor
 {
-    readonly Dictionary<Collection, Action<MappingModel.Collections.CollectionMapping>> collections;
+    readonly Dictionary<Collection, Action<CollectionMapping>> collections;
     readonly IConventionFinder finder;
     Type currentType;
 
     public ConventionVisitor(IConventionFinder finder)
     {
-        collections = new Dictionary<Collection, Action<MappingModel.Collections.CollectionMapping>>
+        collections = new Dictionary<Collection, Action<CollectionMapping>>
         {
             { Collection.Array, ProcessArray },
             { Collection.Bag, ProcessBag },
@@ -36,24 +36,21 @@ public class ConventionVisitor : DefaultMappingModelVisitor
     {
         var conventions = finder.Find<IHibernateMappingConvention>();
 
-        Apply<IHibernateMappingInspector, IHibernateMappingInstance>(conventions,
-            new HibernateMappingInstance(hibernateMapping));
+        Apply(conventions, new HibernateMappingInstance(hibernateMapping));
     }
 
     public override void ProcessId(IdMapping idMapping)
     {
         var conventions = finder.Find<IIdConvention>();
 
-        Apply<IIdentityInspector, IIdentityInstance>(conventions,
-            new IdentityInstance(idMapping));
+        Apply(conventions, new IdentityInstance(idMapping));
     }
 
     public override void ProcessCompositeId(CompositeIdMapping idMapping)
     {
         var conventions = finder.Find<ICompositeIdentityConvention>();
 
-        Apply<ICompositeIdentityInspector, ICompositeIdentityInstance>(conventions,
-            new CompositeIdentityInstance(idMapping));
+        Apply(conventions, new CompositeIdentityInstance(idMapping));
     }
 
     public override void ProcessClass(ClassMapping classMapping)
@@ -62,46 +59,40 @@ public class ConventionVisitor : DefaultMappingModelVisitor
 
         currentType = classMapping.Type;
 
-        Apply<IClassInspector, IClassInstance>(conventions,
-            new ClassInstance(classMapping));
+        Apply(conventions, new ClassInstance(classMapping));
     }
 
     public override void ProcessProperty(PropertyMapping propertyMapping)
     {
         var conventions = finder.Find<IPropertyConvention>();
 
-        Apply<IPropertyInspector, IPropertyInstance>(conventions,
-            new PropertyInstance(propertyMapping));
+        Apply(conventions, new PropertyInstance(propertyMapping));
     }
 
     public override void ProcessColumn(ColumnMapping columnMapping)
     {
         var conventions = finder.Find<IColumnConvention>();
 
-        Apply<IColumnInspector, IColumnInstance>(conventions,
-            new ColumnInstance(currentType, columnMapping));
+        Apply(conventions, new ColumnInstance(currentType, columnMapping));
     }
 
     public override void ProcessCollection(CollectionMapping mapping)
     {
         var generalConventions = finder.Find<ICollectionConvention>();
 
-        Apply<ICollectionInspector, ICollectionInstance>(generalConventions,
-            new CollectionInstance(mapping));
+        Apply(generalConventions, new CollectionInstance(mapping));
 
         if (mapping.Relationship is ManyToManyMapping)
         {
             var conventions = finder.Find<IHasManyToManyConvention>();
 
-            Apply<IManyToManyCollectionInspector, IManyToManyCollectionInstance>(conventions,
-                new ManyToManyCollectionInstance(mapping));
+            Apply(conventions, new ManyToManyCollectionInstance(mapping));
         }
         else
         {
             var conventions = finder.Find<IHasManyConvention>();
 
-            Apply<IOneToManyCollectionInspector, IOneToManyCollectionInstance>(conventions,
-                new OneToManyCollectionInstance(mapping));
+            Apply(conventions, new OneToManyCollectionInstance(mapping));
         }
 
         collections[mapping.Collection](mapping);
@@ -112,40 +103,35 @@ public class ConventionVisitor : DefaultMappingModelVisitor
     {
         var conventions = finder.Find<IArrayConvention>();
 
-        Apply<IArrayInspector, IArrayInstance>(conventions,
-            new CollectionInstance(mapping));
+        Apply(conventions, new CollectionInstance(mapping));
     }
 
     void ProcessBag(CollectionMapping mapping)
     {
         var conventions = finder.Find<IBagConvention>();
 
-        Apply<IBagInspector, IBagInstance>(conventions,
-            new CollectionInstance(mapping));
+        Apply(conventions, new CollectionInstance(mapping));
     }
 
     void ProcessList(CollectionMapping mapping)
     {
         var conventions = finder.Find<IListConvention>();
 
-        Apply<IListInspector, IListInstance>(conventions,
-            new CollectionInstance(mapping));
+        Apply(conventions, new CollectionInstance(mapping));
     }
 
     void ProcessMap(CollectionMapping mapping)
     {
         var conventions = finder.Find<IMapConvention>();
 
-        Apply<IMapInspector, IMapInstance>(conventions,
-            new CollectionInstance(mapping));
+        Apply(conventions, new CollectionInstance(mapping));
     }
 
     void ProcessSet(CollectionMapping mapping)
     {
         var conventions = finder.Find<ISetConvention>();
 
-        Apply<ISetInspector, ISetInstance>(conventions,
-            new CollectionInstance(mapping));
+        Apply(conventions, new CollectionInstance(mapping));
     }
 #pragma warning restore 612,618
 
@@ -153,24 +139,21 @@ public class ConventionVisitor : DefaultMappingModelVisitor
     {
         var conventions = finder.Find<IReferenceConvention>();
 
-        Apply<IManyToOneInspector, IManyToOneInstance>(conventions,
-            new ManyToOneInstance(mapping));
+        Apply(conventions, new ManyToOneInstance(mapping));
     }
 
     public override void ProcessVersion(VersionMapping mapping)
     {
         var conventions = finder.Find<IVersionConvention>();
 
-        Apply<IVersionInspector, IVersionInstance>(conventions,
-            new VersionInstance(mapping));
+        Apply(conventions, new VersionInstance(mapping));
     }
 
     public override void ProcessOneToOne(OneToOneMapping mapping)
     {
         var conventions = finder.Find<IHasOneConvention>();
 
-        Apply<IOneToOneInspector, IOneToOneInstance>(conventions,
-            new OneToOneInstance(mapping));
+        Apply(conventions, new OneToOneInstance(mapping));
     }
 
     public override void ProcessSubclass(SubclassMapping subclassMapping)
@@ -179,15 +162,13 @@ public class ConventionVisitor : DefaultMappingModelVisitor
         {
             var conventions = finder.Find<ISubclassConvention>();
 
-            Apply<ISubclassInspector, ISubclassInstance>(conventions,
-                new SubclassInstance(subclassMapping));
+            Apply(conventions, new SubclassInstance(subclassMapping));
         }
         else
         {
             var conventions = finder.Find<IJoinedSubclassConvention>();
 
-            Apply<IJoinedSubclassInspector, IJoinedSubclassInstance>(conventions,
-                new JoinedSubclassInstance(subclassMapping));
+            Apply(conventions, new JoinedSubclassInstance(subclassMapping));
         }
     }
 
@@ -197,15 +178,13 @@ public class ConventionVisitor : DefaultMappingModelVisitor
         {
             var conventions = finder.Find<IComponentConvention>();
 
-            Apply<IComponentInspector, IComponentInstance>(conventions,
-                new ComponentInstance(mapping));
+            Apply(conventions, new ComponentInstance(mapping));
         }
         else
         {
             var conventions = finder.Find<IDynamicComponentConvention>();
 
-            Apply<IDynamicComponentInspector, IDynamicComponentInstance>(conventions,
-                new DynamicComponentInstance(mapping));
+            Apply(conventions, new DynamicComponentInstance(mapping));
         }
     }
 
@@ -213,55 +192,49 @@ public class ConventionVisitor : DefaultMappingModelVisitor
     {
         var conventions = finder.Find<IIndexConvention>();
 
-        Apply<IIndexInspector, IIndexInstance>(conventions,
-            new IndexInstance(indexMapping));
+        Apply(conventions, new IndexInstance(indexMapping));
     }
 
     public override void ProcessIndex(IndexManyToManyMapping indexMapping)
     {
         var conventions = finder.Find<IIndexManyToManyConvention>();
 
-        Apply<IIndexManyToManyInspector, IIndexManyToManyInstance>(conventions,
-            new IndexManyToManyInstance(indexMapping));
+        Apply(conventions, new IndexManyToManyInstance(indexMapping));
     }
 
     public override void ProcessJoin(JoinMapping joinMapping)
     {
         var conventions = finder.Find<IJoinConvention>();
 
-        Apply<IJoinInspector, IJoinInstance>(conventions,
-            new JoinInstance(joinMapping));
+        Apply(conventions, new JoinInstance(joinMapping));
     }
 
     public override void ProcessKeyProperty(KeyPropertyMapping mapping)
     {
         var conventions = finder.Find<IKeyPropertyConvention>();
 
-        Apply<IKeyPropertyInspector, IKeyPropertyInstance>(conventions, 
-            new KeyPropertyInstance(mapping));
+        Apply(conventions, new KeyPropertyInstance(mapping));
     }
 
     public override void ProcessKeyManyToOne(KeyManyToOneMapping mapping)
     {
         var conventions = finder.Find<IKeyManyToOneConvention>();
 
-        Apply<IKeyManyToOneInspector, IKeyManyToOneInstance>(conventions, 
-            new KeyManyToOneInstance(mapping));
+        Apply(conventions, new KeyManyToOneInstance(mapping));
     }
 
     public override void ProcessAny(AnyMapping mapping)
     {
         var conventions = finder.Find<IAnyConvention>();
 
-        Apply<IAnyInspector, IAnyInstance>(conventions,
-            new AnyInstance(mapping));
+        Apply(conventions, new AnyInstance(mapping));
     }
 
-    static void Apply<TInspector, TInstance>(IEnumerable conventions, TInstance instance)
+    static void Apply<TInspector, TInstance>(IEnumerable<IConvention<TInspector, TInstance>> conventions, TInstance instance)
         where TInspector : IInspector
-        where TInstance : TInspector
+        where TInstance : class, TInspector
     {
-        foreach (IConvention<TInspector, TInstance> convention in conventions)
+        foreach (var convention in conventions)
         {
             var criteria = new ConcreteAcceptanceCriteria<TInspector>();
             var acceptance = convention as IConventionAcceptance<TInspector>;
