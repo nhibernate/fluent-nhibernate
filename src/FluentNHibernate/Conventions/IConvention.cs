@@ -25,8 +25,7 @@ public interface IConventionAcceptance<TInspector>
 /// </summary>
 /// <typeparam name="TInspector">Inspector instance for use in retrieving values and setting expectations</typeparam>
 /// <typeparam name="TInstance">Apply instance</typeparam>
-public interface IConvention<TInspector, TInstance>
-    : IConvention
+public interface IConvention<TInspector, TInstance> : IConvention
     where TInspector : IInspector
     where TInstance : TInspector
 {
