@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using NUnit.Framework;
@@ -28,14 +29,14 @@ public class InverseOneToManyTester
     {
         var artists = new List<Artist>
         {
-            new Artist {Name = "Artist1"},
-            new Artist {Name = "Artist2"}
+            new Artist { Name = "Artist1" },
+            new Artist { Name = "Artist2" }
         };
 
         new PersistenceSpecification<Genre>(_source)
             .CheckProperty(g => g.Id, 1L)
             .CheckProperty(g => g.Name, "Genre")
-            .CheckComponentList(g => g.Artists, artists, (g, a) => g.AddArtist(a))
+            .CheckInverseList(g => g.Artists, artists, new FuncEqualityComparer<Artist>(a => a.Id), (genre, artist) => genre.AddArtist(artist))
             .VerifyTheMappings();
     }
 }
@@ -78,4 +79,10 @@ public class GenreMap : ClassMap<Genre>
             .Cascade.All()
             .Inverse();
     }
+}
+
+class FuncEqualityComparer<T>(Func<T, object> func) : EqualityComparer<T>
+{
+    public override bool Equals(T x, T y) => Equals(func(x), func(y));
+    public override int GetHashCode(T obj) => throw new NotSupportedException();
 }

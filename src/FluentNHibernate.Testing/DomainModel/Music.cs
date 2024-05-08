@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using FluentNHibernate.Data;
 
 namespace FluentNHibernate.Testing.DomainModel;
 
-public class Artist : Entity
+public class Artist
 {
+    public virtual long Id { get; set; }
     public virtual string Name { get; set; }
     public virtual ISet<Album> Albums { get; set; }
     public virtual Genre Genre { get; set; }
@@ -15,8 +15,9 @@ public class Artist : Entity
     }
 }
 
-public class Genre : Entity
+public class Genre
 {
+    public virtual long Id { get; set; }
     public virtual string Name { get; set; }
     public virtual IList<Artist> Artists { get; set; }
 
