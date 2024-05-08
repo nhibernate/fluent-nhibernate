@@ -166,7 +166,7 @@ public static class PersistenceSpecificationExtensions
         // Because of the params keyword, the compiler can select this overload
         // instead of the one above, even when no funcs are supplied in the method call.
         if (propertiesToCompare is null || propertiesToCompare.Length == 0)
-            return spec.CheckList(expression, propertyValue, (IEqualityComparer)null);
+            return spec.CheckInverseList(expression, propertyValue, (IEqualityComparer)null);
 
         return spec.CheckInverseList(expression, propertyValue, new FuncEqualityComparer<TListElement>(propertiesToCompare));
     }
