@@ -11,11 +11,11 @@ public class ReferenceBag<T, TListElement>(Accessor property, IEnumerable<TListE
 {
     public override void CheckValue(object target)
     {
-        var actual = PropertyAccessor.GetValue(target) as IEnumerable;
+        var actual = PropertyAccessor.GetValue(target) as IEnumerable<TListElement>;
         AssertGenericListMatches(actual, Expected);
     }
 
-    void AssertGenericListMatches(IEnumerable actualEnumerable, IEnumerable<TListElement> expectedEnumerable)
+    void AssertGenericListMatches(IEnumerable<TListElement> actualEnumerable, IEnumerable<TListElement> expectedEnumerable)
     {
         if (actualEnumerable is null)
         {
@@ -28,24 +28,23 @@ public class ReferenceBag<T, TListElement>(Accessor property, IEnumerable<TListE
                 "Actual and expected are not equal (expected was null).");
         }
 
-        var actualList = actualEnumerable.Cast<object>().ToList();
+        var actualList = actualEnumerable.ToList();
 
         var expectedList = expectedEnumerable.ToList();
 
         if (actualList.Count != expectedList.Count)
         {
-            throw new ApplicationException(String.Format("Actual count ({0}) does not equal expected count ({1})", actualList.Count, expectedList.Count));
+            throw new ApplicationException($"Actual count ({actualList.Count}) does not equal expected count ({expectedList.Count})");
         }
 
-        var equalsFunc = (EntityEqualityComparer is not null)
-            ? new Func<object, object, bool>((a, b) => EntityEqualityComparer.Equals(a, b))
-            : new Func<object, object, bool>(Equals);
-
+        Func<object, object, bool> equalsFunc = EntityEqualityComparer is not null
+            ? EntityEqualityComparer.Equals
+            : Equals;
 
         var result = actualList.FirstOrDefault(item => actualList.Count(x => equalsFunc(item, x)) != expectedList.Count(x => equalsFunc(item, x)));
         if (result is not null)
         {
-            throw new ApplicationException(String.Format("Actual count of item {0} ({1}) does not equal expected item count ({2})",result, actualList.Count(x => x == result), expectedList.Count(x => (object)x == result)));
+            throw new ApplicationException($"Actual count of item {result} ({actualList.Count(x => ReferenceEquals(x, result))}) does not equal expected item count ({expectedList.Count(x => ReferenceEquals(x, result))})");
         }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Utils;
@@ -21,29 +20,7 @@ public class List<T, TListElement>(Accessor property, IEnumerable<TListElement> 
             }
 
             return (target, propertyAccessor, value) =>
-            {
-                object collection;
-
-                // sorry guys - create an instance of the collection type because we can't rely
-                // on the user to pass in the correct collection type (especially if they're using
-                // an interface). I've tried to create the common ones, but I'm sure this won't be
-                // infallible.
-                if (propertyAccessor.PropertyType.IsAssignableFrom(typeof(ISet<TListElement>)))
-                {
-                    collection = new HashSet<TListElement>(Expected.ToList());
-                }
-                else if (propertyAccessor.PropertyType.IsArray)
-                {
-                    collection = Array.CreateInstance(typeof(TListElement), Expected.Count());
-                    Array.Copy((Array)Expected, (Array)collection, Expected.Count());
-                }
-                else
-                {
-                    collection = new List<TListElement>(Expected);
-                }
-
-                propertyAccessor.SetValue(target, collection);
-            };
+                propertyAccessor.SetValue(target, CreateCollection(propertyAccessor.PropertyType));
         }
         set => _valueSetter = value;
     }
@@ -52,11 +29,11 @@ public class List<T, TListElement>(Accessor property, IEnumerable<TListElement> 
 
     public override void CheckValue(object target)
     {
-        var actual = PropertyAccessor.GetValue(target) as IEnumerable;
+        var actual = PropertyAccessor.GetValue(target) as IEnumerable<TListElement>;
         AssertGenericListMatches(actual, Expected);
     }
 
-    void AssertGenericListMatches(IEnumerable actualEnumerable, IEnumerable<TListElement> expectedEnumerable)
+    void AssertGenericListMatches(IEnumerable<TListElement> actualEnumerable, IEnumerable<TListElement> expectedEnumerable)
     {
         if (actualEnumerable is null)
         {
@@ -69,20 +46,17 @@ public class List<T, TListElement>(Accessor property, IEnumerable<TListElement> 
                 "Actual and expected are not equal (expected was null).");
         }
 
-        List<object> actualList = new List<object>();
-        foreach (var item in actualEnumerable)
-        {
-            actualList.Add(item);
-        }
-
+        var actualList = actualEnumerable.ToList();
         var expectedList = expectedEnumerable.ToList();
 
         if (actualList.Count != expectedList.Count)
         {
-            throw new ApplicationException(String.Format("Actual count ({0}) does not equal expected count ({1})", actualList.Count, expectedList.Count));
+            throw new ApplicationException($"Actual count ({actualList.Count}) does not equal expected count ({expectedList.Count})");
         }
 
-        var equalsFunc = (EntityEqualityComparer is not null) ? ((a, b) => EntityEqualityComparer.Equals(a, b)): new Func<object, object, bool>(Equals);
+        Func<object, object, bool> equalsFunc = EntityEqualityComparer is not null
+            ? EntityEqualityComparer.Equals
+            : Equals;
 
         for (var i = 0; i < actualList.Count; i++)
         {
@@ -91,12 +65,27 @@ public class List<T, TListElement>(Accessor property, IEnumerable<TListElement> 
                 continue;
             }
 
-            var message = String.Format("Expected '{0}' but got '{1}' at position {2}",
-                expectedList[i],
-                actualList[i],
-                i);
-
+            var message = $"Expected '{expectedList[i]}' but got '{actualList[i]}' at position {i}";
             throw new ApplicationException(message);
         }
+    }
+
+    IEnumerable<TListElement> CreateCollection(Type type)
+    {
+        // sorry guys - create an instance of the collection type because we can't rely
+        // on the user to pass in the correct collection type (especially if they're using
+        // an interface). I've tried to create the common ones, but I'm sure this won't be
+        // infallible.
+        if (type.IsAssignableFrom(typeof(ISet<TListElement>)))
+        {
+            return new HashSet<TListElement>(Expected);
+        }
+
+        if (type.IsArray)
+        {
+            return Expected.ToArray();
+        }
+
+        return Expected.ToList();
     }
 }
