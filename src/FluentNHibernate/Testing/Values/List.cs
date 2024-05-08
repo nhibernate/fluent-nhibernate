@@ -20,9 +20,7 @@ public class List<T, TListElement>(Accessor property, IEnumerable<TListElement> 
             }
 
             return (target, propertyAccessor, value) =>
-            {
                 propertyAccessor.SetValue(target, CreateCollection(propertyAccessor.PropertyType));
-            };
         }
         set => _valueSetter = value;
     }
