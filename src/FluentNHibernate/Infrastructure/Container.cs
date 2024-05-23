@@ -5,7 +5,7 @@ namespace FluentNHibernate.Infrastructure;
 
 public class Container
 {
-    readonly IDictionary<Type, Func<Container, object>> registeredTypes = new Dictionary<Type, Func<Container, object>>();
+    readonly Dictionary<Type, Func<Container, object>> registeredTypes = new();
 
     public void Register<T>(Func<Container, object> instantiateFunc)
     {
@@ -14,10 +14,8 @@ public class Container
 
     public object Resolve(Type type)
     {
-        if (!registeredTypes.ContainsKey(type))
+        if (!registeredTypes.TryGetValue(type, out var instantiationFunc))
             throw new ResolveException(type);
-            
-        var instantiationFunc = registeredTypes[type];
 
         return instantiationFunc(this);
     }
