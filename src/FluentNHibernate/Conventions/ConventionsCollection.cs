@@ -66,7 +66,7 @@ public class ConventionsCollection : IEnumerable<Type>
 
     public void Merge(ConventionsCollection conventions)
     {
-        conventions.inner.Each(inner.Add);
-        conventions.types.Each(types.Add);
+        conventions.inner.ForEach(inner.Add);
+        conventions.types.ForEach(types.Add);
     }
 }

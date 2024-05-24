@@ -58,7 +58,7 @@ public class SubClassPart<TSubclass> : ClasslikeMapBase<TSubclass>, ISubclassMap
         foreach (var any in providers.Anys)
             mapping.AddAny(any.GetAnyMapping());
 
-        subclassMappings.Each(mapping.AddSubclass);
+        subclassMappings.ForEach(mapping.AddSubclass);
 
         return mapping;
     }

@@ -4,7 +4,6 @@ using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
-using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 using NUnit.Framework;
 
@@ -45,9 +44,9 @@ public class when_the_component_column_prefix_visitor_processes_a_reference_comp
     [Test]
     public void should_prefix_property_columns()
     {
-        target_mapping.Components.Single()
-            .Properties.SelectMany(x => x.Columns)
-            .Each(x => x.Name.ShouldStartWith("Component_"));
+        var columns = target_mapping.Components.Single()
+            .Properties.SelectMany(x => x.Columns);
+        Assert.That(columns, Has.All.Property("Name").StartWith("Component_"));
     }
 }
 
@@ -94,11 +93,11 @@ public class when_the_component_column_prefix_visitor_processes_a_reference_comp
     [Test]
     public void should_prefix_sub_component_columns_with_both_prefixes()
     {
-        target_mapping
+        var columns = target_mapping
             .Components.Single()
             .Components.Single()
-            .Properties.SelectMany(x => x.Columns)
-            .Each(x => x.Name.ShouldStartWith(first_prefix + second_prefix));
+            .Properties.SelectMany(x => x.Columns);
+        Assert.That(columns, Has.All.Property("Name").StartWith(first_prefix + second_prefix));
     }
 }
 
@@ -133,8 +132,8 @@ public class when_the_component_column_prefix_visitor_processes_a_reference_comp
     [Test]
     public void shouldnt_use_the_original_prefix()
     {
-        reference_without_a_prefix.Properties.SelectMany(x => x.Columns)
-            .Each(x => x.Name.ShouldNotStartWith(column_prefix));
+        var columns = reference_without_a_prefix.Properties.SelectMany(x => x.Columns);
+        Assert.That(columns, Has.None.Property("Name").StartWith(column_prefix));
     }
 }
 
@@ -175,10 +174,10 @@ public class when_the_component_column_prefix_visitor_processes_a_reference_comp
     [Test]
     public void should_prefix_collection_columns()
     {
-        target_mapping.Components.Single().Collections.ShouldHaveCount(1);
-        target_mapping.Components.Single().Collections
-            .SelectMany(x => x.Key.Columns)
-            .Each(x => x.Name.ShouldStartWith(column_prefix));
+        Assert.That(target_mapping.Components.Single().Collections.Count(), Is.EqualTo(1));
+        var keyColumns = target_mapping.Components.Single().Collections
+            .SelectMany(x => x.Key.Columns);
+        Assert.That(keyColumns, Has.All.Property("Name").StartWith(column_prefix));
     }
 
     [Test]
@@ -186,20 +185,20 @@ public class when_the_component_column_prefix_visitor_processes_a_reference_comp
     {
         target_mapping.Components.ShouldHaveCount(1);
         target_mapping.Components.SelectMany(x => x.Components).ShouldHaveCount(1);
-        target_mapping.Components
+        var columns = target_mapping.Components
             .SelectMany(x => x.Components)
             .SelectMany(x => x.Properties)
-            .SelectMany(x => x.Columns)
-            .Each(x => x.Name.ShouldStartWith(column_prefix));
+            .SelectMany(x => x.Columns);
+        Assert.That(columns, Has.All.Property("Name").StartWith(column_prefix));
     }
 
     [Test]
     public void should_prefix_property_columns()
     {
         target_mapping.Components.Single().Properties.ShouldHaveCount(1);
-        target_mapping.Components.Single()
-            .Properties.SelectMany(x => x.Columns)
-            .Each(x => x.Name.ShouldStartWith(column_prefix));
+        var columns = target_mapping.Components.Single()
+            .Properties.SelectMany(x => x.Columns);
+        Assert.That(columns, Has.All.Property("Name").StartWith(column_prefix));
     }
 }
 
@@ -236,9 +235,8 @@ public class when_the_component_column_prefix_visitor_processes_a_component_with
     [Test]
     public void should_prefix_field_columns()
     {
-        targetMapping.Components.Single()
-            .Properties.SelectMany(x => x.Columns)
-            .Each(c => c.Name.ShouldStartWith("component"));
+        var columns = targetMapping.Components.Single().Properties.SelectMany(x => x.Columns);
+        Assert.That(columns, Has.All.Property("Name").StartWith("component"));
     }
 }
 

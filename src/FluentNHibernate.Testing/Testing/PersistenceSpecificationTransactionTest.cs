@@ -1,6 +1,7 @@
 using System.Collections;
 using FakeItEasy;
 using NHibernate;
+using NHibernate.Engine;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.Testing;
@@ -23,44 +24,44 @@ public class PersistenceSpecificationTransactionTest
     [Test]
     public void Should_Not_Open_A_New_Transaction_If_One_Is_Passed()
     {
-        var transaction = A.Fake<ITransaction>();
-        A.CallTo(() => transaction.IsActive).Returns(true);
+        var sessionImpl = A.Fake<ISessionImplementor>();
+        A.CallTo(() => sessionImpl.TransactionInProgress).Returns(true);
 
         var session = A.Fake<ISession>();
-        A.CallTo(() => session.Transaction).Returns(transaction);
+        A.CallTo(() => session.GetSessionImplementation()).Returns(sessionImpl);
 
         var spec = new PersistenceSpecification<Cat>(session);
         spec.VerifyTheMappings();
 
         A.CallTo(() => session.BeginTransaction()).MustNotHaveHappened();
-        A.CallTo(() => session.Transaction).MustHaveHappened(2, Times.Exactly);
     }
 
     [Test]
     public void Should_Open_A_New_Transaction_If_None_Is_Passed()
     {
-
-        var transaction = A.Fake<ITransaction>();
-        A.CallTo(() => transaction.IsActive).Returns(false);
+        var sessionImpl = A.Fake<ISessionImplementor>();
+        A.CallTo(() => sessionImpl.TransactionInProgress).Returns(false);
 
         var session = A.Fake<ISession>();
-        A.CallTo(() => session.Transaction).Returns(transaction);
-        A.CallTo(() => session.BeginTransaction()).Returns(transaction);
+        A.CallTo(() => session.GetSessionImplementation()).Returns(sessionImpl);
+        A.CallTo(() => session.BeginTransaction()).Returns(A.Dummy<ITransaction>());
 
         var spec = new PersistenceSpecification<Cat>(session);
         spec.VerifyTheMappings();
 
-        A.CallTo(() => session.Transaction).MustHaveHappened(2, Times.Exactly);
+        A.CallTo(() => session.BeginTransaction()).MustHaveHappened(1, Times.Exactly);
     }
 
     [Test]
     public void Passed_Transaction_Should_Apply_For_Reference_Saving()
     {
-        var transaction = A.Fake<ITransaction>();
-        A.CallTo(() => transaction.IsActive).Returns(true);
+        var sessionImpl = A.Fake<ISessionImplementor>();
+        A.CallTo(() => sessionImpl.TransactionInProgress).Returns(true);
 
         var session = A.Fake<ISession>();
-        A.CallTo(() => session.Transaction).Returns(transaction);
+        A.CallTo(() => session.GetSessionImplementation()).Returns(sessionImpl);
+        A.CallTo(() => session.BeginTransaction()).Returns(A.Dummy<ITransaction>());
+
         A.CallTo(() => session.Get<Cat>(null)).WithAnyArguments()
             .Returns(
                 new Cat
@@ -79,7 +80,6 @@ public class PersistenceSpecificationTransactionTest
 
         spec.VerifyTheMappings();
 
-        A.CallTo(() => session.Transaction).MustHaveHappened(2, Times.Exactly);
         A.CallTo(() => session.BeginTransaction()).MustNotHaveHappened();
     }
 
@@ -90,9 +90,9 @@ public class PersistenceSpecificationTransactionTest
             if (x is null || y is null)
                 return false;
 
-            if (x.GetType().GetProperty("Name") is not null && y.GetType().GetProperty("Name") is not null)
+            if (x.GetType().GetProperty("Name") is { } xProp && y.GetType().GetProperty("Name") is { } yProp)
             {
-                return x.GetType().GetProperty("Name").GetValue(x, null) == y.GetType().GetProperty("Name").GetValue(x, null);
+                return xProp.GetValue(x, null) == yProp.GetValue(x, null);
             }
 
             return x.Equals(y);

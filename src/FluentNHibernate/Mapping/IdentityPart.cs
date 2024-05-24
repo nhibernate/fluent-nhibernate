@@ -11,7 +11,7 @@ namespace FluentNHibernate.Mapping;
 public class IdentityPart : IIdentityMappingProvider
 {
     readonly AttributeStore columnAttributes = new AttributeStore();
-    readonly IList<string> columns = new List<string>();
+    readonly List<string> columns = [];
     Member member;
     readonly Type entityType;
     readonly AttributeStore attributes = new AttributeStore();

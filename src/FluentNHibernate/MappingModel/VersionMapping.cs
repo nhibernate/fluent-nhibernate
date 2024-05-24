@@ -16,7 +16,8 @@ public class VersionMapping(AttributeStore underlyingStore) : ColumnBasedMapping
     {
         visitor.ProcessVersion(this);
 
-        Columns.Each(visitor.Visit);
+        foreach (var column in Columns)
+            visitor.Visit(column);
     }
 
     public string Name => attributes.GetOrDefault<string>();

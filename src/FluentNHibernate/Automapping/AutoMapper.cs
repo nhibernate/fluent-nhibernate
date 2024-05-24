@@ -4,7 +4,6 @@ using System.Linq;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Utils;
 using FluentNHibernate.Utils.Reflection;
 
 namespace FluentNHibernate.Automapping;
@@ -21,9 +20,9 @@ public class AutoMapper(
         var autoMapType = ReflectionHelper.AutomappingTypeForEntityType(classType);
         var autoMap = Activator.CreateInstance(autoMapType, mappedMembers);
 
-        inlineOverrides
-            .Where(x => x.CanOverride(classType))
-            .Each(x => x.Apply(autoMap));
+        var overrides = inlineOverrides.Where(x => x.CanOverride(classType));
+        foreach (var @override in overrides)
+            @override.Apply(autoMap);
 
         ((IAutoClasslike)autoMap).AlterModel(mapping);
     }
@@ -147,9 +146,9 @@ public class AutoMapper(
 
     public virtual void ProcessClass(ClassMappingBase mapping, Type entityType, IList<Member> mappedMembers)
     {
-        entityType.GetInstanceMembers()
-            .Where(cfg.ShouldMap)
-            .Each(x => TryMapProperty(mapping, x, mappedMembers));
+        var members = entityType.GetInstanceMembers().Where(cfg.ShouldMap);
+        foreach (var member in members)
+            TryMapProperty(mapping, member, mappedMembers);
     }
 
     void TryMapProperty(ClassMappingBase mapping, Member member, IList<Member> mappedMembers)
@@ -204,8 +203,8 @@ public class AutoMapper(
     /// </summary>
     public void FlagAsMapped(Type type)
     {
-        mappingTypes
-            .Where(x => x.Type == type)
-            .Each(x => x.IsMapped = true);
+        var autoMapTypes = mappingTypes.Where(x => x.Type == type);
+        foreach (var autoMapType in autoMapTypes)
+            autoMapType.IsMapped = true;
     }
 }

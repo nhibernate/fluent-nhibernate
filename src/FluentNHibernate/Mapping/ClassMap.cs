@@ -31,7 +31,7 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     protected readonly AttributeStore attributes;
     readonly MappingProviderStore providers;
 
-    readonly IList<ImportPart> imports = new List<ImportPart>();
+    readonly List<ImportPart> imports = [];
     bool nextBool = true;
 
     public ClassMap()

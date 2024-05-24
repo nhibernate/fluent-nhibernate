@@ -77,12 +77,14 @@ public class PersistenceModel
 
     public void AddMappingsFromSource(ITypeSource source)
     {
-        source.GetTypes()
+        var types = source.GetTypes()
             .Where(x => IsMappingOf<IMappingProvider>(x) ||
                         IsMappingOf<IIndeterminateSubclassMappingProvider>(x) ||
                         IsMappingOf<IExternalComponentMappingProvider>(x) ||
-                        IsMappingOf<IFilterDefinition>(x))
-            .Each(Add);
+                        IsMappingOf<IFilterDefinition>(x));
+
+        foreach (var type in types)
+            Add(type);
 
         log.LoadedFluentMappingsFromSource(source);
     }
@@ -312,23 +314,23 @@ public class PersistenceModel
 
     internal void ImportProviders(PersistenceModel model)
     {
-        model.classProviders.Each(x =>
+        foreach (var provider in model.classProviders)
         {
-            if (!classProviders.Contains(x))
-                classProviders.Add(x);
-        });
+            if (!classProviders.Contains(provider))
+                classProviders.Add(provider);
+        }
 
-        model.subclassProviders.Each(x =>
+        foreach (var provider in model.subclassProviders)
         {
-            if (!subclassProviders.Contains(x))
-                subclassProviders.Add(x);
-        });
+            if (!subclassProviders.Contains(provider)) 
+                subclassProviders.Add(provider);
+        }
 
-        model.componentProviders.Each(x =>
+        foreach (var provider in model.componentProviders)
         {
-            if (!componentProviders.Contains(x))
-                componentProviders.Add(x);
-        });
+            if (!componentProviders.Contains(provider))
+                componentProviders.Add(provider);
+        }
     }
 }
 

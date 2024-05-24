@@ -114,8 +114,8 @@ public class NaturalIdPart<T> : INaturalIdMappingProvider
     {
         var mapping = new NaturalIdMapping(attributes.Clone());
 
-        properties.Each(p => mapping.AddProperty(((IPropertyMappingProvider)p).GetPropertyMapping()));
-        manyToOnes.Each(mapping.AddReference);
+        properties.ForEach(p => mapping.AddProperty(((IPropertyMappingProvider)p).GetPropertyMapping()));
+        manyToOnes.ForEach(mapping.AddReference);
 
         return mapping;
     }

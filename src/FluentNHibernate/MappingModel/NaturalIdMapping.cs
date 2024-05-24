@@ -8,8 +8,8 @@ namespace FluentNHibernate.MappingModel;
 public class NaturalIdMapping(AttributeStore attributes) : MappingBase
 {
     readonly AttributeStore attributes = attributes;
-    readonly IList<PropertyMapping> properties = new List<PropertyMapping>();
-    readonly IList<ManyToOneMapping> manyToOnes = new List<ManyToOneMapping>();
+    readonly List<PropertyMapping> properties = [];
+    readonly List<ManyToOneMapping> manyToOnes = [];
 
     public NaturalIdMapping()
         : this(new AttributeStore()) { }

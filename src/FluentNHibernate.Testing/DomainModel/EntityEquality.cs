@@ -1,9 +1,10 @@
+using System;
 using FluentNHibernate.Data;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel;
 
-[TestFixture]
+[TestFixture, Obsolete("Testing obsolete FluentNHibernate.Data.Entity")]
 public class EntityEquality
 {
     [Test]
@@ -53,7 +54,7 @@ public class EntityEquality
     [Test]
     public void Subclassed_entities_should_equal_each_other_with_same_Id()
     {
-        var first = new TestSubEntity {Id = 99};
+        var first = new TestSubEntity { Id = 99 };
         var second = new TestSubEntity { Id = 99 };
 
         first.Equals(second).ShouldBeTrue();
@@ -77,18 +78,11 @@ public class EntityEquality
         first.Equals(second).ShouldBeFalse();
     }
 
-    public class ConcreteEntity : Entity
-    {}
+    public class ConcreteEntity : Entity;
 
-    public class TestSubEntity : ConcreteEntity
-    {
-    }
+    public class TestSubEntity : ConcreteEntity;
 
-    public class AnotherSubEntity : ConcreteEntity
-    {
-    }
+    public class AnotherSubEntity : ConcreteEntity;
 
-    public class DeepSubEntity : TestSubEntity
-    {
-    }
+    public class DeepSubEntity : TestSubEntity;
 }

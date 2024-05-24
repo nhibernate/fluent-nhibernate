@@ -118,10 +118,11 @@ public class AutoMapping<T> : ClassMap<T>, IAutoClasslike, IPropertyIgnorer
 
     IPropertyIgnorer IPropertyIgnorer.IgnoreProperties(Func<Member, bool> predicate)
     {
-        typeof(T).GetProperties()
+        var members = typeof(T).GetProperties()
             .Select(x => x.ToMember())
-            .Where(predicate)
-            .Each(mappedMembers.Add);
+            .Where(predicate);
+        foreach (var member in members)
+            mappedMembers.Add(member);
 
         return this;
     }

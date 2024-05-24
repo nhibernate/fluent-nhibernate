@@ -10,7 +10,7 @@ namespace FluentNHibernate.MappingModel.Identity;
 public class KeyPropertyMapping : MappingBase, ICompositeIdKeyMapping, IEquatable<KeyPropertyMapping>
 {
     readonly AttributeStore attributes = new AttributeStore();
-    readonly IList<ColumnMapping> columns = new List<ColumnMapping>();
+    readonly List<ColumnMapping> columns = [];
 
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {

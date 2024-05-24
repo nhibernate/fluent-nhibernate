@@ -23,9 +23,9 @@ public class FluentConfiguration
     const string DefaultProxyFactoryFactoryClassName = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
     const string CurrentSessionContextClassKey = NHibEnvironment.CurrentSessionContextClass;
 
-    readonly IList<Action<Configuration>> configAlterations = new List<Action<Configuration>>();
+    readonly List<Action<Configuration>> configAlterations = [];
     readonly IDiagnosticMessageDispatcher dispatcher = new DefaultDiagnosticMessageDispatcher();
-    readonly List<Action<MappingConfiguration>> mappingsBuilders = new List<Action<MappingConfiguration>>();
+    readonly List<Action<MappingConfiguration>> mappingsBuilders = [];
 
     bool dbSet;
     bool mappingsSet;

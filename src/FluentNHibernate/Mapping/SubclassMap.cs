@@ -31,7 +31,7 @@ public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMapping
     // what the parent subclass type is...
     readonly IDictionary<Type, IIndeterminateSubclassMappingProvider> indetermineateSubclasses = new Dictionary<Type, IIndeterminateSubclassMappingProvider>();
     bool nextBool = true;
-    readonly IList<JoinMapping> joins = new List<JoinMapping>();
+    readonly List<JoinMapping> joins = [];
 
     public SubclassMap()
         : this(new MappingProviderStore())

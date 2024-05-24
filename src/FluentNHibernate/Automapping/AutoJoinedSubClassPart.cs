@@ -11,7 +11,7 @@ public class AutoJoinedSubClassPart<T> : JoinedSubClassPart<T>, IAutoClasslike
 #pragma warning restore 612,618
 {
     readonly MappingProviderStore providers;
-    readonly IList<Member> mappedMembers = new List<Member>();
+    readonly List<Member> mappedMembers = [];
 
     public AutoJoinedSubClassPart(string keyColumn)
         : this(keyColumn, new MappingProviderStore())

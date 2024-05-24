@@ -36,7 +36,7 @@ public class IndexPart(Type entity)
 
         mapping.ContainingEntityType = entity;
 
-        columns.Each(name =>
+        columns.ForEach(name =>
         {
             var columnMapping = new ColumnMapping();
             columnMapping.Set(x => x.Name, Layer.Defaults, name);

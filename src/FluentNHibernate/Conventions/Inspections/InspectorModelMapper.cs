@@ -7,7 +7,7 @@ namespace FluentNHibernate.Conventions.Inspections;
 
 public class InspectorModelMapper<TInspector, TMapping>
 {
-    readonly IDictionary<string, string> mappings = new Dictionary<string, string>();
+    readonly Dictionary<string, string> mappings = new();
 
     public void Map(Expression<Func<TInspector, object>> inspectorProperty, Expression<Func<TMapping, object>> mappingProperty)
     {
@@ -26,8 +26,8 @@ public class InspectorModelMapper<TInspector, TMapping>
 
     public string Get(Member property)
     {
-        if (mappings.ContainsKey(property.Name))
-            return mappings[property.Name];
+        if (mappings.TryGetValue(property.Name, out var mapping))
+            return mapping;
 
         return property.Name;
     }
