@@ -91,7 +91,7 @@ Task("Test")
                 Configuration = parameters.Configuration
             });          
 
-            DotNetTest(project.ToString(), "--collect:\"XPlat Code Coverage\" --results-directory ./coverage" new DotNetTestSettings
+            DotNetTest(project.ToString(), "--collect:\"XPlat Code Coverage\" --results-directory ./coverage", new DotNetTestSettings
             {
                 Framework = "net6.0",
                 NoBuild = true,
