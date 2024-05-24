@@ -25,7 +25,8 @@ public class BuildPaths
         var artifactsBinDir = artifactsDir.Combine("bin");
         var artifactsBinFullFx = artifactsBinDir.Combine("net461");        
         var artifactsBinNetStandard20 = artifactsBinDir.Combine("netstandard2.0");        
-        var artifactsBinNetCoreapp2 = artifactsBinDir.Combine("netcoreapp2.0");        
+        var artifactsBinNet60 = artifactsBinDir.Combine("netstandard6.0");        
+        var artifactsBinNet80 = artifactsBinDir.Combine("netstandard8.0");        
         var testResultsDir = artifactsDir.Combine("test-results");
         var nugetRoot = artifactsDir.Combine("nuget");
         
@@ -39,7 +40,8 @@ public class BuildPaths
             artifactsBinDir,
             artifactsBinFullFx,
             artifactsBinNetStandard20,
-            artifactsBinNetCoreapp2);
+            artifactsBinNet60,
+            artifactsBinNet80);
 
         // Files
         var buildFiles = new BuildFiles(
@@ -74,7 +76,8 @@ public class BuildDirectories
     public DirectoryPath ArtifactsBin { get; private set; }
     public DirectoryPath ArtifactsBinFullFx { get; private set; }    
     public DirectoryPath ArtifactsBinNetStandard20 { get; private set; }    
-    public DirectoryPath ArtifactsBinNetCoreApp2 { get; private set; }    
+    public DirectoryPath ArtifactsBinNet60 { get; private set; }    
+    public DirectoryPath ArtifactsBinNet80 { get; private set; }    
     public ICollection<DirectoryPath> ToClean { get; private set; }
 
     public BuildDirectories(        
@@ -84,7 +87,8 @@ public class BuildDirectories
         DirectoryPath artifactsBinDir,
         DirectoryPath artifactsBinFullFx,
         DirectoryPath artifactsBinNetStandard20,
-        DirectoryPath artifactsBinNetCoreapp2
+        DirectoryPath artifactsNet60,
+        DirectoryPath artifactsNet80
         )
     {
         Artifacts = artifactsDir;
@@ -93,7 +97,9 @@ public class BuildDirectories
         ArtifactsBin = artifactsBinDir;
         ArtifactsBinFullFx = artifactsBinFullFx;        
         ArtifactsBinNetStandard20 = artifactsBinNetStandard20;
-        ArtifactsBinNetCoreApp2 = artifactsBinNetCoreapp2;
+        ArtifactsBinNet60 = artifactsNet60;
+        ArtifactsBinNet80 = artifactsNet80;
+
         ToClean = new[] {
             Artifacts,
             TestResults,
