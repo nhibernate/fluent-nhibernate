@@ -31,9 +31,7 @@ public class PersistenceSpecification<T>
     public PersistenceSpecification(ISession session, IEqualityComparer entityEqualityComparer)
     {
         currentSession = session;
-#pragma warning disable CS0618 // ISession.Transaction is obsolete
-        hasExistingTransaction = currentSession.Transaction is not null && currentSession.Transaction.IsActive || System.Transactions.Transaction.Current is not null;
-#pragma warning restore CS0618
+        hasExistingTransaction = currentSession.GetSessionImplementation().TransactionInProgress;
         this.entityEqualityComparer = entityEqualityComparer;
     }
 
