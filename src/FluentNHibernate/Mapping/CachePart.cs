@@ -1,7 +1,6 @@
 using System;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
-using NHibernate.Mapping.ByCode;
 
 namespace FluentNHibernate.Mapping;
 
