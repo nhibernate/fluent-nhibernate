@@ -1,48 +1,38 @@
 using System;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
+using NHibernate.Mapping.ByCode;
 
 namespace FluentNHibernate.Mapping;
 
 public class CachePart(Type entityType) : ICacheMappingProvider
 {
-    readonly AttributeStore attributes = new AttributeStore();
+    readonly AttributeStore attributes = new();
 
     /// <summary>
     /// Sets caching to read-write
     /// </summary>
-    public CachePart ReadWrite()
-    {
-        attributes.Set("Usage", Layer.UserSupplied, "read-write");
-        return this;
-    }
+    public CachePart ReadWrite() => CustomUsage("read-write");
 
     /// <summary>
     /// Sets caching to non-strict read-write
     /// </summary>
-    public CachePart NonStrictReadWrite()
-    {
-        attributes.Set("Usage", Layer.UserSupplied, "nonstrict-read-write");
-        return this;
-    }
+    public CachePart NonStrictReadWrite() => CustomUsage("nonstrict-read-write");
 
     /// <summary>
     /// Sets caching to read-only
     /// </summary>
-    public CachePart ReadOnly()
-    {
-        attributes.Set("Usage", Layer.UserSupplied, "read-only");
-        return this;
-    }
+    public CachePart ReadOnly() => CustomUsage("read-only");
 
     /// <summary>
     /// Sets caching to transactional
     /// </summary>
-    public CachePart Transactional()
-    {
-        attributes.Set("Usage", Layer.UserSupplied, "transactional");
-        return this;
-    }
+    public CachePart Transactional() => CustomUsage("transactional");
+
+    /// <summary>
+    /// Sets caching to never
+    /// </summary>
+    public CachePart Never() => CustomUsage("never");
 
     /// <summary>
     /// Specifies a custom cache behaviour
@@ -68,20 +58,12 @@ public class CachePart(Type entityType) : ICacheMappingProvider
     /// Include all properties for caching
     /// </summary>
     /// <returns></returns>
-    public CachePart IncludeAll()
-    {
-        attributes.Set("Include", Layer.UserSupplied, "all");
-        return this;
-    }
+    public CachePart IncludeAll() => CustomInclude("all");
 
     /// <summary>
     /// Include only non-lazy properties for caching
     /// </summary>
-    public CachePart IncludeNonLazy()
-    {
-        attributes.Set("Include", Layer.UserSupplied, "non-lazy");
-        return this;
-    }
+    public CachePart IncludeNonLazy() => CustomInclude("non-lazy");
 
     /// <summary>
     /// Specify a custom property inclusion strategy
@@ -95,11 +77,9 @@ public class CachePart(Type entityType) : ICacheMappingProvider
 
     internal bool IsDirty => attributes.IsSpecified("Region") || attributes.IsSpecified("Usage") || attributes.IsSpecified("Include");
 
-    CacheMapping ICacheMappingProvider.GetCacheMapping()
-    {
-        var mapping = new CacheMapping(attributes.Clone());
-        mapping.ContainedEntityType = entityType;
-
-        return mapping;
-    }
+    CacheMapping ICacheMappingProvider.GetCacheMapping() =>
+        new(attributes.Clone())
+        {
+            ContainedEntityType = entityType
+        };
 }
