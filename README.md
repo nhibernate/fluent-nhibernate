@@ -17,11 +17,7 @@ dotnet add package FluentNHibernate
 ## How do I use it?
 
 * Read the [introduction](https://github.com/FluentNHibernate/fluent-nhibernate/wiki/Getting-started).
-* Get latest version from NuGet
-    - [.NETCore2.0, NETStandard2.0 or NET 4.6.1 with NHibernate 5.x](https://www.nuget.org/packages/FluentNHibernate)
-    - [.NET 4.0 with NHibernate 4.x](https://www.nuget.org/packages/FluentNHibernate/2.0.3)
-    - [.NET 3.5 with NHibernate 3 if you like it vintage](https://www.nuget.org/packages/FluentNHibernate.Net35)
-
+* Get latest version from [NuGet](https://www.nuget.org/packages/FluentNHibernate)
 * Create your [first project](https://github.com/FluentNHibernate/fluent-nhibernate/wiki/Getting-started#wiki-yourfirstproject).
 
 ## Further reading
