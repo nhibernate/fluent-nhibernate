@@ -108,21 +108,21 @@ Task("Copy-Files")
         PublishProjects(
             SrcProjects, "net461",
             parameters.Paths.Directories.ArtifactsBinFullFx.FullPath, 
-            parameters.Version.DotNetAsterix, 
+            parameters.Version.VersionSuffix, 
             parameters.Configuration, 
             msBuildSettings
         );
         PublishProjects(
             SrcProjects, "netstandard2.0",
             parameters.Paths.Directories.ArtifactsBinNetStandard20.FullPath, 
-            parameters.Version.DotNetAsterix, 
+            parameters.Version.VersionSuffix, 
             parameters.Configuration, 
             msBuildSettings
         );
         PublishProjects(
             SrcProjects, "netcoreapp2.0",
             parameters.Paths.Directories.ArtifactsBinNetCoreApp2.FullPath, 
-            parameters.Version.DotNetAsterix, 
+            parameters.Version.VersionSuffix, 
             parameters.Configuration, 
             msBuildSettings
         );
