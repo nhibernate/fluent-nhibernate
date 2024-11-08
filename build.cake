@@ -1,6 +1,6 @@
 #addin "nuget:?package=Cake.FileHelpers&version=7.0.0"
 #tool "dotnet:?package=GitReleaseManager.Tool&version=0.18.0"
-#tool "dotnet:?package=GitVersion.Tool&version=5.12.0"
+#tool "dotnet:?package=GitVersion.Tool&version=6.0.4"
 
 #load "./build/parameters.cake"
 
@@ -108,21 +108,21 @@ Task("Copy-Files")
         PublishProjects(
             SrcProjects, "net461",
             parameters.Paths.Directories.ArtifactsBinFullFx.FullPath, 
-            parameters.Version.DotNetAsterix, 
+            parameters.Version.VersionSuffix, 
             parameters.Configuration, 
             msBuildSettings
         );
         PublishProjects(
             SrcProjects, "netstandard2.0",
             parameters.Paths.Directories.ArtifactsBinNetStandard20.FullPath, 
-            parameters.Version.DotNetAsterix, 
+            parameters.Version.VersionSuffix, 
             parameters.Configuration, 
             msBuildSettings
         );
         PublishProjects(
             SrcProjects, "netcoreapp2.0",
             parameters.Paths.Directories.ArtifactsBinNetCoreApp2.FullPath, 
-            parameters.Version.DotNetAsterix, 
+            parameters.Version.VersionSuffix, 
             parameters.Configuration, 
             msBuildSettings
         );

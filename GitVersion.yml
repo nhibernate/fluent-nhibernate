@@ -1,2 +1,2 @@
 assembly-versioning-scheme: MajorMinor
-mode: ContinuousDeployment
+mode: ContinuousDelivery
