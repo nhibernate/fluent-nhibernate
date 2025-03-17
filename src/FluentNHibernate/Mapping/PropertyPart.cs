@@ -12,8 +12,8 @@ public class PropertyPart : IPropertyMappingProvider
 {
     readonly Member member;
     readonly Type parentType;
-    readonly AttributeStore attributes = new AttributeStore();
-    readonly AttributeStore columnAttributes = new AttributeStore();
+    readonly AttributeStore attributes = new();
+    readonly AttributeStore columnAttributes = new();
 
     bool nextBool = true;
 
