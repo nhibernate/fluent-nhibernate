@@ -1,9 +1,8 @@
-﻿namespace FluentNHibernate.MappingModel
+﻿namespace FluentNHibernate.MappingModel;
+
+public enum TuplizerMode
 {
-    public enum TuplizerMode
-    {
-        Poco,
-        Xml,
-        DynamicMap
-    }
+    Poco,
+    Xml,
+    DynamicMap
 }

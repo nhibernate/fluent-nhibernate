@@ -3,31 +3,30 @@ using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.MappingModel.Output
+namespace FluentNHibernate.Testing.MappingModel.Output;
+
+[TestFixture]
+public class XmlCacheWriterTester
 {
-    [TestFixture]
-    public class XmlCacheWriterTester
+    XmlCacheWriter writer;
+
+    [Test]
+    public void ShouldWriteRegionAttribute()
     {
-        private XmlCacheWriter writer;
+        writer = new XmlCacheWriter();
+        var testHelper = new XmlWriterTestHelper<CacheMapping>();
+        testHelper.Check(x => x.Region, "region").MapsToAttribute("region");
 
-        [Test]
-        public void ShouldWriteRegionAttribute()
-        {
-            writer = new XmlCacheWriter();
-            var testHelper = new XmlWriterTestHelper<CacheMapping>();
-            testHelper.Check(x => x.Region, "region").MapsToAttribute("region");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteUsageAttribute()
+    {
+        writer = new XmlCacheWriter();
+        var testHelper = new XmlWriterTestHelper<CacheMapping>();
+        testHelper.Check(x => x.Usage, "usage").MapsToAttribute("usage");
 
-        [Test]
-        public void ShouldWriteUsageAttribute()
-        {
-            writer = new XmlCacheWriter();
-            var testHelper = new XmlWriterTestHelper<CacheMapping>();
-            testHelper.Check(x => x.Usage, "usage").MapsToAttribute("usage");
-
-            testHelper.VerifyAll(writer);
-        }
+        testHelper.VerifyAll(writer);
     }
 }

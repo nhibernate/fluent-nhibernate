@@ -1,10 +1,9 @@
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.FluentInterfaceTests
+namespace FluentNHibernate.Testing.FluentInterfaceTests;
+
+[TestFixture]
+public class ManyToManySubPartModelGenerationTests : BaseModelFixture
 {
-    [TestFixture]
-    public class ManyToManySubPartModelGenerationTests : BaseModelFixture
-    {
        
-    }
 }

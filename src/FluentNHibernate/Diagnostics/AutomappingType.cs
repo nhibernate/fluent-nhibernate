@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace FluentNHibernate.Diagnostics
+namespace FluentNHibernate.Diagnostics;
+
+public class AutomappingType
 {
-    public class AutomappingType
-    {
-        public Type Type { get; set; }
-    }
+    public Type Type { get; set; }
 }

@@ -1,106 +1,103 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
-using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.PersistenceModel.Fixtures;
 using Machine.Specifications;
 using NHibernate.Cfg;
-using NHibernate.Tool.hbm2ddl;
+using FluentAssertions;
 
-namespace FluentNHibernate.Specs.PersistenceModel
+namespace FluentNHibernate.Specs.PersistenceModel;
+
+public class when_subclass_map_is_combined_with_a_class_map_flagged_as_union
 {
-    public class when_subclass_map_is_combined_with_a_class_map_flagged_as_union
+    Establish context = () =>
     {
-        Establish context = () =>
-        {
-            model = new FluentNHibernate.PersistenceModel();
-            model.Add(new UnionEntityMap());
-            model.Add(new UnionChildEntityMap());
-        };
+        model = new FluentNHibernate.PersistenceModel();
+        model.Add(new UnionEntityMap());
+        model.Add(new UnionChildEntityMap());
+    };
 
-        Because of = () =>
-            mapping = model.BuildMappingFor<UnionEntity>();
+    Because of = () =>
+        mapping = model.BuildMappingFor<UnionEntity>();
 
-        It should_map_the_subclass_as_a_union_subclass = () =>
-            mapping.Subclasses.Single().SubclassType.ShouldEqual(SubclassType.UnionSubclass);
+    It should_map_the_subclass_as_a_union_subclass = () =>
+        mapping.Subclasses.Single().SubclassType.Should().Be(SubclassType.UnionSubclass);
 
-        static FluentNHibernate.PersistenceModel model;
-        static ClassMapping mapping;
+    static FluentNHibernate.PersistenceModel model;
+    static ClassMapping mapping;
+}
+
+public class when_subclass_map_has_a_has_many_to_another_entity
+{
+    Establish context = () =>
+    {
+        model = new FluentNHibernate.PersistenceModel();
+        model.Add(new ProductMap());
+        model.Add(new SpecialProductMap());
+        model.Add(new OptionMap());
+
+        //cfg = new Configuration();
+        //SQLiteConfiguration.Standard.InMemory()
+        //    .ConfigureProperties(cfg);
+        //model.Configure(cfg);
+
+        //new SchemaExport(cfg).Create(true, false);
+    };
+
+    Because of = () =>
+        mappings = model.BuildMappings()
+            .SelectMany(x => x.Classes);
+
+    It should_only_use_one_column_in_the_target_entity_s_key = () =>
+        mappings.Single(x => x.Type == typeof(Product))
+            .Subclasses.Single()
+            .Collections.Single()
+            .Key.Columns.Select(x => x.Name)
+            .Should().ContainSingle(name => name == "SpecialProduct_id");
+
+    static FluentNHibernate.PersistenceModel model;
+    static IEnumerable<ClassMapping> mappings;
+    static Configuration cfg;
+
+    class Product
+    {
+        public int ProductId { get; set; }
     }
 
-    public class when_subclass_map_has_a_has_many_to_another_entity
+    class SpecialProduct : Product
     {
-        Establish context = () =>
+        public ICollection<Option> Options { get; set;}
+    }
+
+    class Option
+    {
+        public int OptionId { get; set; }
+        public SpecialProduct Back { get; set; }
+    }
+
+    class ProductMap : ClassMap<Product>
+    {
+        public ProductMap()
         {
-            model = new FluentNHibernate.PersistenceModel();
-            model.Add(new ProductMap());
-            model.Add(new SpecialProductMap());
-            model.Add(new OptionMap());
-
-            //cfg = new Configuration();
-            //SQLiteConfiguration.Standard.InMemory()
-            //    .ConfigureProperties(cfg);
-            //model.Configure(cfg);
-
-            //new SchemaExport(cfg).Create(true, false);
-        };
-
-        Because of = () =>
-            mappings = model.BuildMappings()
-                .SelectMany(x => x.Classes);
-
-        It should_only_use_one_column_in_the_target_entity_s_key = () =>
-            mappings.Single(x => x.Type == typeof(Product))
-                .Subclasses.Single()
-                .Collections.Single()
-                .Key.Columns.Select(x => x.Name)
-                .ShouldContainOnly("SpecialProduct_id");
-
-        static FluentNHibernate.PersistenceModel model;
-        static IEnumerable<ClassMapping> mappings;
-        static Configuration cfg;
-
-        class Product
-        {
-            public int ProductId { get; set; }
+            Id(x => x.ProductId);
         }
+    }
 
-        class SpecialProduct : Product
+    class SpecialProductMap : SubclassMap<SpecialProduct>
+    {
+        public SpecialProductMap()
         {
-            public ICollection<Option> Options { get; set;}
+            Extends<Product>();
+            HasMany(x => x.Options).Cascade.AllDeleteOrphan();
         }
+    }
 
-        class Option
+    class OptionMap : ClassMap<Option>
+    {
+        public OptionMap()
         {
-            public int OptionId { get; set; }
-            public SpecialProduct Back { get; set; }
-        }
-
-        class ProductMap : ClassMap<Product>
-        {
-            public ProductMap()
-            {
-                Id(x => x.ProductId);
-            }
-        }
-
-        class SpecialProductMap : SubclassMap<SpecialProduct>
-        {
-            public SpecialProductMap()
-            {
-                Extends<Product>();
-                HasMany(x => x.Options).Cascade.AllDeleteOrphan();
-            }
-        }
-
-        class OptionMap : ClassMap<Option>
-        {
-            public OptionMap()
-            {
-                Id(x => x.OptionId);
-            }
+            Id(x => x.OptionId);
         }
     }
 }

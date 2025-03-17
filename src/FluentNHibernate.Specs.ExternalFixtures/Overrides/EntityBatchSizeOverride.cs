@@ -1,13 +1,12 @@
 ﻿using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
 
-namespace FluentNHibernate.Specs.ExternalFixtures.Overrides
+namespace FluentNHibernate.Specs.ExternalFixtures.Overrides;
+
+public class EntityBatchSizeOverride : IAutoMappingOverride<Entity>
 {
-    public class EntityBatchSizeOverride : IAutoMappingOverride<Entity>
+    public void Override(AutoMapping<Entity> mapping)
     {
-        public void Override(AutoMapping<Entity> mapping)
-        {
-            mapping.BatchSize(1234);
-        }
+        mapping.BatchSize(1234);
     }
 }

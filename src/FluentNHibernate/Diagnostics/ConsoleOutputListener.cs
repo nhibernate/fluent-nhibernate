@@ -1,56 +1,39 @@
 ﻿using System;
 using System.IO;
 
-namespace FluentNHibernate.Diagnostics
+namespace FluentNHibernate.Diagnostics;
+
+public class ConsoleOutputListener(IDiagnosticResultsFormatter formatter) : IDiagnosticListener
 {
-    public class ConsoleOutputListener : IDiagnosticListener
+    public ConsoleOutputListener()
+        : this(new DefaultOutputFormatter())
+    {}
+
+    public void Receive(DiagnosticResults results)
     {
-        readonly IDiagnosticResultsFormatter formatter;
+        var output = formatter.Format(results);
 
-        public ConsoleOutputListener()
-            : this(new DefaultOutputFormatter())
-        {}
-
-        public ConsoleOutputListener(IDiagnosticResultsFormatter formatter)
-        {
-            this.formatter = formatter;
-        }
-
-        public void Receive(DiagnosticResults results)
-        {
-            var output = formatter.Format(results);
-
-            Console.WriteLine(output);
-        }
+        Console.WriteLine(output);
     }
+}
 
-    public class FileOutputListener : IDiagnosticListener
+public class FileOutputListener(IDiagnosticResultsFormatter formatter, string outputPath) : IDiagnosticListener
+{
+    public FileOutputListener(string outputPath)
+        : this(new DefaultOutputFormatter(), outputPath)
+    {}
+
+    public void Receive(DiagnosticResults results)
     {
-        readonly IDiagnosticResultsFormatter formatter;
-        readonly string outputPath;
+        var output = formatter.Format(results);
+        var outputDirectory = Path.GetDirectoryName(outputPath);
 
-        public FileOutputListener(string outputPath)
-            : this(new DefaultOutputFormatter(), outputPath)
-        {}
+        if (string.IsNullOrEmpty(outputDirectory))
+            throw new ArgumentException("Output directory is invalid", "outputPath");
 
-        public FileOutputListener(IDiagnosticResultsFormatter formatter, string outputPath)
-        {
-            this.formatter = formatter;
-            this.outputPath = outputPath;
-        }
+        if (!Directory.Exists(outputDirectory))
+            Directory.CreateDirectory(outputDirectory);
 
-        public void Receive(DiagnosticResults results)
-        {
-            var output = formatter.Format(results);
-            var outputDirectory = Path.GetDirectoryName(outputPath);
-
-            if (string.IsNullOrEmpty(outputDirectory))
-                throw new ArgumentException("Output directory is invalid", "outputPath");
-
-            if (!Directory.Exists(outputDirectory))
-                Directory.CreateDirectory(outputDirectory);
-
-            File.WriteAllText(outputPath, output);
-        }
+        File.WriteAllText(outputPath, output);
     }
 }

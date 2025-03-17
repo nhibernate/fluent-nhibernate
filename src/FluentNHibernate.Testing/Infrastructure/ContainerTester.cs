@@ -1,48 +1,42 @@
-﻿using System;
+using System;
 using FluentNHibernate.Infrastructure;
-using Machine.Specifications;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Infrastructure
+namespace FluentNHibernate.Testing.Infrastructure;
+
+[TestFixture]
+public class ContainerTester
 {
-    [TestFixture]
-    public class ContainerTester
+    Container container;
+
+    [SetUp]
+    public void CreateContainer()
     {
-        private Container container;
-
-        [SetUp]
-        public void CreateContainer()
-        {
-            container = new Container();
-        }
-
-        [Test]
-        public void ShouldResolveRegisteredType()
-        {
-            container.Register<IExample>(c => new Example());
-
-            container.Resolve<IExample>()
-                .ShouldNotBeNull()
-                .ShouldBeOfType<Example>();
-        }
-
-        [Test]
-        public void ShouldThrowExceptionWhenResolvingUnregisteredType()
-        {
-            var ex = Catch.Exception(() => container.Resolve<IExample>());
-
-            ex
-                .ShouldNotBeNull()
-                .ShouldBeOfType<ResolveException>();
-
-            ex.Message
-                .ShouldEqual("Unable to resolve dependency: '" + typeof(IExample).FullName + "'");
-        }
-
-        private interface IExample
-        {}
-
-        private class Example : IExample
-        {}
+        container = new Container();
     }
+
+    [Test]
+    public void ShouldResolveRegisteredType()
+    {
+        container.Register<IExample>(c => new Example());
+
+        container.Resolve<IExample>()
+            .ShouldNotBeNull()
+            .ShouldBeOfType<Example>();
+    }
+
+    [Test]
+    public void ShouldThrowExceptionWhenResolvingUnregisteredType()
+    {
+        Action act = () => container.Resolve<IExample>();
+
+        act.ShouldThrow<ResolveException>()
+            .WithMessage($"Unable to resolve dependency: '{typeof(IExample).FullName}'");
+    }
+
+    interface IExample
+    {}
+
+    class Example : IExample
+    {}
 }

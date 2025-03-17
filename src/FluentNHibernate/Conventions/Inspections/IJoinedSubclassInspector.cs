@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface IJoinedSubclassInspector : ISubclassInspectorBase
 {
-    public interface IJoinedSubclassInspector : ISubclassInspectorBase
-    {
-        IKeyInspector Key { get; }
-        string Check { get; }
-        string TableName { get; }
-        new IEnumerable<IJoinedSubclassInspector> Subclasses { get; }
-    }
+    IKeyInspector Key { get; }
+    string Check { get; }
+    string Schema { get; }
+    string TableName { get; }
+    new IEnumerable<IJoinedSubclassInspector> Subclasses { get; }
 }

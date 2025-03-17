@@ -4,46 +4,38 @@ using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Diagnostics;
 
-namespace FluentNHibernate
+namespace FluentNHibernate;
+
+/// <summary>
+/// Facade over an assembly for retrieving type instances.
+/// </summary>
+public class AssemblyTypeSource(Assembly source) : ITypeSource
 {
-	/// <summary>
-	/// Facade over an assembly for retrieving type instances.
-	/// </summary>
-	public class AssemblyTypeSource : ITypeSource
-	{
-		readonly Assembly source;
+    readonly Assembly source = source ?? throw new ArgumentNullException(nameof(source));
 
-		public AssemblyTypeSource(Assembly source)
-		{
-			if (source == null) throw new ArgumentNullException("source");
+    #region ITypeSource Members
 
-			this.source = source;
-		}
+    public IEnumerable<Type> GetTypes()
+    {
+        return source.GetTypes().OrderBy(x => x.FullName);
+    }
 
-		#region ITypeSource Members
+    public void LogSource(IDiagnosticLogger logger)
+    {
+        if (logger is null) throw new ArgumentNullException(nameof(logger));
 
-		public IEnumerable<Type> GetTypes()
-		{
-			return source.GetTypes().OrderBy(x => x.FullName);
-		}
+        logger.LoadedFluentMappingsFromSource(this);
+    }
 
-		public void LogSource(IDiagnosticLogger logger)
-		{
-			if (logger == null) throw new ArgumentNullException("logger");
+    public string GetIdentifier()
+    {
+        return source.GetName().FullName;
+    }
 
-			logger.LoadedFluentMappingsFromSource(this);
-		}
+    #endregion
 
-		public string GetIdentifier()
-		{
-			return source.GetName().FullName;
-		}
-
-		#endregion
-
-		public override int GetHashCode()
-		{
-			return source.GetHashCode();
-		}
-	}
+    public override int GetHashCode()
+    {
+        return source.GetHashCode();
+    }
 }

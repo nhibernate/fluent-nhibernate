@@ -1,14 +1,13 @@
 ﻿using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Specs.Conventions.Fixtures
+namespace FluentNHibernate.Specs.Conventions.Fixtures;
+
+class TwoPropertyEntityMap : ClassMap<TwoPropertyEntity>
 {
-    class TwoPropertyEntityMap : ClassMap<TwoPropertyEntity>
+    public TwoPropertyEntityMap()
     {
-        public TwoPropertyEntityMap()
-        {
-            Id(x => x.Id);
-            Map(x => x.TargetProperty);
-            Map(x => x.OtherProperty);
-        }
+        Id(x => x.Id);
+        Map(x => x.TargetProperty);
+        Map(x => x.OtherProperty);
     }
 }

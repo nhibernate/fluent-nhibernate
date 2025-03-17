@@ -1,26 +1,16 @@
 using System;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate.Automapping;
+
+public class InlineOverride(Type type, Action<object> action)
 {
-    public class InlineOverride
+    public bool CanOverride(Type otherType)
     {
-        private readonly Type type;
-        private readonly Action<object> action;
+        return type == otherType || otherType.IsSubclassOf(type);
+    }
 
-        public InlineOverride(Type type, Action<object> action)
-        {
-            this.type = type;
-            this.action = action;
-        }
-
-        public bool CanOverride(Type otherType)
-        {
-            return type == otherType || otherType.IsSubclassOf(type);
-        }
-
-        public void Apply(object mapping)
-        {
-            action(mapping);
-        }
+    public void Apply(object mapping)
+    {
+        action(mapping);
     }
 }

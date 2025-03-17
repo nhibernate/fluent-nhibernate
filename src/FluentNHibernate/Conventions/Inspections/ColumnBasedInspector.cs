@@ -3,80 +3,72 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public abstract class ColumnBasedInspector(IEnumerable<ColumnMapping> columns)
 {
-    public abstract class ColumnBasedInspector
+    /// <summary>
+    /// Gets the requested value off the first column, as all columns are (currently) created equal
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    T GetValueFromColumns<T>(Func<ColumnMapping, object> property)
     {
-        private readonly IEnumerable<ColumnMapping> columns;
+        var column = columns.FirstOrDefault();
 
-        protected ColumnBasedInspector(IEnumerable<ColumnMapping> columns)
-        {
-            this.columns = columns;
-        }
+        if (column is not null)
+            return (T)property(column);
 
-        /// <summary>
-        /// Gets the requested value off the first column, as all columns are (currently) created equal
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        private T GetValueFromColumns<T>(Func<ColumnMapping, object> property)
-        {
-            var column = columns.FirstOrDefault();
+        return default(T);
+    }
 
-            if (column != null)
-                return (T)property(column);
+    public int Length
+    {
+        get { return GetValueFromColumns<int>(x => x.Length); }
+    }
 
-            return default(T);
-        }
+    public bool Nullable
+    {
+        get { return !GetValueFromColumns<bool>(x => x.NotNull); }
+    }
 
-        public int Length
-        {
-            get { return GetValueFromColumns<int>(x => x.Length); }
-        }
+    public string SqlType
+    {
+        get { return GetValueFromColumns<string>(x => x.SqlType); }
+    }
 
-        public bool Nullable
-        {
-            get { return !GetValueFromColumns<bool>(x => x.NotNull); }
-        }
+    public bool Unique
+    {
+        get { return GetValueFromColumns<bool>(x => x.Unique); }
+    }
 
-        public string SqlType
-        {
-            get { return GetValueFromColumns<string>(x => x.SqlType); }
-        }
+    public string UniqueKey
+    {
+        get { return GetValueFromColumns<string>(x => x.UniqueKey); }
+    }
 
-        public bool Unique
-        {
-            get { return GetValueFromColumns<bool>(x => x.Unique); }
-        }
+    public string Index
+    {
+        get { return GetValueFromColumns<string>(x => x.Index); }
+    }
 
-        public string UniqueKey
-        {
-            get { return GetValueFromColumns<string>(x => x.UniqueKey); }
-        }
+    public string Check
+    {
+        get { return GetValueFromColumns<string>(x => x.Check); }
+    }
 
-        public string Index
-        {
-            get { return GetValueFromColumns<string>(x => x.Index); }
-        }
+    public string Default
+    {
+        get { return GetValueFromColumns<string>(x => x.Default); }
+    }
 
-        public string Check
-        {
-            get { return GetValueFromColumns<string>(x => x.Check); }
-        }
+    public int Precision
+    {
+        get { return GetValueFromColumns<int>(x => x.Precision); }
+    }
 
-        public string Default
-        {
-            get { return GetValueFromColumns<string>(x => x.Default); }
-        }
-
-        public int Precision
-        {
-            get { return GetValueFromColumns<int>(x => x.Precision); }
-        }
-
-        public int Scale
-        {
-            get { return GetValueFromColumns<int>(x => x.Scale); }
-        }
+    public int Scale
+    {
+        get { return GetValueFromColumns<int>(x => x.Scale); }
     }
 }

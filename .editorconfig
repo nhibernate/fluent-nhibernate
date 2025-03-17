@@ -1,0 +1,42 @@
+root = true
+; This file is for unifying the coding style for different editors and IDEs.
+; More information at http://EditorConfig.org
+
+[*.ps1]
+indent_style = space
+indent_size = 2
+
+[*.cs]
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+max_line_length = off
+
+csharp_style_namespace_declarations = file_scoped
+
+dotnet_diagnostic.ide0161.severity = warning
+dotnet_diagnostic.nunit1032.severity = suggestion
+dotnet_diagnostic.nunit1028.severity = none
+dotnet_diagnostic.nunit2045.severity = none
+
+# ReSharper properties
+resharper_default_private_modifier = implicit
+
+# Microsoft .NET properties
+dotnet_style_require_accessibility_modifiers = never:suggestion
+
+[*.cake]
+indent_style = space
+indent_size = 4
+
+[*.js]
+indent_style = tab
+indent_size = 2
+
+[*.csproj]
+indent_style = space
+indent_size = 2
+
+[*.props]
+indent_style = space
+indent_size = 2

@@ -2,49 +2,43 @@
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlNaturalIdWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<NaturalIdMapping>
 {
-    public class XmlNaturalIdWriter : NullMappingModelVisitor, IXmlWriter<NaturalIdMapping>
+    XmlDocument document;
+
+    public XmlDocument Write(NaturalIdMapping mappingModel)
     {
-        private IXmlWriterServiceLocator serviceLocator;
-        private XmlDocument document;
+        document = null;
+        mappingModel.AcceptVisitor(this);
+        return document;
+    }
 
-        public XmlNaturalIdWriter(IXmlWriterServiceLocator serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+    public override void ProcessNaturalId(NaturalIdMapping mapping)
+    {
+        document = new XmlDocument();
 
-        public XmlDocument Write(NaturalIdMapping mappingModel)
-        {
-            document = null;
-            mappingModel.AcceptVisitor(this);
-            return document;
-        }
+        var element = document.AddElement("natural-id");
 
-        public override void ProcessNaturalId(NaturalIdMapping mapping)
-        {
-            document = new XmlDocument();
+        if (mapping.IsSpecified("Mutable"))
+            element.WithAtt("mutable", mapping.Mutable);
+    }
 
-            var element = document.AddElement("natural-id");
+    public override void Visit(PropertyMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<PropertyMapping>();
+        var xml = writer.Write(mapping);
 
-            if (mapping.IsSpecified("Mutable"))
-                element.WithAtt("mutable", mapping.Mutable);
-        }
+        document.ImportAndAppendChild(xml);
+    }
 
-        public override void Visit(PropertyMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<PropertyMapping>();
-            var xml = writer.Write(mapping);
+    public override void Visit(ManyToOneMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<ManyToOneMapping>();
+        var xml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(xml);
-        }
-
-        public override void Visit(ManyToOneMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<ManyToOneMapping>();
-            var xml = writer.Write(mapping);
-
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
     }
 }

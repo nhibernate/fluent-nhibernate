@@ -1,37 +1,30 @@
 using System.Xml;
 using FluentNHibernate.MappingModel.Collections;
-using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlCollectionRelationshipWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<ICollectionRelationshipMapping>
 {
-    public class XmlCollectionRelationshipWriter : NullMappingModelVisitor, IXmlWriter<ICollectionRelationshipMapping>
+    XmlDocument document;
+
+    public XmlDocument Write(ICollectionRelationshipMapping mappingModel)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
-        private XmlDocument document;
+        document = null;
+        mappingModel.AcceptVisitor(this);
+        return document;
+    }
 
-        public XmlCollectionRelationshipWriter(IXmlWriterServiceLocator serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+    public override void ProcessOneToMany(OneToManyMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<OneToManyMapping>();
+        document = writer.Write(mapping);
+    }
 
-        public XmlDocument Write(ICollectionRelationshipMapping mappingModel)
-        {
-            document = null;
-            mappingModel.AcceptVisitor(this);
-            return document;
-        }
-
-        public override void ProcessOneToMany(OneToManyMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<OneToManyMapping>();
-            document = writer.Write(mapping);
-        }
-
-        public override void ProcessManyToMany(ManyToManyMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<ManyToManyMapping>();
-            document = writer.Write(mapping);
-        }
+    public override void ProcessManyToMany(ManyToManyMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<ManyToManyMapping>();
+        document = writer.Write(mapping);
     }
 }

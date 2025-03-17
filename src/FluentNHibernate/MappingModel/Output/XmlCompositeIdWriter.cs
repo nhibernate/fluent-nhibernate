@@ -1,64 +1,57 @@
-using System;
 using System.Xml;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlCompositeIdWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<CompositeIdMapping>
 {
-    public class XmlCompositeIdWriter : NullMappingModelVisitor, IXmlWriter<CompositeIdMapping>
+    XmlDocument document;
+
+    public XmlDocument Write(CompositeIdMapping mappingModel)
     {
-        private IXmlWriterServiceLocator serviceLocator;
-        private XmlDocument document;
+        document = null;
+        mappingModel.AcceptVisitor(this);
+        return document;
+    }
 
-        public XmlCompositeIdWriter(IXmlWriterServiceLocator serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+    public override void ProcessCompositeId(CompositeIdMapping mapping)
+    {
+        document = new XmlDocument();
 
-        public XmlDocument Write(CompositeIdMapping mappingModel)
-        {
-            document = null;
-            mappingModel.AcceptVisitor(this);
-            return document;
-        }
+        var element = document.AddElement("composite-id");
 
-        public override void ProcessCompositeId(CompositeIdMapping mapping)
-        {
-            document = new XmlDocument();
+        if (mapping.IsSpecified("Access"))
+            element.WithAtt("access", mapping.Access);
 
-            var element = document.AddElement("composite-id");
+        if (mapping.IsSpecified("Name"))
+            element.WithAtt("name", mapping.Name);
 
-            if (mapping.IsSpecified("Access"))
-                element.WithAtt("access", mapping.Access);
+        if (mapping.IsSpecified("Class"))
+            element.WithAtt("class", mapping.Class);
 
-            if (mapping.IsSpecified("Name"))
-                element.WithAtt("name", mapping.Name);
+        if (mapping.IsSpecified("Mapped"))
+            element.WithAtt("mapped", mapping.Mapped);
 
-            if (mapping.IsSpecified("Class"))
-                element.WithAtt("class", mapping.Class);
+        if (mapping.IsSpecified("UnsavedValue"))
+            element.WithAtt("unsaved-value", mapping.UnsavedValue);
+    }
 
-            if (mapping.IsSpecified("Mapped"))
-                element.WithAtt("mapped", mapping.Mapped);
+    public override void Visit(KeyPropertyMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<KeyPropertyMapping>();
+        var xml = writer.Write(mapping);
 
-            if (mapping.IsSpecified("UnsavedValue"))
-                element.WithAtt("unsaved-value", mapping.UnsavedValue);
-        }
+        document.ImportAndAppendChild(xml);
+    }
 
-        public override void Visit(KeyPropertyMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<KeyPropertyMapping>();
-            var xml = writer.Write(mapping);
+    public override void Visit(KeyManyToOneMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<KeyManyToOneMapping>();
+        var xml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(xml);
-        }
-
-        public override void Visit(KeyManyToOneMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<KeyManyToOneMapping>();
-            var xml = writer.Write(mapping);
-
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
     }
 }

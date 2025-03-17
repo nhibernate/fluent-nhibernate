@@ -1,31 +1,26 @@
 using System;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
 using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Conventions.Helpers
+namespace FluentNHibernate.Conventions.Helpers;
+
+public static class PrimaryKey
 {
-    public static class PrimaryKey
+    public static PrimaryKeyNameBuilder Name => new();
+}
+
+public class PrimaryKeyNameBuilder
+{
+    internal PrimaryKeyNameBuilder()
+    {}
+
+    public IIdConvention Is(Func<IIdentityInspector, string> nameFunc)
     {
-        public static PrimaryKeyNameBuilder Name
+        return new BuiltIdConvention(accept => { }, instance =>
         {
-            get { return new PrimaryKeyNameBuilder(); }
-        }
-    }
+            var columnName = nameFunc(instance);
 
-    public class PrimaryKeyNameBuilder
-    {
-        internal PrimaryKeyNameBuilder()
-        {}
-
-        public IIdConvention Is(Func<IIdentityInspector, string> nameFunc)
-        {
-            return new BuiltIdConvention(accept => { }, instance =>
-            {
-                var columnName = nameFunc(instance);
-
-                instance.Column(columnName);
-            });
-        }
+            instance.Column(columnName);
+        });
     }
 }

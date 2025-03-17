@@ -1,9 +1,8 @@
 ﻿using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+public interface IElementMappingProvider
 {
-    public interface IElementMappingProvider
-    {
-        ElementMapping GetElementMapping();
-    }
+    ElementMapping GetElementMapping();
 }

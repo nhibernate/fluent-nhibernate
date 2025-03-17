@@ -1,10 +1,9 @@
-namespace FluentNHibernate.Specs.FluentInterface.Fixtures
-{
-    class EntityWithReferences
-    {
-        public ReferenceTarget Reference { get; set; }
-    }
+namespace FluentNHibernate.Specs.FluentInterface.Fixtures;
 
-    class ReferenceTarget
-    {}
+class EntityWithReferences
+{
+    public ReferenceTarget Reference { get; set; }
 }
+
+class ReferenceTarget
+{}

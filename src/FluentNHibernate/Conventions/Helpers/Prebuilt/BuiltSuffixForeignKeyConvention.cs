@@ -1,21 +1,11 @@
 using System;
-using System.Reflection;
-using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Conventions.Helpers.Prebuilt
+namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
+
+public class BuiltSuffixForeignKeyConvention(string suffix) : ForeignKeyConvention
 {
-    public class BuiltSuffixForeignKeyConvention : ForeignKeyConvention
+    protected override string GetKeyName(Member property, Type type)
     {
-        private readonly string suffix;
-
-        public BuiltSuffixForeignKeyConvention(string suffix)
-        {
-            this.suffix = suffix;
-        }
-
-        protected override string GetKeyName(Member property, Type type)
-        {
-            return (property != null ? property.Name : type.Name) + suffix;
-        }
+        return (property is not null ? property.Name : type.Name) + suffix;
     }
 }

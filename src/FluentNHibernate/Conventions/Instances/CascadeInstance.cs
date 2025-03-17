@@ -1,39 +1,31 @@
 using System;
 
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public class CascadeInstance(Action<string> setter) : ICascadeInstance
 {
-    public class CascadeInstance : ICascadeInstance
+    public void All()
     {
-        private readonly Action<string> setter;
+        setter("all");
+    }
 
-        public CascadeInstance(Action<string> setter)
-        {
-            this.setter = setter;
-        }
+    public void None()
+    {
+        setter("none");
+    }
 
-        public void All()
-        {
-            setter("all");
-        }
+    public void SaveUpdate()
+    {
+        setter("save-update");
+    }
 
-        public void None()
-        {
-            setter("none");
-        }
+    public void Delete()
+    {
+        setter("delete");
+    }
 
-        public void SaveUpdate()
-        {
-            setter("save-update");
-        }
-
-        public void Delete()
-        {
-            setter("delete");
-        }
-
-        public void Merge()
-        {
-            setter("merge");
-        }
+    public void Merge()
+    {
+        setter("merge");
     }
 }

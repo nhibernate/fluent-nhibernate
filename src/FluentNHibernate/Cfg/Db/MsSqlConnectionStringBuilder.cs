@@ -1,71 +1,84 @@
-using System.Data.SqlClient;
+using System.Text;
 
-namespace FluentNHibernate.Cfg.Db
+namespace FluentNHibernate.Cfg.Db;
+
+public class MsSqlConnectionStringBuilder : ConnectionStringBuilder
 {
-    public class MsSqlConnectionStringBuilder : ConnectionStringBuilder
+    string server;
+    string database;
+    string username;
+    string password;
+    bool trustedConnection;
+
+    public MsSqlConnectionStringBuilder Server(string server)
     {
-        private string server;
-        private string database;
-        private string username;
-        private string password;
-        private bool trustedConnection;
+        this.server = server;
+        IsDirty = true;
+        return this;
+    }
 
-        public MsSqlConnectionStringBuilder Server(string server)
+    public MsSqlConnectionStringBuilder Database(string database)
+    {
+        this.database = database;
+        IsDirty = true;
+        return this;
+    }
+
+    public MsSqlConnectionStringBuilder Username(string username)
+    {
+        this.username = username;
+        IsDirty = true;
+        return this;
+    }
+
+    public MsSqlConnectionStringBuilder Password(string password)
+    {
+        this.password = password;
+        IsDirty = true;
+        return this;
+    }
+
+    public MsSqlConnectionStringBuilder TrustedConnection()
+    {
+        trustedConnection = true;
+        IsDirty = true;
+        return this;
+    }
+
+    protected internal override string Create()
+    {
+        var connectionString = base.Create();
+
+        if (!string.IsNullOrEmpty(connectionString))
+            return connectionString;
+
+        var sb = new StringBuilder();
+
+        if (server.Contains(" "))
+            sb.AppendFormat("Data Source=\"{0}\"", server);
+        else
+            sb.AppendFormat("Data Source={0}", server);
+
+        if (database.Contains(" "))
+            sb.AppendFormat(";Initial Catalog=\"{0}\"", database);
+        else
+            sb.AppendFormat(";Initial Catalog={0}", database);
+
+        sb.AppendFormat(";Integrated Security={0}", trustedConnection);
+
+        if (!trustedConnection)
         {
-            this.server = server;
-            IsDirty = true;
-            return this;
+            if (username.Contains(" "))
+                sb.AppendFormat(";User ID=\"{0}\"", username);
+            else
+                sb.AppendFormat(";User ID={0}", username);
+
+            if (password.Contains(" "))
+                sb.AppendFormat(";Password=\"{0}\"", password);
+            else
+                sb.AppendFormat(";Password={0}", password);
         }
 
-        public MsSqlConnectionStringBuilder Database(string database)
-        {
-            this.database = database;
-            IsDirty = true;
-            return this;
-        }
-
-        public MsSqlConnectionStringBuilder Username(string username)
-        {
-            this.username = username;
-            IsDirty = true;
-            return this;
-        }
-
-        public MsSqlConnectionStringBuilder Password(string password)
-        {
-            this.password = password;
-            IsDirty = true;
-            return this;
-        }
-
-        public MsSqlConnectionStringBuilder TrustedConnection()
-        {
-            trustedConnection = true;
-            IsDirty = true;
-            return this;
-        }
-
-        protected internal override string Create()
-        {
-            var connectionString = base.Create();
-
-            if (!string.IsNullOrEmpty(connectionString))
-                return connectionString;
-
-            var builder = new SqlConnectionStringBuilder(connectionString)
-            {
-                DataSource = server,
-                InitialCatalog = database,
-                IntegratedSecurity = trustedConnection
-            };
-
-            if (!trustedConnection)
-            {
-                builder.UserID = username;
-                builder.Password = password;
-            }
-
-            return builder.ToString();
-        }
+        return sb.ToString();
     }
 }

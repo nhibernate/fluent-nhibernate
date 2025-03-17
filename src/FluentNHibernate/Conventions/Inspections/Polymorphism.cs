@@ -1,53 +1,54 @@
-namespace FluentNHibernate.Conventions.Inspections
+using System;
+
+namespace FluentNHibernate.Conventions.Inspections;
+
+public class Polymorphism : IEquatable<Polymorphism>
 {
-    public class Polymorphism
+    public static readonly Polymorphism Unset = new Polymorphism("");
+    public static readonly Polymorphism Implicit = new Polymorphism("implicit");
+    public static readonly Polymorphism Explicit = new Polymorphism("explicit");
+
+    readonly string value;
+
+    Polymorphism(string value)
     {
-        public static readonly Polymorphism Unset = new Polymorphism("");
-        public static readonly Polymorphism Implicit = new Polymorphism("implicit");
-        public static readonly Polymorphism Explicit = new Polymorphism("explicit");
+        this.value = value;
+    }
 
-        private readonly string value;
+    public override bool Equals(object obj)
+    {
+        if (obj is Polymorphism) return Equals((Polymorphism)obj);
 
-        private Polymorphism(string value)
-        {
-            this.value = value;
-        }
+        return base.Equals(obj);
+    }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is Polymorphism) return Equals((Polymorphism)obj);
+    public bool Equals(Polymorphism other)
+    {
+        return Equals(other.value, value);
+    }
 
-            return base.Equals(obj);
-        }
+    public override int GetHashCode()
+    {
+        return (value is not null ? value.GetHashCode() : 0);
+    }
 
-        public bool Equals(Polymorphism other)
-        {
-            return Equals(other.value, value);
-        }
+    public static bool operator ==(Polymorphism x, Polymorphism y)
+    {
+        return x.Equals(y);
+    }
 
-        public override int GetHashCode()
-        {
-            return (value != null ? value.GetHashCode() : 0);
-        }
+    public static bool operator !=(Polymorphism x, Polymorphism y)
+    {
+        return !(x == y);
+    }
 
-        public static bool operator ==(Polymorphism x, Polymorphism y)
-        {
-            return x.Equals(y);
-        }
+    public override string ToString()
+    {
+        return value;
+    }
 
-        public static bool operator !=(Polymorphism x, Polymorphism y)
-        {
-            return !(x == y);
-        }
-
-        public override string ToString()
-        {
-            return value;
-        }
-
-        public static Polymorphism FromString(string value)
-        {
-            return new Polymorphism(value);
-        }
+    public static Polymorphism FromString(string value)
+    {
+        return new Polymorphism(value);
     }
 }

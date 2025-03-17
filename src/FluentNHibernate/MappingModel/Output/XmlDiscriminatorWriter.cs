@@ -3,50 +3,44 @@ using FluentNHibernate.Mapping;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlDiscriminatorWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<DiscriminatorMapping>
 {
-    public class XmlDiscriminatorWriter : NullMappingModelVisitor, IXmlWriter<DiscriminatorMapping>
+    XmlDocument document;
+
+    public XmlDocument Write(DiscriminatorMapping mappingModel)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
-        private XmlDocument document;
+        document = null;
+        mappingModel.AcceptVisitor(this);
+        return document;
+    }
 
-        public XmlDiscriminatorWriter(IXmlWriterServiceLocator serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+    public override void ProcessDiscriminator(DiscriminatorMapping discriminatorMapping)
+    {
+        document = new XmlDocument();
 
-        public XmlDocument Write(DiscriminatorMapping mappingModel)
-        {
-            document = null;
-            mappingModel.AcceptVisitor(this);
-            return document;
-        }
+        var discriminatorElement = document.AddElement("discriminator");
 
-        public override void ProcessDiscriminator(DiscriminatorMapping discriminatorMapping)
-        {
-            document = new XmlDocument();
+        if (discriminatorMapping.IsSpecified("Type"))
+            discriminatorElement.WithAtt("type", TypeMapping.GetTypeString(discriminatorMapping.Type.GetUnderlyingSystemType()));
 
-            var discriminatorElement = document.AddElement("discriminator");
+        if (discriminatorMapping.IsSpecified("Force"))
+            discriminatorElement.WithAtt("force", discriminatorMapping.Force);
 
-            if (discriminatorMapping.IsSpecified("Type"))
-                discriminatorElement.WithAtt("type", TypeMapping.GetTypeString(discriminatorMapping.Type.GetUnderlyingSystemType()));
+        if (discriminatorMapping.IsSpecified("Formula"))
+            discriminatorElement.WithAtt("formula", discriminatorMapping.Formula);
 
-            if (discriminatorMapping.IsSpecified("Force"))
-                discriminatorElement.WithAtt("force", discriminatorMapping.Force);
+        if (discriminatorMapping.IsSpecified("Insert"))
+            discriminatorElement.WithAtt("insert", discriminatorMapping.Insert);
+    }
 
-            if (discriminatorMapping.IsSpecified("Formula"))
-                discriminatorElement.WithAtt("formula", discriminatorMapping.Formula);
+    public override void Visit(ColumnMapping columnMapping)
+    {
+        var writer = serviceLocator.GetWriter<ColumnMapping>();
+        var columnXml = writer.Write(columnMapping);
 
-            if (discriminatorMapping.IsSpecified("Insert"))
-                discriminatorElement.WithAtt("insert", discriminatorMapping.Insert);
-        }
-
-        public override void Visit(ColumnMapping columnMapping)
-        {
-            var writer = serviceLocator.GetWriter<ColumnMapping>();
-            var columnXml = writer.Write(columnMapping);
-
-            document.ImportAndAppendChild(columnXml);
-        }
+        document.ImportAndAppendChild(columnXml);
     }
 }

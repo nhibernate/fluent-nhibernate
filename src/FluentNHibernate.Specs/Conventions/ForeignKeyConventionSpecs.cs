@@ -4,62 +4,62 @@ using FluentNHibernate.Conventions;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Conventions.Fixtures;
 using Machine.Specifications;
+using FluentAssertions;
 
-namespace FluentNHibernate.Specs.Conventions
+namespace FluentNHibernate.Specs.Conventions;
+
+public abstract class ForeignKeyConventionSpec
 {
-    public abstract class ForeignKeyConventionSpec
+    Establish context = () =>
     {
-        Establish context = () =>
-        {
-            model = new FluentNHibernate.PersistenceModel();
-            model.Conventions.Add(new TestForeignKeyConvention());
-        };
+        model = new FluentNHibernate.PersistenceModel();
+        model.Conventions.Add(new TestForeignKeyConvention());
+    };
 
-        protected static FluentNHibernate.PersistenceModel model;
-        protected static ClassMapping mapping;
+    protected static FluentNHibernate.PersistenceModel model;
+    protected static ClassMapping mapping;
 
-        class TestForeignKeyConvention : ForeignKeyConvention
+    class TestForeignKeyConvention : ForeignKeyConvention
+    {
+        protected override string GetKeyName(Member property, Type type)
         {
-            protected override string GetKeyName(Member property, Type type)
-            {
-                return "KEY_NAME";
-            }
+            return "KEY_NAME";
         }
     }
+}
 
-    public class when_a_foreign_key_convention_is_being_applied_to_a_set_mapping : ForeignKeyConventionSpec
-    {
-        Establish context = () =>
-            model.Add(new SetCollectionEntityMap());
+public class when_a_foreign_key_convention_is_being_applied_to_a_set_mapping : ForeignKeyConventionSpec
+{
+    Establish context = () =>
+        model.Add(new SetCollectionEntityMap());
 
-        Because of = () =>
-            mapping = model.BuildMappingFor<SetCollectionEntity>();
+    Because of = () =>
+        mapping = model.BuildMappingFor<SetCollectionEntity>();
 
-        It should_override_the_key_column_name = () =>
-            mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("KEY_NAME");
-    }
+    It should_override_the_key_column_name = () =>
+        mapping.Collections.Single().Key.Columns.Single().Name.Should().Be("KEY_NAME");
+}
 
-    public class when_a_foreign_key_convention_is_being_applied_to_a_set_mapping_with_an_element : ForeignKeyConventionSpec
-    {
-        Establish context = () =>
-            model.Add(new SetElementCollectionEntityMap());
+public class when_a_foreign_key_convention_is_being_applied_to_a_set_mapping_with_an_element : ForeignKeyConventionSpec
+{
+    Establish context = () =>
+        model.Add(new SetElementCollectionEntityMap());
 
-        Because of = () =>
-            mapping = model.BuildMappingFor<SetElementCollectionEntity>();
+    Because of = () =>
+        mapping = model.BuildMappingFor<SetElementCollectionEntity>();
 
-        It should_override_the_key_column_name = () =>
-            mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("KEY_NAME");
-    }
+    It should_override_the_key_column_name = () =>
+        mapping.Collections.Single().Key.Columns.Single().Name.Should().Be("KEY_NAME");
+}
 
-    public class when_a_foreign_key_convention_is_being_applied_to_a_set_mapping_with_a_composite_element : ForeignKeyConventionSpec
-    {
-        Establish context = () =>
-            model.Add(new SetCompositeElementCollectionEntityMap());
+public class when_a_foreign_key_convention_is_being_applied_to_a_set_mapping_with_a_composite_element : ForeignKeyConventionSpec
+{
+    Establish context = () =>
+        model.Add(new SetCompositeElementCollectionEntityMap());
 
-        Because of = () =>
-            mapping = model.BuildMappingFor<SetCompositeElementCollectionEntity>();
+    Because of = () =>
+        mapping = model.BuildMappingFor<SetCompositeElementCollectionEntity>();
 
-        It should_override_the_key_column_name = () =>
-            mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("KEY_NAME");
-    }
+    It should_override_the_key_column_name = () =>
+        mapping.Collections.Single().Key.Columns.Single().Name.Should().Be("KEY_NAME");
 }

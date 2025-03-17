@@ -1,11 +1,10 @@
 using System;
 
-namespace FluentNHibernate.Automapping
+namespace FluentNHibernate.Automapping;
+
+[Obsolete("Use IsDiscriminated in IAutomappingConfiguration instead")]
+public enum SubclassStrategy
 {
-    [Obsolete("Use IsDiscriminated in IAutomappingConfiguration instead")]
-    public enum SubclassStrategy
-    {
-        JoinedSubclass,
-        Subclass
-    }
+    JoinedSubclass,
+    Subclass
 }

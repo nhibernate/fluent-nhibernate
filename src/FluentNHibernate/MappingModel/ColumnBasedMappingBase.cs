@@ -2,56 +2,47 @@ using System;
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.MappingModel;
+
+[Serializable]
+public abstract class ColumnBasedMappingBase(AttributeStore underlyingStore) : MappingBase, IHasColumnMappings
 {
-    [Serializable]
-    public abstract class ColumnBasedMappingBase : MappingBase, IHasColumnMappings
+    readonly LayeredColumns columns = new LayeredColumns();
+    protected readonly AttributeStore attributes = underlyingStore.Clone();
+
+    public IEnumerable<ColumnMapping> Columns => columns.Columns;
+
+    public void AddColumn(int layer, ColumnMapping mapping)
     {
-        readonly LayeredColumns columns = new LayeredColumns();
-        protected readonly AttributeStore attributes;
+        columns.AddColumn(layer, mapping);
+    }
 
-        protected ColumnBasedMappingBase(AttributeStore underlyingStore)
-        {
-            attributes = underlyingStore.Clone();
-        }
+    public void MakeColumnsEmpty(int layer)
+    {
+        columns.MakeColumnsEmpty(layer);
+    }
 
-        public IEnumerable<ColumnMapping> Columns
-        {
-            get { return columns.Columns; }
-        }
+    public bool Equals(ColumnBasedMappingBase other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return other.columns.ContentEquals(columns) &&
+               Equals(other.attributes, attributes);
+    }
 
-        public void AddColumn(int layer, ColumnMapping mapping)
-        {
-            columns.AddColumn(layer, mapping);
-        }
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != typeof(ColumnBasedMappingBase)) return false;
+        return Equals((ColumnBasedMappingBase)obj);
+    }
 
-        public void MakeColumnsEmpty(int layer)
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            columns.MakeColumnsEmpty(layer);
-        }
-
-        public bool Equals(ColumnBasedMappingBase other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return other.columns.ContentEquals(columns) &&
-                Equals(other.attributes, attributes);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof(ColumnBasedMappingBase)) return false;
-            return Equals((ColumnBasedMappingBase)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return ((columns != null ? columns.GetHashCode() : 0) * 397) ^ (attributes != null ? attributes.GetHashCode() : 0);
-            }
+            return ((columns is not null ? columns.GetHashCode() : 0) * 397) ^ (attributes is not null ? attributes.GetHashCode() : 0);
         }
     }
 }

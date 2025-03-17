@@ -1,40 +1,38 @@
 using System;
 using FluentNHibernate.Automapping;
-using FluentNHibernate.Cfg.Db;
 using NHibernate.Cfg;
 using NUnit.Framework;
+using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
-namespace FluentNHibernate.Testing.Automapping
+namespace FluentNHibernate.Testing.Automapping;
+
+public abstract class BaseAutoMapFixture
 {
-    public abstract class BaseAutoMapFixture
+    Configuration cfg;
+    AutoPersistenceModel apm;
+
+    [SetUp]
+    public void CreateDatabaseCfg()
     {
-        private Configuration cfg;
-        private AutoPersistenceModel apm;
+        cfg = new Configuration();
 
-        [SetUp]
-        public void CreateDatabaseCfg()
-        {
-            cfg = new Configuration();
+        CreateStandardInMemoryConfiguration()
+            .ConfigureProperties(cfg);
+    }
 
-            SQLiteConfiguration.Standard
-                .InMemory()
-                .ConfigureProperties(cfg);
-        }
+    protected void Model<T>()
+    {
+        apm = AutoMap.Source(new StubTypeSource(typeof(T)));
+    }
 
-        protected void Model<T>()
-        {
-            apm = AutoMap.Source(new StubTypeSource(typeof(T)));
-        }
+    protected void Model<T>(Action<AutoPersistenceModel> modelSetup)
+    {
+        apm = AutoMap.Source(new StubTypeSource(typeof(T)));
+        modelSetup(apm);
+    }
 
-        protected void Model<T>(Action<AutoPersistenceModel> modelSetup)
-        {
-            apm = AutoMap.Source(new StubTypeSource(typeof(T)));
-            modelSetup(apm);
-        }
-
-        protected void Test<T>(Action<AutoMappingTester<T>> mappingTester)
-        {
-            mappingTester(new AutoMappingTester<T>(apm));
-        }
+    protected void Test<T>(Action<AutoMappingTester<T>> mappingTester)
+    {
+        mappingTester(new AutoMappingTester<T>(apm));
     }
 }

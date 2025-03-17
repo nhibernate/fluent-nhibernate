@@ -1,32 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions.AcceptanceCriteria
+namespace FluentNHibernate.Conventions.AcceptanceCriteria;
+
+public class AnyExpectation<TInspector>(IEnumerable<IAcceptanceCriteria<TInspector>> subCriteria) : IExpectation
+    where TInspector : IInspector
 {
-    public class AnyExpectation<TInspector> : IExpectation
-        where TInspector : IInspector
+    readonly List<IAcceptanceCriteria<TInspector>> subCriteria = subCriteria.ToList();
+
+    public bool Matches(IInspector inspector)
     {
-        private readonly IList<IAcceptanceCriteria<TInspector>> subCriteria;
+        return subCriteria.Any(e => e.Matches(inspector));
+    }
 
-        public AnyExpectation(IEnumerable<IAcceptanceCriteria<TInspector>> subCriteria)
-        {
-            this.subCriteria = new List<IAcceptanceCriteria<TInspector>>(subCriteria);
-        }
+    bool IExpectation.Matches(IInspector inspector)
+    {
+        if (inspector is TInspector)
+            return Matches((TInspector)inspector);
 
-        public bool Matches(IInspector inspector)
-        {
-            return subCriteria.Any(e => e.Matches(inspector));
-        }
-
-        bool IExpectation.Matches(IInspector inspector)
-        {
-            if (inspector is TInspector)
-                return Matches((TInspector)inspector);
-
-            return false;
-        }
+        return false;
     }
 }

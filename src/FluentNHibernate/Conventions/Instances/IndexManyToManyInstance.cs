@@ -3,34 +3,28 @@ using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public class IndexManyToManyInstance(IndexManyToManyMapping mapping)
+    : IndexManyToManyInspector(mapping), IIndexManyToManyInstance
 {
-    public class IndexManyToManyInstance :IndexManyToManyInspector, IIndexManyToManyInstance
+    readonly IndexManyToManyMapping mapping = mapping;
+
+    /// <summary>
+    /// Adds a column to the index if columns have not yet been specified
+    /// </summary>
+    /// <param name="columnName">The column name to add</param>
+    public void Column(string columnName)
     {
-        private readonly IndexManyToManyMapping mapping;
+        var originalColumn = mapping.Columns.FirstOrDefault();
+        var column = originalColumn is null ? new ColumnMapping() : originalColumn.Clone();
+        column.Set(x => x.Name, Layer.Conventions, columnName);
 
-        public IndexManyToManyInstance(IndexManyToManyMapping mapping) 
-            : base(mapping)
-        {
-            this.mapping = mapping;
-        }
+        mapping.AddColumn(Layer.Conventions, column);
+    }
 
-        /// <summary>
-        /// Adds a column to the index if columns have not yet been specified
-        /// </summary>
-        /// <param name="columnName">The column name to add</param>
-        public void Column(string columnName)
-        {
-            var originalColumn = mapping.Columns.FirstOrDefault();
-            var column = originalColumn == null ? new ColumnMapping() : originalColumn.Clone();
-            column.Set(x => x.Name, Layer.Conventions, columnName);
-
-            mapping.AddColumn(Layer.Conventions, column);
-        }
-
-        public new void ForeignKey(string foreignKey)
-        {
-            mapping.Set(x => x.ForeignKey, Layer.Conventions, foreignKey);
-        }
+    public new void ForeignKey(string foreignKey)
+    {
+        mapping.Set(x => x.ForeignKey, Layer.Conventions, foreignKey);
     }
 }

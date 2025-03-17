@@ -1,9 +1,8 @@
 using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions.AcceptanceCriteria
+namespace FluentNHibernate.Conventions.AcceptanceCriteria;
+
+public interface IExpectation
 {
-    public interface IExpectation
-    {
-        bool Matches(IInspector inspector);
-    }
+    bool Matches(IInspector inspector);
 }

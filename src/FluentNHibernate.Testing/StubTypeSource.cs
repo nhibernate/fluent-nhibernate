@@ -2,35 +2,34 @@ using System;
 using System.Collections.Generic;
 using FluentNHibernate.Diagnostics;
 
-namespace FluentNHibernate.Testing
+namespace FluentNHibernate.Testing;
+
+class StubTypeSource : ITypeSource
 {
-    internal class StubTypeSource : ITypeSource
+    readonly IEnumerable<Type> types;
+
+    public StubTypeSource(params Type[] types)
     {
-        private readonly IEnumerable<Type> types;
+        this.types = types;
+    }
 
-        public StubTypeSource(params Type[] types)
-        {
-            this.types = types;
-        }
+    public StubTypeSource(IEnumerable<Type> types)
+    {
+        this.types = types;
+    }
 
-        public StubTypeSource(IEnumerable<Type> types)
-        {
-            this.types = types;
-        }
+    public IEnumerable<Type> GetTypes()
+    {
+        return types;
+    }
 
-        public IEnumerable<Type> GetTypes()
-        {
-            return types;
-        }
+    public void LogSource(IDiagnosticLogger logger)
+    {
+        logger.LoadedFluentMappingsFromSource(this);
+    }
 
-        public void LogSource(IDiagnosticLogger logger)
-        {
-            logger.LoadedFluentMappingsFromSource(this);
-        }
-
-        public string GetIdentifier()
-        {
-            return "StubTypeSource";
-        }
+    public string GetIdentifier()
+    {
+        return "StubTypeSource";
     }
 }

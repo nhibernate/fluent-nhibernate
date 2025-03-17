@@ -1,18 +1,11 @@
 ﻿using System;
 
-namespace FluentNHibernate.Visitors
-{
-    [Serializable]
-    public class ValidationException : Exception
-    {
-        public ValidationException(string message, string resolution, Type relatedEntity)
-            : base(message + " " + resolution + ".")
-        {
-            Resolution = resolution;
-            RelatedEntity = relatedEntity;
-        }
+namespace FluentNHibernate.Visitors;
 
-        public Type RelatedEntity { get; private set; }
-        public string Resolution { get; private set; }
-    }
+[Serializable]
+public class ValidationException(string message, string resolution, Type relatedEntity)
+    : Exception(message + " " + resolution + ".")
+{
+    public Type RelatedEntity { get; } = relatedEntity;
+    public string Resolution { get; } = resolution;
 }

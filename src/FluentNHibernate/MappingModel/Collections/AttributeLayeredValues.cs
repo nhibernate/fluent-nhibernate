@@ -3,108 +3,107 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace FluentNHibernate.MappingModel.Collections
+namespace FluentNHibernate.MappingModel.Collections;
+
+[Serializable]
+public class AttributeLayeredValues: ISerializable, IEquatable<AttributeLayeredValues>
 {
-    [Serializable]
-    public class AttributeLayeredValues: ISerializable
+    readonly Dictionary<string, LayeredValues> inner;
+
+    public AttributeLayeredValues()
     {
-        readonly Dictionary<string, LayeredValues> inner;
-
-        public AttributeLayeredValues()
-        {
-            inner = new Dictionary<string, LayeredValues>();
-        }
+        inner = new Dictionary<string, LayeredValues>();
+    }
         
-        public AttributeLayeredValues(SerializationInfo info, StreamingContext context)
+    public AttributeLayeredValues(SerializationInfo info, StreamingContext context)
+    {
+        inner = (Dictionary<string, LayeredValues>)info
+            .GetValue("inner", typeof(Dictionary<string, LayeredValues>));
+        inner.OnDeserialization(this);
+    }
+
+    public LayeredValues this[string attribute]
+    {
+        get
         {
-            inner = (Dictionary<string, LayeredValues>)info
-                .GetValue("inner", typeof(Dictionary<string, LayeredValues>));
-            inner.OnDeserialization(this);
+            EnsureValueExists(attribute);
+            return inner[attribute];
+        }
+    }
+
+    void EnsureValueExists(string attribute)
+    {
+        if (!inner.ContainsKey(attribute))
+            inner[attribute] = new LayeredValues();
+    }
+
+    public bool ContainsKey(string attribute)
+    {
+        return inner.ContainsKey(attribute);
+    }
+
+    public void CopyTo(AttributeLayeredValues other)
+    {
+        foreach (var layeredValues in inner)
+        {
+            foreach (var layeredValue in layeredValues.Value)
+                other[layeredValues.Key][layeredValue.Key] = layeredValue.Value;
+        }
+    }
+
+    public bool ContentEquals(AttributeLayeredValues other)
+    {
+        if (other.inner.Keys.Count != inner.Keys.Count)
+            return false; // different number of keys
+        if (!other.inner.Keys.All(key => inner.Keys.Contains(key)))
+            return false; // different keys
+
+        foreach (var theirs in other.inner)
+        {
+            var ours = inner[theirs.Key];
+
+            if (!theirs.Value.ContentEquals(ours))
+                return false;
         }
 
-        public LayeredValues this[string attribute]
+        return true;
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is AttributeLayeredValues)
+            return Equals((AttributeLayeredValues)obj);
+        return base.Equals(obj);
+    }
+
+    public bool Equals(AttributeLayeredValues other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return other.inner.ContentEquals(inner);
+    }
+
+    public override int GetHashCode()
+    {
+        int hashCode = 0;
+
+        unchecked
         {
-            get
+            foreach (var pair in inner)
             {
-                EnsureValueExists(attribute);
-                return inner[attribute];
-            }
-        }
-
-        void EnsureValueExists(string attribute)
-        {
-            if (!inner.ContainsKey(attribute))
-                inner[attribute] = new LayeredValues();
-        }
-
-        public bool ContainsKey(string attribute)
-        {
-            return inner.ContainsKey(attribute);
-        }
-
-        public void CopyTo(AttributeLayeredValues other)
-        {
-            foreach (var layeredValues in inner)
-            {
-                foreach (var layeredValue in layeredValues.Value)
-                    other[layeredValues.Key][layeredValue.Key] = layeredValue.Value;
-            }
-        }
-
-        public bool ContentEquals(AttributeLayeredValues other)
-        {
-            if (other.inner.Keys.Count != inner.Keys.Count)
-                return false; // different number of keys
-            if (!other.inner.Keys.All(key => inner.Keys.Contains(key)))
-                return false; // different keys
-
-            foreach (var theirs in other.inner)
-            {
-                var ours = inner[theirs.Key];
-
-                if (!theirs.Value.ContentEquals(ours))
-                    return false;
-            }
-
-            return true;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is AttributeLayeredValues)
-                return Equals((AttributeLayeredValues)obj);
-            return base.Equals(obj);
-        }
-
-        public bool Equals(AttributeLayeredValues other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return other.inner.ContentEquals(inner);
-        }
-
-        public override int GetHashCode()
-        {
-            int hashCode = 0;
-
-            unchecked
-            {
-                foreach (var pair in inner)
-                {
-                    var pairCode = 0;
+                var pairCode = 0;
                 
-                    pairCode += pair.Key.GetHashCode();
-                    pairCode += pair.Value.GetHashCode();
-                    hashCode += pairCode ^ 367;
-                }
+                pairCode += pair.Key.GetHashCode();
+                pairCode += pair.Value.GetHashCode();
+                hashCode += pairCode ^ 367;
             }
-
-            return hashCode;
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("inner", inner);
-        }
+        return hashCode;
+    }
+
+    public void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+        info.AddValue("inner", inner);
     }
 }

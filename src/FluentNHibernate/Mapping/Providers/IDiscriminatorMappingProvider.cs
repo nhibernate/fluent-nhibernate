@@ -1,9 +1,8 @@
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+public interface IDiscriminatorMappingProvider
 {
-    public interface IDiscriminatorMappingProvider
-    {
-        DiscriminatorMapping GetDiscriminatorMapping();
-    }
+    DiscriminatorMapping GetDiscriminatorMapping();
 }

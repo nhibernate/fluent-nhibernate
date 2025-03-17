@@ -3,59 +3,58 @@ using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 
-namespace FluentNHibernate.Mapping
+namespace FluentNHibernate.Mapping;
+
+public class ComponentPart<T> : ComponentPartBase<T, ComponentPart<T>>, IComponentMappingProvider
 {
-    public class ComponentPart<T> : ComponentPartBase<T, ComponentPart<T>>, IComponentMappingProvider
+    readonly Type entity;
+    readonly AttributeStore attributes;
+    string columnPrefix;
+
+    public ComponentPart(Type entity, Member property)
+        : this(entity, property, new AttributeStore())
+    {}
+
+    ComponentPart(Type entity, Member property, AttributeStore attributes)
+        : base(attributes, property)
     {
-        private readonly Type entity;
-        private readonly AttributeStore attributes;
-        private string columnPrefix;
+        this.attributes = attributes;
+        this.entity = entity;
+    }
 
-        public ComponentPart(Type entity, Member property)
-            : this(entity, property, new AttributeStore())
-        {}
+    /// <summary>
+    /// Sets the prefix for every column defined within the component. To refer to the name of a member that exposes
+    /// the component use {property}
+    /// </summary>
+    /// <param name="prefix"></param>
+    public void ColumnPrefix(string prefix)
+    {
+        columnPrefix = prefix;
+    }
 
-        private ComponentPart(Type entity, Member property, AttributeStore attributes)
-            : base(attributes, property)
+    /// <summary>
+    /// Specify the lazy-load behaviour
+    /// </summary>
+    public ComponentPart<T> LazyLoad()
+    {
+        attributes.Set("Lazy", Layer.UserSupplied, nextBool);
+        nextBool = true;
+        return this;
+    }
+
+    IComponentMapping IComponentMappingProvider.GetComponentMapping()
+    {
+        return CreateComponentMapping();
+    }
+
+    protected override ComponentMapping CreateComponentMappingRoot(AttributeStore store)
+    {
+        var componentMappingRoot = new ComponentMapping(ComponentType.Component, store, member)
         {
-            this.attributes = attributes;
-            this.entity = entity;
-        }
-
-        /// <summary>
-        /// Sets the prefix for every column defined within the component. To refer to the name of a member that exposes
-        /// the component use {property}
-        /// </summary>
-        /// <param name="prefix"></param>
-        public void ColumnPrefix(string prefix)
-        {
-            columnPrefix = prefix;
-        }
-
-        /// <summary>
-        /// Specify the lazy-load behaviour
-        /// </summary>
-        public ComponentPart<T> LazyLoad()
-        {
-            attributes.Set("Lazy", Layer.UserSupplied, nextBool);
-            nextBool = true;
-            return this;
-        }
-
-        IComponentMapping IComponentMappingProvider.GetComponentMapping()
-        {
-            return CreateComponentMapping();
-        }
-
-        protected override ComponentMapping CreateComponentMappingRoot(AttributeStore store)
-        {
-            var componentMappingRoot = new ComponentMapping(ComponentType.Component, store, member)
-            {
-                ContainingEntityType = entity
-            };
-            componentMappingRoot.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(T)));
-            componentMappingRoot.ColumnPrefix = columnPrefix;
-            return componentMappingRoot;
-        }
+            ContainingEntityType = entity
+        };
+        componentMappingRoot.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(T)));
+        componentMappingRoot.ColumnPrefix = columnPrefix;
+        return componentMappingRoot;
     }
 }

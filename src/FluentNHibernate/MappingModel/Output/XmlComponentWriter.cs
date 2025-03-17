@@ -2,46 +2,37 @@
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlReferenceComponentWriter(IXmlWriterServiceLocator serviceLocator)
+    : BaseXmlComponentWriter(serviceLocator), IXmlWriter<ReferenceComponentMapping>
 {
-    public class XmlReferenceComponentWriter : BaseXmlComponentWriter, IXmlWriter<ReferenceComponentMapping>
+    IXmlWriter<IComponentMapping> innerWriter = serviceLocator.GetWriter<IComponentMapping>();
+
+    public XmlDocument Write(ReferenceComponentMapping mappingModel)
     {
-        private IXmlWriter<IComponentMapping> innerWriter;
+        return innerWriter.Write(mappingModel.MergedModel);
+    }
+}
 
-        public XmlReferenceComponentWriter(IXmlWriterServiceLocator serviceLocator)
-            : base(serviceLocator)
-        {
-            innerWriter = serviceLocator.GetWriter<IComponentMapping>();
-        }
-
-        public XmlDocument Write(ReferenceComponentMapping mappingModel)
-        {
-            return innerWriter.Write(mappingModel.MergedModel);
-        }
+public class XmlComponentWriter(IXmlWriterServiceLocator serviceLocator)
+    : BaseXmlComponentWriter(serviceLocator), IXmlWriter<IComponentMapping>
+{
+    public XmlDocument Write(IComponentMapping mappingModel)
+    {
+        document = null;
+        mappingModel.AcceptVisitor(this);
+        return document;
     }
 
-    public class XmlComponentWriter : BaseXmlComponentWriter, IXmlWriter<IComponentMapping>
+    public override void ProcessComponent(ComponentMapping mapping)
     {
-        public XmlComponentWriter(IXmlWriterServiceLocator serviceLocator)
-            : base(serviceLocator)
-        {}
+        document = WriteComponent(mapping.ComponentType.GetElementName(), mapping);
 
-        public XmlDocument Write(IComponentMapping mappingModel)
-        {
-            document = null;
-            mappingModel.AcceptVisitor(this);
-            return document;
-        }
+        if (mapping.IsSpecified("Class"))
+            document.DocumentElement.WithAtt("class", mapping.Class);
 
-        public override void ProcessComponent(ComponentMapping mapping)
-        {
-            document = WriteComponent(mapping.ComponentType.GetElementName(), mapping);
-
-            if (mapping.IsSpecified("Class"))
-                document.DocumentElement.WithAtt("class", mapping.Class);
-
-            if (mapping.IsSpecified("Lazy"))
-                document.DocumentElement.WithAtt("lazy", mapping.Lazy);
-        }
+        if (mapping.IsSpecified("Lazy"))
+            document.DocumentElement.WithAtt("lazy", mapping.Lazy);
     }
 }

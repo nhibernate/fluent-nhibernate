@@ -1,9 +1,8 @@
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public interface IFetchInstance
 {
-    public interface IFetchInstance
-    {
-        void Join();
-        void Select();
-        void Subselect();
-    }
+    void Join();
+    void Select();
+    void Subselect();
 }

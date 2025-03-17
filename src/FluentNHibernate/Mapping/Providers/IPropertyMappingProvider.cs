@@ -1,9 +1,8 @@
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+public interface IPropertyMappingProvider
 {
-    public interface IPropertyMappingProvider
-    {
-        PropertyMapping GetPropertyMapping();
-    }
+    PropertyMapping GetPropertyMapping();
 }

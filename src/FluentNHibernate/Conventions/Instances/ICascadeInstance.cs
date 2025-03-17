@@ -1,13 +1,10 @@
-using FluentNHibernate.Conventions.Inspections;
+namespace FluentNHibernate.Conventions.Instances;
 
-namespace FluentNHibernate.Conventions.Instances
+public interface ICascadeInstance
 {
-    public interface ICascadeInstance
-    {
-        void All();
-        void None();
-        void SaveUpdate();
-        void Delete();
-        void Merge();
-    }
+    void All();
+    void None();
+    void SaveUpdate();
+    void Delete();
+    void Merge();
 }

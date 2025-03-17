@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using FluentNHibernate.Specs.ExternalFixtures;
 
-namespace FluentNHibernate.Specs.Automapping.Fixtures
+namespace FluentNHibernate.Specs.Automapping.Fixtures;
+
+class DictionaryEntity
 {
-    class DictionaryEntity
-    {
-        public int Id { get; set; }
-        public IDictionary<string, EntityChild> GenericDictionary { get; set; }
-        public IDictionary Dictionary { get; set; }
-    }
+    public int Id { get; set; }
+    public IDictionary<string, EntityChild> GenericDictionary { get; set; }
+    public IDictionary Dictionary { get; set; }
 }

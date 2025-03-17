@@ -2,19 +2,18 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.TestFixtures.SuperTypes;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Automapping
+namespace FluentNHibernate.Testing.Automapping;
+
+[TestFixture]
+public class UnionSubclassTests
 {
-    [TestFixture]
-    public class UnionSubclassTests
+    [Test]
+    public void WhenOverloadedWithUseUnionSubclassForInheritanceMappingUnionSubclassElementShouldExists()
     {
-        [Test]
-        public void WhenOverloadedWithUseUnionSubclassForInheritanceMappingUnionSubclassElementShouldExists()
-        {
-            new AutoMappingTester<SuperType>(
+        new AutoMappingTester<SuperType>(
                 AutoMap.AssemblyOf<SuperType>()
                     .Where(x => x.Namespace == typeof(SuperType).Namespace)
                     .Override<SuperType>(m => m.UseUnionSubclassForInheritanceMapping()))
-                .Element("class/union-subclass").Exists();
-        }
+            .Element("class/union-subclass").Exists();
     }
 }

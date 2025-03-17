@@ -7,46 +7,45 @@ using FluentNHibernate.Testing.DomainModel.Mapping;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.MappingModel.Defaults
+namespace FluentNHibernate.Testing.MappingModel.Defaults;
+
+[TestFixture]
+public class PropertyColumnDefaultsTester
 {
-    [TestFixture]
-    public class PropertyColumnDefaultsTester
+    [Test]
+    public void ShouldHaveDefaultColumnIfNoneSpecified()
     {
-        [Test]
-        public void ShouldHaveDefaultColumnIfNoneSpecified()
-        {
-            var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget)))
-                .GetPropertyMapping();
+        var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget)))
+            .GetPropertyMapping();
 
-            mapping.Columns.Count().ShouldEqual(1);
-            mapping.Columns.Count().ShouldEqual(1);
-        }
+        mapping.Columns.Count().ShouldEqual(1);
+        mapping.Columns.Count().ShouldEqual(1);
+    }
 
-        [Test]
-        public void ShouldHaveNoDefaultsIfUserSpecifiedColumn()
-        {
-            var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget))
+    [Test]
+    public void ShouldHaveNoDefaultsIfUserSpecifiedColumn()
+    {
+        var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget))
                 .Column("explicit"))
-                .GetPropertyMapping();
+            .GetPropertyMapping();
 
-            mapping.Columns.Count().ShouldEqual(1);
-            mapping.Columns.Count().ShouldEqual(1);
-        }
+        mapping.Columns.Count().ShouldEqual(1);
+        mapping.Columns.Count().ShouldEqual(1);
+    }
 
-        [Test]
-        public void DefaultColumnShouldInheritColumnAttributes()
-        {
-            var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget))
+    [Test]
+    public void DefaultColumnShouldInheritColumnAttributes()
+    {
+        var mapping = ((IPropertyMappingProvider)new PropertyPart(Prop(x => x.Name), typeof(PropertyTarget))
                 .Not.Nullable())
-                .GetPropertyMapping();
+            .GetPropertyMapping();
 
-            mapping.Columns.First().NotNull.ShouldBeTrue();
-            mapping.Columns.First().NotNull.ShouldBeTrue();
-        }
+        mapping.Columns.First().NotNull.ShouldBeTrue();
+        mapping.Columns.First().NotNull.ShouldBeTrue();
+    }
 
-        private Member Prop(Expression<Func<PropertyTarget, object>> propertyAccessor)
-        {
-            return ReflectionHelper.GetMember(propertyAccessor);
-        }
+    Member Prop(Expression<Func<PropertyTarget, object>> propertyAccessor)
+    {
+        return ReflectionHelper.GetMember(propertyAccessor);
     }
 }

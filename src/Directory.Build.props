@@ -1,0 +1,38 @@
+<Project>
+  <PropertyGroup>
+    <Copyright>Copyright (c) James Gregory and contributors (Paul Batum, Hudson Akridge, Gleb Chermennov, Jorge Rodríguez Galán).</Copyright>
+    <Authors>James Gregory and contributors (Paul Batum, Hudson Akridge, Gleb Chermennov, Jorge Rodríguez Galán).</Authors>
+    <Company>NHibernate.info</Company>
+    <PackageDescription>Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernate.</PackageDescription>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIconUrl>https://raw.githubusercontent.com/nhibernate/fluent-nhibernate/main/docs/logo-nuget.png</PackageIconUrl>
+    <PackageIcon>logo-nuget.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/nhibernate/fluent-nhibernate</PackageProjectUrl>
+    <PackageTags>ORM;DAL;NHibernate;Fluent;Conventions;DataBase;ADO.Net;Mappings</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <AssembyDescription></AssembyDescription>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <LangVersion>12</LangVersion>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditLevel>low</NuGetAuditLevel>
+    <NuGetAuditMode>all</NuGetAuditMode>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(CI)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+    <None Include="$(MSBuildThisFileDirectory)../docs/logo-nuget.png" Pack="true" PackagePath="/"/>
+    <None Include="$(MSBuildThisFileDirectory)../LICENSE" Pack="true" PackagePath="/"/>
+    <None Include="$(MSBuildThisFileDirectory)../README.md" Pack="true" PackagePath="/"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+  </ItemGroup>
+</Project>

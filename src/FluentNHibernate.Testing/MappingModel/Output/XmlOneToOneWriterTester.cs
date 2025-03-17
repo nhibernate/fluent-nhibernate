@@ -4,111 +4,110 @@ using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.MappingModel.Output
+namespace FluentNHibernate.Testing.MappingModel.Output;
+
+[TestFixture]
+public class XmlOneToOneWriterTester
 {
-    [TestFixture]
-    public class XmlOneToOneWriterTester
+    XmlOneToOneWriter writer;
+
+    [Test]
+    public void ShouldWriteAccessAttribute()
     {
-        private XmlOneToOneWriter writer;
+        writer = new XmlOneToOneWriter();
+        var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
+        testHelper.Check(x => x.Access, "access").MapsToAttribute("access");
 
-        [Test]
-        public void ShouldWriteAccessAttribute()
-        {
-            writer = new XmlOneToOneWriter();
-            var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.Access, "access").MapsToAttribute("access");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteCascadeAttribute()
+    {
+        writer = new XmlOneToOneWriter();
+        var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
+        testHelper.Check(x => x.Cascade, "cascade").MapsToAttribute("cascade");
 
-        [Test]
-        public void ShouldWriteCascadeAttribute()
-        {
-            writer = new XmlOneToOneWriter();
-            var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.Cascade, "cascade").MapsToAttribute("cascade");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteClassAttribute()
+    {
+        writer = new XmlOneToOneWriter();
+        var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
+        testHelper.Check(x => x.Class, new TypeReference("type")).MapsToAttribute("class");
 
-        [Test]
-        public void ShouldWriteClassAttribute()
-        {
-            writer = new XmlOneToOneWriter();
-            var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.Class, new TypeReference("type")).MapsToAttribute("class");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteConstrainedAttribute()
+    {
+        writer = new XmlOneToOneWriter();
+        var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
+        testHelper.Check(x => x.Constrained, true).MapsToAttribute("constrained");
 
-        [Test]
-        public void ShouldWriteConstrainedAttribute()
-        {
-            writer = new XmlOneToOneWriter();
-            var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.Constrained, true).MapsToAttribute("constrained");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteFetchAttribute()
+    {
+        writer = new XmlOneToOneWriter();
+        var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
+        testHelper.Check(x => x.Fetch, "always").MapsToAttribute("fetch");
 
-        [Test]
-        public void ShouldWriteFetchAttribute()
-        {
-            writer = new XmlOneToOneWriter();
-            var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.Fetch, "always").MapsToAttribute("fetch");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteForeignKeyAttribute()
+    {
+        writer = new XmlOneToOneWriter();
+        var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
+        testHelper.Check(x => x.ForeignKey, "fk").MapsToAttribute("foreign-key");
 
-        [Test]
-        public void ShouldWriteForeignKeyAttribute()
-        {
-            writer = new XmlOneToOneWriter();
-            var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.ForeignKey, "fk").MapsToAttribute("foreign-key");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteLazyAttribute()
+    {
+        writer = new XmlOneToOneWriter();
+        var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
+        testHelper.Check(x => x.Lazy, Laziness.Proxy.ToString()).MapsToAttribute("lazy", "proxy");
 
-        [Test]
-        public void ShouldWriteLazyAttribute()
-        {
-            writer = new XmlOneToOneWriter();
-            var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.Lazy, Laziness.Proxy.ToString()).MapsToAttribute("lazy", "proxy");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteNameAttribute()
+    {
+        writer = new XmlOneToOneWriter();
+        var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
+        testHelper.Check(x => x.Name, "nm").MapsToAttribute("name");
 
-        [Test]
-        public void ShouldWriteNameAttribute()
-        {
-            writer = new XmlOneToOneWriter();
-            var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.Name, "nm").MapsToAttribute("name");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWritePropertyRefAttribute()
+    {
+        writer = new XmlOneToOneWriter();
+        var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
+        testHelper.Check(x => x.PropertyRef, "pr").MapsToAttribute("property-ref");
 
-        [Test]
-        public void ShouldWritePropertyRefAttribute()
-        {
-            writer = new XmlOneToOneWriter();
-            var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.PropertyRef, "pr").MapsToAttribute("property-ref");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteEntityNameAttribute()
+    {
+        writer = new XmlOneToOneWriter();
+        var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
+        testHelper.Check(x => x.EntityName, "name1").MapsToAttribute("entity-name");
 
-        [Test]
-        public void ShouldWriteEntityNameAttribute()
-        {
-            writer = new XmlOneToOneWriter();
-            var testHelper = new XmlWriterTestHelper<OneToOneMapping>();
-            testHelper.Check(x => x.EntityName, "name1").MapsToAttribute("entity-name");
-
-            testHelper.VerifyAll(writer);
-        }
+        testHelper.VerifyAll(writer);
     }
 }

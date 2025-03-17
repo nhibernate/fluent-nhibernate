@@ -1,47 +1,46 @@
-using System.Collections.Generic;
 using FluentNHibernate.Cfg.Db;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Cfg.Db
+namespace FluentNHibernate.Testing.Cfg.Db;
+
+[TestFixture]
+public class ConnectionStringBuilderTester
 {
-    [TestFixture]
-    public class ConnectionStringBuilderTester
+    ConnectionStringBuilderDouble builder;
+
+    [SetUp]
+    public void CreateBuilder()
     {
-        private ConnectionStringBuilderDouble builder;
+        builder = new ConnectionStringBuilderDouble();
+    }
 
-        [SetUp]
-        public void CreateBuilder()
-        {
-            builder = new ConnectionStringBuilderDouble();
-        }
+    [Test]
+    public void CanExplicitlySetConnectionString()
+    {
+        builder.Is("a string");
+        builder.ConnectionString.ShouldEqual("a string");
+    }
 
-        [Test]
-        public void CanExplicitlySetConnectionString()
-        {
-            builder.Is("a string");
-            builder.ConnectionString.ShouldEqual("a string");
-        }
+#if NETFRAMEWORK
+    [Test]
+    public void ConnectionStringSetFromAppSetting()
+    {
+        builder.FromAppSetting("connectionString");
+        builder.ConnectionString.ShouldContain("a-connection-string");
+    }
+#endif
 
-        [Test]
-        public void ConnectionStringSetFromAppSetting()
-        {
-            builder.FromAppSetting("connectionString");
-            builder.ConnectionString.ShouldContain("a-connection-string");
-        }
+#if NETFRAMEWORK
+    [Test]
+    public void ConnectionStringSetFromConnectionStrings()
+    {
+        builder.FromConnectionStringWithKey("main");
+        builder.ConnectionString.ShouldContain("connection string");
+    }
+#endif
 
-        [Test]
-        public void ConnectionStringSetFromConnectionStrings()
-        {
-            builder.FromConnectionStringWithKey("main");
-            builder.ConnectionString.ShouldContain("connection string");
-        }
-
-        private class ConnectionStringBuilderDouble : ConnectionStringBuilder
-        {
-            public string ConnectionString
-            {
-                get { return Create(); }
-            }
-        }
+    class ConnectionStringBuilderDouble : ConnectionStringBuilder
+    {
+        public string ConnectionString => Create();
     }
 }

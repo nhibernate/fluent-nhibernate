@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace FluentNHibernate.MappingModel.Identity
+namespace FluentNHibernate.MappingModel.Identity;
+
+public interface ICompositeIdKeyMapping
 {
-    public interface ICompositeIdKeyMapping
-    {
-        IEnumerable<ColumnMapping> Columns { get; }
-        string Name { get; }
-        string Access { get; }
-    }
+    IEnumerable<ColumnMapping> Columns { get; }
+    string Name { get; }
+    string Access { get; }
 }

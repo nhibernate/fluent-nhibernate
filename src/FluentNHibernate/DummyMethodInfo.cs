@@ -2,87 +2,56 @@ using System;
 using System.Globalization;
 using System.Reflection;
 
-namespace FluentNHibernate
+namespace FluentNHibernate;
+
+internal sealed class DummyMethodInfo(string name, Type type) : MethodInfo
 {
-    internal sealed class DummyMethodInfo : MethodInfo
+    public override Type ReturnType { get; } = type;
+
+    public override object[] GetCustomAttributes(bool inherit)
     {
-        private readonly string name;
-        private readonly Type type;
+        return Array.Empty<object>();
+    }
 
-        public DummyMethodInfo(string name, Type type)
-        {
-            this.name = name;
-            this.type = type;
-        }
+    public override bool IsDefined(Type attributeType, bool inherit)
+    {
+        return false;
+    }
 
-        public override Type ReturnType
-        {
-            get { return type; }
-        }
+    public override ParameterInfo[] GetParameters()
+    {
+        return Array.Empty<ParameterInfo>();
+    }
 
-        public override object[] GetCustomAttributes(bool inherit)
-        {
-            return new object[0];
-        }
+    public override MethodImplAttributes GetMethodImplementationFlags()
+    {
+        return MethodImplAttributes.Managed;
+    }
 
-        public override bool IsDefined(Type attributeType, bool inherit)
-        {
-            return false;
-        }
+    public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
+    {
+        return obj;
+    }
 
-        public override ParameterInfo[] GetParameters()
-        {
-            return new ParameterInfo[0];
-        }
+    public override MethodInfo GetBaseDefinition()
+    {
+        return null;
+    }
 
-        public override MethodImplAttributes GetMethodImplementationFlags()
-        {
-            return MethodImplAttributes.Managed;
-        }
+    public override ICustomAttributeProvider ReturnTypeCustomAttributes => null;
 
-        public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
-        {
-            return obj;
-        }
+    public override string Name { get; } = name;
 
-        public override MethodInfo GetBaseDefinition()
-        {
-            return null;
-        }
+    public override Type DeclaringType => null;
 
-        public override ICustomAttributeProvider ReturnTypeCustomAttributes
-        {
-            get { return null; }
-        }
+    public override Type ReflectedType => null;
 
-        public override string Name
-        {
-            get { return name; }
-        }
+    public override RuntimeMethodHandle MethodHandle => new();
 
-        public override Type DeclaringType
-        {
-            get { return null; }
-        }
+    public override MethodAttributes Attributes => MethodAttributes.Public;
 
-        public override Type ReflectedType
-        {
-            get { return null; }
-        }
-
-        public override RuntimeMethodHandle MethodHandle
-        {
-            get { return new RuntimeMethodHandle(); }
-        }
-
-        public override MethodAttributes Attributes
-        {
-            get { return MethodAttributes.Public; }
-        }
-
-        public override object[] GetCustomAttributes(Type attributeType, bool inherit)
-        {
-            return new object[0];
-        }
+    public override object[] GetCustomAttributes(Type attributeType, bool inherit)
+    {
+        return Array.Empty<object>();
     }
 }

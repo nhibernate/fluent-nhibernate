@@ -3,74 +3,73 @@ using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.MappingModel.Output
+namespace FluentNHibernate.Testing.MappingModel.Output;
+
+[TestFixture]
+public class XmlVersionWriterTester
 {
-    [TestFixture]
-    public class XmlVersionWriterTester
+    IXmlWriter<VersionMapping> writer;
+
+    [SetUp]
+    public void GetWriterFromContainer()
     {
-        private IXmlWriter<VersionMapping> writer;
+        var container = new XmlWriterContainer();
+        writer = container.Resolve<IXmlWriter<VersionMapping>>();
+    }
 
-        [SetUp]
-        public void GetWriterFromContainer()
-        {
-            var container = new XmlWriterContainer();
-            writer = container.Resolve<IXmlWriter<VersionMapping>>();
-        }
+    [Test]
+    public void ShouldWriteAccessAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<VersionMapping>();
+        testHelper.Check(x => x.Access, "access").MapsToAttribute("access");
 
-        [Test]
-        public void ShouldWriteAccessAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<VersionMapping>();
-            testHelper.Check(x => x.Access, "access").MapsToAttribute("access");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteGeneratedAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<VersionMapping>();
+        testHelper.Check(x => x.Generated, "always").MapsToAttribute("generated");
 
-        [Test]
-        public void ShouldWriteGeneratedAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<VersionMapping>();
-            testHelper.Check(x => x.Generated, "always").MapsToAttribute("generated");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteNameAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<VersionMapping>();
+        testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
 
-        [Test]
-        public void ShouldWriteNameAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<VersionMapping>();
-            testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteTypeAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<VersionMapping>();
+        testHelper.Check(x => x.Type, new TypeReference("type")).MapsToAttribute("type");
 
-        [Test]
-        public void ShouldWriteTypeAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<VersionMapping>();
-            testHelper.Check(x => x.Type, new TypeReference("type")).MapsToAttribute("type");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteUnsavedValueAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<VersionMapping>();
+        testHelper.Check(x => x.UnsavedValue, "u-value").MapsToAttribute("unsaved-value");
 
-        [Test]
-        public void ShouldWriteUnsavedValueAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<VersionMapping>();
-            testHelper.Check(x => x.UnsavedValue, "u-value").MapsToAttribute("unsaved-value");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteColumns()
+    {
+        var mapping = new VersionMapping();
 
-        [Test]
-        public void ShouldWriteColumns()
-        {
-            var mapping = new VersionMapping();
+        mapping.AddColumn(Layer.Defaults, new ColumnMapping("Column1"));
 
-            mapping.AddColumn(Layer.Defaults, new ColumnMapping("Column1"));
-
-            writer.VerifyXml(mapping)
-                .Element("column").Exists();
-        }
+        writer.VerifyXml(mapping)
+            .Element("column").Exists();
     }
 }

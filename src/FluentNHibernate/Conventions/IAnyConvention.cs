@@ -1,10 +1,8 @@
-using System;
 using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions
+namespace FluentNHibernate.Conventions;
+
+public interface IAnyConvention : IConvention<IAnyInspector, IAnyInstance>
 {
-    public interface IAnyConvention : IConvention<IAnyInspector, IAnyInstance>
-    {
         
-    }
 }

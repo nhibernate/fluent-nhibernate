@@ -1,4 +1,3 @@
-﻿namespace FluentNHibernate.Specs.ExternalFixtures
-{
-    public class Component {}
-}
+﻿namespace FluentNHibernate.Specs.ExternalFixtures;
+
+public class Component {}

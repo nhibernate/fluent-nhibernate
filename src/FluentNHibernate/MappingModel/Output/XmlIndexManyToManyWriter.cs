@@ -3,47 +3,41 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlIndexManyToManyWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<IndexManyToManyMapping>
 {
-    public class XmlIndexManyToManyWriter : NullMappingModelVisitor, IXmlWriter<IndexManyToManyMapping>
+    XmlDocument document;
+
+    public XmlDocument Write(IndexManyToManyMapping mappingModel)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
-        private XmlDocument document;
+        document = null;
+        mappingModel.AcceptVisitor(this);
+        return document;
+    }
 
-        public XmlIndexManyToManyWriter(IXmlWriterServiceLocator serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+    public override void ProcessIndex(IndexManyToManyMapping mapping)
+    {
+        document = new XmlDocument();
 
-        public XmlDocument Write(IndexManyToManyMapping mappingModel)
-        {
-            document = null;
-            mappingModel.AcceptVisitor(this);
-            return document;
-        }
+        var element = document.AddElement("index-many-to-many");
 
-        public override void ProcessIndex(IndexManyToManyMapping mapping)
-        {
-            document = new XmlDocument();
+        if (mapping.IsSpecified("Class"))
+            element.WithAtt("class", mapping.Class);
 
-            var element = document.AddElement("index-many-to-many");
+        if (mapping.IsSpecified("ForeignKey"))
+            element.WithAtt("foreign-key", mapping.ForeignKey);
 
-            if (mapping.IsSpecified("Class"))
-                element.WithAtt("class", mapping.Class);
+        if (mapping.IsSpecified("EntityName"))
+            element.WithAtt("entity-name", mapping.EntityName);
+    }
 
-            if (mapping.IsSpecified("ForeignKey"))
-                element.WithAtt("foreign-key", mapping.ForeignKey);
+    public override void Visit(ColumnMapping columnMapping)
+    {
+        var writer = serviceLocator.GetWriter<ColumnMapping>();
+        var xml = writer.Write(columnMapping);
 
-            if (mapping.IsSpecified("EntityName"))
-                element.WithAtt("entity-name", mapping.EntityName);
-        }
-
-        public override void Visit(ColumnMapping columnMapping)
-        {
-            var writer = serviceLocator.GetWriter<ColumnMapping>();
-            var xml = writer.Write(columnMapping);
-
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
     }
 }

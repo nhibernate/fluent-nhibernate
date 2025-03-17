@@ -1,115 +1,93 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 
-namespace FluentNHibernate.Conventions
+namespace FluentNHibernate.Conventions;
+
+public class ProxyConvention(Func<Type, Type> mapPersistentTypeToProxyInterfaceType, Func<Type, Type> mapProxyInterfaceTypeToPersistentType)
+    : IClassConvention, ISubclassConvention, IHasOneConvention, IReferenceConvention, ICollectionConvention
 {
-    public class ProxyConvention : IClassConvention, ISubclassConvention, IHasOneConvention, IReferenceConvention, ICollectionConvention
+    readonly Func<Type, Type> mapPersistentTypeToProxyInterfaceType = mapPersistentTypeToProxyInterfaceType ?? throw new ArgumentNullException(nameof(mapPersistentTypeToProxyInterfaceType));
+    readonly Func<Type, Type> mapProxyInterfaceTypeToPersistentType = mapProxyInterfaceTypeToPersistentType ?? throw new ArgumentNullException(nameof(mapProxyInterfaceTypeToPersistentType));
+
+    /// <summary>
+    /// Apply changes to the target
+    /// </summary>
+    public void Apply(IClassInstance instance)
     {
-        private readonly Func<Type, Type> _mapPersistentTypeToProxyInterfaceType;
-        private readonly Func<Type, Type> _mapProxyInterfaceTypeToPersistentType;
+        var proxy = GetProxyType(instance.EntityType);
 
-        public ProxyConvention(
-            Func<Type, Type> mapPersistentTypeToProxyInterfaceType,
-            Func<Type, Type> mapProxyInterfaceTypeToPersistentType)
+        if(proxy is not null)
         {
-            if (mapPersistentTypeToProxyInterfaceType == null)
-            {
-                throw new ArgumentNullException("mapPersistentTypeToProxyInterfaceType");
-            }
-
-            if(mapProxyInterfaceTypeToPersistentType == null)
-            {
-                throw new ArgumentNullException("mapProxyInterfaceTypeToPersistentType");
-            }
-
-            this._mapPersistentTypeToProxyInterfaceType = mapPersistentTypeToProxyInterfaceType;
-            
-            this._mapProxyInterfaceTypeToPersistentType = mapProxyInterfaceTypeToPersistentType;
+            instance.Proxy(proxy);
         }
+    }
 
-        /// <summary>
-        /// Apply changes to the target
-        /// </summary>
-        public void Apply(IClassInstance instance)
+    /// <summary>
+    /// Apply changes to the target
+    /// </summary>
+    public void Apply(ISubclassInstance instance)
+    {
+        var proxy = GetProxyType(instance.EntityType);
+
+        if(proxy is not null)
         {
-            var proxy = GetProxyType(instance.EntityType);
-
-            if(proxy != null)
-            {
-                instance.Proxy(proxy);
-            }
+            instance.Proxy(proxy);
         }
+    }
 
-        /// <summary>
-        /// Apply changes to the target
-        /// </summary>
-        public void Apply(ISubclassInstance instance)
+    /// <summary>
+    /// Apply changes to the target
+    /// </summary>
+    public void Apply(IManyToOneInstance instance)
+    {
+        Type inferredType = instance.Class.GetUnderlyingSystemType();
+        Type persistentType = mapProxyInterfaceTypeToPersistentType(inferredType);
+
+        if (persistentType is not null)
         {
-            var proxy = GetProxyType(instance.EntityType);
-
-            if(proxy != null)
-            {
-                instance.Proxy(proxy);
-            }
+            instance.OverrideInferredClass(persistentType);
         }
+    }
 
-        /// <summary>
-        /// Apply changes to the target
-        /// </summary>
-        public void Apply(IManyToOneInstance instance)
+    /// <summary>
+    /// Apply changes to the target
+    /// </summary>
+    public void Apply(ICollectionInstance instance)
+    {
+        var proxy = GetPersistentType(instance.Relationship.Class.GetUnderlyingSystemType());
+
+        if(proxy is not null)
         {
-            Type inferredType = instance.Class.GetUnderlyingSystemType();
-            Type persistentType = _mapProxyInterfaceTypeToPersistentType(inferredType);
-
-            if (persistentType != null)
-            {
-                instance.OverrideInferredClass(persistentType);
-            }
+            instance.Relationship.CustomClass(proxy);
         }
+    }
 
-        /// <summary>
-        /// Apply changes to the target
-        /// </summary>
-        public void Apply(ICollectionInstance instance)
+    /// <summary>
+    /// Apply changes to the target
+    /// </summary>
+    public void Apply(IOneToOneInstance instance)
+    {
+        Type inferredType = ((IOneToOneInspector)instance).Class.GetUnderlyingSystemType();
+        Type persistentType = mapProxyInterfaceTypeToPersistentType(inferredType);
+
+        if(persistentType is not null)
         {
-            var proxy = GetPersistentType(instance.Relationship.Class.GetUnderlyingSystemType());
-
-            if(proxy != null)
-            {
-                instance.Relationship.CustomClass(proxy);
-            }
+            instance.OverrideInferredClass(persistentType);
         }
+    }
 
-        /// <summary>
-        /// Apply changes to the target
-        /// </summary>
-        public void Apply(IOneToOneInstance instance)
-        {
-            Type inferredType = ((IOneToOneInspector)instance).Class.GetUnderlyingSystemType();
-            Type persistentType = _mapProxyInterfaceTypeToPersistentType(inferredType);
+    Type GetProxyType(Type persistentType)
+    {
+        return !persistentType.IsAbstract
+            ? mapPersistentTypeToProxyInterfaceType(persistentType)
+            : null;
+    }
 
-            if(persistentType != null)
-            {
-                instance.OverrideInferredClass(persistentType);
-            }
-        }
-
-        private Type GetProxyType(Type persistentType)
-        {
-            return !persistentType.IsAbstract
-                       ? _mapPersistentTypeToProxyInterfaceType(persistentType)
-                       : null;
-        }
-
-        private Type GetPersistentType(Type proxyType)
-        {
-            return proxyType.IsInterface
-                       ? _mapProxyInterfaceTypeToPersistentType(proxyType)
-                       : null;
-        }
+    Type GetPersistentType(Type proxyType)
+    {
+        return proxyType.IsInterface
+            ? mapProxyInterfaceTypeToPersistentType(proxyType)
+            : null;
     }
 }

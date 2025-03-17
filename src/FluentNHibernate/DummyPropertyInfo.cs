@@ -1,110 +1,70 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Reflection;
 
-namespace FluentNHibernate
+namespace FluentNHibernate;
+
+[Serializable]
+public sealed class DummyPropertyInfo(string name, Type type) : PropertyInfo
 {
-    [Serializable]
-    public sealed class DummyPropertyInfo : PropertyInfo
+    public override Module Module => null;
+
+    public override int MetadataToken => Name.GetHashCode();
+
+    public override object[] GetCustomAttributes(bool inherit)
     {
-        private readonly string name;
-        private readonly Type type;
+        return Array.Empty<object>();
+    }
 
-        public DummyPropertyInfo(string name, Type type)
-        {
-            if (name == null) throw new ArgumentNullException("name");
-            if (type == null) throw new ArgumentNullException("type");
+    public override bool IsDefined(Type attributeType, bool inherit)
+    {
+        return false;
+    }
 
-            this.name = name;
-            this.type = type;
-        }
+    public override object GetValue(object obj, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
+    {
+        return obj;
+    }
 
-        public override Module Module
-        {
-            get { return null; }
-        }
+    public override void SetValue(object obj, object value, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
+    {}
 
-        public override int MetadataToken
-        {
-            get { return name.GetHashCode(); }
-        }
+    public override MethodInfo[] GetAccessors(bool nonPublic)
+    {
+        return Array.Empty<MethodInfo>();
+    }
 
-        public override object[] GetCustomAttributes(bool inherit)
-        {
-            return new object[0];
-        }
+    public override MethodInfo GetGetMethod(bool nonPublic)
+    {
+        return null;
+    }
 
-        public override bool IsDefined(Type attributeType, bool inherit)
-        {
-            return false;
-        }
+    public override MethodInfo GetSetMethod(bool nonPublic)
+    {
+        return null;
+    }
 
-        public override object GetValue(object obj, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
-        {
-            return obj;
-        }
+    public override ParameterInfo[] GetIndexParameters()
+    {
+        return Array.Empty<ParameterInfo>();
+    }
 
-        public override void SetValue(object obj, object value, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
-        {}
+    public override string Name { get; } = name ?? throw new ArgumentNullException(nameof(name));
 
-        public override MethodInfo[] GetAccessors(bool nonPublic)
-        {
-            return new MethodInfo[0];
-        }
+    public override Type DeclaringType { get; } = type ?? throw new ArgumentNullException(nameof(type));
 
-        public override MethodInfo GetGetMethod(bool nonPublic)
-        {
-            return null;
-        }
+    public override Type ReflectedType => null;
 
-        public override MethodInfo GetSetMethod(bool nonPublic)
-        {
-            return null;
-        }
+    public override Type PropertyType => DeclaringType;
 
-        public override ParameterInfo[] GetIndexParameters()
-        {
-            return new ParameterInfo[0];
-        }
+    public override PropertyAttributes Attributes => PropertyAttributes.None;
 
-        public override string Name
-        {
-            get { return name; }
-        }
+    public override bool CanRead => false;
 
-        public override Type DeclaringType
-        {
-            get { return type; }
-        }
+    public override bool CanWrite => false;
 
-        public override Type ReflectedType
-        {
-            get { return null; }
-        }
-
-        public override Type PropertyType
-        {
-            get { return type; }
-        }
-
-        public override PropertyAttributes Attributes
-        {
-            get { return PropertyAttributes.None; }
-        }
-
-        public override bool CanRead
-        {
-            get { return false; }
-        }
-
-        public override bool CanWrite
-        {
-            get { return false; }
-        }
-
-        public override object[] GetCustomAttributes(Type attributeType, bool inherit)
-        {
-            return new object[0];
-        }
+    public override object[] GetCustomAttributes(Type attributeType, bool inherit)
+    {
+        return Array.Empty<object>();
     }
 }

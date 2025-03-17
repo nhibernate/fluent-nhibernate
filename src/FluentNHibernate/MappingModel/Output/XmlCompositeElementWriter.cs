@@ -3,69 +3,68 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlCompositeElementWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<CompositeElementMapping>
 {
-    public class XmlCompositeElementWriter : NullMappingModelVisitor, IXmlWriter<CompositeElementMapping>
+    protected XmlDocument document;
+
+    public XmlDocument Write(CompositeElementMapping compositeElement)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
-        protected XmlDocument document;
+        document = null;
+        compositeElement.AcceptVisitor(this);
+        return document;
+    }
 
-        public XmlCompositeElementWriter(IXmlWriterServiceLocator serviceLocator)
+    public override void ProcessCompositeElement(CompositeElementMapping mapping)
+    {
+        document = new XmlDocument();
+
+        var name = mapping is NestedCompositeElementMapping ? "nested-composite-element" : "composite-element";
+        var element = document.AddElement(name);
+
+        if (mapping.IsSpecified("Class"))
+            element.WithAtt("class", mapping.Class);
+
+        if (mapping is NestedCompositeElementMapping nested)
         {
-            this.serviceLocator = serviceLocator;
+            element.WithAtt("name", nested.Name);
+
+            if (mapping.IsSpecified("Access")) 
+                element.WithAtt("access", nested.Access);
         }
+    }
 
-        public XmlDocument Write(CompositeElementMapping compositeElement)
-        {
-            document = null;
-            compositeElement.AcceptVisitor(this);
-            return document;
-        }
+    public override void Visit(CompositeElementMapping compositeElementMapping)
+    {
+        var writer = serviceLocator.GetWriter<CompositeElementMapping>();
+        var xml = writer.Write(compositeElementMapping);
 
-        public override void ProcessCompositeElement(CompositeElementMapping mapping)
-        {
-            document = new XmlDocument();
+        document.ImportAndAppendChild(xml);
+    }
 
-            var name = mapping is NestedCompositeElementMapping ? "nested-composite-element" : "composite-element";
-            var element = document.AddElement(name);
+    public override void Visit(PropertyMapping propertyMapping)
+    {
+        var writer = serviceLocator.GetWriter<PropertyMapping>();
+        var xml = writer.Write(propertyMapping);
 
-            if (mapping.IsSpecified("Class"))
-                element.WithAtt("class", mapping.Class);
+        document.ImportAndAppendChild(xml);
+    }
 
-            if (mapping is NestedCompositeElementMapping)
-                element.WithAtt("name", ((NestedCompositeElementMapping)mapping).Name);
-        }
+    public override void Visit(ManyToOneMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<ManyToOneMapping>();
+        var xml = writer.Write(mapping);
 
-        public override void Visit(CompositeElementMapping compositeElementMapping)
-        {
-            var writer = serviceLocator.GetWriter<CompositeElementMapping>();
-            var xml = writer.Write(compositeElementMapping);
+        document.ImportAndAppendChild(xml);
+    }
 
-            document.ImportAndAppendChild(xml);
-        }
+    public override void Visit(ParentMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<ParentMapping>();
+        var xml = writer.Write(mapping);
 
-        public override void Visit(PropertyMapping propertyMapping)
-        {
-            var writer = serviceLocator.GetWriter<PropertyMapping>();
-            var xml = writer.Write(propertyMapping);
-
-            document.ImportAndAppendChild(xml);
-        }
-
-        public override void Visit(ManyToOneMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<ManyToOneMapping>();
-            var xml = writer.Write(mapping);
-
-            document.ImportAndAppendChild(xml);
-        }
-
-        public override void Visit(ParentMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<ParentMapping>();
-            var xml = writer.Write(mapping);
-
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
     }
 }

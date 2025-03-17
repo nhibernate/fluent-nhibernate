@@ -1,19 +1,11 @@
 using FluentNHibernate.Infrastructure;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlWriterServiceLocator(Container container) : IXmlWriterServiceLocator
 {
-    public class XmlWriterServiceLocator : IXmlWriterServiceLocator
+    public IXmlWriter<T> GetWriter<T>()
     {
-        private readonly Container container;
-
-        public XmlWriterServiceLocator(Container container)
-        {
-            this.container = container;
-        }
-
-        public IXmlWriter<T> GetWriter<T>()
-        {
-            return container.Resolve<IXmlWriter<T>>();
-        }
+        return container.Resolve<IXmlWriter<T>>();
     }
 }

@@ -1,29 +1,21 @@
 using System;
 
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public class FetchInstance(Action<string> setter) : IFetchInstance
 {
-    public class FetchInstance : IFetchInstance
+    public void Join()
     {
-        private readonly Action<string> setter;
+        setter("join");
+    }
 
-        public FetchInstance(Action<string> setter)
-        {
-            this.setter = setter;
-        }
+    public void Select()
+    {
+        setter("select");
+    }
 
-        public void Join()
-        {
-            setter("join");
-        }
-
-        public void Select()
-        {
-            setter("select");
-        }
-
-        public void Subselect()
-        {
-            setter("subselect");
-        }
+    public void Subselect()
+    {
+        setter("subselect");
     }
 }

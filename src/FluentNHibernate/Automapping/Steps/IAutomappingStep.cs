@@ -1,10 +1,9 @@
 ﻿using FluentNHibernate.MappingModel.ClassBased;
 
-namespace FluentNHibernate.Automapping.Steps
+namespace FluentNHibernate.Automapping.Steps;
+
+public interface IAutomappingStep
 {
-    public interface IAutomappingStep
-    {
-        bool ShouldMap(Member member);
-        void Map(ClassMappingBase classMap, Member member);
-    }
+    bool ShouldMap(Member member);
+    void Map(ClassMappingBase classMap, Member member);
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System;
 using System.Data;
 using System.Drawing;
-using System.IO;
 using FluentNHibernate.Automapping.TestFixtures.ComponentTypes;
 using FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes;
 using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
@@ -16,6 +15,7 @@ using NHibernate.Engine;
 using NHibernate.SqlTypes;
 using NHibernate.Type;
 using NHibernate.UserTypes;
+using System.Data.Common;
 
 namespace FluentNHibernate.Automapping.TestFixtures
 {
@@ -43,13 +43,7 @@ namespace FluentNHibernate.Automapping.TestFixtures
     {
         public int Id { get; set; }
         public int ExampleCustomColumnId { get; set; }
-        public int CustomColumn
-        {
-            get
-            {
-                return 12;
-            }
-        }
+        public int CustomColumn => 12;
     }
 
     public class ExampleInheritedClass : ExampleClass
@@ -118,7 +112,7 @@ namespace FluentNHibernate.Automapping.TestFixtures
 
     public class ExampleParentClass
     {
-        public int ExampleParentClassId { get; set; } 
+        public int ExampleParentClassId { get; set; }
         public virtual int Id { get; set; }
         public virtual IList<ExampleClass> Examples {get; set;}
     }
@@ -154,7 +148,7 @@ namespace FluentNHibernate.Automapping.TestFixtures
         public Custom Custom { get; set; }
     }
 
-    
+
 
     public class ClassWithCompositeUserType
     {
@@ -268,7 +262,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomTypes
 
         public void NullSafeSet(IDbCommand cmd, object value, int index)
         {
-            
+
         }
 
         public object DeepCopy(object value)
@@ -291,20 +285,24 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomTypes
             return value;
         }
 
+        public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
+        {
+            throw new NotImplementedException();
+        }
+
         public SqlType[] SqlTypes
         {
             get { return new[] {new SqlType(DbType.String)}; }
         }
 
-        public Type ReturnedType
-        {
-            get { return typeof(Custom); }
-        }
+        public Type ReturnedType => typeof(Custom);
 
-        public bool IsMutable
-        {
-            get { return true; }
-        }
+        public bool IsMutable => true;
     }
 }
 
@@ -312,15 +310,12 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
 {
     public class DoubleStringType : ICompositeUserType
     {
-        public System.Type ReturnedClass
-        {
-            get { return typeof(string[]); }
-        }
+        public System.Type ReturnedClass => typeof(string[]);
 
         public new bool Equals(object x, object y)
         {
             if (x == y) return true;
-            if (x == null || y == null) return false;
+            if (x is null || y is null) return false;
 
             DoubleString lhs = (DoubleString)x;
             DoubleString rhs = (DoubleString)y;
@@ -339,7 +334,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
 
         public Object DeepCopy(Object x)
         {
-            if (x == null) return null;
+            if (x is null) return null;
             DoubleString result = new DoubleString();
             DoubleString input = (DoubleString)x;
             result.s1 = input.s1;
@@ -347,36 +342,23 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
             return result;
         }
 
-        public bool IsMutable
+        public bool IsMutable => true;
+
+        public object NullSafeGet(DbDataReader dr, string[] names, ISessionImplementor session, object owner)
         {
-            get { return true; }
+            string first = (string)NHibernateUtil.String.NullSafeGet(dr, names[0], session, owner);
+            string second = (string)NHibernateUtil.String.NullSafeGet(dr, names[1], session, owner);
+
+            return (first is null && second is null) ? null : new string[] { first, second };
         }
 
-        public Object NullSafeGet(IDataReader rs, string[] names, ISessionImplementor session, Object owner)
-        {
-            string first = (string)NHibernateUtil.String.NullSafeGet(rs, names[0], session, owner);
-            string second = (string)NHibernateUtil.String.NullSafeGet(rs, names[1], session, owner);
-
-            return (first == null && second == null) ? null : new string[] { first, second };
-        }
-
-#if NH21
-        public void NullSafeSet(IDbCommand st, Object value, int index, ISessionImplementor session)
+        public void NullSafeSet(DbCommand cmd, object value, int index, bool[] settable, ISessionImplementor session)
         {
             DoubleString ds = value as DoubleString ?? new DoubleString();
 
-            NHibernateUtil.String.NullSafeSet(st, ds.s1, index, session);
-            NHibernateUtil.String.NullSafeSet(st, ds.s2, index + 1, session);
+            NHibernateUtil.String.NullSafeSet(cmd, ds.s1, index, session);
+            NHibernateUtil.String.NullSafeSet(cmd, ds.s2, index + 1, session);
         }
-#else
-        public void NullSafeSet(IDbCommand st, Object value, int index, bool[] unknown, ISessionImplementor session)
-        {
-            DoubleString ds = value as DoubleString ?? new DoubleString();
-
-            NHibernateUtil.String.NullSafeSet(st, ds.s1, index, session);
-            NHibernateUtil.String.NullSafeSet(st, ds.s2, index + 1, session);
-        }
-#endif
 
         public string[] PropertyNames
         {
@@ -431,13 +413,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.SuperTypes
     public class ExampleCustomColumn : SuperType
     {
         public int ExampleCustomColumnId { get; set; }
-        public int CustomColumn
-        {
-            get
-            {
-                return 12;
-            }
-        }
+        public int CustomColumn => 12;
     }
 
     public class ExampleInheritedClass : ExampleClass
@@ -445,7 +421,6 @@ namespace FluentNHibernate.Automapping.TestFixtures.SuperTypes
         public string ExampleProperty { get; set; }
         public int SomeNumber{ get; set; }
     }
-
 
     public class ExampleClass : SuperType
     {
@@ -464,7 +439,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.SuperTypes
 
     public class ExampleParentClass : SuperType
     {
-        public int ExampleParentClassId { get; set; } 
+        public int ExampleParentClassId { get; set; }
         public virtual IList<ExampleClass> Examples {get; set;}
     }
 
@@ -520,7 +495,7 @@ namespace FluentNHibernate.Automapping.TestFixtures.SuperTypes
 
     public enum PublisherType
     {
-        Online, 
+        Online,
         Offline,
         Mixed
     }

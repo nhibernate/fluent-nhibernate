@@ -3,65 +3,64 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Testing.Fixtures.AutoMappingAlterations;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Automapping.Apm
+namespace FluentNHibernate.Testing.Automapping.Apm;
+
+[TestFixture]
+public class AlterationCollectionTests
 {
-    [TestFixture]
-    public class AlterationCollectionTests
+    AutoMappingAlterationCollection alterations;
+
+    [SetUp]
+    public void CreateAlterationsContainer()
     {
-        private AutoMappingAlterationCollection alterations;
+        alterations = new AutoMappingAlterationCollection();
+    }
 
-        [SetUp]
-        public void CreateAlterationsContainer()
-        {
-            alterations = new AutoMappingAlterationCollection();
-        }
+    [Test]
+    public void ShouldBeAbleToAddAllAlterationsFromAssembly()
+    {
+        alterations.AddFromAssembly(typeof(DummyAlteration1).Assembly);
 
-        [Test]
-        public void ShouldBeAbleToAddAllAlterationsFromAssembly()
-        {
-            alterations.AddFromAssembly(typeof(DummyAlteration1).Assembly);
+        alterations.ShouldContain(a => a is DummyAlteration1);
+        alterations.ShouldContain(a => a is DummyAlteration2);
+    }
 
-            alterations.ShouldContain(a => a is DummyAlteration1);
-            alterations.ShouldContain(a => a is DummyAlteration2);
-        }
+    [Test]
+    public void ShouldBeAbleToAddAllAlterationsFromAssemblyByType()
+    {
+        alterations.AddFromAssemblyOf<DummyAlteration1>();
 
-        [Test]
-        public void ShouldBeAbleToAddAllAlterationsFromAssemblyByType()
-        {
-            alterations.AddFromAssemblyOf<DummyAlteration1>();
+        alterations.ShouldContain(a => a is DummyAlteration1);
+        alterations.ShouldContain(a => a is DummyAlteration2);
+    }
 
-            alterations.ShouldContain(a => a is DummyAlteration1);
-            alterations.ShouldContain(a => a is DummyAlteration2);
-        }
+    [Test]
+    public void ShouldBeAbleToAddSingleAlteration()
+    {
+        alterations.Add(new DummyAlteration1());
 
-        [Test]
-        public void ShouldBeAbleToAddSingleAlteration()
-        {
-            alterations.Add(new DummyAlteration1());
+        alterations.ShouldContain(a => a is DummyAlteration1);
+    }
 
-            alterations.ShouldContain(a => a is DummyAlteration1);
-        }
+    [Test]
+    public void ShouldBeAbleToAddSingleAlterationByType()
+    {
+        alterations.Add<DummyAlteration1>();
 
-        [Test]
-        public void ShouldBeAbleToAddSingleAlterationByType()
-        {
-            alterations.Add<DummyAlteration1>();
+        alterations.ShouldContain(a => a is DummyAlteration1);
+    }
 
-            alterations.ShouldContain(a => a is DummyAlteration1);
-        }
+    [Test]
+    public void ShouldntAddAlterationIfAddedAlready()
+    {
+        alterations.AddFromAssemblyOf<DummyAlteration1>();
 
-        [Test]
-        public void ShouldntAddAlterationIfAddedAlready()
-        {
-            alterations.AddFromAssemblyOf<DummyAlteration1>();
+        alterations.ShouldContain(a => a is DummyAlteration1);
 
-            alterations.ShouldContain(a => a is DummyAlteration1);
+        var originalCount = alterations.Count();
 
-            var originalCount = alterations.Count();
+        alterations.Add<DummyAlteration1>();
 
-            alterations.Add<DummyAlteration1>();
-
-            (alterations.Count() == originalCount).ShouldBeTrue();
-        }
+        (alterations.Count() == originalCount).ShouldBeTrue();
     }
 }

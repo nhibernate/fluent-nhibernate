@@ -1,39 +1,40 @@
-﻿using FluentNHibernate.Cfg.Db;
-using FluentNHibernate.Data;
+﻿using FluentNHibernate.Data;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Testing.Fixtures;
 using NHibernate;
 using NUnit.Framework;
+using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
-namespace FluentNHibernate.Testing.DomainModel
+namespace FluentNHibernate.Testing.DomainModel;
+
+[TestFixture]
+public class ConnectedTester
 {
-    [TestFixture]
-    public class ConnectedTester
+    ISessionSource source;
+
+    [SetUp]
+    public void SetUp()
     {
-        private ISessionSource source;
+        var properties = CreateStandardConfiguration()
+            .UseOuterJoin()
+            .InMemory()
+            .ToProperties();
 
-        [SetUp]
-        public void SetUp()
-        {
-            var properties = new SQLiteConfiguration()
-                .UseOuterJoin()
-                .InMemory()
-                .ToProperties();
+        source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new TestPersistenceModel());
+        source.BuildSchema();
+    }
 
-            source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new TestPersistenceModel());
-            source.BuildSchema();
-        }
+    [Test]
+    public void Mapping_simple_properties()
+    {
+        new PersistenceSpecification<Record>(source)
+            .CheckProperty(r => r.Age, 22)
+            .CheckProperty(r => r.Name, "somebody")
+            .CheckProperty(r => r.Location, "somewhere")
+            .VerifyTheMappings();
+    }
 
-        [Test]
-        public void MappingTest1()
-        {
-            new PersistenceSpecification<Record>(source)
-                .CheckProperty(r => r.Age, 22)
-                .CheckProperty(r => r.Name, "somebody")
-                .CheckProperty(r => r.Location, "somewhere")
-                .VerifyTheMappings();
-        }
-
+#if NETFRAMEWORK
         [Test]
         public void Mapping_test_with_arrays()
         {
@@ -41,129 +42,145 @@ namespace FluentNHibernate.Testing.DomainModel
                 .CheckProperty(r => r.BinaryValue, new byte[] { 1, 2, 3 })
                 .VerifyTheMappings();
         }
-        [Test]
-        public void CanWorkWithNestedSubClasses()
-        {
-            new PersistenceSpecification<Child2Record>(source)
-                .CheckProperty(r => r.Name, "Foxy")
-                .CheckProperty(r => r.Another, "Lady")
-                .CheckProperty(r => r.Third, "Yeah")
-                .VerifyTheMappings();
-        }
-
-        [Test]
-        public void MappingTest2_NullableProperty()
-        {
-            new PersistenceSpecification<RecordWithNullableProperty>(source)
-                .CheckProperty(x => x.Age, null)
-                .CheckProperty(x => x.Name, "somebody")
-                .CheckProperty(x => x.Location, "somewhere")
-                .VerifyTheMappings();
-        }
-    }
-
-    public class RecordMap : ClassMap<Record>
+#else
+    [Test, Ignore("Currently not supported by Msqlite with NETStandard")]
+    public void Mapping_test_with_arrays()
     {
-        public RecordMap()
-        {
-            Id(x => x.Id, "id");
-            Map(x => x.Name);
-            Map(x => x.Age);
-            Map(x => x.Location);
-            ApplyFilter<RecordFilter>();
-        }
+        new PersistenceSpecification<BinaryRecord>(source)
+            .CheckProperty(r => r.BinaryValue, new byte[] { 1, 2, 3 })
+            .VerifyTheMappings();
     }
+#endif
+
+    [Test]
+    public void CanWorkWithNestedSubClasses()
+    {
+        new PersistenceSpecification<Child2Record>(source)
+            .CheckProperty(r => r.Name, "Foxy")
+            .CheckProperty(r => r.Another, "Lady")
+            .CheckProperty(r => r.Third, "Yeah")
+            .VerifyTheMappings();
+    }
+
+    [Test]
+    public void MappingTest2_NullableProperty()
+    {
+        new PersistenceSpecification<RecordWithNullableProperty>(source)
+            .CheckProperty(x => x.Age, null)
+            .CheckProperty(x => x.Name, "somebody")
+            .CheckProperty(x => x.Location, "somewhere")
+            .VerifyTheMappings();
+    }
+}
+
+public class RecordMap : ClassMap<Record>
+{
+    public RecordMap()
+    {
+        Id(x => x.Id, "id");
+        Map(x => x.Name);
+        Map(x => x.Age);
+        Map(x => x.Location);
+        ApplyFilter<RecordFilter>();
+    }
+}
 
 // ignored warning for obsolete SubClass
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 
-    public sealed class NestedSubClassMap : ClassMap<SuperRecord>
+public sealed class NestedSubClassMap : ClassMap<SuperRecord>
+{
+    public NestedSubClassMap()
     {
-        public NestedSubClassMap()
-        {
-            Id(x => x.Id);
-            Map(x => x.Name);
-            DiscriminateSubClassesOnColumn<string>("Type")
-                .SubClass<ChildRecord>(sc =>
-                {
-                    sc.Map(x => x.Another);
-                    sc.SubClass<Child2Record>(sc2 =>
-                        sc2.Map(x => x.Third));
-                });
-        }
+        Id(x => x.Id);
+        Map(x => x.Name);
+        DiscriminateSubClassesOnColumn<string>("Type")
+            .SubClass<ChildRecord>(sc =>
+            {
+                sc.Map(x => x.Another);
+                sc.SubClass<Child2Record>(sc2 =>
+                    sc2.Map(x => x.Third));
+            });
     }
+}
 
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 
-    public class SuperRecord  : Entity
-    {
-        public virtual string Name { get; set; }
-    }
+public class SuperRecord
+{
+    public virtual long Id { get; set; }
+    public virtual string Name { get; set; }
+}
 
-    public class ChildRecord : SuperRecord
-    {
-        public virtual string Another { get; set; }
-    }
+public class ChildRecord : SuperRecord
+{
+    public virtual string Another { get; set; }
+}
 
-    public class Child2Record : ChildRecord
-    {
-        public virtual string Third { get; set; }
-    }
+public class Child2Record : ChildRecord
+{
+    public virtual string Third { get; set; }
+}
 
-    public class Record : Entity
-    {
-        public virtual string Name { get; set; }
-        public virtual int Age { get; set; }
-        public virtual string Location { get; set; }
-    }
+public class Record
+{
+    public virtual long Id { get; set; }
+    public virtual string Name { get; set; }
+    public virtual int Age { get; set; }
+    public virtual string Location { get; set; }
+}
 
-    public class BinaryRecordMap : ClassMap<BinaryRecord>
+public class BinaryRecordMap : ClassMap<BinaryRecord>
+{
+    public BinaryRecordMap()
     {
-        public BinaryRecordMap()
-        {
-            Id(x => x.Id, "id");
-            Map(x => x.BinaryValue).Not.Nullable();
-        }
+        Id(x => x.Id, "id");
+        Map(x => x.BinaryValue).Not.Nullable();
     }
-    public class BinaryRecord : Entity
-    {
-        public virtual byte[] BinaryValue { get; set; }
-    }
+}
+public class BinaryRecord
+{
+    public virtual long Id { get; set; }
+    public virtual byte[] BinaryValue { get; set; }
+}
 
-    public class CachedRecordMap : ClassMap<CachedRecord>
+public class CachedRecordMap : ClassMap<CachedRecord>
+{
+    CachedRecordMap()
     {
-        CachedRecordMap()
-        {
-            Cache.ReadWrite();
-            Id(x => x.Id, "id");
-        }
+        Cache.ReadWrite();
+        Id(x => x.Id, "id");
     }
-    public class CachedRecord : Entity
-    { }
+}
 
-    public class RecordFilter : FilterDefinition
-    {
-        public RecordFilter()
-        {
-            WithName("ageHighEnough").WithCondition("Age > :age").AddParameter("age", NHibernateUtil.Int32);
-        }
-    }
+public class CachedRecord
+{
+    public virtual long Id { get; set; }
+}
 
-    public sealed class RecordWithNullablePropertyMap : ClassMap<RecordWithNullableProperty>
+public class RecordFilter : FilterDefinition
+{
+    public RecordFilter()
     {
-        public RecordWithNullablePropertyMap()
-        {
-            Id(x => x.Id);
-            Map(x => x.Name);
-            Map(x => x.Age);
-            Map(x => x.Location);
-        }
+        WithName("ageHighEnough").WithCondition("Age > :age").AddParameter("age", NHibernateUtil.Int32);
     }
+}
 
-    public class RecordWithNullableProperty : Entity
+public sealed class RecordWithNullablePropertyMap : ClassMap<RecordWithNullableProperty>
+{
+    public RecordWithNullablePropertyMap()
     {
-        public virtual string Name { get; set; }
-        public virtual int? Age { get; set; }
-        public virtual string Location { get; set; }
+        Id(x => x.Id);
+        Map(x => x.Name);
+        Map(x => x.Age);
+        Map(x => x.Location);
     }
+}
+
+public class RecordWithNullableProperty
+{
+    public virtual long Id { get; set; }
+    public virtual string Name { get; set; }
+    public virtual int? Age { get; set; }
+    public virtual string Location { get; set; }
 }

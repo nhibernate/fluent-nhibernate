@@ -1,53 +1,54 @@
-namespace FluentNHibernate.Conventions.Inspections
+using System;
+
+namespace FluentNHibernate.Conventions.Inspections;
+
+public class NotFound : IEquatable<NotFound>
 {
-    public class NotFound
+    public static readonly NotFound Unset = new NotFound("");
+    public static readonly NotFound Ignore = new NotFound("ignore");
+    public static readonly NotFound Exception = new NotFound("exception");
+
+    readonly string value;
+
+    NotFound(string value)
     {
-        public static readonly NotFound Unset = new NotFound("");
-        public static readonly NotFound Ignore = new NotFound("ignore");
-        public static readonly NotFound Exception = new NotFound("exception");
+        this.value = value;
+    }
 
-        private readonly string value;
+    public override bool Equals(object obj)
+    {
+        if (obj is NotFound) return Equals((NotFound)obj);
 
-        private NotFound(string value)
-        {
-            this.value = value;
-        }
+        return base.Equals(obj);
+    }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is NotFound) return Equals((NotFound)obj);
+    public bool Equals(NotFound other)
+    {
+        return Equals(other.value, value);
+    }
 
-            return base.Equals(obj);
-        }
+    public override int GetHashCode()
+    {
+        return (value is not null ? value.GetHashCode() : 0);
+    }
 
-        public bool Equals(NotFound other)
-        {
-            return Equals(other.value, value);
-        }
+    public static bool operator ==(NotFound x, NotFound y)
+    {
+        return x.Equals(y);
+    }
 
-        public override int GetHashCode()
-        {
-            return (value != null ? value.GetHashCode() : 0);
-        }
+    public static bool operator !=(NotFound x, NotFound y)
+    {
+        return !(x == y);
+    }
 
-        public static bool operator ==(NotFound x, NotFound y)
-        {
-            return x.Equals(y);
-        }
+    public override string ToString()
+    {
+        return value;
+    }
 
-        public static bool operator !=(NotFound x, NotFound y)
-        {
-            return !(x == y);
-        }
-
-        public override string ToString()
-        {
-            return value;
-        }
-
-        public static NotFound FromString(string value)
-        {
-            return new NotFound(value);
-        }
+    public static NotFound FromString(string value)
+    {
+        return new NotFound(value);
     }
 }

@@ -1,9 +1,8 @@
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+public interface IFilterMappingProvider
 {
-    public interface IFilterMappingProvider
-    {
-        FilterMapping GetFilterMapping();
-    }
+    FilterMapping GetFilterMapping();
 }

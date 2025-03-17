@@ -2,41 +2,40 @@ using System.Collections.Generic;
 using FluentNHibernate.Cfg;
 using NHibernate;
 
-namespace FluentNHibernate.Testing
+namespace FluentNHibernate.Testing;
+
+public class SingleConnectionSessionSourceForSQLiteInMemoryTesting : SessionSource
 {
-    public class SingleConnectionSessionSourceForSQLiteInMemoryTesting : SessionSource
+    ISession session;
+
+    public SingleConnectionSessionSourceForSQLiteInMemoryTesting(IDictionary<string, string> properties, PersistenceModel model) : base(properties, model)
     {
-        private ISession session;
+    }
 
-        public SingleConnectionSessionSourceForSQLiteInMemoryTesting(IDictionary<string, string> properties, PersistenceModel model) : base(properties, model)
-        {
-        }
+    public SingleConnectionSessionSourceForSQLiteInMemoryTesting(FluentConfiguration config) : base(config)
+    {
+    }
 
-        public SingleConnectionSessionSourceForSQLiteInMemoryTesting(FluentConfiguration config) : base(config)
-        {
-        }
+    protected void EnsureCurrentSession()
+    {
+        if (session is null)
+            session = base.CreateSession();
+    }
 
-        protected void EnsureCurrentSession()
-        {
-            if (session == null)
-                session = base.CreateSession();
-        }
+    public override ISession CreateSession()
+    {
+        EnsureCurrentSession();
+        session.Clear();
+        return session;
+    }
 
-        public override ISession CreateSession()
-        {
-            EnsureCurrentSession();
-            session.Clear();
-            return session;
-        }
+    public override void BuildSchema()
+    {
+        BuildSchema(CreateSession());
+    }
 
-        public override void BuildSchema()
-        {
-            BuildSchema(CreateSession());
-        }
-
-        public override void BuildSchema(bool script)
-        {
-            BuildSchema(CreateSession(), script);
-        }
+    public override void BuildSchema(bool script)
+    {
+        BuildSchema(CreateSession(), script);
     }
 }

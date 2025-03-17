@@ -1,89 +1,82 @@
 using System;
 using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Mapping;
-using Machine.Specifications;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.ConventionFinderTests
+namespace FluentNHibernate.Testing.ConventionFinderTests;
+
+[TestFixture]
+public class AddingTypeTests
 {
-    [TestFixture]
-    public class AddingTypeTests
+    DefaultConventionFinder finder;
+
+    [SetUp]
+    public void CreateFinder()
     {
-        private DefaultConventionFinder finder;
-
-        [SetUp]
-        public void CreateFinder()
-        {
-            finder = new DefaultConventionFinder();
-        }
-
-        [Test]
-        public void AddingSingleShouldntThrowIfHasParameterlessConstructor()
-        {
-            var ex = Catch.Exception(() => finder.Add<ConventionWithParameterlessConstructor>());
-
-            ex.ShouldBeNull();
-        }
-
-        [Test]
-        public void AddingSingleShouldntThrowIfHasIConventionFinderConstructor()
-        {
-            var ex = Catch.Exception(() => finder.Add<ConventionWithIConventionFinderConstructor>());
-
-            ex.ShouldBeNull();
-        }
-
-        [Test]
-        public void AddingSingleShouldThrowIfNoParameterlessConstructor()
-        {
-            var ex = Catch.Exception(() => finder.Add<ConventionWithoutValidConstructor>());
-
-            ex.ShouldBeOfType<MissingConstructorException>();
-            ex.ShouldNotBeNull();
-        }
-
-        [Test]
-        public void AddingSingleShouldThrowIfNoIConventionFinderConstructor()
-        {
-            var ex = Catch.Exception(() => finder.Add<ConventionWithoutValidConstructor>());
-
-            ex.ShouldBeOfType<MissingConstructorException>();
-            ex.ShouldNotBeNull();
-        }
-
-        [Test]
-        public void AddingAssemblyShouldntThrowIfNoIConventionFinderConstructor()
-        {
-            var ex = Catch.Exception(() => finder.AddAssembly(typeof(ConventionWithoutValidConstructor).Assembly));
-
-            ex.ShouldBeNull();
-        }
+        finder = new DefaultConventionFinder();
     }
 
-    public class ConventionWithParameterlessConstructor : IClassConvention
+    [Test]
+    public void AddingSingleShouldntThrowIfHasParameterlessConstructor()
     {
-        public ConventionWithParameterlessConstructor()
-        { }
+        Action act = () => finder.Add<ConventionWithParameterlessConstructor>();
 
-        public void Apply(IClassInstance instance) {}
+        act.ShouldNotThrow();
     }
 
-    public class ConventionWithIConventionFinderConstructor : IClassConvention
+    [Test]
+    public void AddingSingleShouldntThrowIfHasIConventionFinderConstructor()
     {
-        public ConventionWithIConventionFinderConstructor(IConventionFinder conventionFinder)
-        { }
+        Action act = () => finder.Add<ConventionWithIConventionFinderConstructor>();
 
-        public void Apply(IClassInstance instance) {}
+        act.ShouldNotThrow();
     }
 
-    public class ConventionWithoutValidConstructor : IClassConvention
+    [Test]
+    public void AddingSingleShouldThrowIfNoParameterlessConstructor()
     {
-        public ConventionWithoutValidConstructor(int someParameter)
-        { }
+        Action act = () => finder.Add<ConventionWithoutValidConstructor>();
 
-        public void Apply(IClassInstance instance) {}
+        act.ShouldThrow<MissingConstructorException>();
     }
+
+    [Test]
+    public void AddingSingleShouldThrowIfNoIConventionFinderConstructor()
+    {
+        Action act = () => finder.Add<ConventionWithoutValidConstructor>();
+
+        act.ShouldThrow<MissingConstructorException>();
+    }
+
+    [Test]
+    public void AddingAssemblyShouldntThrowIfNoIConventionFinderConstructor()
+    {
+        Action act = () => finder.AddAssembly(typeof(ConventionWithoutValidConstructor).Assembly);
+
+        act.ShouldNotThrow();
+    }
+}
+
+public class ConventionWithParameterlessConstructor : IClassConvention
+{
+    public ConventionWithParameterlessConstructor()
+    { }
+
+    public void Apply(IClassInstance instance) {}
+}
+
+public class ConventionWithIConventionFinderConstructor : IClassConvention
+{
+    public ConventionWithIConventionFinderConstructor(IConventionFinder conventionFinder)
+    { }
+
+    public void Apply(IClassInstance instance) {}
+}
+
+public class ConventionWithoutValidConstructor : IClassConvention
+{
+    public ConventionWithoutValidConstructor(int someParameter)
+    { }
+
+    public void Apply(IClassInstance instance) {}
 }

@@ -1,9 +1,6 @@
-using FluentNHibernate.MappingModel.Collections;
+namespace FluentNHibernate.Mapping.Providers;
 
-namespace FluentNHibernate.Mapping.Providers
+public interface ICollectionMappingProvider
 {
-    public interface ICollectionMappingProvider
-    {
-        MappingModel.Collections.CollectionMapping GetCollectionMapping();
-    }
+    MappingModel.Collections.CollectionMapping GetCollectionMapping();
 }

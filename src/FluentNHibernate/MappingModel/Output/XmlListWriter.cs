@@ -2,40 +2,34 @@ using System.Xml;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlListWriter(IXmlWriterServiceLocator serviceLocator)
+    : BaseXmlCollectionWriter(serviceLocator), IXmlWriter<CollectionMapping>
 {
-    public class XmlListWriter : BaseXmlCollectionWriter, IXmlWriter<CollectionMapping>
+    readonly IXmlWriterServiceLocator serviceLocator = serviceLocator;
+
+    public XmlDocument Write(CollectionMapping mappingModel)
     {
-        readonly IXmlWriterServiceLocator serviceLocator;
+        document = null;
+        mappingModel.AcceptVisitor(this);
+        return document;
+    }
 
-        public XmlListWriter(IXmlWriterServiceLocator serviceLocator)
-            : base(serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+    public override void ProcessCollection(CollectionMapping mapping)
+    {
+        document = new XmlDocument();
 
-        public XmlDocument Write(CollectionMapping mappingModel)
-        {
-            document = null;
-            mappingModel.AcceptVisitor(this);
-            return document;
-        }
+        var element = document.AddElement("list");
 
-        public override void ProcessCollection(CollectionMapping mapping)
-        {
-            document = new XmlDocument();
+        WriteBaseCollectionAttributes(element, mapping);
+    }
 
-            var element = document.AddElement("list");
+    public override void Visit(IIndexMapping indexMapping)
+    {
+        var writer = serviceLocator.GetWriter<IIndexMapping>();
+        var xml = writer.Write(indexMapping);
 
-            WriteBaseCollectionAttributes(element, mapping);
-        }
-
-        public override void Visit(IIndexMapping indexMapping)
-        {
-            var writer = serviceLocator.GetWriter<IIndexMapping>();
-            var xml = writer.Write(indexMapping);
-
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
     }
 }

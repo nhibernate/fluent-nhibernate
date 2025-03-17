@@ -1,9 +1,8 @@
 using FluentNHibernate.MappingModel.Identity;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+public interface ICompositeIdMappingProvider
 {
-    public interface ICompositeIdMappingProvider
-    {
-        CompositeIdMapping GetCompositeIdMapping();
-    }
+    CompositeIdMapping GetCompositeIdMapping();
 }

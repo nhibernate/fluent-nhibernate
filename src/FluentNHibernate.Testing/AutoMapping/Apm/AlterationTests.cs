@@ -4,38 +4,37 @@ using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Automapping.TestFixtures;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Automapping.Apm
+namespace FluentNHibernate.Testing.Automapping.Apm;
+
+[TestFixture]
+public class AlterationTests
 {
-    [TestFixture]
-    public class AlterationTests
+    AutoPersistenceModel model;
+
+    [SetUp]
+    public void CreateAutoMapper()
     {
-        private AutoPersistenceModel model;
+        model = AutoMap.AssemblyOf<ExampleClass>()
+            .Where(t => t.Namespace == typeof(ExampleClass).Namespace);
+    }
 
-        [SetUp]
-        public void CreateAutoMapper()
-        {
-            model = AutoMap.AssemblyOf<ExampleClass>()
-                .Where(t => t.Namespace == typeof(ExampleClass).Namespace);
-        }
+    [Test]
+    public void ShouldApplyAlterationsToModel()
+    {
+        var alteration = A.Fake<IAutoMappingAlteration>();
 
-        [Test]
-        public void ShouldApplyAlterationsToModel()
-        {
-            var alteration = A.Fake<IAutoMappingAlteration>();
+        model
+            .Alterations(alterations => alterations.Add(alteration))
+            .BuildMappings();
 
-            model
-                .Alterations(alterations => alterations.Add(alteration))
-                .BuildMappings();
+        A.CallTo(() => alteration.Alter(model)).MustHaveHappened();
+    }
 
-            A.CallTo(() => alteration.Alter(model)).MustHaveHappened();
-        }
-
-        [Test]
-        public void UseOverridesAddsAlteration()
-        {
-            model.UseOverridesFromAssemblyOf<ExampleClass>()
-                .Alterations(alterations =>
-                    alterations.ShouldContain(a => a is AutoMappingOverrideAlteration));
-        }
+    [Test]
+    public void UseOverridesAddsAlteration()
+    {
+        model.UseOverridesFromAssemblyOf<ExampleClass>()
+            .Alterations(alterations =>
+                alterations.ShouldContain(a => a is AutoMappingOverrideAlteration));
     }
 }

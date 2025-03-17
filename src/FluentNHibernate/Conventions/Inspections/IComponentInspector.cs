@@ -1,7 +1,6 @@
-﻿namespace FluentNHibernate.Conventions.Inspections
+﻿namespace FluentNHibernate.Conventions.Inspections;
+
+public interface IComponentInspector : IComponentBaseInspector
 {
-    public interface IComponentInspector : IComponentBaseInspector
-    {
-        bool LazyLoad { get; }
-    }
+    bool LazyLoad { get; }
 }
