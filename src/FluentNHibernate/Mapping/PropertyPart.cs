@@ -12,8 +12,8 @@ public class PropertyPart : IPropertyMappingProvider
 {
     readonly Member member;
     readonly Type parentType;
-    readonly AttributeStore attributes = new AttributeStore();
-    readonly AttributeStore columnAttributes = new AttributeStore();
+    readonly AttributeStore attributes = new();
+    readonly AttributeStore columnAttributes = new();
 
     bool nextBool = true;
 
@@ -171,7 +171,8 @@ public class PropertyPart : IPropertyMappingProvider
         if (typeof(ICompositeUserType).IsAssignableFrom(type))
             AddColumnsFromCompositeUserType(type);
 
-        return CustomType(TypeMapping.GetTypeString(type));
+        attributes.Set("Type", Layer.UserSupplied, new TypeReference(type));
+        return this;
     }
 
     /// <summary>
@@ -194,11 +195,7 @@ public class PropertyPart : IPropertyMappingProvider
     public PropertyPart CustomType(Func<Type, Type> typeFunc)
     {
         var type = typeFunc.Invoke(member.PropertyType);
-
-        if (typeof(ICompositeUserType).IsAssignableFrom(type))
-            AddColumnsFromCompositeUserType(type);
-
-        return CustomType(TypeMapping.GetTypeString(type));
+        return CustomType(type);
     }
 
     void AddColumnsFromCompositeUserType(Type compositeUserType)
