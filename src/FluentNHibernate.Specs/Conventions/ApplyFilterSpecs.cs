@@ -3,7 +3,6 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Specs.Conventions.Fixtures;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Conventions;
 
@@ -20,13 +19,13 @@ public class when_applying_a_filter_to_an_entity_using_conventions
         mapping = model.BuildMappingFor<FilterTarget>();
 
     It should_add_a_filter_to_the_entity_s_mapping = () =>
-        mapping.Filters.Should().NotBeEmpty();
+        mapping.Filters.ShouldNotBeEmpty();
 
     It should_set_the_name_of_the_added_filter_correctly = () =>
-        mapping.Filters.Single().Name.Should().Be(FilterClassConvention.FilterName);
+        mapping.Filters.Single().Name.ShouldEqual(FilterClassConvention.FilterName);
 
     It should_set_the_condition_of_the_added_filter_correctly = () =>
-        mapping.Filters.Single().Condition.Should().Be(FilterClassConvention.FilterCondition);
+        mapping.Filters.Single().Condition.ShouldEqual(FilterClassConvention.FilterCondition);
 
     static FluentNHibernate.PersistenceModel model;
     static ClassMapping mapping;
@@ -49,13 +48,13 @@ public class when_applying_a_filter_to_a_one_to_many_using_conventions
     };
 
     It should_add_a_filter_to_the_one_to_many_relationship_s_mapping = () =>
-        mapping.Filters.Should().NotBeEmpty();
+        mapping.Filters.ShouldNotBeEmpty();
 
     It should_set_the_name_of_the_added_filter_correctly = () =>
-        mapping.Filters.Single().Name.Should().Be(FilterHasManyConvention.FilterName);
+        mapping.Filters.Single().Name.ShouldEqual(FilterHasManyConvention.FilterName);
 
     It should_set_the_condition_of_the_added_filter_correctly = () =>
-        mapping.Filters.Single().Name.Should().Be(FilterHasManyConvention.FilterName);
+        mapping.Filters.Single().Name.ShouldEqual(FilterHasManyConvention.FilterName);
 
     static FluentNHibernate.PersistenceModel model;
     static CollectionMapping mapping;
@@ -78,13 +77,13 @@ public class when_applying_a_filter_to_a_many_to_many_using_conventions
     };
 
     It should_add_a_filter_to_the_one_to_many_relationship_s_mapping = () =>
-        mapping.Filters.Should().NotBeEmpty();
+        mapping.Filters.ShouldNotBeEmpty();
 
     It should_set_the_name_of_the_added_filter_correctly = () =>
-        mapping.Filters.Single().Name.Should().Be(FilterHasManyConvention.FilterName);
+        mapping.Filters.Single().Name.ShouldEqual(FilterHasManyConvention.FilterName);
 
     It should_set_the_condition_of_the_added_filter_correctly = () =>
-        mapping.Filters.Single().Name.Should().Be(FilterHasManyConvention.FilterName);
+        mapping.Filters.Single().Name.ShouldEqual(FilterHasManyConvention.FilterName);
 
     static FluentNHibernate.PersistenceModel model;
     static CollectionMapping mapping;

@@ -3,7 +3,6 @@ using System.Linq;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.Output;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.FluentInterface;
 
@@ -36,7 +35,7 @@ public class when_generating_the_output_for_a_resolved_component_reference
     };
 
     It should_be_rendered_the_same_as_an_inline_component = () =>
-        referenced_xml.Should().Be(inline_xml);
+        referenced_xml.ShouldEqual(inline_xml);
 
 
     static string render_xml(Action<FluentNHibernate.PersistenceModel> addMappings)

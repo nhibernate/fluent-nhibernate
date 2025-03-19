@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Mapping;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
 
@@ -11,7 +10,7 @@ public class when_the_persistence_model_has_a_component_added_by_type : Persiste
         persistence_model.Add(typeof(MyComponentMap));
 
     It should_contain_the_mapping = () =>
-        persistence_model.ContainsMapping(typeof(MyComponentMap)).Should().BeTrue();
+        persistence_model.ContainsMapping(typeof(MyComponentMap)).ShouldBeTrue();
 }
 
 public class when_the_persistence_model_has_a_component_instance_added : PersistenceModelSpec
@@ -20,7 +19,7 @@ public class when_the_persistence_model_has_a_component_instance_added : Persist
         persistence_model.Add(new MyComponentMap());
 
     It should_contain_the_mapping = () =>
-        persistence_model.ContainsMapping(typeof(MyComponentMap)).Should().BeTrue();
+        persistence_model.ContainsMapping(typeof(MyComponentMap)).ShouldBeTrue();
 }
 
 public class when_the_persistence_model_scans_a_source_for_types : PersistenceModelSpec
@@ -35,16 +34,16 @@ public class when_the_persistence_model_scans_a_source_for_types : PersistenceMo
         }));
 
     It should_contain_the_class_mapping = () =>
-        persistence_model.ContainsMapping(typeof(MyClassMap)).Should().BeTrue();
+        persistence_model.ContainsMapping(typeof(MyClassMap)).ShouldBeTrue();
 
     It should_contain_the_component_mapping = () =>
-        persistence_model.ContainsMapping(typeof(MyComponentMap)).Should().BeTrue();
+        persistence_model.ContainsMapping(typeof(MyComponentMap)).ShouldBeTrue();
 
     It should_contain_the_subclass_mapping = () =>
-        persistence_model.ContainsMapping(typeof(MySubclassMap)).Should().BeTrue();
+        persistence_model.ContainsMapping(typeof(MySubclassMap)).ShouldBeTrue();
 
     It should_contain_the_filter_mapping = () =>
-        persistence_model.ContainsMapping(typeof(MyFilterMap)).Should().BeTrue();
+        persistence_model.ContainsMapping(typeof(MyFilterMap)).ShouldBeTrue();
 }
 
 public abstract class PersistenceModelSpec

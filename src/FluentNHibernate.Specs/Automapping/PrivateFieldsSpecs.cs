@@ -5,7 +5,6 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Automapping;
 
@@ -19,19 +18,19 @@ public class when_using_the_automapper_to_map_an_entity_that_uses_private_fields
         mapping = mapper.BuildMappingFor<EntityUsingPrivateFields>();
 
     It should_find_an_id = () =>
-        mapping.Id.Should().NotBeNull();
+        mapping.Id.ShouldNotBeNull();
 
     It should_use_the_correct_field_for_the_id = () =>
     {
-        mapping.Id.As<IdMapping>().Name.Should().Be("id");
-        mapping.Id.As<IdMapping>().Member.Should().Be(typeof(EntityUsingPrivateFields).GetField("id", BindingFlags.Instance | BindingFlags.NonPublic).ToMember());
+        mapping.Id.As<IdMapping>().Name.ShouldEqual("id");
+        mapping.Id.As<IdMapping>().Member.ShouldEqual(typeof(EntityUsingPrivateFields).GetField("id", BindingFlags.Instance | BindingFlags.NonPublic).ToMember());
     };
 
     It should_ignore_properties = () =>
-        mapping.Properties.Where(x => x.Member.IsProperty).Should().BeEmpty();
+        mapping.Properties.Where(x => x.Member.IsProperty).ShouldBeEmpty();
 
     It should_map_fields = () =>
-        mapping.Properties.Select(x => x.Name).Should().Contain(new string[] { "one", "two", "three" });
+        mapping.Properties.Select(x => x.Name).ShouldContain(new string[] { "one", "two", "three" });
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;

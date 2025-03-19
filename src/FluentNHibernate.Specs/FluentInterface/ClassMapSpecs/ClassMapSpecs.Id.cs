@@ -4,7 +4,6 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Specs.FluentInterface.Fixtures;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs;
 
@@ -14,19 +13,19 @@ public class when_class_map_is_told_to_map_an_id_without_a_property_or_column : 
         mapping = map_as_class<EntityWithProperties>(m => m.Id());
 
     It should_set_the_id_on_the_mapping = () =>
-        Id.Should().NotBeNull();
+        Id.ShouldNotBeNull();
 
     It should_not_set_the_member_on_the_id = () =>
-        Id.Member.Should().BeNull();
+        Id.Member.ShouldBeNull();
 
     It should_not_specify_any_columns_for_the_id = () =>
-        Id.Columns.Should().BeEmpty();
+        Id.Columns.ShouldBeEmpty();
 
     It should_specify_the_default_generator_for_the_id = () =>
-        Id.Generator.Class.Should().Be("increment");
+        Id.Generator.Class.ShouldEqual("increment");
 
     It should_set_the_id_type_to_int_by_default = () =>
-        Id.Type.Should().Be(new TypeReference(typeof(int)));
+        Id.Type.ShouldEqual(new TypeReference(typeof(int)));
 
     static ClassMapping mapping;
 
@@ -44,7 +43,7 @@ public class when_class_map_has_a_composite_id_with_a_key_reference_with_multipl
         mapping.Id.As<CompositeIdMapping>()
             .Keys.Single()
             .Columns.Select(x => x.Name)
-            .Should().Contain(new string[] { "col1", "col2" });
+            .ShouldContain(new string[] { "col1", "col2" });
 
     static ClassMapping mapping;
 }

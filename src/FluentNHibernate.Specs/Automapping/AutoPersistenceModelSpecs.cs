@@ -9,7 +9,6 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using FluentNHibernate.Specs.ExternalFixtures;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Automapping;
 
@@ -57,7 +56,7 @@ public class when_the_automapper_is_ran_to_completion
         ex = Catch.Exception(() => setup.BuildConfiguration());
 
     It should_generate_xml_that_is_accepted_by_the_nhibernate_schema_validation = () =>
-        ex.Should().BeNull();
+        ex.ShouldBeNull();
 
     static FluentConfiguration setup;
     static Exception ex;
@@ -87,7 +86,7 @@ public class when_the_automapper_is_told_to_map_an_inheritance_hierarchy
     // that were already mapped in the child. Needed to change the
     // ordering so parents are always mapped before their children
     It should_map_the_top_most_class_first = () =>
-        ex.Should().BeNull();
+        ex.ShouldBeNull();
 
     static Exception ex;
 }
@@ -103,11 +102,11 @@ public class when_the_automapper_maps_an_inheritance_hierarchy_with_three_levels
             .SelectMany(x => x.Classes);
 
     It should_map_the_parent = () =>
-        mappings.Count().Should().Be(1);
+        mappings.Count().ShouldEqual(1);
 
     It should_map_the_child_child_as_a_subclass_of_parent = () =>
         mappings.Single()
-            .Subclasses.Single().Type.Should().Be(typeof(ChildChild));
+            .Subclasses.Single().Type.ShouldEqual(typeof(ChildChild));
 
     static AutoPersistenceModel mapper;
     static IEnumerable<ClassMapping> mappings;

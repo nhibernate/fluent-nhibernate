@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Visitors;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.PersistenceModel;
 
@@ -23,7 +22,7 @@ public class when_the_persistence_model_is_told_to_build_the_mappings_with_a_val
         exception = Catch.Exception(() => model.BuildMappings());
 
     It shouldnt_throw_any_validation_exceptions = () =>
-        exception.Should().BeNull();
+        exception.ShouldBeNull();
 }
 
 public class when_the_persistence_model_is_told_to_build_the_mappings_with_a_class_mapping_that_doesnt_have_an_id : PersistenceModelValidationSpec
@@ -39,18 +38,18 @@ public class when_the_persistence_model_is_told_to_build_the_mappings_with_a_cla
 
     It should_throw_a_validation_exception = () =>
     {
-        exception.Should().NotBeNull();
-        exception.Should().BeOfType<ValidationException>();
+        exception.ShouldNotBeNull();
+        exception.ShouldBeOfExactType<ValidationException>();
     };
 
     It should_indicate_which_entity_is_missing_the_id = () =>
-        exception.As<ValidationException>().RelatedEntity.Should().Be(typeof(Target));
+        exception.As<ValidationException>().RelatedEntity.ShouldEqual(typeof(Target));
 
     It should_explain_how_to_correct_the_error = () =>
-        exception.As<ValidationException>().Resolution.Should().Be("Use the Id method to map your identity property. For example: Id(x => x.Id)");
+        exception.As<ValidationException>().Resolution.ShouldEqual("Use the Id method to map your identity property. For example: Id(x => x.Id)");
 
     It should_provide_a_sufficently_detailed_message_in_the_exception = () =>
-        exception.Message.Should().Be("The entity 'Target' doesn't have an Id mapped. Use the Id method to map your identity property. For example: Id(x => x.Id).");
+        exception.Message.ShouldEqual("The entity 'Target' doesn't have an Id mapped. Use the Id method to map your identity property. For example: Id(x => x.Id).");
 }
 
 public class when_the_persistence_model_is_told_to_build_the_mappings_with_a_many_to_many_relationship_with_inverse_specified_on_both_sides : PersistenceModelValidationSpec
@@ -76,18 +75,18 @@ public class when_the_persistence_model_is_told_to_build_the_mappings_with_a_man
 
     It should_throw_a_validation_exception = () =>
     {
-        exception.Should().NotBeNull();
-        exception.Should().BeOfType<ValidationException>();
+        exception.ShouldNotBeNull();
+        exception.ShouldBeOfExactType<ValidationException>();
     };
 
     It should_indicate_which_entity_has_the_invalid_many_to_many = () =>
-        exception.As<ValidationException>().RelatedEntity.Should().Be(typeof(Left));
+        exception.As<ValidationException>().RelatedEntity.ShouldEqual(typeof(Left));
 
     It should_explain_how_to_correct_the_error = () =>
-        exception.As<ValidationException>().Resolution.Should().Be("Remove Inverse from one side of the relationship");
+        exception.As<ValidationException>().Resolution.ShouldEqual("Remove Inverse from one side of the relationship");
 
     It should_provide_a_sufficently_detailed_message_in_the_exception = () =>
-        exception.Message.Should().Be("The relationship Left.Rights to Right.Lefts has Inverse specified on both sides. Remove Inverse from one side of the relationship.");
+        exception.Message.ShouldEqual("The relationship Left.Rights to Right.Lefts has Inverse specified on both sides. Remove Inverse from one side of the relationship.");
 }
 
 public class when_the_persistence_model_with_validation_disabled_is_told_to_build_the_mappings_with_a_class_mapping_that_doesnt_have_an_id : PersistenceModelValidationSpec
@@ -103,7 +102,7 @@ public class when_the_persistence_model_with_validation_disabled_is_told_to_buil
         exception = Catch.Exception(() => model.BuildMappings());
 
     It shouldnt_throw_any_validation_exceptions = () =>
-        exception.Should().BeNull();
+        exception.ShouldBeNull();
 }
 
 public abstract class PersistenceModelValidationSpec
