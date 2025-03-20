@@ -2,7 +2,6 @@
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Automapping;
 // just verify that the obsolete methods still work until we bin them entirely
@@ -14,7 +13,7 @@ public class when_using_automap_obsolete_where_method_for_assembly_of : AutoMapO
             .BuildMappings();
 
     It should_use_the_where_clause_provided = () =>
-        was_called.Should().BeTrue();
+        was_called.ShouldBeTrue();
 }
 
 public class when_using_automap_obsolete_where_method_for_an_assembly : AutoMapObsoleteSpec
@@ -24,7 +23,7 @@ public class when_using_automap_obsolete_where_method_for_an_assembly : AutoMapO
             .BuildMappings();
 
     It should_use_the_where_clause_provided = () =>
-        was_called.Should().BeTrue();
+        was_called.ShouldBeTrue();
 }
 
 public class when_using_automap_obsolete_where_method_for_a_source : AutoMapObsoleteSpec
@@ -34,7 +33,7 @@ public class when_using_automap_obsolete_where_method_for_a_source : AutoMapObso
             .BuildMappings();
 
     It should_use_the_where_clause_provided = () =>
-        was_called.Should().BeTrue();
+        was_called.ShouldBeTrue();
 }
 
 public abstract class AutoMapObsoleteSpec

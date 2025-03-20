@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentAssertions;
+using Machine.Specifications;
 
 namespace FluentNHibernate.Specs;
 
@@ -16,12 +16,12 @@ public static class Extensions
 
     public static void ShouldContain<T>(this IEnumerable<T> collection, Func<T, bool> predicate)
     {
-        collection.Any(predicate).Should().BeTrue();
+        collection.Any(predicate).ShouldBeTrue();
     }
 
     public static void ShouldNotContain<T>(this IEnumerable<T> collection, Func<T, bool> predicate)
     {
-        collection.Any(predicate).Should().BeFalse();
+        collection.Any(predicate).ShouldBeFalse();
     }
 
     public static ClassMapping BuildMappingFor<T>(this FluentNHibernate.PersistenceModel model)

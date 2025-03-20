@@ -11,9 +11,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-    <PackageReference Include="FluentAssertions" Version="6.12.2" />
     <PackageReference Include="Machine.Specifications" Version="1.1.3" />
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.2" />
+    <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

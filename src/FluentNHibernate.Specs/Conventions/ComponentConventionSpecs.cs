@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using FluentNHibernate.Conventions;
+﻿using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -28,7 +27,7 @@ public class when_specifying_component_convention
         var property = mapping.Components.First()
             .Properties.Single(x => x.Name == "Count");
 
-        property.Columns.FirstOrDefault().Name.Should().Be("different");
+        property.Columns.FirstOrDefault().Name.ShouldEqual("different");
     };
 
     static FluentNHibernate.PersistenceModel model;

@@ -2,7 +2,6 @@
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.FluentInterface.Fixtures;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.FluentInterface.SubclassMapSpecs;
 
@@ -14,7 +13,7 @@ public class when_subclass_map_is_told_to_map_a_has_many_bag : ProviderSpec
     Behaves_like<ClasslikeBagBehaviour> a_bag_in_a_classlike_mapping;
 
     It should_use_the_containing_type_name_suffixed_with_id_as_the_key_column_name = () =>
-        mapping.Collections.Single().Key.Columns.Single().Name.Should().Be("EntityWithCollections_id");
+        mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("EntityWithCollections_id");
 
     protected static SubclassMapping mapping;
 }
@@ -61,7 +60,7 @@ public class when_subclass_map_is_told_to_map_an_has_many_from_a_field : Provide
     Behaves_like<ClasslikeBagBehaviour> a_bag_in_a_classlike_mapping;
 
     It should_use_the_containing_type_name_suffixed_with_id_as_the_key_column_name = () =>
-        mapping.Collections.Single().Key.Columns.Single().Name.Should().Be("EntityWithFieldCollections_id");
+        mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("EntityWithFieldCollections_id");
 
     protected static SubclassMapping mapping;
 }
@@ -74,7 +73,7 @@ public class when_subclass_map_is_told_to_map_an_has_many_using_reveal : Provide
     Behaves_like<ClasslikeBagBehaviour> a_bag_in_a_classlike_mapping;
 
     It should_use_the_containing_type_name_suffixed_with_id_as_the_key_column_name = () =>
-        mapping.Collections.Single().Key.Columns.Single().Name.Should().Be("EntityWithCollections_id");
+        mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("EntityWithCollections_id");
 
     protected static SubclassMapping mapping;
 }

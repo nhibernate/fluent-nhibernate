@@ -7,7 +7,6 @@ using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Automapping;
 
@@ -20,16 +19,16 @@ public class when_the_automapper_is_told_to_map_a_class_with_a_self_referencing_
         mapping = mapper.BuildMappingFor<SelfReferencingCollectionEntity>();
 
     It should_have_one_collection = () =>
-        mapping.Collections.Should().NotBeEmpty();
+        mapping.Collections.ShouldNotBeEmpty();
 
     It should_have_it_s_own_type_for_the_collection_child_type = () =>
-        mapping.Collections.Single().ChildType.Should().Be(typeof(SelfReferencingCollectionEntity));
+        mapping.Collections.Single().ChildType.ShouldEqual(typeof(SelfReferencingCollectionEntity));
 
     It should_have_the_property_name_for_the_collection_name = () =>
-        mapping.Collections.Single().Name.Should().Be("Children");
+        mapping.Collections.Single().Name.ShouldEqual("Children");
 
     It should_have_a_one_to_many_collection = () =>
-        mapping.Collections.Single().Relationship.Should().BeOfType<OneToManyMapping>();
+        mapping.Collections.Single().Relationship.ShouldBeOfExactType<OneToManyMapping>();
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;
@@ -44,13 +43,13 @@ public class when_the_automapper_is_told_to_map_a_class_with_a_self_reference
         mapping = mapper.BuildMappingFor<SelfReferenceEntity>();
 
     It should_have_one_reference = () =>
-        mapping.References.Should().NotBeEmpty();
+        mapping.References.ShouldNotBeEmpty();
 
     It should_have_it_s_own_type_for_the_reference_type = () =>
-        mapping.References.Single().Class.GetUnderlyingSystemType().Should().Be(typeof(SelfReferenceEntity));
+        mapping.References.Single().Class.GetUnderlyingSystemType().ShouldEqual(typeof(SelfReferenceEntity));
 
     It should_have_the_property_name_for_the_reference_name = () =>
-        mapping.References.Single().Name.Should().Be("Parent");
+        mapping.References.Single().Name.ShouldEqual("Parent");
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;
@@ -65,31 +64,31 @@ public class when_the_automapper_is_told_to_map_a_class_with_a_self_reference_an
         mapping = mapper.BuildMappingFor<ParentChildSelfReferenceEntity>();
 
     It should_have_one_collection = () =>
-        mapping.Collections.Should().NotBeEmpty();
+        mapping.Collections.ShouldNotBeEmpty();
 
     It should_have_it_s_own_type_for_the_collection_child_type = () =>
-        mapping.Collections.Single().ChildType.Should().Be(typeof(ParentChildSelfReferenceEntity));
+        mapping.Collections.Single().ChildType.ShouldEqual(typeof(ParentChildSelfReferenceEntity));
 
     It should_have_the_property_name_for_the_collection_name = () =>
-        mapping.Collections.Single().Name.Should().Be("Children");
+        mapping.Collections.Single().Name.ShouldEqual("Children");
 
     It should_have_a_one_to_many_collection = () =>
-        mapping.Collections.Single().Relationship.Should().BeOfType<OneToManyMapping>();
+        mapping.Collections.Single().Relationship.ShouldBeOfExactType<OneToManyMapping>();
 
     It should_have_the_correct_collection_key_column = () =>
-        mapping.Collections.Single().Key.Columns.Single().Name.Should().Be("Parent_id");
+        mapping.Collections.Single().Key.Columns.Single().Name.ShouldEqual("Parent_id");
 
     It should_have_one_reference = () =>
-        mapping.References.Should().NotBeEmpty();
+        mapping.References.ShouldNotBeEmpty();
 
     It should_have_it_s_own_type_for_the_reference_type = () =>
-        mapping.References.Single().Class.GetUnderlyingSystemType().Should().Be(typeof(ParentChildSelfReferenceEntity));
+        mapping.References.Single().Class.GetUnderlyingSystemType().ShouldEqual(typeof(ParentChildSelfReferenceEntity));
 
     It should_have_the_property_name_for_the_reference_name = () =>
-        mapping.References.Single().Name.Should().Be("Parent");
+        mapping.References.Single().Name.ShouldEqual("Parent");
 
     It should_have_the_correct_reference_key_column = () =>
-        mapping.References.Single().Columns.Single().Name.Should().Be("Parent_id");
+        mapping.References.Single().Columns.Single().Name.ShouldEqual("Parent_id");
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;
@@ -104,10 +103,10 @@ public class when_the_automapper_is_told_to_map_an_entity_with_a_collection_expo
         mapping = mapper.BuildMappingFor<ReadOnlyEnumerableEntity>();
 
     It should_map_the_read_only_property_collection = () =>
-        mapping.Collections.Select(x => x.Name).Should().Contain("BackingFieldCollection");
+        mapping.Collections.Select(x => x.Name).ShouldContain("BackingFieldCollection");
 
     It should_map_the_property_using_property_through_field_access_strategy = () =>
-        mapping.Collections.First(x => x.Name == "BackingFieldCollection").Access.Should().Be("nosetter.camelcase");
+        mapping.Collections.First(x => x.Name == "BackingFieldCollection").Access.ShouldEqual("nosetter.camelcase");
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;
@@ -123,10 +122,10 @@ public class when_the_automapper_is_told_to_map_an_entity_with_a_collection_expo
         mapping = mapper.BuildMappingFor<ReadOnlyEnumerableEntity>();
 
     It should_map_the_read_only_property_collection = () =>
-        mapping.Collections.Select(x => x.Name).Should().Contain("BackingFieldCollection");
+        mapping.Collections.Select(x => x.Name).ShouldContain("BackingFieldCollection");
 
     It should_map_the_property_using_property_through_field_access_strategy = () =>
-        mapping.Collections.First(x => x.Name == "BackingFieldCollection").Access.Should().Be("property");
+        mapping.Collections.First(x => x.Name == "BackingFieldCollection").Access.ShouldEqual("property");
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;
@@ -149,7 +148,7 @@ public class when_the_automapper_is_told_to_map_an_entity_with_a_collection_expo
         mapping = mapper.BuildMappingFor<ReadOnlyEnumerableEntity>();
 
     It should_map_the_property_using_the_access_strategy_from_the_configuration = () =>
-        mapping.Collections.First(x => x.Name == "BackingFieldCollection").Access.Should().Be("noop");
+        mapping.Collections.First(x => x.Name == "BackingFieldCollection").Access.ShouldEqual("noop");
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;
@@ -172,10 +171,10 @@ public class when_the_automapper_is_told_to_map_an_entity_with_a_collection_expo
         mapping = mapper.BuildMappingFor<ReadOnlyEnumerableEntity>();
 
     It should_map_the_read_only_property_collection = () =>
-        mapping.Collections.Select(x => x.Name).Should().Contain("AutoPropertyCollection");
+        mapping.Collections.Select(x => x.Name).ShouldContain("AutoPropertyCollection");
 
     It should_map_the_property_using_backfield_access_strategy = () =>
-        mapping.Collections.First(x => x.Name == "AutoPropertyCollection").Access.Should().Be("backfield");
+        mapping.Collections.First(x => x.Name == "AutoPropertyCollection").Access.ShouldEqual("backfield");
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;
@@ -190,7 +189,7 @@ public class when_the_automapper_is_told_to_map_an_entity_with_a_collection_expo
         mapping = mapper.BuildMappingFor<ReadOnlyEnumerableEntity>();
 
     It should_map_the_property_using_the_access_strategy_from_the_configuration = () =>
-        mapping.Collections.First(x => x.Name == "AutoPropertyCollection").Access.Should().Be("noop");
+        mapping.Collections.First(x => x.Name == "AutoPropertyCollection").Access.ShouldEqual("noop");
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;
@@ -213,10 +212,10 @@ public class when_automapping_an_entity_with_dictionary_properties
         mapping = mapper.BuildMappingFor<DictionaryEntity>();
 
     It should_not_map_the_non_generic_dictionary = () =>
-        mapping.Collections.Select(x => x.Name).Should().NotContain("Dictionary");
+        mapping.Collections.Select(x => x.Name).ShouldNotContain("Dictionary");
 
     It should_not_map_the_generic_dictionary = () =>
-        mapping.Collections.Select(x => x.Name).Should().NotContain("GenericDictionary");
+        mapping.Collections.Select(x => x.Name).ShouldNotContain("GenericDictionary");
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;
