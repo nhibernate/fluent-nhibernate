@@ -104,7 +104,7 @@ public class when_the_automapper_maps_nested_comonents
             .SelectMany(x => x.Properties)
             .SelectMany(x => x.Columns)
             .Select(x => x.Name)
-            .ShouldContain(new string[] { "LeftLocationProperty", "RightLocationProperty" });
+            .ShouldContain("LeftLocationProperty", "RightLocationProperty");
 
     It should_prefix_the_components_in_the_components = () =>
         mapping.Components
@@ -112,7 +112,7 @@ public class when_the_automapper_maps_nested_comonents
             .SelectMany(x => x.Properties)
             .SelectMany(x => x.Columns)
             .Select(x => x.Name)
-            .ShouldContain(new string[] { "LeftAPropertyA", "LeftBPropertyB", "RightAPropertyA", "RightBPropertyB" });
+            .ShouldContain("LeftAPropertyA", "LeftBPropertyB", "RightAPropertyA", "RightBPropertyB");
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;

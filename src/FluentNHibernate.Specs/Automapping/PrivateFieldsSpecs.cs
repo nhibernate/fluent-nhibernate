@@ -30,7 +30,7 @@ public class when_using_the_automapper_to_map_an_entity_that_uses_private_fields
         mapping.Properties.Where(x => x.Member.IsProperty).ShouldBeEmpty();
 
     It should_map_fields = () =>
-        mapping.Properties.Select(x => x.Name).ShouldContain(new string[] { "one", "two", "three" });
+        mapping.Properties.Select(x => x.Name).ShouldContain("one", "two", "three");
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;

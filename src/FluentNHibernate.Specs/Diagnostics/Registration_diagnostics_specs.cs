@@ -31,7 +31,7 @@ public class when_registering_types_with_diagnostics_enabled
         results.ShouldNotBeNull();
 
     It should_register_each_ClassMap_type_and_return_them_in_the_results = () =>
-        results.FluentMappings.ShouldContain(new Type[] { typeof(FirstMap), typeof(SecondMap) });
+        results.FluentMappings.ShouldContain(typeof(FirstMap), typeof(SecondMap));
 
     It should_register_each_SubclassMap_type_and_return_them_in_the_results = () =>
         results.FluentMappings.ShouldContain(typeof(ChildMap));
@@ -73,7 +73,7 @@ public class when_registering_conventions_with_diagnostics_enabled
         results.ShouldNotBeNull();
 
     It should_register_each_convention_type_and_return_them_in_the_results = () =>
-        results.Conventions.ShouldContain(new Type[] { typeof(ConventionA), typeof(ConventionB) });
+        results.Conventions.ShouldContain(typeof(ConventionA), typeof(ConventionB));
 
     It should_return_the_source_in_the_results = () =>
         results.ScannedSources
@@ -159,7 +159,7 @@ public class when_automapping_with_diagnostics_enabled_and_excluding_by_where
         results.AutomappingSkippedTypes.Select(x => x.Reason).ShouldContain("Skipped by Where clause");
 
     It should_not_include_a_skipped_entry_for_used_types = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldNotContain(new Type[] { typeof(Second), typeof(Third) });
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldNotContain(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_candidate_list = () =>
         results.AutomappingCandidateTypes.ShouldContainOnly(typeof(Second), typeof(Third));
@@ -317,7 +317,7 @@ public class when_automapping_with_diagnostics_enabled_and_excluding_by_explicit
         results.AutomappingSkippedTypes.Select(x => x.Reason).ShouldContain("Skipped by IAutomappingConfiguration.IsComponent(Type)");
 
     It should_not_include_a_skipped_entry_for_used_types = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldNotContain(new Type[] { typeof(Second), typeof(Third) } );
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldNotContain(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_candidate_list = () =>
         results.AutomappingCandidateTypes.ShouldContainOnly(typeof(Second), typeof(Third));

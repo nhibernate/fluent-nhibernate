@@ -25,13 +25,7 @@ public class when_the_persistence_model_has_a_component_instance_added : Persist
 public class when_the_persistence_model_scans_a_source_for_types : PersistenceModelSpec
 {
     Because of = () =>
-        persistence_model.AddMappingsFromSource(new StubTypeSource(new[]
-        {
-            typeof(MyComponentMap),
-            typeof(MyClassMap),
-            typeof(MySubclassMap),
-            typeof(MyFilterMap),
-        }));
+        persistence_model.AddMappingsFromSource(new StubTypeSource(typeof(MyComponentMap), typeof(MyClassMap), typeof(MySubclassMap), typeof(MyFilterMap)));
 
     It should_contain_the_class_mapping = () =>
         persistence_model.ContainsMapping(typeof(MyClassMap)).ShouldBeTrue();

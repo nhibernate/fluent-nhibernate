@@ -43,7 +43,7 @@ public class when_class_map_has_a_composite_id_with_a_key_reference_with_multipl
         mapping.Id.As<CompositeIdMapping>()
             .Keys.Single()
             .Columns.Select(x => x.Name)
-            .ShouldContain(new string[] { "col1", "col2" });
+            .ShouldContain("col1", "col2");
 
     static ClassMapping mapping;
 }
