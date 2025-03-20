@@ -14,16 +14,6 @@ public static class Extensions
         return (T)instance;
     }
 
-    public static void ShouldContain<T>(this IEnumerable<T> collection, Func<T, bool> predicate)
-    {
-        collection.Any(predicate).ShouldBeTrue();
-    }
-
-    public static void ShouldNotContain<T>(this IEnumerable<T> collection, Func<T, bool> predicate)
-    {
-        collection.Any(predicate).ShouldBeFalse();
-    }
-
     public static ClassMapping BuildMappingFor<T>(this FluentNHibernate.PersistenceModel model)
     {
         return model.BuildMappings()
