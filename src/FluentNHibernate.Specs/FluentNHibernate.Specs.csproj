@@ -11,10 +11,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-<<<<<<< HEAD
-    <PackageReference Include="FluentAssertions" Version="6.12.2" />
-=======
->>>>>>> 4b9a17f0 (Replace FluentAssertions with Machine.Specifications.Should)
     <PackageReference Include="Machine.Specifications" Version="1.1.3" />
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.2" />
     <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
