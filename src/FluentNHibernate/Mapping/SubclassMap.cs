@@ -330,15 +330,6 @@ public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMapping
                 case MappingProviderStore.ProviderType.StoredProcedure:
                     mapping.AddStoredProcedure(((IStoredProcedureMappingProvider)mappingProviderObj).GetStoredProcedureMapping());
                     break;
-                case MappingProviderStore.ProviderType.Subclass:
-                case MappingProviderStore.ProviderType.Filter:
-                case MappingProviderStore.ProviderType.Join:
-                case MappingProviderStore.ProviderType.Identity:
-                case MappingProviderStore.ProviderType.CompositeId:
-                case MappingProviderStore.ProviderType.NaturalId:
-                case MappingProviderStore.ProviderType.Version:
-                case MappingProviderStore.ProviderType.Discriminator:
-                case MappingProviderStore.ProviderType.Tupilizer:
                 default:
                     throw new Exception("Internal Error");
             }
