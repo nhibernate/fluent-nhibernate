@@ -91,7 +91,7 @@ public class StoredProcedureTests
     {
         var check = "Delete ABC";
         CreateMappingTester(x => x.SqlDeleteAll(check))
-            .Element("//subclass/sql-delete")
+            .Element("//subclass/sql-delete-all")
             .ValueEquals(check);
     }
 
