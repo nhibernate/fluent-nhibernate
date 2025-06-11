@@ -48,7 +48,7 @@ public class MappingTester<T>
 
         return this;
     }
-
+    
     public virtual MappingTester<T> ForMapping(Action<ClassMap<T>> mappingAction)
     {
         var classMap = new ClassMap<T>();
@@ -189,7 +189,9 @@ public class MappingTester<T>
         else
         {
             XmlElement elementAtPosition = (XmlElement)currentElement.ParentNode.ChildNodes.Item(elementPosition);
-            Assert.That(elementAtPosition, Is.EqualTo(currentElement), $"Expected '{currentElement.Name}' but was '{elementAtPosition.Name}'");
+            // Assert.That(elementWithoutChildren0, IsEqualTo(elementWithoutChildren1)) always returns true (it defaults
+            // to the NUnit IEnumerable comparer, which returns equal cause both don't have child nodes).
+            Assert.That(elementAtPosition?.OuterXml, Is.EqualTo(currentElement.OuterXml), $"Expected '{currentElement.Name}' but was '{elementAtPosition.Name}'");
         }
 
         return this;

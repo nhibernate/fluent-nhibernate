@@ -27,6 +27,9 @@ public class SubclassMapping(SubclassType subclassType, AttributeStore attribute
     {
         visitor.ProcessSubclass(this);
 
+        if (Tuplizer is not null)
+            visitor.Visit(Tuplizer);
+        
         if (SubclassType == SubclassType.JoinedSubclass && Key is not null)
             visitor.Visit(Key);
 
@@ -66,6 +69,8 @@ public class SubclassMapping(SubclassType subclassType, AttributeStore attribute
     public TypeReference Persister => attributes.GetOrDefault<TypeReference>();
 
     public int BatchSize => attributes.GetOrDefault<int>();
+    
+    public TuplizerMapping Tuplizer => attributes.GetOrDefault<TuplizerMapping>();
 
     public void OverrideAttributes(AttributeStore store)
     {

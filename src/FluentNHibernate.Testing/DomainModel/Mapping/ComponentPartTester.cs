@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using FluentNHibernate.MappingModel;
+using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping;
 
@@ -103,6 +105,34 @@ public class ComponentPartTester
             .ForMapping(m =>
                 m.Component(x => x.Component, c => c.Map(x => x.Name)))
             .Element("class/component").HasAttribute("class", typeof(ComponentTarget).AssemblyQualifiedName);                
-    }        
-
+    }
+    
+    [Test]
+    public void ComponentCanSetTuplizer()
+    {
+        Type tuplizerType = typeof(NHibernate.Tuple.Entity.PocoEntityTuplizer);
+        new MappingTester<PropertyTarget>()
+            .ForMapping(m =>
+                m.Component(x => x.Component, c => c.Tuplizer(TuplizerMode.Poco, tuplizerType)))
+            .Element("class/component/tuplizer")
+            .HasAttribute("class", tuplizerType.AssemblyQualifiedName)
+            .HasAttribute("entity-mode", nameof(TuplizerMode.Poco).ToLower());
+    }
+    
+    [Test]
+    public void ComponentCanSetTuplizerInCorrectOrderRegardlessOfDeclaration()
+    {
+        Type tuplizerType = typeof(NHibernate.Tuple.Entity.PocoEntityTuplizer);
+        new MappingTester<PropertyTarget>()
+            .ForMapping(m =>
+                m.Component(x => x.Component, c =>
+                {
+                    c.Map(x => x.Name);
+                    c.ParentReference(x => x.MyParent);
+                    c.Tuplizer(TuplizerMode.Poco, tuplizerType);
+                }))
+            .Element("class/component/tuplizer").Exists().ShouldBeInParentAtPosition(0)
+            .Element("class/component/parent").Exists().ShouldBeInParentAtPosition(1)
+            .Element("class/component/property").Exists().ShouldBeInParentAtPosition(2);
+    }
 }

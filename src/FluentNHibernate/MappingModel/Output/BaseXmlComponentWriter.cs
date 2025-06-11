@@ -47,4 +47,12 @@ public abstract class BaseXmlComponentWriter(IXmlWriterServiceLocator serviceLoc
 
         document.ImportAndAppendChild(parentXml);
     }
+    
+    public override void Visit(TuplizerMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<TuplizerMapping>();
+        var filterXml = writer.Write(mapping);
+
+        document.ImportAndAppendChild(filterXml);
+    }
 }
