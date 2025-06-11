@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Utilities;
 
@@ -11,52 +10,52 @@ public class when_getting_all_members_for_a_class
         members = typeof(MyClass).GetInstanceMembers();
 
     It should_include_the_public_properties = () =>
-        members.Select(x => x.Name).Should().Contain("PublicProperty");
+        members.Select(x => x.Name).ShouldContain("PublicProperty");
 
     It should_include_the_private_properties = () =>
-        members.Select(x => x.Name).Should().Contain("PrivateProperty");
+        members.Select(x => x.Name).ShouldContain("PrivateProperty");
 
     It should_include_the_protected_properties = () =>
-        members.Select(x => x.Name).Should().Contain("ProtectedProperty");
+        members.Select(x => x.Name).ShouldContain("ProtectedProperty");
 
     It should_include_the_public_fields = () =>
-        members.Select(x => x.Name).Should().Contain("publicField");
+        members.Select(x => x.Name).ShouldContain("publicField");
 
     It should_include_the_private_fields = () =>
-        members.Select(x => x.Name).Should().Contain("privateField");
+        members.Select(x => x.Name).ShouldContain("privateField");
 
     It should_include_the_protected_fields = () =>
-        members.Select(x => x.Name).Should().Contain("protectedField");
+        members.Select(x => x.Name).ShouldContain("protectedField");
 
     It should_not_include_backing_fields = () =>
-        members.Select(x => x.Name).Should().NotContain("<PublicProperty>k__BackingField");
+        members.Select(x => x.Name).ShouldNotContain("<PublicProperty>k__BackingField");
 
     It should_not_include_property_methods = () =>
-        members.Select(x => x.Name).Should().NotContain("get_PublicProperty", "set_PublicProperty");
+        members.Select(x => x.Name).ShouldNotContain("get_PublicProperty", "set_PublicProperty");
 
     It should_include_the_public_parameterless_non_void_methods = () =>
-        members.Select(x => x.Name).Should().Contain("PublicNonVoidParameterlessMethod");
+        members.Select(x => x.Name).ShouldContain("PublicNonVoidParameterlessMethod");
 
     It should_not_include_the_public_non_void_methods_with_parameters = () =>
-        members.Select(x => x.Name).Should().NotContain("PublicNonVoidMethodWithParameters");
+        members.Select(x => x.Name).ShouldNotContain("PublicNonVoidMethodWithParameters");
 
     It should_not_include_the_public_parameterless_void_methods = () =>
-        members.Select(x => x.Name).Should().NotContain("PublicVoidParameterlessMethod");
+        members.Select(x => x.Name).ShouldNotContain("PublicVoidParameterlessMethod");
 
     It should_not_include_the_public_void_methods_with_parameters = () =>
-        members.Select(x => x.Name).Should().NotContain("PublicVoidMethodWithParameters");
+        members.Select(x => x.Name).ShouldNotContain("PublicVoidMethodWithParameters");
 
     It should_include_the_private_parameterless_non_void_methods = () =>
-        members.Select(x => x.Name).Should().Contain("PrivateNonVoidParameterlessMethod");
+        members.Select(x => x.Name).ShouldContain("PrivateNonVoidParameterlessMethod");
 
     It should_not_include_the_private_non_void_methods_with_parameters = () =>
-        members.Select(x => x.Name).Should().NotContain("PrivateNonVoidMethodWithParameters");
+        members.Select(x => x.Name).ShouldNotContain("PrivateNonVoidMethodWithParameters");
 
     It should_not_include_the_private_parameterless_void_methods = () =>
-        members.Select(x => x.Name).Should().NotContain("PrivateVoidParameterlessMethod");
+        members.Select(x => x.Name).ShouldNotContain("PrivateVoidParameterlessMethod");
 
     It should_not_include_the_private_void_methods_with_parameters = () =>
-        members.Select(x => x.Name).Should().NotContain("PrivateVoidMethodWithParameters");
+        members.Select(x => x.Name).ShouldNotContain("PrivateVoidMethodWithParameters");
 
     static IEnumerable<Member> members;
 
@@ -117,28 +116,28 @@ public class when_getting_all_members_for_a_descendent_class
         members = typeof(MyClass).GetInstanceMembers();
 
     It should_include_the_public_properties_of_the_parent = () =>
-        members.Select(x => x.Name).Should().Contain("PublicProperty");
+        members.Select(x => x.Name).ShouldContain("PublicProperty");
 
     It should_include_the_private_properties_of_the_parent = () =>
-        members.Select(x => x.Name).Should().Contain("PrivateProperty");
+        members.Select(x => x.Name).ShouldContain("PrivateProperty");
 
     It should_include_the_protected_properties_of_the_parent = () =>
-        members.Select(x => x.Name).Should().Contain("ProtectedProperty");
+        members.Select(x => x.Name).ShouldContain("ProtectedProperty");
 
     It should_include_the_public_fields_of_the_parent = () =>
-        members.Select(x => x.Name).Should().Contain("publicField");
+        members.Select(x => x.Name).ShouldContain("publicField");
 
     It should_include_the_private_fields_of_the_parent = () =>
-        members.Select(x => x.Name).Should().Contain("privateField");
+        members.Select(x => x.Name).ShouldContain("privateField");
 
     It should_include_the_protected_fields_of_the_parent = () =>
-        members.Select(x => x.Name).Should().Contain("protectedField");
+        members.Select(x => x.Name).ShouldContain("protectedField");
 
     It should_include_the_public_parameterless_non_void_methods_of_the_parent = () =>
-        members.Select(x => x.Name).Should().Contain("PublicNonVoidParameterlessMethod");
+        members.Select(x => x.Name).ShouldContain("PublicNonVoidParameterlessMethod");
 
     It should_include_the_private_parameterless_non_void_methods_of_the_parent = () =>
-        members.Select(x => x.Name).Should().Contain("PrivateNonVoidParameterlessMethod");
+        members.Select(x => x.Name).ShouldContain("PrivateNonVoidParameterlessMethod");
 
     static IEnumerable<Member> members;
 

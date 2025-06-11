@@ -7,7 +7,6 @@ using FluentNHibernate.Mapping;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using FluentNHibernate.Specs.ExternalFixtures;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Diagnostics;
 
@@ -29,25 +28,25 @@ public class when_registering_types_with_diagnostics_enabled
     };
 
     It should_produce_results_when_enabled = () =>
-        results.Should().NotBeNull();
+        results.ShouldNotBeNull();
 
     It should_register_each_ClassMap_type_and_return_them_in_the_results = () =>
-        results.FluentMappings.Should().Contain(new Type[] { typeof(FirstMap), typeof(SecondMap) });
+        results.FluentMappings.ShouldContain(typeof(FirstMap), typeof(SecondMap));
 
     It should_register_each_SubclassMap_type_and_return_them_in_the_results = () =>
-        results.FluentMappings.Should().Contain(typeof(ChildMap));
+        results.FluentMappings.ShouldContain(typeof(ChildMap));
 
     It should_register_each_ComponentMap_type_and_return_them_in_the_results = () =>
-        results.FluentMappings.Should().Contain(typeof(CompMap));
+        results.FluentMappings.ShouldContain(typeof(CompMap));
 
     It should_return_the_source_in_the_results = () =>
         results.ScannedSources
             .Where(x => x.Phase == ScanPhase.FluentMappings)
             .Select(x => x.Identifier)
-            .Should().ContainSingle(identifier => identifier == "StubTypeSource");
+            .ShouldContainOnly("StubTypeSource");
 
     It should_not_register_non_fluent_mapping_types = () =>
-        results.FluentMappings.Should().NotContain(typeof(First));
+        results.FluentMappings.ShouldNotContain(typeof(First));
 
     static FluentNHibernate.PersistenceModel model;
     static DiagnosticResults results;
@@ -71,19 +70,19 @@ public class when_registering_conventions_with_diagnostics_enabled
     };
 
     It should_produce_results_when_enabled = () =>
-        results.Should().NotBeNull();
+        results.ShouldNotBeNull();
 
     It should_register_each_convention_type_and_return_them_in_the_results = () =>
-        results.Conventions.Should().Contain(new Type[] { typeof(ConventionA), typeof(ConventionB) });
+        results.Conventions.ShouldContain(typeof(ConventionA), typeof(ConventionB));
 
     It should_return_the_source_in_the_results = () =>
         results.ScannedSources
             .Where(x => x.Phase == ScanPhase.Conventions)
             .Select(x => x.Identifier)
-            .Should().ContainSingle(identifier => identifier == "StubTypeSource");
+            .ShouldContainOnly("StubTypeSource");
 
     It should_not_register_non_convention_types = () =>
-        results.Conventions.Should().NotContain(typeof(NotAConvention));
+        results.Conventions.ShouldNotContain(typeof(NotAConvention));
 
     static FluentNHibernate.PersistenceModel model;
     static DiagnosticResults results;
@@ -105,22 +104,22 @@ public class when_automapping_with_diagnostics_enabled
         model.BuildMappings();
 
     It should_produce_results_when_enabled = () =>
-        results.Should().NotBeNull();
+        results.ShouldNotBeNull();
 
     It should_include_a_skipped_entry_for_each_skipped_type = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).Should().Contain(typeof(First));
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldContain(typeof(First));
 
     It should_have_a_reason_of_skipped_by_configuration_for_each_skipped_type = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Reason).Should().Contain("Skipped by result of IAutomappingConfiguration.ShouldMap(Type)");
+        results.AutomappingSkippedTypes.Select(x => x.Reason).ShouldContain("Skipped by result of IAutomappingConfiguration.ShouldMap(Type)");
 
     It should_not_include_a_skipped_entry_for_used_types = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldNotContain(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_candidate_list = () =>
-        results.AutomappingCandidateTypes.Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
+        results.AutomappingCandidateTypes.ShouldContainOnly(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_automapped_list = () =>
-        results.AutomappedTypes.Select(x => x.Type).Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
+        results.AutomappedTypes.Select(x => x.Type).ShouldContainOnly(typeof(Second), typeof(Third));
 
     static AutoPersistenceModel model;
     static DiagnosticResults results;
@@ -151,22 +150,22 @@ public class when_automapping_with_diagnostics_enabled_and_excluding_by_where
         model.BuildMappings();
 
     It should_produce_results_when_enabled = () =>
-        results.Should().NotBeNull();
+        results.ShouldNotBeNull();
 
     It should_include_a_skipped_entry_for_each_skipped_type = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).Should().Contain(typeof(First));
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldContain(typeof(First));
 
     It should_have_a_reason_of_skipped_by_explicit_where_for_each_skipped_type = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Reason).Should().Contain("Skipped by Where clause");
+        results.AutomappingSkippedTypes.Select(x => x.Reason).ShouldContain("Skipped by Where clause");
 
     It should_not_include_a_skipped_entry_for_used_types = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldNotContain(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_candidate_list = () =>
-        results.AutomappingCandidateTypes.Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
+        results.AutomappingCandidateTypes.ShouldContainOnly(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_automapped_list = () =>
-        results.AutomappedTypes.Select(x => x.Type).Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
+        results.AutomappedTypes.Select(x => x.Type).ShouldContainOnly(typeof(Second), typeof(Third));
 
     static AutoPersistenceModel model;
     static DiagnosticResults results;
@@ -189,22 +188,22 @@ public class when_automapping_with_diagnostics_enabled_and_excluding_by_IgnoreBa
         model.BuildMappings();
 
     It should_produce_results_when_enabled = () =>
-        results.Should().NotBeNull();
+        results.ShouldNotBeNull();
 
     It should_include_a_skipped_entry_for_each_skipped_type = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).Should().Contain(typeof(First));
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldContain(typeof(First));
 
     It should_have_a_reason_of_skipped_by_IgnoreBase_for_each_skipped_type = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Reason).Should().Contain("Skipped by IgnoreBase");
+        results.AutomappingSkippedTypes.Select(x => x.Reason).ShouldContain("Skipped by IgnoreBase");
 
     It should_not_include_a_skipped_entry_for_used_types = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldNotContain(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_candidate_list = () =>
-        results.AutomappingCandidateTypes.Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
+        results.AutomappingCandidateTypes.ShouldContainOnly(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_automapped_list = () =>
-        results.AutomappedTypes.Select(x => x.Type).Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
+        results.AutomappedTypes.Select(x => x.Type).ShouldContainOnly(typeof(Second), typeof(Third));
 
     static AutoPersistenceModel model;
     static DiagnosticResults results;
@@ -227,22 +226,22 @@ public class when_automapping_with_diagnostics_enabled_and_excluding_by_generic_
         model.BuildMappings();
 
     It should_produce_results_when_enabled = () =>
-        results.Should().NotBeNull();
+        results.ShouldNotBeNull();
 
     It should_include_a_skipped_entry_for_each_skipped_type = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).Should().Contain(typeof(Something<First>));
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldContain(typeof(Something<First>));
 
     It should_have_a_reason_of_skipped_by_IgnoreBase_for_each_skipped_type = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Reason).Should().Contain("Skipped by IgnoreBase");
+        results.AutomappingSkippedTypes.Select(x => x.Reason).ShouldContain("Skipped by IgnoreBase");
 
     It should_not_include_a_skipped_entry_for_used_types = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldNotContain(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_candidate_list = () =>
-        results.AutomappingCandidateTypes.Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
+        results.AutomappingCandidateTypes.ShouldContainOnly(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_automapped_list = () =>
-        results.AutomappedTypes.Select(x => x.Type).Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
+        results.AutomappedTypes.Select(x => x.Type).ShouldContainOnly(typeof(Second), typeof(Third));
 
     static AutoPersistenceModel model;
     static DiagnosticResults results;
@@ -264,22 +263,22 @@ public class when_automapping_with_diagnostics_enabled_and_excluding_by_layer_su
         model.BuildMappings();
 
     It should_produce_results_when_enabled = () =>
-        results.Should().NotBeNull();
+        results.ShouldNotBeNull();
 
     It should_include_a_skipped_entry_for_each_skipped_type = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).Should().Contain(typeof(Abstract));
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldContain(typeof(Abstract));
 
     It should_have_a_reason_of_skipped_by_IgnoreBase_for_each_skipped_type = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Reason).Should().Contain("Skipped by IAutomappingConfiguration.AbstractClassIsLayerSupertype(Type)");
+        results.AutomappingSkippedTypes.Select(x => x.Reason).ShouldContain("Skipped by IAutomappingConfiguration.AbstractClassIsLayerSupertype(Type)");
 
     It should_not_include_a_skipped_entry_for_used_types = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).Should().NotContain(new Type[] { typeof(Second), typeof(Third) });
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldNotContain(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_candidate_list = () =>
-        results.AutomappingCandidateTypes.Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
+        results.AutomappingCandidateTypes.ShouldContainOnly(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_automapped_list = () =>
-        results.AutomappedTypes.Select(x => x.Type).Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
+        results.AutomappedTypes.Select(x => x.Type).ShouldContainOnly(typeof(Second), typeof(Third));
 
     static AutoPersistenceModel model;
     static DiagnosticResults results;
@@ -309,22 +308,22 @@ public class when_automapping_with_diagnostics_enabled_and_excluding_by_explicit
         model.BuildMappings();
 
     It should_produce_results_when_enabled = () =>
-        results.Should().NotBeNull();
+        results.ShouldNotBeNull();
 
     It should_include_a_skipped_entry_for_each_skipped_type = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).Should().Contain(typeof(Component));
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldContain(typeof(Component));
 
     It should_have_a_reason_of_skipped_by_IgnoreBase_for_each_skipped_type = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Reason).Should().Contain("Skipped by IAutomappingConfiguration.IsComponent(Type)");
+        results.AutomappingSkippedTypes.Select(x => x.Reason).ShouldContain("Skipped by IAutomappingConfiguration.IsComponent(Type)");
 
     It should_not_include_a_skipped_entry_for_used_types = () =>
-        results.AutomappingSkippedTypes.Select(x => x.Type).Should().NotContain(new Type[] { typeof(Second), typeof(Third) } );
+        results.AutomappingSkippedTypes.Select(x => x.Type).ShouldNotContain(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_candidate_list = () =>
-        results.AutomappingCandidateTypes.Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
+        results.AutomappingCandidateTypes.ShouldContainOnly(typeof(Second), typeof(Third));
 
     It should_include_all_unskipped_types_in_the_automapped_list = () =>
-        results.AutomappedTypes.Select(x => x.Type).Should().OnlyContain(type => type.Equals(typeof(Second)) || type.Equals(typeof(Third)));
+        results.AutomappedTypes.Select(x => x.Type).ShouldContainOnly(typeof(Second), typeof(Third));
 
     static AutoPersistenceModel model;
     static DiagnosticResults results;

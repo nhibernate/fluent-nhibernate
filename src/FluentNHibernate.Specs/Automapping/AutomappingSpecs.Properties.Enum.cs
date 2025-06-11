@@ -3,7 +3,6 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.Automapping.Fixtures;
 using Machine.Specifications;
-using FluentAssertions;
 using NHibernate.Type;
 
 namespace FluentNHibernate.Specs.Automapping;
@@ -17,7 +16,7 @@ public class when_the_automapper_is_told_to_map_an_entity_with_static_properties
         mapping = mapper.BuildMappings().SelectMany(x => x.Classes).First();
 
     It should_not_create_property_mappings_for_the_static_properties = () =>
-        mapping.Properties.Any(x => x.Name == "StaticProperty").Should().BeFalse();
+        mapping.Properties.Any(x => x.Name == "StaticProperty").ShouldBeFalse();
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;
@@ -35,7 +34,7 @@ public class when_the_automapper_is_told_to_map_an_entity_with_a_enum_property :
         mapping.Properties.ShouldContain(x => x.Name == "EnumProperty");
 
     It should_use_the_enum_string_type_for_the_property = () =>
-        mapping.Properties.First().Type.GetUnderlyingSystemType().Should().Be(typeof(EnumStringType<Enum>));
+        mapping.Properties.First().Type.GetUnderlyingSystemType().ShouldEqual(typeof(EnumStringType<Enum>));
 
     It should_create_a_column_for_the_property_mapping_with_the_property_name = () =>
         mapping.Properties.First().Columns.ShouldContain(x => x.Name == "EnumProperty");
@@ -53,7 +52,7 @@ public class when_the_automapper_is_told_to_map_an_entity_with_a_nullable_enum_p
         mapping.Properties.ShouldContain(x => x.Name == "EnumProperty");
 
     It should_use_the_enum_string_mapper_for_the_property = () =>
-        mapping.Properties.First().Type.GetUnderlyingSystemType().Should().Be(typeof(EnumStringType<Enum>));
+        mapping.Properties.First().Type.GetUnderlyingSystemType().ShouldEqual(typeof(EnumStringType<Enum>));
 
     It should_create_a_column_for_the_property_mapping_with_the_property_name = () =>
         mapping.Properties.First().Columns.ShouldContain(x => x.Name == "EnumProperty");

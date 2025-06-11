@@ -6,7 +6,6 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Visitors;
 
@@ -25,19 +24,19 @@ public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_two_m
         Visit(members_in_queue, supervisors_in_queue, membership_queues_in_user, supervised_queues_in_user);
 
     It should_call_the_user_defined_func = () =>
-        udf_was_called.Should().BeTrue();
+        udf_was_called.ShouldBeTrue();
 
     It should_set_other_side_for_the_members_collection = () =>
-        members_in_queue.OtherSide.Should().Be(membership_queues_in_user);
+        members_in_queue.OtherSide.ShouldEqual(membership_queues_in_user);
 
     It should_set_other_side_for_the_supervisors_collection = () =>
-        supervisors_in_queue.OtherSide.Should().Be(supervised_queues_in_user);
+        supervisors_in_queue.OtherSide.ShouldEqual(supervised_queues_in_user);
 
     It should_set_other_side_for_the_membership_queues_collection = () =>
-        membership_queues_in_user.OtherSide.Should().Be(members_in_queue);
+        membership_queues_in_user.OtherSide.ShouldEqual(members_in_queue);
 
     It should_set_other_side_for_the_supervisored_queues_collection = () =>
-        supervised_queues_in_user.OtherSide.Should().Be(supervisors_in_queue);
+        supervised_queues_in_user.OtherSide.ShouldEqual(supervisors_in_queue);
 
     static CollectionMapping members_in_queue;
     static CollectionMapping supervisors_in_queue;
@@ -72,17 +71,17 @@ public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_two_m
         ex = Catch.Exception(() => Visit(fish_in_queue, chips_in_queue, bacon_in_queue, eggs_in_queue));
 
     It should_not_fail = () =>
-        ex.Should().BeNull();
+        ex.ShouldBeNull();
 
     It should_call_the_user_defined_func = () =>
-        udf_was_called.Should().BeTrue();
+        udf_was_called.ShouldBeTrue();
 
     It shouldnt_set_the_other_side_of_any_of_the_relationships = () =>
     {
-        fish_in_queue.OtherSide.Should().BeNull();
-        chips_in_queue.OtherSide.Should().BeNull();
-        bacon_in_queue.OtherSide.Should().BeNull();
-        eggs_in_queue.OtherSide.Should().BeNull();
+        fish_in_queue.OtherSide.ShouldBeNull();
+        chips_in_queue.OtherSide.ShouldBeNull();
+        bacon_in_queue.OtherSide.ShouldBeNull();
+        eggs_in_queue.OtherSide.ShouldBeNull();
     };
 
     static CollectionMapping fish_in_queue;
@@ -119,17 +118,17 @@ public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_two_m
         ex = Catch.Exception(() => Visit(dsers_in_queue, fsers_in_queue, wueues_in_user, eueues_in_user));
 
     It should_not_fail = () =>
-        ex.Should().BeNull();
+        ex.ShouldBeNull();
 
     It should_call_the_user_defined_func = () =>
-        udf_was_called.Should().BeTrue();
+        udf_was_called.ShouldBeTrue();
 
     It shouldnt_set_the_other_side_of_any_of_the_relationships = () =>
     {
-        dsers_in_queue.OtherSide.Should().BeNull();
-        fsers_in_queue.OtherSide.Should().BeNull();
-        wueues_in_user.OtherSide.Should().BeNull();
-        eueues_in_user.OtherSide.Should().BeNull();
+        dsers_in_queue.OtherSide.ShouldBeNull();
+        fsers_in_queue.OtherSide.ShouldBeNull();
+        wueues_in_user.OtherSide.ShouldBeNull();
+        eueues_in_user.OtherSide.ShouldBeNull();
     };
 
     static CollectionMapping dsers_in_queue;
@@ -165,16 +164,16 @@ public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_a_man
         Visit(queues_in_user, users2_in_queue, users_in_queue);
 
     It should_call_the_user_defined_func = () =>
-        udf_was_called.Should().BeTrue();
+        udf_was_called.ShouldBeTrue();
 
     It should_link_queues_in_user_to_the_most_similar_member_in_the_other_entity = () =>
-        queues_in_user.OtherSide.Should().Be(users_in_queue);
+        queues_in_user.OtherSide.ShouldEqual(users_in_queue);
 
     It should_link_users_in_queue_to_the_most_similar_member_in_the_other_entity = () =>
-        users_in_queue.OtherSide.Should().Be(queues_in_user);
+        users_in_queue.OtherSide.ShouldEqual(queues_in_user);
 
     It shouldnt_link_the_orphaned_member_with_anything = () =>
-        users2_in_queue.OtherSide.Should().BeNull();
+        users2_in_queue.OtherSide.ShouldBeNull();
 
     static CollectionMapping users_in_queue;
     static CollectionMapping users2_in_queue;
@@ -204,13 +203,13 @@ public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_a_sel
         Visit(descendants, ancestors);
 
     It should_call_the_user_defined_func = () =>
-        udf_was_called.Should().BeTrue();
+        udf_was_called.ShouldBeTrue();
 
     It should_link_ancestors_to_descendants = () =>
-        ancestors.OtherSide.Should().Be(descendants);
+        ancestors.OtherSide.ShouldEqual(descendants);
 
     It should_link_descendants_to_ancestors = () =>
-        descendants.OtherSide.Should().Be(ancestors);
+        descendants.OtherSide.ShouldEqual(ancestors);
 
     static CollectionMapping ancestors;
     static CollectionMapping descendants;
@@ -234,13 +233,13 @@ public class when_the_bi_directional_many_to_many_visitor_is_asked_to_pair_two_c
         Visit(users_in_queue, queues_in_user);
 
     It should_call_the_user_defined_func = () =>
-        udf_was_called.Should().BeTrue();
+        udf_was_called.ShouldBeTrue();
 
     It should_set_other_side_for_the_users_collection = () =>
-        users_in_queue.OtherSide.Should().Be(queues_in_user);
+        users_in_queue.OtherSide.ShouldEqual(queues_in_user);
 
     It should_set_other_side_for_the_queues_collection = () =>
-        queues_in_user.OtherSide.Should().Be(users_in_queue);
+        queues_in_user.OtherSide.ShouldEqual(users_in_queue);
 
     static CollectionMapping users_in_queue;
     static CollectionMapping queues_in_user;

@@ -65,7 +65,7 @@ public class PropertyConventionTests
 
         Convention(x => x.CustomType<int>());
 
-        VerifyModel(x => x.Type.Name.ShouldEqual(typeof(CustomUserType).AssemblyQualifiedName));
+        VerifyModel(x => x.Type.GetUnderlyingSystemType().ShouldEqual(typeof(CustomUserType)));
     }
 
     [Test]
