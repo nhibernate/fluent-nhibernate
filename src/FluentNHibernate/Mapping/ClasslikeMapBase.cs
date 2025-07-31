@@ -401,7 +401,7 @@ public abstract class ClasslikeMapBase<T>(MappingProviderStore providers)
     /// Specify an insert stored procedure
     /// </summary>
     /// <param name="innerText">Stored procedure call</param>
-    public StoredProcedurePart SqlInsert(string innerText)
+    public virtual StoredProcedurePart SqlInsert(string innerText)
     {
         return StoredProcedure("sql-insert", innerText);
     }
@@ -410,7 +410,7 @@ public abstract class ClasslikeMapBase<T>(MappingProviderStore providers)
     /// Specify an update stored procedure
     /// </summary>
     /// <param name="innerText">Stored procedure call</param>
-    public StoredProcedurePart SqlUpdate(string innerText)
+    public virtual StoredProcedurePart SqlUpdate(string innerText)
     {
         return StoredProcedure("sql-update", innerText);
     }
@@ -419,7 +419,7 @@ public abstract class ClasslikeMapBase<T>(MappingProviderStore providers)
     /// Specify an delete stored procedure
     /// </summary>
     /// <param name="innerText">Stored procedure call</param>
-    public StoredProcedurePart SqlDelete(string innerText)
+    public virtual StoredProcedurePart SqlDelete(string innerText)
     {
         return StoredProcedure("sql-delete", innerText);
     }
@@ -428,7 +428,7 @@ public abstract class ClasslikeMapBase<T>(MappingProviderStore providers)
     /// Specify an delete all stored procedure
     /// </summary>
     /// <param name="innerText">Stored procedure call</param>
-    public StoredProcedurePart SqlDeleteAll(string innerText)
+    public virtual StoredProcedurePart SqlDeleteAll(string innerText)
     {
         return StoredProcedure("sql-delete-all", innerText);
     }

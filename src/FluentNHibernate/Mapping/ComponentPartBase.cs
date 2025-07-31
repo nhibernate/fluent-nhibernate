@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using FluentNHibernate.MappingModel;
@@ -189,4 +190,18 @@ public abstract class ComponentPartBase<TEntity, TBuilder> : ClasslikeMapBase<TE
 
         return mapping;
     }
+
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
+    [Obsolete("SqlInsert is not supported on components"), EditorBrowsable(EditorBrowsableState.Never)]
+    public override StoredProcedurePart SqlInsert(string innerText) => base.SqlInsert(innerText);
+
+    [Obsolete("SqlUpdate is not supported on components"), EditorBrowsable(EditorBrowsableState.Never)]
+    public override StoredProcedurePart SqlUpdate(string innerText) => base.SqlUpdate(innerText);
+
+    [Obsolete("SqlDelete is not supported on components"), EditorBrowsable(EditorBrowsableState.Never)]
+    public override StoredProcedurePart SqlDelete(string innerText) => base.SqlDelete(innerText);
+
+    [Obsolete("SqlDeleteAll is not supported on components"), EditorBrowsable(EditorBrowsableState.Never)]
+    public override StoredProcedurePart SqlDeleteAll(string innerText) => base.SqlDeleteAll(innerText);
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
 }
