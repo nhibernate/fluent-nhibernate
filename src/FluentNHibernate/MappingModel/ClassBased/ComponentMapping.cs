@@ -25,6 +25,9 @@ public class ComponentMapping : ComponentMappingBase, IComponentMapping, IEquata
     {
         visitor.ProcessComponent(this);
 
+        if (Tuplizer is not null)
+            visitor.Visit(Tuplizer);
+        
         base.AcceptVisitor(visitor);
     }
 
@@ -39,6 +42,8 @@ public class ComponentMapping : ComponentMappingBase, IComponentMapping, IEquata
     public TypeReference Class => attributes.GetOrDefault<TypeReference>();
 
     public bool Lazy => attributes.GetOrDefault<bool>();
+    
+    public TuplizerMapping Tuplizer => attributes.GetOrDefault<TuplizerMapping>();
 
     public bool Equals(ComponentMapping other)
     {

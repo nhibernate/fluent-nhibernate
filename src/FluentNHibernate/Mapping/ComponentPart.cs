@@ -41,6 +41,15 @@ public class ComponentPart<T> : ComponentPartBase<T, ComponentPart<T>>, ICompone
         nextBool = true;
         return this;
     }
+    
+    /// <summary>
+    /// Configures the tuplizer for this component. The tuplizer defines how to transform
+    /// a Property-Value to its persistent representation, and viceversa a Column-Value
+    /// to its in-memory representation, and the EntityMode defines which tuplizer is in use.
+    /// </summary>
+    /// <param name="mode">Tuplizer entity-mode</param>
+    /// <param name="tuplizerType">Tuplizer type</param>
+    public TuplizerPart Tuplizer(TuplizerMode mode, Type tuplizerType) => CreateTuplizerPart(mode, tuplizerType);
 
     IComponentMapping IComponentMappingProvider.GetComponentMapping()
     {

@@ -104,4 +104,12 @@ public class XmlSubclassWriter(IXmlWriterServiceLocator serviceLocator)
 
         document.ImportAndAppendChild(xml);
     }
+    
+    public override void Visit(TuplizerMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<TuplizerMapping>();
+        var filterXml = writer.Write(mapping);
+
+        document.ImportAndAppendChild(filterXml);
+    }
 }

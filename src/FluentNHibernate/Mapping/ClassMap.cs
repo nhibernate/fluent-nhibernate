@@ -583,17 +583,8 @@ public class ClassMap<T> : ClasslikeMapBase<T>, IMappingProvider
     /// </summary>
     /// <param name="mode">Tuplizer entity-mode</param>
     /// <param name="tuplizerType">Tuplizer type</param>
-    public TuplizerPart Tuplizer(TuplizerMode mode, Type tuplizerType)
-    {
-        providers.TuplizerMapping = new TuplizerMapping();
-        providers.TuplizerMapping.Set(x => x.Mode, Layer.UserSupplied, mode);
-        providers.TuplizerMapping.Set(x => x.Type, Layer.UserSupplied, new TypeReference(tuplizerType));
-
-        return new TuplizerPart(providers.TuplizerMapping)
-            .Type(tuplizerType)
-            .Mode(mode);
-    }
-
+    public TuplizerPart Tuplizer(TuplizerMode mode, Type tuplizerType) => CreateTuplizerPart(mode, tuplizerType);
+    
     ClassMapping IMappingProvider.GetClassMapping()
     {
         var mapping = new ClassMapping(attributes.Clone());

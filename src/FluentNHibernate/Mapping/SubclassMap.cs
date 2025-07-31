@@ -277,6 +277,15 @@ public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMapping
     {
         attributes.Set("Extends", Layer.UserSupplied, type);
     }
+    
+    /// <summary>
+    /// Configures the tuplizer for this entity. The tuplizer defines how to transform
+    /// a Property-Value to its persistent representation, and viceversa a Column-Value
+    /// to its in-memory representation, and the EntityMode defines which tuplizer is in use.
+    /// </summary>
+    /// <param name="mode">Tuplizer entity-mode</param>
+    /// <param name="tuplizerType">Tuplizer type</param>
+    public TuplizerPart Tuplizer(TuplizerMode mode, Type tuplizerType) => CreateTuplizerPart(mode, tuplizerType);
 
     SubclassMapping IIndeterminateSubclassMappingProvider.GetSubclassMapping(SubclassType type)
     {
@@ -330,6 +339,9 @@ public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMapping
                 case MappingProviderStore.ProviderType.StoredProcedure:
                     mapping.AddStoredProcedure(((IStoredProcedureMappingProvider)mappingProviderObj).GetStoredProcedureMapping());
                     break;
+                case MappingProviderStore.ProviderType.Tupilizer:
+                    mapping.Set(y => y.Tuplizer, Layer.Defaults, (TuplizerMapping)mappingProviderObj);
+                    break;
                 case MappingProviderStore.ProviderType.Subclass:
                 case MappingProviderStore.ProviderType.Filter:
                 case MappingProviderStore.ProviderType.Join:
@@ -338,7 +350,6 @@ public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMapping
                 case MappingProviderStore.ProviderType.NaturalId:
                 case MappingProviderStore.ProviderType.Version:
                 case MappingProviderStore.ProviderType.Discriminator:
-                case MappingProviderStore.ProviderType.Tupilizer:
                 default:
                     throw new Exception("Internal Error");
             }

@@ -1,6 +1,8 @@
+using System;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.MappingModel;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping;
@@ -590,7 +592,28 @@ public class SubClassTester
             .HasAttribute("foreign-key", "test_fk");
 
     }
-
+    
+    [Test]
+    public void SubclassCanSetTuplizerInCorrectOrder()
+    {
+        Type tuplizerType = typeof(NHibernate.Tuple.Entity.PocoEntityTuplizer);
+        new MappingTester<MappedObject>()
+            .SubClassMapping<MappedObjectSubclass>(m =>
+            {
+                m.Map(x => x.SubclassProperty);
+                m.Tuplizer(TuplizerMode.Poco, tuplizerType);
+                m.DiscriminatorValue("test");
+            })
+            .ForMapping(m =>
+            {
+                m.DiscriminateSubClassesOnColumn("test_column");
+                m.Id(x => x.Id);
+                m.Tuplizer(TuplizerMode.Poco, tuplizerType);
+            })
+            .Element("class/subclass/tuplizer").Exists().ShouldBeInParentAtPosition(0)
+            .Element("class/tuplizer").Exists().ShouldBeInParentAtPosition(0);
+    }
+    
     public class TestPropertyConvention : IPropertyConvention
     {
         public void Apply(IPropertyInstance instance)

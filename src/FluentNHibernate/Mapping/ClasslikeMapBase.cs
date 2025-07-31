@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentNHibernate.Mapping.Providers;
+using FluentNHibernate.MappingModel;
 using FluentNHibernate.Utils;
 
 namespace FluentNHibernate.Mapping;
@@ -437,6 +438,17 @@ public abstract class ClasslikeMapBase<T>(MappingProviderStore providers)
         var part = new StoredProcedurePart(element, innerText);
         providers.StoredProcedures.Add(part);
         return part;
+    }
+    
+    protected TuplizerPart CreateTuplizerPart(TuplizerMode mode, Type tuplizerType)
+    {
+        providers.TuplizerMapping = new TuplizerMapping();
+        providers.TuplizerMapping.Set(x => x.Mode, Layer.UserSupplied, mode);
+        providers.TuplizerMapping.Set(x => x.Type, Layer.UserSupplied, new TypeReference(tuplizerType));
+
+        return new TuplizerPart(providers.TuplizerMapping)
+            .Type(tuplizerType)
+            .Mode(mode);
     }
 
     internal IEnumerable<IPropertyMappingProvider> Properties => providers.Properties;

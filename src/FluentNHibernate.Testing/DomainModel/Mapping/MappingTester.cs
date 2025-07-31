@@ -189,7 +189,7 @@ public class MappingTester<T>
         else
         {
             XmlElement elementAtPosition = (XmlElement)currentElement.ParentNode.ChildNodes.Item(elementPosition);
-            Assert.That(elementAtPosition, Is.EqualTo(currentElement), $"Expected '{currentElement.Name}' but was '{elementAtPosition.Name}'");
+            Assert.That(elementAtPosition, Is.SameAs(currentElement), $"Expected '{currentElement.Name}' but was '{elementAtPosition.Name}'");
         }
 
         return this;
