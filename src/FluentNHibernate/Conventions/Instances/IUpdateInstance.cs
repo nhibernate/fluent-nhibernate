@@ -1,8 +1,7 @@
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public interface IUpdateInstance
 {
-    public interface IUpdateInstance
-    {
-        /// Specifies that the mapped columns should be included or excluded in SQL UPDATE statement.
-        void Update();
-    }
+    /// Specifies that the mapped columns should be included or excluded in SQL UPDATE statement.
+    void Update();
 }

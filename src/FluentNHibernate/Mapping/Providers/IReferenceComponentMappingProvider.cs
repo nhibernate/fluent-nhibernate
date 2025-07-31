@@ -1,9 +1,8 @@
 using System;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+public interface IReferenceComponentMappingProvider : IComponentMappingProvider
 {
-    public interface IReferenceComponentMappingProvider : IComponentMappingProvider
-    {
-        Type Type { get; }
-    }
+    Type Type { get; }
 }

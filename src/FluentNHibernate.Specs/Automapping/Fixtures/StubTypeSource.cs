@@ -2,30 +2,22 @@
 using System.Collections.Generic;
 using FluentNHibernate.Diagnostics;
 
-namespace FluentNHibernate.Specs.Automapping.Fixtures
+namespace FluentNHibernate.Specs.Automapping.Fixtures;
+
+class StubTypeSource(params Type[] types) : ITypeSource
 {
-    internal class StubTypeSource : ITypeSource
+    public IEnumerable<Type> GetTypes()
     {
-        private readonly IEnumerable<Type> types;
+        return types;
+    }
 
-        public StubTypeSource(params Type[] types)
-        {
-            this.types = types;
-        }
+    public void LogSource(IDiagnosticLogger logger)
+    {
+        logger.LoadedFluentMappingsFromSource(this);
+    }
 
-        public IEnumerable<Type> GetTypes()
-        {
-            return types;
-        }
-
-        public void LogSource(IDiagnosticLogger logger)
-        {
-            logger.LoadedFluentMappingsFromSource(this);
-        }
-
-        public string GetIdentifier()
-        {
-            return "StubTypeSource";
-        }
+    public string GetIdentifier()
+    {
+        return "StubTypeSource";
     }
 }

@@ -1,96 +1,87 @@
-using System;
-using System.Collections.Generic;
 using System.Xml;
-using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Output.Sorting;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlHibernateMappingWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<HibernateMapping>
 {
-    public class XmlHibernateMappingWriter : NullMappingModelVisitor, IXmlWriter<HibernateMapping>
+    XmlDocument document;
+
+    public XmlDocument Write(HibernateMapping mapping)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
-        private XmlDocument document;
+        mapping.AcceptVisitor(this);
+        return document;
+    }
 
-        public XmlHibernateMappingWriter(IXmlWriterServiceLocator serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+    public override void ProcessHibernateMapping(HibernateMapping mapping)
+    {
+        document = new XmlDocument();
 
-        public XmlDocument Write(HibernateMapping mapping)
-        {
-            mapping.AcceptVisitor(this);
-            return document;
-        }
+        var element = document.AddElement("hibernate-mapping");
 
-        public override void ProcessHibernateMapping(HibernateMapping mapping)
-        {
-            document = new XmlDocument();
+        element.WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
 
-            var element = document.AddElement("hibernate-mapping");
+        if (mapping.IsSpecified("DefaultAccess"))
+            element.WithAtt("default-access", mapping.DefaultAccess);
 
-            element.WithAtt("xmlns", "urn:nhibernate-mapping-2.2");
+        if (mapping.IsSpecified("AutoImport"))
+            element.WithAtt("auto-import", mapping.AutoImport);
 
-            if (mapping.IsSpecified("DefaultAccess"))
-                element.WithAtt("default-access", mapping.DefaultAccess);
+        if (mapping.IsSpecified("Schema"))
+            element.WithAtt("schema", mapping.Schema);
 
-            if (mapping.IsSpecified("AutoImport"))
-                element.WithAtt("auto-import", mapping.AutoImport);
+        if (mapping.IsSpecified("DefaultCascade"))
+            element.WithAtt("default-cascade", mapping.DefaultCascade);
 
-            if (mapping.IsSpecified("Schema"))
-                element.WithAtt("schema", mapping.Schema);
+        if (mapping.IsSpecified("DefaultLazy"))
+            element.WithAtt("default-lazy", mapping.DefaultLazy);
 
-            if (mapping.IsSpecified("DefaultCascade"))
-                element.WithAtt("default-cascade", mapping.DefaultCascade);
+        if (mapping.IsSpecified("Catalog"))
+            element.WithAtt("catalog", mapping.Catalog);
 
-            if (mapping.IsSpecified("DefaultLazy"))
-                element.WithAtt("default-lazy", mapping.DefaultLazy);
+        if (mapping.IsSpecified("Namespace"))
+            element.WithAtt("namespace", mapping.Namespace);
 
-            if (mapping.IsSpecified("Catalog"))
-                element.WithAtt("catalog", mapping.Catalog);
+        if (mapping.IsSpecified("Assembly"))
+            element.WithAtt("assembly", mapping.Assembly);
+    }
 
-            if (mapping.IsSpecified("Namespace"))
-                element.WithAtt("namespace", mapping.Namespace);
+    public override void Visit(ImportMapping importMapping)
+    {
+        var writer = serviceLocator.GetWriter<ImportMapping>();
+        var import = writer.Write(importMapping);
+        var newNode = document.ImportNode(import.DocumentElement, true);
 
-            if (mapping.IsSpecified("Assembly"))
-                element.WithAtt("assembly", mapping.Assembly);
-        }
+        if (document.DocumentElement.ChildNodes.Count > 0)
+            document.DocumentElement.InsertBefore(newNode, document.DocumentElement.ChildNodes[0]);
+        else
+            document.DocumentElement.AppendChild(newNode);
+    }
 
-        public override void Visit(ImportMapping importMapping)
-        {
-            var writer = serviceLocator.GetWriter<ImportMapping>();
-            var import = writer.Write(importMapping);
-            var newNode = document.ImportNode(import.DocumentElement, true);
+    public override void Visit(ClassMapping classMapping)
+    {
+        var writer = serviceLocator.GetWriter<ClassMapping>();
+        var hbmClass = writer.Write(classMapping);
 
-            if (document.DocumentElement.ChildNodes.Count > 0)
-                document.DocumentElement.InsertBefore(newNode, document.DocumentElement.ChildNodes[0]);
-            else
-                document.DocumentElement.AppendChild(newNode);
-        }
+        var newClassNode = document.ImportNode(hbmClass.DocumentElement, true);
 
-        public override void Visit(ClassMapping classMapping)
-        {
-            var writer = serviceLocator.GetWriter<ClassMapping>();
-            var hbmClass = writer.Write(classMapping);
+        XmlNodeSorter.SortClassChildren(newClassNode);
 
-            var newClassNode = document.ImportNode(hbmClass.DocumentElement, true);
+        document.DocumentElement.AppendChild(newClassNode);
+    }
 
-            XmlNodeSorter.SortClassChildren(newClassNode);
+    public override void Visit(FilterDefinitionMapping filterDefinitionMapping)
+    {
+        var writer = serviceLocator.GetWriter<FilterDefinitionMapping>();
+        var hbmClass = writer.Write(filterDefinitionMapping);
 
-            document.DocumentElement.AppendChild(newClassNode);
-        }
+        var newClassNode = document.ImportNode(hbmClass.DocumentElement, true);
 
-        public override void Visit(FilterDefinitionMapping filterDefinitionMapping)
-        {
-            var writer = serviceLocator.GetWriter<FilterDefinitionMapping>();
-            var hbmClass = writer.Write(filterDefinitionMapping);
-
-            var newClassNode = document.ImportNode(hbmClass.DocumentElement, true);
-
-            XmlNodeSorter.SortClassChildren(newClassNode);
-            document.DocumentElement.AppendChild(newClassNode);
-        }
+        XmlNodeSorter.SortClassChildren(newClassNode);
+        document.DocumentElement.AppendChild(newClassNode);
     }
 }

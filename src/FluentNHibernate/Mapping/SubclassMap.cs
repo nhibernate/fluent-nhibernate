@@ -4,389 +4,392 @@ using System.Diagnostics;
 using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
-using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.Mapping
+namespace FluentNHibernate.Mapping;
+
+/// <summary>
+/// Defines a mapping for an entity subclass. Derive from this class to create a mapping,
+/// and use the constructor to control how your entity is persisted.
+/// </summary>
+/// <example>
+/// public class EmployeeMap : SubclassMap&lt;Employee&gt;
+/// {
+///   public EmployeeMap()
+///   {
+///     Map(x => x.Name);
+///     Map(x => x.Age);
+///   }
+/// }
+/// </example>
+/// <typeparam name="T">Entity type to map</typeparam>
+public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMappingProvider
 {
-    /// <summary>
-    /// Defines a mapping for an entity subclass. Derive from this class to create a mapping,
-    /// and use the constructor to control how your entity is persisted.
-    /// </summary>
-    /// <example>
-    /// public class EmployeeMap : SubclassMap&lt;Employee&gt;
-    /// {
-    ///   public EmployeeMap()
-    ///   {
-    ///     Map(x => x.Name);
-    ///     Map(x => x.Age);
-    ///   }
-    /// }
-    /// </example>
-    /// <typeparam name="T">Entity type to map</typeparam>
-    public class SubclassMap<T> : ClasslikeMapBase<T>, IIndeterminateSubclassMappingProvider
+    readonly MappingProviderStore providers;
+    readonly AttributeStore attributes = new AttributeStore();
+
+    // this is a bit weird, but we need a way of delaying the generation of the subclass mappings until we know
+    // what the parent subclass type is...
+    readonly IDictionary<Type, IIndeterminateSubclassMappingProvider> indetermineateSubclasses = new Dictionary<Type, IIndeterminateSubclassMappingProvider>();
+    bool nextBool = true;
+    readonly List<JoinMapping> joins = [];
+
+    public SubclassMap()
+        : this(new MappingProviderStore())
+    {}
+
+    protected SubclassMap(MappingProviderStore providers)
+        : base(providers)
     {
-        readonly MappingProviderStore providers;
-        readonly AttributeStore attributes = new AttributeStore();
+        this.providers = providers;
+    }
 
-        // this is a bit weird, but we need a way of delaying the generation of the subclass mappings until we know
-        // what the parent subclass type is...
-        readonly IDictionary<Type, IIndeterminateSubclassMappingProvider> indetermineateSubclasses = new Dictionary<Type, IIndeterminateSubclassMappingProvider>();
-        bool nextBool = true;
-        readonly IList<JoinMapping> joins = new List<JoinMapping>();
-
-        public SubclassMap()
-            : this(new MappingProviderStore())
-        {}
-
-        protected SubclassMap(MappingProviderStore providers)
-            : base(providers)
+    /// <summary>
+    /// Inverts the next boolean setting
+    /// </summary>
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    public SubclassMap<T> Not
+    {
+        get
         {
-            this.providers = providers;
+            nextBool = !nextBool;
+            return this;
+        }
+    }
+
+    /// <summary>
+    /// (optional) Specifies that this subclass is abstract
+    /// </summary>
+    public void Abstract()
+    {
+        attributes.Set("Abstract", Layer.UserSupplied, nextBool);
+        nextBool = true;
+    }
+
+    /// <summary>
+    /// Sets the dynamic insert behaviour
+    /// </summary>
+    public void DynamicInsert()
+    {
+        attributes.Set("DynamicInsert", Layer.UserSupplied, nextBool);
+        nextBool = true;
+    }
+
+    /// <summary>
+    /// Sets the dynamic update behaviour
+    /// </summary>
+    public void DynamicUpdate()
+    {
+        attributes.Set("DynamicUpdate", Layer.UserSupplied, nextBool);
+        nextBool = true;
+    }
+
+    /// <summary>
+    /// Specifies that this entity should be lazy loaded
+    /// </summary>
+    public void LazyLoad()
+    {
+        attributes.Set("Lazy", Layer.UserSupplied, nextBool);
+        nextBool = true;
+    }
+
+    /// <summary>
+    /// Specify a proxy type for this entity
+    /// </summary>
+    /// <typeparam name="TProxy">Proxy type</typeparam>
+    public void Proxy<TProxy>()
+    {
+        Proxy(typeof(TProxy));
+    }
+
+    /// <summary>
+    /// Specify a proxy type for this entity
+    /// </summary>
+    /// <param name="proxyType">Proxy type</param>
+    public void Proxy(Type proxyType)
+    {
+        attributes.Set("Proxy", Layer.UserSupplied, proxyType.AssemblyQualifiedName);
+    }
+
+    /// <summary>
+    /// Specify that a select should be performed before an update of this entity
+    /// </summary>
+    public void SelectBeforeUpdate()
+    {
+        attributes.Set("SelectBeforeUpdate", Layer.UserSupplied, nextBool);
+        nextBool = true;
+    }
+
+    [Obsolete("Use a new SubclassMap")]
+    public void Subclass<TSubclass>(Action<SubclassMap<TSubclass>> subclassDefinition)
+    {
+        var subclass = new SubclassMap<TSubclass>();
+
+        subclassDefinition(subclass);
+
+        indetermineateSubclasses[typeof(TSubclass)] = subclass;
+    }
+
+    /// <summary>
+    /// Set the discriminator value, if this entity is in a table-per-class-hierarchy
+    /// mapping strategy.
+    /// </summary>
+    /// <param name="discriminatorValue">Discriminator value</param>
+    public void DiscriminatorValue(object discriminatorValue)
+    {
+        attributes.Set("DiscriminatorValue", Layer.UserSupplied, discriminatorValue);
+    }
+
+    /// <summary>
+    /// Sets the table name
+    /// </summary>
+    /// <param name="table">Table name</param>
+    public void Table(string table)
+    {
+        attributes.Set("TableName", Layer.UserSupplied, table);
+    }
+
+    /// <summary>
+    /// Sets the schema
+    /// </summary>
+    /// <param name="schema">Schema</param>
+    public void Schema(string schema)
+    {
+        attributes.Set("Schema", Layer.UserSupplied, schema);
+    }
+
+    /// <summary>
+    /// Specifies a check constraint
+    /// </summary>
+    /// <param name="constraint">Constraint name</param>
+    public void Check(string constraint)
+    {
+        attributes.Set("Check", Layer.UserSupplied, constraint);
+    }
+
+    /// <summary>
+    /// Adds a column to the key for this subclass, if used
+    /// in a table-per-subclass strategy.
+    /// </summary>
+    /// <param name="column">Column name</param>
+    public void KeyColumn(string column)
+    {
+        const string attribute = "Key";
+        var key = attributes.IsSpecified(attribute)
+            ? attributes.GetOrDefault<KeyMapping>(attribute)
+            : new KeyMapping();
+
+        key.AddColumn(Layer.UserSupplied, new ColumnMapping(column));
+
+        attributes.Set(attribute, Layer.UserSupplied, key);
+    }
+
+    /// <summary>
+    /// Subselect query
+    /// </summary>
+    /// <param name="subselect">Subselect query</param>
+    public void Subselect(string subselect)
+    {
+        attributes.Set("Subselect", Layer.UserSupplied, subselect);
+    }
+
+    /// <summary>
+    /// Specifies a persister for this entity
+    /// </summary>
+    /// <typeparam name="TPersister">Persister type</typeparam>
+    public void Persister<TPersister>()
+    {
+        attributes.Set("Persister", Layer.UserSupplied, new TypeReference(typeof(TPersister)));
+    }
+
+    /// <summary>
+    /// Specifies a persister for this entity
+    /// </summary>
+    /// <param name="type">Persister type</param>
+    public void Persister(Type type)
+    {
+        attributes.Set("Persister", Layer.UserSupplied, new TypeReference(type));
+    }
+
+    /// <summary>
+    /// Specifies a persister for this entity
+    /// </summary>
+    /// <param name="type">Persister type</param>
+    public void Persister(string type)
+    {
+        attributes.Set("Persister", Layer.UserSupplied, new TypeReference(type));
+    }
+
+    /// <summary>
+    /// Set the query batch size
+    /// </summary>
+    /// <param name="batchSize">Batch size</param>
+    public void BatchSize(int batchSize)
+    {
+        attributes.Set("BatchSize", Layer.UserSupplied, batchSize);
+    }
+
+    /// <summary>
+    /// Specifies an entity-name.
+    /// </summary>
+    /// <remarks>See https://nhibernate.info/blog/2008/10/21/entity-name-in-action-a-strongly-typed-entity.html </remarks>
+    public void EntityName(string entityname)
+    {
+        attributes.Set("EntityName", Layer.UserSupplied, entityname);
+    }
+
+    /// <summary>
+    /// Links this entity to another table, to create a composite entity from two or
+    /// more tables. This only works if you're in a table-per-inheritance-hierarchy
+    /// strategy.
+    /// </summary>
+    /// <param name="tableName">Joined table name</param>
+    /// <param name="action">Joined table mapping</param>
+    /// <example>
+    /// Join("another_table", join =>
+    /// {
+    ///   join.Map(x => x.Name);
+    ///   join.Map(x => x.Age);
+    /// });
+    /// </example>
+    public void Join(string tableName, Action<JoinPart<T>> action)
+    {
+        var join = new JoinPart<T>(tableName);
+
+        action(join);
+
+        joins.Add(((IJoinMappingProvider)join).GetJoinMapping());
+    }
+
+    /// <summary>
+    /// (optional) Specifies the entity from which this subclass descends/extends.
+    /// </summary>
+    /// <typeparam name="TOther">Type of the entity to extend</typeparam>
+    public void Extends<TOther>()
+    {
+        Extends(typeof(TOther));
+    }
+
+    /// <summary>
+    /// (optional) Specifies the entity from which this subclass descends/extends.
+    /// </summary>
+    /// <param name="type">Type of the entity to extend</param>
+    public void Extends(Type type)
+    {
+        attributes.Set("Extends", Layer.UserSupplied, type);
+    }
+    
+    /// <summary>
+    /// Configures the tuplizer for this entity. The tuplizer defines how to transform
+    /// a Property-Value to its persistent representation, and viceversa a Column-Value
+    /// to its in-memory representation, and the EntityMode defines which tuplizer is in use.
+    /// </summary>
+    /// <param name="mode">Tuplizer entity-mode</param>
+    /// <param name="tuplizerType">Tuplizer type</param>
+    public TuplizerPart Tuplizer(TuplizerMode mode, Type tuplizerType) => CreateTuplizerPart(mode, tuplizerType);
+
+    SubclassMapping IIndeterminateSubclassMappingProvider.GetSubclassMapping(SubclassType type)
+    {
+        var mapping = new SubclassMapping(type);
+
+        GenerateNestedSubclasses(mapping);
+
+        attributes.Set("Type", Layer.Defaults, typeof(T));
+        attributes.Set("Name", Layer.Defaults, typeof(T).AssemblyQualifiedName);
+        attributes.Set("DiscriminatorValue", Layer.Defaults, typeof(T).Name);
+
+        // TODO: un-hardcode this
+        Type baseType = typeof(T).BaseType
+                        ?? attributes.Get("Extends") as Type;
+        if (baseType is not null)
+        {
+            var key = new KeyMapping();
+            key.AddColumn(Layer.Defaults, new ColumnMapping(baseType.Name + "_id"));
+            attributes.Set("Key", Layer.Defaults, key);
         }
 
-        /// <summary>
-        /// Inverts the next boolean setting
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public SubclassMap<T> Not
-        {
-            get
-            {
-                nextBool = !nextBool;
-                return this;
+        attributes.Set("TableName", Layer.Defaults, GetDefaultTableName());
+
+        // TODO: this is nasty, we should find a better way
+        mapping.OverrideAttributes(attributes.Clone());
+
+        foreach (var join in joins)
+            mapping.AddJoin(join);
+
+        foreach (var provider in providers.OrderedProviders) {
+            var mappingProviderObj = provider.Item2;
+            switch (provider.Item1) {
+                case MappingProviderStore.ProviderType.Property:
+                    mapping.AddProperty(((IPropertyMappingProvider)mappingProviderObj).GetPropertyMapping());
+                    break;
+                case MappingProviderStore.ProviderType.Component:
+                    mapping.AddComponent(((IComponentMappingProvider)mappingProviderObj).GetComponentMapping());
+                    break;
+                case MappingProviderStore.ProviderType.OneToOne:
+                    mapping.AddOneToOne(((IOneToOneMappingProvider)mappingProviderObj).GetOneToOneMapping());
+                    break;
+                case MappingProviderStore.ProviderType.Collection:
+                    mapping.AddCollection(((ICollectionMappingProvider)mappingProviderObj).GetCollectionMapping());
+                    break;
+                case MappingProviderStore.ProviderType.ManyToOne:
+                    mapping.AddReference(((IManyToOneMappingProvider)mappingProviderObj).GetManyToOneMapping());
+                    break;
+                case MappingProviderStore.ProviderType.Any:
+                    mapping.AddAny(((IAnyMappingProvider)mappingProviderObj).GetAnyMapping());
+                    break;
+                case MappingProviderStore.ProviderType.StoredProcedure:
+                    mapping.AddStoredProcedure(((IStoredProcedureMappingProvider)mappingProviderObj).GetStoredProcedureMapping());
+                    break;
+                case MappingProviderStore.ProviderType.Tupilizer:
+                    mapping.Set(y => y.Tuplizer, Layer.Defaults, (TuplizerMapping)mappingProviderObj);
+                    break;
+                case MappingProviderStore.ProviderType.Subclass:
+                case MappingProviderStore.ProviderType.Filter:
+                case MappingProviderStore.ProviderType.Join:
+                case MappingProviderStore.ProviderType.Identity:
+                case MappingProviderStore.ProviderType.CompositeId:
+                case MappingProviderStore.ProviderType.NaturalId:
+                case MappingProviderStore.ProviderType.Version:
+                case MappingProviderStore.ProviderType.Discriminator:
+                default:
+                    throw new Exception("Internal Error");
             }
         }
 
-        /// <summary>
-        /// (optional) Specifies that this subclass is abstract
-        /// </summary>
-        public void Abstract()
+        return mapping;
+    }
+
+    Type IIndeterminateSubclassMappingProvider.EntityType => EntityType;
+
+    Type IIndeterminateSubclassMappingProvider.Extends => attributes.GetOrDefault<Type>();
+
+    void GenerateNestedSubclasses(SubclassMapping mapping)
+    {
+        foreach (var subclassType in indetermineateSubclasses.Keys)
         {
-            attributes.Set("Abstract", Layer.UserSupplied, nextBool);
-            nextBool = true;
+            var subclassMapping = indetermineateSubclasses[subclassType].GetSubclassMapping(mapping.SubclassType);
+
+            mapping.AddSubclass(subclassMapping);
         }
+    }
 
-        /// <summary>
-        /// Sets the dynamic insert behaviour
-        /// </summary>
-        public void DynamicInsert()
-        {
-            attributes.Set("DynamicInsert", Layer.UserSupplied, nextBool);
-            nextBool = true;
-        }
-
-        /// <summary>
-        /// Sets the dynamic update behaviour
-        /// </summary>
-        public void DynamicUpdate()
-        {
-            attributes.Set("DynamicUpdate", Layer.UserSupplied, nextBool);
-            nextBool = true;
-        }
-
-        /// <summary>
-        /// Specifies that this entity should be lazy loaded
-        /// </summary>
-        public void LazyLoad()
-        {
-            attributes.Set("Lazy", Layer.UserSupplied, nextBool);
-            nextBool = true;
-        }
-
-        /// <summary>
-        /// Specify a proxy type for this entity
-        /// </summary>
-        /// <typeparam name="TProxy">Proxy type</typeparam>
-        public void Proxy<TProxy>()
-        {
-            Proxy(typeof(TProxy));
-        }
-
-        /// <summary>
-        /// Specify a proxy type for this entity
-        /// </summary>
-        /// <param name="proxyType">Proxy type</param>
-        public void Proxy(Type proxyType)
-        {
-            attributes.Set("Proxy", Layer.UserSupplied, proxyType.AssemblyQualifiedName);
-        }
-
-        /// <summary>
-        /// Specify that a select should be performed before an update of this entity
-        /// </summary>
-        public void SelectBeforeUpdate()
-        {
-            attributes.Set("SelectBeforeUpdate", Layer.UserSupplied, nextBool);
-            nextBool = true;
-        }
-
-        [Obsolete("Use a new SubclassMap")]
-        public void Subclass<TSubclass>(Action<SubclassMap<TSubclass>> subclassDefinition)
-        {
-            var subclass = new SubclassMap<TSubclass>();
-
-            subclassDefinition(subclass);
-
-            indetermineateSubclasses[typeof(TSubclass)] = subclass;
-        }
-
-        /// <summary>
-        /// Set the discriminator value, if this entity is in a table-per-class-hierarchy
-        /// mapping strategy.
-        /// </summary>
-        /// <param name="discriminatorValue">Discriminator value</param>
-        public void DiscriminatorValue(object discriminatorValue)
-        {
-            attributes.Set("DiscriminatorValue", Layer.UserSupplied, discriminatorValue);
-        }
-
-        /// <summary>
-        /// Sets the table name
-        /// </summary>
-        /// <param name="table">Table name</param>
-        public void Table(string table)
-        {
-            attributes.Set("TableName", Layer.UserSupplied, table);
-        }
-
-        /// <summary>
-        /// Sets the schema
-        /// </summary>
-        /// <param name="schema">Schema</param>
-        public void Schema(string schema)
-        {
-            attributes.Set("Schema", Layer.UserSupplied, schema);
-        }
-
-        /// <summary>
-        /// Specifies a check constraint
-        /// </summary>
-        /// <param name="constraint">Constraint name</param>
-        public void Check(string constraint)
-        {
-            attributes.Set("Check", Layer.UserSupplied, constraint);
-        }
-
-        /// <summary>
-        /// Adds a column to the key for this subclass, if used
-        /// in a table-per-subclass strategy.
-        /// </summary>
-        /// <param name="column">Column name</param>
-        public void KeyColumn(string column)
-        {
-            KeyMapping key;
-
-            if (attributes.IsSpecified("Key"))
-                key = attributes.GetOrDefault<KeyMapping>("Key");
-            else
-                key = new KeyMapping();
-
-            key.AddColumn(Layer.UserSupplied, new ColumnMapping(column));
-
-            attributes.Set("Key", Layer.UserSupplied, key);
-        }
-
-        /// <summary>
-        /// Subselect query
-        /// </summary>
-        /// <param name="subselect">Subselect query</param>
-        public void Subselect(string subselect)
-        {
-            attributes.Set("Subselect", Layer.UserSupplied, subselect);
-        }
-
-        /// <summary>
-        /// Specifies a persister for this entity
-        /// </summary>
-        /// <typeparam name="TPersister">Persister type</typeparam>
-        public void Persister<TPersister>()
-        {
-            attributes.Set("Persister", Layer.UserSupplied, new TypeReference(typeof(TPersister)));
-        }
-
-        /// <summary>
-        /// Specifies a persister for this entity
-        /// </summary>
-        /// <param name="type">Persister type</param>
-        public void Persister(Type type)
-        {
-            attributes.Set("Persister", Layer.UserSupplied, new TypeReference(type));
-        }
-
-        /// <summary>
-        /// Specifies a persister for this entity
-        /// </summary>
-        /// <param name="type">Persister type</param>
-        public void Persister(string type)
-        {
-            attributes.Set("Persister", Layer.UserSupplied, new TypeReference(type));
-        }
-
-        /// <summary>
-        /// Set the query batch size
-        /// </summary>
-        /// <param name="batchSize">Batch size</param>
-        public void BatchSize(int batchSize)
-        {
-            attributes.Set("BatchSize", Layer.UserSupplied, batchSize);
-        }
-
-        /// <summary>
-        /// Specifies an entity-name.
-        /// </summary>
-        /// <remarks>See https://nhibernate.info/blog/2008/10/21/entity-name-in-action-a-strongly-typed-entity.html </remarks>
-        public void EntityName(string entityname)
-        {
-            attributes.Set("EntityName", Layer.UserSupplied, entityname);
-        }
-
-        /// <summary>
-        /// Links this entity to another table, to create a composite entity from two or
-        /// more tables. This only works if you're in a table-per-inheritance-hierarchy
-        /// strategy.
-        /// </summary>
-        /// <param name="tableName">Joined table name</param>
-        /// <param name="action">Joined table mapping</param>
-        /// <example>
-        /// Join("another_table", join =>
-        /// {
-        ///   join.Map(x => x.Name);
-        ///   join.Map(x => x.Age);
-        /// });
-        /// </example>
-        public void Join(string tableName, Action<JoinPart<T>> action)
-        {
-            var join = new JoinPart<T>(tableName);
-
-            action(join);
-
-            joins.Add(((IJoinMappingProvider)join).GetJoinMapping());
-        }
-
-        /// <summary>
-        /// (optional) Specifies the entity from which this subclass descends/extends.
-        /// </summary>
-        /// <typeparam name="TOther">Type of the entity to extend</typeparam>
-        public void Extends<TOther>()
-        {
-            Extends(typeof(TOther));
-        }
-
-        /// <summary>
-        /// (optional) Specifies the entity from which this subclass descends/extends.
-        /// </summary>
-        /// <param name="type">Type of the entity to extend</param>
-        public void Extends(Type type)
-        {
-            attributes.Set("Extends", Layer.UserSupplied, type);
-        }
-
-        SubclassMapping IIndeterminateSubclassMappingProvider.GetSubclassMapping(SubclassType type)
-        {
-            var mapping = new SubclassMapping(type);
-
-            GenerateNestedSubclasses(mapping);
-
-            attributes.Set("Type", Layer.Defaults, typeof(T));
-            attributes.Set("Name", Layer.Defaults, typeof(T).AssemblyQualifiedName);
-            attributes.Set("DiscriminatorValue", Layer.Defaults, typeof(T).Name);
-
-            // TODO: un-hardcode this
-            Type baseType = typeof(T).BaseType
-                ?? attributes.Get("Extends") as Type;
-            if (baseType != null)
-            {
-                var key = new KeyMapping();
-                key.AddColumn(Layer.Defaults, new ColumnMapping(baseType.Name + "_id"));
-                attributes.Set("Key", Layer.Defaults, key);
-            }
-
-            attributes.Set("TableName", Layer.Defaults, GetDefaultTableName());
-
-            // TODO: this is nasty, we should find a better way
-            mapping.OverrideAttributes(attributes.Clone());
-
-            foreach (var join in joins)
-                mapping.AddJoin(join);
-
-            foreach (var provider in providers.OrderedProviders) {
-                var mappingProviderObj = provider.Item2;
-                switch (provider.Item1) {
-                    case MappingProviderStore.ProviderType.Property:
-                        mapping.AddProperty(((IPropertyMappingProvider)mappingProviderObj).GetPropertyMapping());
-                        break;
-                    case MappingProviderStore.ProviderType.Component:
-                        mapping.AddComponent(((IComponentMappingProvider)mappingProviderObj).GetComponentMapping());
-                        break;
-                    case MappingProviderStore.ProviderType.OneToOne:
-                        mapping.AddOneToOne(((IOneToOneMappingProvider)mappingProviderObj).GetOneToOneMapping());
-                        break;
-                    case MappingProviderStore.ProviderType.Collection:
-                        mapping.AddCollection(((ICollectionMappingProvider)mappingProviderObj).GetCollectionMapping());
-                        break;
-                    case MappingProviderStore.ProviderType.ManyToOne:
-                        mapping.AddReference(((IManyToOneMappingProvider)mappingProviderObj).GetManyToOneMapping());
-                        break;
-                    case MappingProviderStore.ProviderType.Any:
-                        mapping.AddAny(((IAnyMappingProvider)mappingProviderObj).GetAnyMapping());
-                        break;
-                    case MappingProviderStore.ProviderType.Subclass:
-                    case MappingProviderStore.ProviderType.Filter:
-                    case MappingProviderStore.ProviderType.StoredProcedure:
-                    case MappingProviderStore.ProviderType.Join:
-                    case MappingProviderStore.ProviderType.Identity:
-                    case MappingProviderStore.ProviderType.CompositeId:
-                    case MappingProviderStore.ProviderType.NaturalId:
-                    case MappingProviderStore.ProviderType.Version:
-                    case MappingProviderStore.ProviderType.Discriminator:
-                    case MappingProviderStore.ProviderType.Tupilizer:
-                    default:
-                        throw new Exception("Internal Error");
-                }
-            }
-
-            return mapping;
-        }
-
-        Type IIndeterminateSubclassMappingProvider.EntityType
-        {
-            get { return EntityType; }
-        }
-
-        Type IIndeterminateSubclassMappingProvider.Extends
-        {
-            get { return attributes.GetOrDefault<Type>("Extends"); }
-        }
-
-        void GenerateNestedSubclasses(SubclassMapping mapping)
-        {
-            foreach (var subclassType in indetermineateSubclasses.Keys)
-            {
-                var subclassMapping = indetermineateSubclasses[subclassType].GetSubclassMapping(mapping.SubclassType);
-
-                mapping.AddSubclass(subclassMapping);
-            }
-        }
-
-        string GetDefaultTableName()
-        {
+    string GetDefaultTableName()
+    {
 #pragma warning disable 612, 618
-            var tableName = EntityType.Name;
+        var tableName = EntityType.Name;
 
-            if (EntityType.IsGenericType)
+        if (EntityType.IsGenericType)
+        {
+            // special case for generics: GenericType_GenericParameterType
+            tableName = EntityType.Name.Substring(0, EntityType.Name.IndexOf('`'));
+
+            foreach (var argument in EntityType.GetGenericArguments())
             {
-                // special case for generics: GenericType_GenericParameterType
-                tableName = EntityType.Name.Substring(0, EntityType.Name.IndexOf('`'));
-
-                foreach (var argument in EntityType.GetGenericArguments())
-                {
-                    tableName += "_";
-                    tableName += argument.Name;
-                }
+                tableName += "_";
+                tableName += argument.Name;
             }
+        }
 #pragma warning restore 612, 618
 
-            return "`" + tableName + "`";
-        }
+        return "`" + tableName + "`";
     }
 }

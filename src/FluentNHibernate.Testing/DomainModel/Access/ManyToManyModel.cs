@@ -1,14 +1,9 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace FluentNHibernate.Testing.DomainModel.Access
+namespace FluentNHibernate.Testing.DomainModel.Access;
+
+class ManyToManyModel
 {
-    class ManyToManyModel
-    {
-        public virtual int Id { get; private set; }
-        public IList<ParentModel> Bag { get; private set; }
-    }
+    public virtual int Id { get; private set; }
+    public IList<ParentModel> Bag { get; private set; }
 }

@@ -4,299 +4,217 @@ using System.Linq.Expressions;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Collections
+namespace FluentNHibernate.MappingModel.Collections;
+
+[Serializable]
+public class CollectionMapping : MappingBase, IRelationship, IEquatable<CollectionMapping>
 {
-    [Serializable]
-    public class CollectionMapping : MappingBase, IRelationship
+    readonly AttributeStore attributes;
+    readonly List<FilterMapping> filters = [];
+
+    public Type ContainingEntityType { get; set; }
+    public Member Member { get; set; }
+
+    CollectionMapping(AttributeStore attributes)
     {
-        readonly AttributeStore attributes;
-        readonly IList<FilterMapping> filters = new List<FilterMapping>();
+        Collection = Collection.Bag;
+        this.attributes = attributes;
+    }
 
-        public Type ContainingEntityType { get; set; }
-        public Member Member { get; set; }
+    public IEnumerable<FilterMapping> Filters => filters;
 
-        CollectionMapping(AttributeStore attributes)
-        {
-            Collection = Collection.Bag;
-            this.attributes = attributes;
-        }
+    public void AddFilter(FilterMapping mapping)
+    {
+        filters.Add(mapping);
+    }
 
-        public IEnumerable<FilterMapping> Filters
-        {
-            get { return filters; }
-        }
+    public override void AcceptVisitor(IMappingModelVisitor visitor)
+    {
+        visitor.ProcessCollection(this);
 
-        public void AddFilter(FilterMapping mapping)
-        {
-            filters.Add(mapping);
-        }
+        if (Key is not null)
+            visitor.Visit(Key);
 
-        public override void AcceptVisitor(IMappingModelVisitor visitor)
-        {
-            visitor.ProcessCollection(this);
+        if (Index is not null && (Collection == Collection.Array || Collection == Collection.List || Collection == Collection.Map))
+            visitor.Visit(Index);
 
-            if (Key != null)
-                visitor.Visit(Key);
+        if (Element is not null)
+            visitor.Visit(Element);
 
-            if (Index != null && (Collection == Collection.Array || Collection == Collection.List || Collection == Collection.Map))
-                visitor.Visit(Index);
+        if (CompositeElement is not null)
+            visitor.Visit(CompositeElement);
 
-            if (Element != null)
-                visitor.Visit(Element);
+        if (Relationship is not null)
+            visitor.Visit(Relationship);
 
-            if (CompositeElement != null)
-                visitor.Visit(CompositeElement);
+        foreach (var filter in Filters)
+            visitor.Visit(filter);
 
-            if (Relationship != null)
-                visitor.Visit(Relationship);
+        if (Cache is not null)
+            visitor.Visit(Cache);
+    }
 
-            foreach (var filter in Filters)
-                visitor.Visit(filter);
+    public Type ChildType => attributes.GetOrDefault<Type>();
 
-            if (Cache != null)
-                visitor.Visit(Cache);
-        }
+    public IRelationship OtherSide { get; set; }
 
-        public Type ChildType
-        {
-            get { return attributes.GetOrDefault<Type>("ChildType"); }
-        }
+    public KeyMapping Key => attributes.GetOrDefault<KeyMapping>();
 
-        public IRelationship OtherSide { get; set; }
+    public ElementMapping Element => attributes.GetOrDefault<ElementMapping>();
 
-        public KeyMapping Key
-        {
-            get { return attributes.GetOrDefault<KeyMapping>("Key"); }
-        }
+    public CompositeElementMapping CompositeElement => attributes.GetOrDefault<CompositeElementMapping>();
 
-        public ElementMapping Element
-        {
-            get { return attributes.GetOrDefault<ElementMapping>("Element"); }
-        }
+    public CacheMapping Cache => attributes.GetOrDefault<CacheMapping>();
 
-        public CompositeElementMapping CompositeElement
-        {
-            get { return attributes.GetOrDefault<CompositeElementMapping>("CompositeElement"); }
-        }
+    public ICollectionRelationshipMapping Relationship => attributes.GetOrDefault<ICollectionRelationshipMapping>();
 
-        public CacheMapping Cache
-        {
-            get { return attributes.GetOrDefault<CacheMapping>("Cache"); }
-        }
+    public bool Generic => attributes.GetOrDefault<bool>();
 
-        public ICollectionRelationshipMapping Relationship
-        {
-            get { return attributes.GetOrDefault<ICollectionRelationshipMapping>("Relationship"); }
-        }
+    public Lazy Lazy => attributes.GetOrDefault<Lazy>();
 
-        public bool Generic
-        {
-            get { return attributes.GetOrDefault<bool>("Generic"); }
-        }
+    public bool Inverse => attributes.GetOrDefault<bool>();
 
-        public Lazy Lazy
-        {
-            get { return attributes.GetOrDefault<Lazy>("Lazy"); }
-        }
+    public string Name => attributes.GetOrDefault<string>();
 
-        public bool Inverse
-        {
-            get { return attributes.GetOrDefault<bool>("Inverse"); }
-        }
+    public string Access => attributes.GetOrDefault<string>();
 
-        public string Name
-        {
-            get { return attributes.GetOrDefault<string>("Name"); }
-        }
+    public string TableName => attributes.GetOrDefault<string>();
 
-        public string Access
-        {
-            get { return attributes.GetOrDefault<string>("Access"); }
-        }
+    public string Schema => attributes.GetOrDefault<string>();
 
-        public string TableName
-        {
-            get { return attributes.GetOrDefault<string>("TableName"); }
-        }
+    public string Fetch => attributes.GetOrDefault<string>();
 
-        public string Schema
-        {
-            get { return attributes.GetOrDefault<string>("Schema"); }
-        }
+    public string Cascade => attributes.GetOrDefault<string>();
 
-        public string Fetch
-        {
-            get { return attributes.GetOrDefault<string>("Fetch"); }
-        }
+    public string Where => attributes.GetOrDefault<string>();
 
-        public string Cascade
-        {
-            get { return attributes.GetOrDefault<string>("Cascade"); }
-        }
+    public bool Mutable => attributes.GetOrDefault<bool>();
 
-        public string Where
-        {
-            get { return attributes.GetOrDefault<string>("Where"); }
-        }
+    public string Subselect => attributes.GetOrDefault<string>();
 
-        public bool Mutable
-        {
-            get { return attributes.GetOrDefault<bool>("Mutable"); }
-        }
+    public TypeReference Persister => attributes.GetOrDefault<TypeReference>();
 
-        public string Subselect
-        {
-            get { return attributes.GetOrDefault<string>("Subselect"); }
-        }
+    public int BatchSize => attributes.GetOrDefault<int>();
 
-    	public TypeReference Persister
-        {
-            get { return attributes.GetOrDefault<TypeReference>("Persister"); }
-        }
+    public string Check => attributes.GetOrDefault<string>();
 
-        public int BatchSize
-        {
-            get { return attributes.GetOrDefault<int>("BatchSize"); }
-        }
+    public TypeReference CollectionType => attributes.GetOrDefault<TypeReference>();
 
-        public string Check
-        {
-            get { return attributes.GetOrDefault<string>("Check"); }
-        }
+    public bool OptimisticLock => attributes.GetOrDefault<bool>();
 
-        public TypeReference CollectionType
-        {
-            get { return attributes.GetOrDefault<TypeReference>("CollectionType"); }
-        }
+    public string OrderBy => attributes.GetOrDefault<string>();
 
-        public bool OptimisticLock
-        {
-            get { return attributes.GetOrDefault<bool>("OptimisticLock"); }
-        }
-
-        public string OrderBy
-        {
-            get { return attributes.GetOrDefault<string>("OrderBy"); }
-        }
-
-        public Collection Collection { get; set; }
+    public Collection Collection { get; set; }
         
-        public string Sort
-        {
-            get { return attributes.GetOrDefault<string>("Sort"); }
-        }
+    public string Sort => attributes.GetOrDefault<string>();
 
-        public IIndexMapping Index
-        {
-            get { return attributes.GetOrDefault<IIndexMapping>("Index"); }
-        }
+    public IIndexMapping Index => attributes.GetOrDefault<IIndexMapping>();
 
-        public bool Equals(CollectionMapping other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(other.attributes, attributes) &&
-                other.filters.ContentEquals(filters) &&
-                Equals(other.ContainingEntityType, ContainingEntityType)
-                && Equals(other.Member, Member);
-        }
+    public bool Equals(CollectionMapping other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return Equals(other.attributes, attributes) &&
+               other.filters.ContentEquals(filters) &&
+               other.ContainingEntityType == ContainingEntityType
+               && Equals(other.Member, Member);
+    }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof(CollectionMapping)) return false;
-            return Equals((CollectionMapping)obj);
-        }
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != typeof(CollectionMapping)) return false;
+        return Equals((CollectionMapping)obj);
+    }
 
-        public override int GetHashCode()
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            unchecked
-            {
-                int result = (attributes != null ? attributes.GetHashCode() : 0);
-                result = (result * 397) ^ (filters != null ? filters.GetHashCode() : 0);
-                result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
-                result = (result * 397) ^ (Member != null ? Member.GetHashCode() : 0);
-                return result;
-            }
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (filters is not null ? filters.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
+            result = (result * 397) ^ (Member is not null ? Member.GetHashCode() : 0);
+            return result;
         }
+    }
 
-        public void Set<T>(Expression<Func<CollectionMapping, T>> expression, int layer, T value)
-        {
-            Set(expression.ToMember().Name, layer, value);
-        }
+    public void Set<T>(Expression<Func<CollectionMapping, T>> expression, int layer, T value)
+    {
+        Set(expression.ToMember().Name, layer, value);
+    }
 
-        protected override void Set(string attribute, int layer, object value)
-        {
-            attributes.Set(attribute, layer, value);
-        }
+    protected override void Set(string attribute, int layer, object value)
+    {
+        attributes.Set(attribute, layer, value);
+    }
 
-        public override bool IsSpecified(string attribute)
-        {
-            return attributes.IsSpecified(attribute);
-        }
+    public override bool IsSpecified(string attribute)
+    {
+        return attributes.IsSpecified(attribute);
+    }
 
-        public static CollectionMapping Array()
-        {
-            return Array(new AttributeStore());
-        }
+    public static CollectionMapping Array()
+    {
+        return Array(new AttributeStore());
+    }
 
-        public static CollectionMapping Array(AttributeStore underlyingStore)
-        {
-            return For(Collection.Array, underlyingStore);
-        }
+    public static CollectionMapping Array(AttributeStore underlyingStore)
+    {
+        return For(Collection.Array, underlyingStore);
+    }
 
-        public static CollectionMapping Bag()
-        {
-            return Bag(new AttributeStore());
-        }
+    public static CollectionMapping Bag()
+    {
+        return Bag(new AttributeStore());
+    }
 
-        public static CollectionMapping Bag(AttributeStore underlyingStore)
-        {
-            return For(Collection.Bag, underlyingStore);
-        }
+    public static CollectionMapping Bag(AttributeStore underlyingStore)
+    {
+        return For(Collection.Bag, underlyingStore);
+    }
 
-        public static CollectionMapping List()
-        {
-            return List(new AttributeStore());
-        }
+    public static CollectionMapping List()
+    {
+        return List(new AttributeStore());
+    }
 
-        public static CollectionMapping List(AttributeStore underlyingStore)
-        {
-            return For(Collection.List, underlyingStore);
-        }
+    public static CollectionMapping List(AttributeStore underlyingStore)
+    {
+        return For(Collection.List, underlyingStore);
+    }
 
-        public static CollectionMapping Map()
-        {
-            return Map(new AttributeStore());
-        }
+    public static CollectionMapping Map()
+    {
+        return Map(new AttributeStore());
+    }
 
-        public static CollectionMapping Map(AttributeStore underlyingStore)
-        {
-            return For(Collection.Map, underlyingStore);
-        }
+    public static CollectionMapping Map(AttributeStore underlyingStore)
+    {
+        return For(Collection.Map, underlyingStore);
+    }
 
-        public static CollectionMapping Set()
-        {
-            return Set(new AttributeStore());
-        }
+    public static CollectionMapping Set()
+    {
+        return Set(new AttributeStore());
+    }
 
-        public static CollectionMapping Set(AttributeStore underlyingStore)
-        {
-            return For(Collection.Set, underlyingStore);
-        }
+    public static CollectionMapping Set(AttributeStore underlyingStore)
+    {
+        return For(Collection.Set, underlyingStore);
+    }
 
-        public static CollectionMapping For(Collection collectionType)
-        {
-            return For(collectionType, new AttributeStore());
-        }
+    public static CollectionMapping For(Collection collectionType)
+    {
+        return For(collectionType, new AttributeStore());
+    }
 
-        public static CollectionMapping For(Collection collectionType, AttributeStore underlyingStore)
+    public static CollectionMapping For(Collection collectionType, AttributeStore underlyingStore)
+    {
+        return new CollectionMapping(underlyingStore)
         {
-            return new CollectionMapping(underlyingStore)
-            {
-                Collection = collectionType
-            };
-        }
+            Collection = collectionType
+        };
     }
 }

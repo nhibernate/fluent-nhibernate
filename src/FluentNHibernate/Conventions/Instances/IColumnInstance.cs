@@ -1,11 +1,10 @@
 using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public interface IColumnInstance : IColumnInspector
 {
-    public interface IColumnInstance : IColumnInspector
-    {
-        new void Length(int length);
-        new void Index(string indexname);
-        new void Default(string defaultvalue);
-    }
+    new void Length(int length);
+    new void Index(string indexname);
+    new void Default(string defaultvalue);
 }

@@ -1,26 +1,17 @@
 using System;
 using System.Linq.Expressions;
-using System.Reflection;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.Conventions.AcceptanceCriteria
+namespace FluentNHibernate.Conventions.AcceptanceCriteria;
+
+public class SetCriterion(bool inverse) : IAcceptanceCriterion
 {
-    public class SetCriterion : IAcceptanceCriterion
+    public bool IsSatisfiedBy<T>(Expression<Func<T, object>> expression, T inspector) where T : IInspector
     {
-        private readonly bool inverse;
+        var member = expression.ToMember();
+        var result = inspector.IsSet(member);
 
-        public SetCriterion(bool inverse)
-        {
-            this.inverse = inverse;
-        }
-
-        public bool IsSatisfiedBy<T>(Expression<Func<T, object>> expression, T inspector) where T : IInspector
-        {
-            var member = expression.ToMember();
-            var result = inspector.IsSet(member);
-
-            return inverse ? !result : result;
-        }
+        return inverse ? !result : result;
     }
 }

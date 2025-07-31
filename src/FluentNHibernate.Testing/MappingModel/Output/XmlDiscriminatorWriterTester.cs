@@ -3,56 +3,55 @@ using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.MappingModel.Output
+namespace FluentNHibernate.Testing.MappingModel.Output;
+
+[TestFixture]
+public class XmlDiscriminatorWriterTester
 {
-    [TestFixture]
-    public class XmlDiscriminatorWriterTester
+    IXmlWriter<DiscriminatorMapping> writer;
+
+    [SetUp]
+    public void GetWriterFromContainer()
     {
-        private IXmlWriter<DiscriminatorMapping> writer;
+        var container = new XmlWriterContainer();
+        writer = container.Resolve<IXmlWriter<DiscriminatorMapping>>();
+    }
 
-        [SetUp]
-        public void GetWriterFromContainer()
-        {
-            var container = new XmlWriterContainer();
-            writer = container.Resolve<IXmlWriter<DiscriminatorMapping>>();
-        }
+    [Test]
+    public void ShouldWriteForceAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<DiscriminatorMapping>();
+        testHelper.Check(x => x.Force, true).MapsToAttribute("force");
 
-        [Test]
-        public void ShouldWriteForceAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<DiscriminatorMapping>();
-            testHelper.Check(x => x.Force, true).MapsToAttribute("force");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteInsertAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<DiscriminatorMapping>();
+        testHelper.Check(x => x.Insert, true).MapsToAttribute("insert");
 
-        [Test]
-        public void ShouldWriteInsertAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<DiscriminatorMapping>();
-            testHelper.Check(x => x.Insert, true).MapsToAttribute("insert");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteFormulaAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<DiscriminatorMapping>();
+        testHelper.Check(x => x.Formula, "f").MapsToAttribute("formula");
 
-        [Test]
-        public void ShouldWriteFormulaAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<DiscriminatorMapping>();
-            testHelper.Check(x => x.Formula, "f").MapsToAttribute("formula");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteColumns()
+    {
+        var mapping = new DiscriminatorMapping();
 
-        [Test]
-        public void ShouldWriteColumns()
-        {
-            var mapping = new DiscriminatorMapping();
+        mapping.AddColumn(Layer.Defaults, new ColumnMapping("Column1"));
 
-            mapping.AddColumn(Layer.Defaults, new ColumnMapping("Column1"));
-
-            writer.VerifyXml(mapping)
-                .Element("column").Exists();
-        }
+        writer.VerifyXml(mapping)
+            .Element("column").Exists();
     }
 }

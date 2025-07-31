@@ -1,56 +1,55 @@
 using System;
 
-namespace FluentNHibernate.MappingModel.ClassBased
+namespace FluentNHibernate.MappingModel.ClassBased;
+
+[Serializable]
+public class ComponentType : IEquatable<ComponentType>
 {
-    [Serializable]
-    public class ComponentType
+    public static readonly ComponentType Component = new ComponentType("component");
+    public static readonly ComponentType DynamicComponent = new ComponentType("dynamic-component");
+
+    readonly string elementName;
+
+    ComponentType(string elementName)
     {
-        public static readonly ComponentType Component = new ComponentType("component");
-        public static readonly ComponentType DynamicComponent = new ComponentType("dynamic-component");
+        this.elementName = elementName;
+    }
 
-        readonly string elementName;
+    public string GetElementName()
+    {
+        return elementName;
+    }
 
-        private ComponentType(string elementName)
-        {
-            this.elementName = elementName;
-        }
+    public override bool Equals(object obj)
+    {
+        if (obj.GetType() != typeof(ComponentType))
+            return false;
 
-        public string GetElementName()
-        {
-            return elementName;
-        }
+        return Equals(obj as ComponentType);
+    }
 
-        public override bool Equals(object obj)
-        {
-            if (obj.GetType() != typeof(ComponentType))
-                return false;
+    public override string ToString()
+    {
+        return string.Format("ElementName: {0}", elementName);
+    }
 
-            return Equals(obj as ComponentType);
-        }
+    public bool Equals(ComponentType other)
+    {
+        return Equals(other.elementName, elementName);
+    }
 
-        public override string ToString()
-        {
-            return string.Format("ElementName: {0}", elementName);
-        }
+    public override int GetHashCode()
+    {
+        return (elementName is not null ? elementName.GetHashCode() : 0);
+    }
 
-        public bool Equals(ComponentType other)
-        {
-            return Equals(other.elementName, elementName);
-        }
+    public static bool operator ==(ComponentType left, ComponentType right)
+    {
+        return Equals(left, right);
+    }
 
-        public override int GetHashCode()
-        {
-            return (elementName != null ? elementName.GetHashCode() : 0);
-        }
-
-        public static bool operator ==(ComponentType left, ComponentType right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(ComponentType left, ComponentType right)
-        {
-            return !(left == right);
-        }
+    public static bool operator !=(ComponentType left, ComponentType right)
+    {
+        return !(left == right);
     }
 }

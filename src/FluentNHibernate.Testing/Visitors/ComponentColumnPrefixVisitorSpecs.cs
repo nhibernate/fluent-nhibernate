@@ -4,306 +4,303 @@ using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
-using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.Visitors
+namespace FluentNHibernate.Testing.Visitors;
+
+[TestFixture]
+public class when_the_component_column_prefix_visitor_processes_a_reference_component_with_a_prefix_using_the_property_alias : ComponentColumnPrefixVisitorSpec
 {
-    [TestFixture]
-    public class when_the_component_column_prefix_visitor_processes_a_reference_component_with_a_prefix_using_the_property_alias : ComponentColumnPrefixVisitorSpec
+    PersistenceModel model;
+    IEnumerable<HibernateMapping> mappings;
+    ClassMapping target_mapping;
+    const string column_prefix = "{property}_";
+
+    public override void establish_context()
     {
-        PersistenceModel model;
-        IEnumerable<HibernateMapping> mappings;
-        ClassMapping target_mapping;
-        private const string column_prefix = "{property}_";
+        model = new PersistenceModel();
 
-        public override void establish_context()
-        {
-            model = new PersistenceModel();
+        var comp_map = new ComponentMap<ComponentTarget>();
+        comp_map.Map(x => x.Property);
 
-            var comp_map = new ComponentMap<ComponentTarget>();
-            comp_map.Map(x => x.Property);
+        model.Add(comp_map);
 
-            model.Add(comp_map);
-
-            var map = new ClassMap<Target>();
-            map.Id(x => x.Id);
-            map.Component(x => x.Component)
-                .ColumnPrefix(column_prefix);
-            model.Add(map);
-        }
-
-        public override void because()
-        {
-            mappings = model.BuildMappings();
-            target_mapping = mappings
-                .SelectMany(x => x.Classes)
-                .FirstOrDefault(x => x.Type == typeof(Target));
-        }
-
-        [Test]
-        public void should_prefix_property_columns()
-        {
-            target_mapping.Components.Single()
-                .Properties.SelectMany(x => x.Columns)
-                .Each(x => x.Name.ShouldStartWith("Component_"));
-        }
+        var map = new ClassMap<Target>();
+        map.Id(x => x.Id);
+        map.Component(x => x.Component)
+            .ColumnPrefix(column_prefix);
+        model.Add(map);
     }
 
-    [TestFixture]
-    public class when_the_component_column_prefix_visitor_processes_a_reference_component_with_an_inner_reference_component_with_its_own_prefix : ComponentColumnPrefixVisitorSpec
+    public override void because()
     {
-        PersistenceModel model;
-        IEnumerable<HibernateMapping> mappings;
-        ClassMapping target_mapping;
-        private const string first_prefix = "first_";
-        private const string second_prefix = "second_";
-
-        public override void establish_context()
-        {
-            model = new PersistenceModel();
-
-            var comp_map = new ComponentMap<ComponentTarget>();
-            comp_map.Map(x => x.Property);
-            comp_map.Component(x => x.Component)
-                .ColumnPrefix(second_prefix);
-
-            model.Add(comp_map);
-
-            var comp2_map = new ComponentMap<Child>();
-            comp2_map.Map(x => x.Property);
-
-            model.Add(comp2_map);
-
-            var map = new ClassMap<Target>();
-            map.Id(x => x.Id);
-            map.Component(x => x.Component)
-                .ColumnPrefix(first_prefix);
-            model.Add(map);
-        }
-
-        public override void because()
-        {
-            mappings = model.BuildMappings();
-            target_mapping = mappings
-                .SelectMany(x => x.Classes)
-                .FirstOrDefault(x => x.Type == typeof(Target));
-        }
-
-        [Test]
-        public void should_prefix_sub_component_columns_with_both_prefixes()
-        {
-            target_mapping
-                .Components.Single()
-                .Components.Single()
-                .Properties.SelectMany(x => x.Columns)
-                .Each(x => x.Name.ShouldStartWith(first_prefix + second_prefix));
-        }
+        mappings = model.BuildMappings();
+        target_mapping = mappings
+            .SelectMany(x => x.Classes)
+            .FirstOrDefault(x => x.Type == typeof(Target));
     }
 
-    [TestFixture]
-    public class when_the_component_column_prefix_visitor_processes_a_reference_component_after_already_processed_another : ComponentColumnPrefixVisitorSpec
+    [Test]
+    public void should_prefix_property_columns()
     {
-        private const string column_prefix = "prefix_";
-        private ComponentColumnPrefixVisitor visitor;
-        private ReferenceComponentMapping reference_with_a_prefix;
-        private ReferenceComponentMapping reference_without_a_prefix;
+        var columns = target_mapping.Components.Single()
+            .Properties.SelectMany(x => x.Columns);
+        Assert.That(columns, Has.All.Property("Name").StartWith("Component_"));
+    }
+}
 
-        public override void establish_context()
-        {
-            visitor = new ComponentColumnPrefixVisitor();
-            reference_with_a_prefix = new ReferenceComponentMapping(ComponentType.Component, new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), column_prefix);
-            reference_with_a_prefix.AssociateExternalMapping(new ExternalComponentMapping(ComponentType.Component));
+[TestFixture]
+public class when_the_component_column_prefix_visitor_processes_a_reference_component_with_an_inner_reference_component_with_its_own_prefix : ComponentColumnPrefixVisitorSpec
+{
+    PersistenceModel model;
+    IEnumerable<HibernateMapping> mappings;
+    ClassMapping target_mapping;
+    const string first_prefix = "first_";
+    const string second_prefix = "second_";
 
-            reference_without_a_prefix = new ReferenceComponentMapping(ComponentType.Component, new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), null);
+    public override void establish_context()
+    {
+        model = new PersistenceModel();
 
-            var external_mapping = new ExternalComponentMapping(ComponentType.Component);
-            external_mapping.AddProperty(property_with_column("propertyColumn"));
+        var comp_map = new ComponentMap<ComponentTarget>();
+        comp_map.Map(x => x.Property);
+        comp_map.Component(x => x.Component)
+            .ColumnPrefix(second_prefix);
 
-            reference_without_a_prefix.AssociateExternalMapping(external_mapping);
-        }
+        model.Add(comp_map);
 
-        public override void because()
-        {
-            visitor.Visit(reference_with_a_prefix);
-            visitor.Visit(reference_without_a_prefix);
-        }
+        var comp2_map = new ComponentMap<Child>();
+        comp2_map.Map(x => x.Property);
 
-        [Test]
-        public void shouldnt_use_the_original_prefix()
-        {
-            reference_without_a_prefix.Properties.SelectMany(x => x.Columns)
-                .Each(x => x.Name.ShouldNotStartWith(column_prefix));
-        }
+        model.Add(comp2_map);
+
+        var map = new ClassMap<Target>();
+        map.Id(x => x.Id);
+        map.Component(x => x.Component)
+            .ColumnPrefix(first_prefix);
+        model.Add(map);
     }
 
-    [TestFixture]
-    public class when_the_component_column_prefix_visitor_processes_a_reference_component_with_a_prefix : ComponentColumnPrefixVisitorSpec
+    public override void because()
     {
-        PersistenceModel model;
-        IEnumerable<HibernateMapping> mappings;
-        ClassMapping target_mapping;
-        private const string column_prefix = "prefix_";
-
-        public override void establish_context()
-        {
-            model = new PersistenceModel();
-            var comp_map = new ComponentMap<ComponentTarget>();
-            comp_map.Map(x => x.Property);
-            comp_map.HasMany(x => x.Children);
-            comp_map.Component(x => x.Component, c =>
-                c.Map(x => x.Property));
-            model.Add(comp_map);
-
-            var map = new ClassMap<Target>();
-            map.Id(x => x.Id);
-            map.Component(x => x.Component)
-                .ColumnPrefix(column_prefix);
-
-            model.Add(map);
-        }
-
-        public override void because()
-        {
-            mappings = model.BuildMappings();
-            target_mapping = mappings
-                .SelectMany(x => x.Classes)
-                .FirstOrDefault(x => x.Type == typeof(Target));
-        }
-
-        [Test]
-        public void should_prefix_collection_columns()
-        {
-            target_mapping.Components.Single().Collections.ShouldHaveCount(1);
-            target_mapping.Components.Single().Collections
-                .SelectMany(x => x.Key.Columns)
-                .Each(x => x.Name.ShouldStartWith(column_prefix));
-        }
-
-        [Test]
-        public void should_prefix_columns_inside_an_inner_component()
-        {
-            target_mapping.Components.ShouldHaveCount(1);
-            target_mapping.Components.SelectMany(x => x.Components).ShouldHaveCount(1);
-            target_mapping.Components
-                .SelectMany(x => x.Components)
-                .SelectMany(x => x.Properties)
-                .SelectMany(x => x.Columns)
-                .Each(x => x.Name.ShouldStartWith(column_prefix));
-        }
-
-        [Test]
-        public void should_prefix_property_columns()
-        {
-            target_mapping.Components.Single().Properties.ShouldHaveCount(1);
-            target_mapping.Components.Single()
-                .Properties.SelectMany(x => x.Columns)
-                .Each(x => x.Name.ShouldStartWith(column_prefix));
-        }
+        mappings = model.BuildMappings();
+        target_mapping = mappings
+            .SelectMany(x => x.Classes)
+            .FirstOrDefault(x => x.Type == typeof(Target));
     }
 
-    [TestFixture]
-    public class when_the_component_column_prefix_visitor_processes_a_component_with_a_prefix_using_field_alias : ComponentColumnPrefixVisitorSpec
+    [Test]
+    public void should_prefix_sub_component_columns_with_both_prefixes()
     {
-        PersistenceModel model;
-        IEnumerable<HibernateMapping> mappings;
-        ClassMapping targetMapping;
-        const string columnPrefix = "{property}";
+        var columns = target_mapping
+            .Components.Single()
+            .Components.Single()
+            .Properties.SelectMany(x => x.Columns);
+        Assert.That(columns, Has.All.Property("Name").StartWith(first_prefix + second_prefix));
+    }
+}
 
-        public override void establish_context()
-        {
-            model = new PersistenceModel();
+[TestFixture]
+public class when_the_component_column_prefix_visitor_processes_a_reference_component_after_already_processed_another : ComponentColumnPrefixVisitorSpec
+{
+    const string column_prefix = "prefix_";
+    ComponentColumnPrefixVisitor visitor;
+    ReferenceComponentMapping reference_with_a_prefix;
+    ReferenceComponentMapping reference_without_a_prefix;
 
-            var componentMap = new ComponentMap<FieldComponent>();
-            componentMap.Map(x => x.X);
-            componentMap.Map(x => x.Y);
+    public override void establish_context()
+    {
+        visitor = new ComponentColumnPrefixVisitor();
+        reference_with_a_prefix = new ReferenceComponentMapping(ComponentType.Component, new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), column_prefix);
+        reference_with_a_prefix.AssociateExternalMapping(new ExternalComponentMapping(ComponentType.Component));
 
-            model.Add(componentMap);
+        reference_without_a_prefix = new ReferenceComponentMapping(ComponentType.Component, new DummyPropertyInfo("PROPERTY", typeof(Target)).ToMember(), typeof(ComponentTarget), typeof(Target), null);
 
-            var classMapping = new ClassMap<Root>();
-            classMapping.Id(r => r.Id);
-            classMapping.Component(Reveal.Member<Root, FieldComponent>("component"), cpt => cpt.Access.Field().ColumnPrefix(columnPrefix));
-            model.Add(classMapping);
-        }
+        var external_mapping = new ExternalComponentMapping(ComponentType.Component);
+        external_mapping.AddProperty(property_with_column("propertyColumn"));
 
-        public override void because()
-        {
-            mappings = model.BuildMappings().ToList();
-            targetMapping = mappings.SelectMany(x => x.Classes).FirstOrDefault(x => x.Type == typeof(Root));
-        }
-
-        [Test]
-        public void should_prefix_field_columns()
-        {
-            targetMapping.Components.Single()
-                .Properties.SelectMany(x => x.Columns)
-                .Each(c => c.Name.ShouldStartWith("component"));
-        }
+        reference_without_a_prefix.AssociateExternalMapping(external_mapping);
     }
 
-    class Root
+    public override void because()
     {
-        FieldComponent component;
+        visitor.Visit(reference_with_a_prefix);
+        visitor.Visit(reference_without_a_prefix);
+    }
+
+    [Test]
+    public void shouldnt_use_the_original_prefix()
+    {
+        var columns = reference_without_a_prefix.Properties.SelectMany(x => x.Columns);
+        Assert.That(columns, Has.None.Property("Name").StartWith(column_prefix));
+    }
+}
+
+[TestFixture]
+public class when_the_component_column_prefix_visitor_processes_a_reference_component_with_a_prefix : ComponentColumnPrefixVisitorSpec
+{
+    PersistenceModel model;
+    IEnumerable<HibernateMapping> mappings;
+    ClassMapping target_mapping;
+    const string column_prefix = "prefix_";
+
+    public override void establish_context()
+    {
+        model = new PersistenceModel();
+        var comp_map = new ComponentMap<ComponentTarget>();
+        comp_map.Map(x => x.Property);
+        comp_map.HasMany(x => x.Children);
+        comp_map.Component(x => x.Component, c =>
+            c.Map(x => x.Property));
+        model.Add(comp_map);
+
+        var map = new ClassMap<Target>();
+        map.Id(x => x.Id);
+        map.Component(x => x.Component)
+            .ColumnPrefix(column_prefix);
+
+        model.Add(map);
+    }
+
+    public override void because()
+    {
+        mappings = model.BuildMappings();
+        target_mapping = mappings
+            .SelectMany(x => x.Classes)
+            .FirstOrDefault(x => x.Type == typeof(Target));
+    }
+
+    [Test]
+    public void should_prefix_collection_columns()
+    {
+        Assert.That(target_mapping.Components.Single().Collections.Count(), Is.EqualTo(1));
+        var keyColumns = target_mapping.Components.Single().Collections
+            .SelectMany(x => x.Key.Columns);
+        Assert.That(keyColumns, Has.All.Property("Name").StartWith(column_prefix));
+    }
+
+    [Test]
+    public void should_prefix_columns_inside_an_inner_component()
+    {
+        target_mapping.Components.ShouldHaveCount(1);
+        target_mapping.Components.SelectMany(x => x.Components).ShouldHaveCount(1);
+        var columns = target_mapping.Components
+            .SelectMany(x => x.Components)
+            .SelectMany(x => x.Properties)
+            .SelectMany(x => x.Columns);
+        Assert.That(columns, Has.All.Property("Name").StartWith(column_prefix));
+    }
+
+    [Test]
+    public void should_prefix_property_columns()
+    {
+        target_mapping.Components.Single().Properties.ShouldHaveCount(1);
+        var columns = target_mapping.Components.Single()
+            .Properties.SelectMany(x => x.Columns);
+        Assert.That(columns, Has.All.Property("Name").StartWith(column_prefix));
+    }
+}
+
+[TestFixture]
+public class when_the_component_column_prefix_visitor_processes_a_component_with_a_prefix_using_field_alias : ComponentColumnPrefixVisitorSpec
+{
+    PersistenceModel model;
+    IEnumerable<HibernateMapping> mappings;
+    ClassMapping targetMapping;
+    const string columnPrefix = "{property}";
+
+    public override void establish_context()
+    {
+        model = new PersistenceModel();
+
+        var componentMap = new ComponentMap<FieldComponent>();
+        componentMap.Map(x => x.X);
+        componentMap.Map(x => x.Y);
+
+        model.Add(componentMap);
+
+        var classMapping = new ClassMap<Root>();
+        classMapping.Id(r => r.Id);
+        classMapping.Component(Reveal.Member<Root, FieldComponent>("component"), cpt => cpt.Access.Field().ColumnPrefix(columnPrefix));
+        model.Add(classMapping);
+    }
+
+    public override void because()
+    {
+        mappings = model.BuildMappings().ToList();
+        targetMapping = mappings.SelectMany(x => x.Classes).FirstOrDefault(x => x.Type == typeof(Root));
+    }
+
+    [Test]
+    public void should_prefix_field_columns()
+    {
+        var columns = targetMapping.Components.Single().Properties.SelectMany(x => x.Columns);
+        Assert.That(columns, Has.All.Property("Name").StartWith("component"));
+    }
+}
+
+class Root
+{
+    FieldComponent component;
+    public int Id { get; set; }
+}
+
+class FieldComponent
+{
+    public string X { get; set; }
+    public int? Y { get; set; }
+}
+
+public abstract class ComponentColumnPrefixVisitorSpec : Specification
+{
+    protected AnyMapping any_with_column(string column)
+    {
+        var any = new AnyMapping();
+
+        any.AddIdentifierColumn(Layer.Defaults, new ColumnMapping(column));
+        any.AddTypeColumn(Layer.Defaults, new ColumnMapping(column));
+
+        return any;
+    }
+
+    protected CollectionMapping collection_with_column(string column)
+    {
+        var collection = CollectionMapping.Bag();
+
+        collection.Set(x => x.Key, Layer.Defaults, new KeyMapping());
+        collection.Key.AddColumn(Layer.Defaults, new ColumnMapping(column));
+
+        return collection;
+    }
+
+    protected PropertyMapping property_with_column(string column)
+    {
+        var property = new PropertyMapping();
+        property.AddColumn(Layer.Defaults, new ColumnMapping("propertyColumn"));
+        return property;
+    }
+
+    protected ManyToOneMapping reference_with_column(string column)
+    {
+        var reference = new ManyToOneMapping();
+        reference.AddColumn(Layer.Defaults, new ColumnMapping("propertyColumn"));
+        return reference;
+    }
+
+    protected class ComponentTarget
+    {
+        public string Property { get; set; }
+        public IList<Child> Children { get; set; }
+        public Child Component { get; set; }
+    }
+    protected class Child
+    {
+        public string Property { get; set; }
+    }
+    protected class Target
+    {
         public int Id { get; set; }
-    }
-
-    class FieldComponent
-    {
-        public string X { get; set; }
-        public int? Y { get; set; }
-    }
-
-    public abstract class ComponentColumnPrefixVisitorSpec : Specification
-    {
-        protected AnyMapping any_with_column(string column)
-        {
-            var any = new AnyMapping();
-
-            any.AddIdentifierColumn(Layer.Defaults, new ColumnMapping(column));
-            any.AddTypeColumn(Layer.Defaults, new ColumnMapping(column));
-
-            return any;
-        }
-
-        protected CollectionMapping collection_with_column(string column)
-        {
-            var collection = CollectionMapping.Bag();
-
-            collection.Set(x => x.Key, Layer.Defaults, new KeyMapping());
-            collection.Key.AddColumn(Layer.Defaults, new ColumnMapping(column));
-
-            return collection;
-        }
-
-        protected PropertyMapping property_with_column(string column)
-        {
-            var property = new PropertyMapping();
-            property.AddColumn(Layer.Defaults, new ColumnMapping("propertyColumn"));
-            return property;
-        }
-
-        protected ManyToOneMapping reference_with_column(string column)
-        {
-            var reference = new ManyToOneMapping();
-            reference.AddColumn(Layer.Defaults, new ColumnMapping("propertyColumn"));
-            return reference;
-        }
-
-        protected class ComponentTarget
-        {
-            public string Property { get; set; }
-            public IList<Child> Children { get; set; }
-            public Child Component { get; set; }
-        }
-        protected class Child
-        {
-            public string Property { get; set; }
-        }
-        protected class Target
-        {
-            public int Id { get; set; }
-            public ComponentTarget Component { get; set; }
-        }
+        public ComponentTarget Component { get; set; }
     }
 }

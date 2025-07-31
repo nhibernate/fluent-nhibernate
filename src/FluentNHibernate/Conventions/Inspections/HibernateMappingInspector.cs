@@ -1,64 +1,32 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public class HibernateMappingInspector(HibernateMapping mapping) : IHibernateMappingInspector
 {
-    public class HibernateMappingInspector : IHibernateMappingInspector
+    readonly InspectorModelMapper<IHibernateMappingInspector, HibernateMapping> propertyMappings = new InspectorModelMapper<IHibernateMappingInspector, HibernateMapping>();
+
+    public Type EntityType => mapping.Classes.First().Type;
+
+    public string StringIdentifierForModel => mapping.Classes.First().Name;
+
+    public bool IsSet(Member property)
     {
-        private readonly InspectorModelMapper<IHibernateMappingInspector, HibernateMapping> propertyMappings = new InspectorModelMapper<IHibernateMappingInspector, HibernateMapping>();
-        private readonly HibernateMapping mapping;
-
-        public HibernateMappingInspector(HibernateMapping mapping)
-        {
-            this.mapping = mapping;
-        }
-
-        public Type EntityType
-        {
-            get { return mapping.Classes.First().Type; }
-        }
-
-        public string StringIdentifierForModel
-        {
-            get { return mapping.Classes.First().Name; }
-        }
-
-        public bool IsSet(Member property)
-        {
-            return mapping.IsSpecified(propertyMappings.Get(property));
-        }
-
-        public string Catalog
-        {
-            get { return mapping.Catalog; }
-        }
-
-        public Access DefaultAccess
-        {
-            get { return Access.FromString(mapping.DefaultAccess); }
-        }
-
-        public Cascade DefaultCascade
-        {
-            get { return Cascade.FromString(mapping.DefaultCascade); }
-        }
-
-        public bool DefaultLazy
-        {
-            get { return mapping.DefaultLazy; }
-        }
-
-        public bool AutoImport
-        {
-            get { return mapping.AutoImport; }
-        }
-
-        public string Schema
-        {
-            get { return mapping.Schema; }
-        }
+        return mapping.IsSpecified(propertyMappings.Get(property));
     }
+
+    public string Catalog => mapping.Catalog;
+
+    public Access DefaultAccess => Access.FromString(mapping.DefaultAccess);
+
+    public Cascade DefaultCascade => Cascade.FromString(mapping.DefaultCascade);
+
+    public bool DefaultLazy => mapping.DefaultLazy;
+
+    public bool AutoImport => mapping.AutoImport;
+
+    public string Schema => mapping.Schema;
 }

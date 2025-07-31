@@ -2,47 +2,31 @@ using System;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public class ParentInspector(ParentMapping mapping) : IParentInspector
 {
-    public class ParentInspector : IParentInspector
+    readonly InspectorModelMapper<IPropertyInspector, ParentMapping> mappedProperties = new InspectorModelMapper<IPropertyInspector, ParentMapping>();
+
+    public Type EntityType => mapping.ContainingEntityType;
+
+    public string StringIdentifierForModel => mapping.Name;
+
+    public bool IsSet(Member property)
     {
-        private readonly InspectorModelMapper<IPropertyInspector, ParentMapping> mappedProperties = new InspectorModelMapper<IPropertyInspector, ParentMapping>();
-        private readonly ParentMapping mapping;
+        return mapping.IsSpecified(mappedProperties.Get(property));
+    }
 
-        public ParentInspector(ParentMapping mapping)
-        {
-            this.mapping = mapping;
-        }
+    public string Name => mapping.Name;
 
-        public Type EntityType
+    public Access Access
+    {
+        get
         {
-            get { return mapping.ContainingEntityType; }
-        }
-
-        public string StringIdentifierForModel
-        {
-            get { return mapping.Name; }
-        }
-
-        public bool IsSet(Member property)
-        {
-            return mapping.IsSpecified(mappedProperties.Get(property));
-        }
-
-        public string Name
-        {
-            get { return mapping.Name; }
-        }
-
-        public Access Access
-        {
-            get
-            {
-                if (mapping.Access != null)
-                    return Access.FromString(mapping.Access);
+            if (mapping.Access is not null)
+                return Access.FromString(mapping.Access);
              
-                return null;
-            }
+            return null;
         }
     }
 }

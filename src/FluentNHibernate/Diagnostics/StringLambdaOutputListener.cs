@@ -1,27 +1,20 @@
 ﻿using System;
 
-namespace FluentNHibernate.Diagnostics
+namespace FluentNHibernate.Diagnostics;
+
+public class StringLambdaOutputListener(Action<string> raiseMessage) : IDiagnosticListener
 {
-    public class StringLambdaOutputListener : IDiagnosticListener
+    IDiagnosticResultsFormatter outputFormatter = new DefaultOutputFormatter();
+
+    public void Receive(DiagnosticResults results)
     {
-        readonly Action<string> raiseMessage;
-        IDiagnosticResultsFormatter outputFormatter = new DefaultOutputFormatter();
+        var output = outputFormatter.Format(results);
 
-        public StringLambdaOutputListener(Action<string> raiseMessage)
-        {
-            this.raiseMessage = raiseMessage;
-        }
+        raiseMessage(output);
+    }
 
-        public void Receive(DiagnosticResults results)
-        {
-            var output = outputFormatter.Format(results);
-
-            raiseMessage(output);
-        }
-
-        public void SetFormatter(IDiagnosticResultsFormatter formatter)
-        {
-            outputFormatter = formatter;
-        }
+    public void SetFormatter(IDiagnosticResultsFormatter formatter)
+    {
+        outputFormatter = formatter;
     }
 }

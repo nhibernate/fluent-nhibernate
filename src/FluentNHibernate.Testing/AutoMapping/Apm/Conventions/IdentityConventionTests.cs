@@ -1,42 +1,39 @@
-using System;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.MappingModel.Identity;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions
+namespace FluentNHibernate.Testing.AutoMapping.Apm.Conventions;
+
+[TestFixture]
+public class IdentityConventionTests
 {
-    [TestFixture]
-    public class IdentityConventionTests
+    [Test]
+    public void ShouldBeAbleToSpecifyKeyInConvention()
     {
-        [Test]
-        public void ShouldBeAbleToSpecifyKeyInConvention()
-        {
-            var model =
-                AutoMap.Source(new StubTypeSource(typeof(IdTarget)))
-                    .Conventions.Add<IdConvention>();
+        var model =
+            AutoMap.Source(new StubTypeSource(typeof(IdTarget)))
+                .Conventions.Add<IdConvention>();
 
-            var classMapping = model.BuildMappings()
-                .First()
-                .Classes.First();
+        var classMapping = model.BuildMappings()
+            .First()
+            .Classes.First();
 
-            ((IdMapping)classMapping.Id).Columns.First().Name.ShouldEqual("xxx");
-        }
-
-        private class IdConvention : IIdConvention
-        {
-            public void Apply(IIdentityInstance instance)
-            {
-                instance.Column("xxx");
-            }
-        }
+        ((IdMapping)classMapping.Id).Columns.First().Name.ShouldEqual("xxx");
     }
 
-    internal class IdTarget
+    class IdConvention : IIdConvention
     {
-        public int Id { get; set; }
+        public void Apply(IIdentityInstance instance)
+        {
+            instance.Column("xxx");
+        }
     }
+}
+
+class IdTarget
+{
+    public int Id { get; set; }
 }

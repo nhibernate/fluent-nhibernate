@@ -1,21 +1,12 @@
-using System;
 using System.Collections.Generic;
 
-namespace FluentNHibernate.Mapping
+namespace FluentNHibernate.Mapping;
+
+public class ParamBuilder(IDictionary<string, string> parameters)
 {
-    public class ParamBuilder
+    public ParamBuilder AddParam(string name, string value)
     {
-        private readonly IDictionary<string, string> parameters;
-
-        public ParamBuilder(IDictionary<string, string> parameters)
-        {
-            this.parameters = parameters;
-        }
-
-        public ParamBuilder AddParam(string name, string value)
-        {
-            parameters.Add(name, value);
-            return this;
-        }
+        parameters.Add(name, value);
+        return this;
     }
 }

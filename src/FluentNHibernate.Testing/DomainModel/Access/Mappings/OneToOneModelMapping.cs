@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Testing.DomainModel.Access.Mappings
+namespace FluentNHibernate.Testing.DomainModel.Access.Mappings;
+
+class OneToOneModelMapping : ClassMap<OneToOneModel>
 {
-    class OneToOneModelMapping : ClassMap<OneToOneModel>
+    public OneToOneModelMapping()
     {
-        public OneToOneModelMapping()
-        {
-            CompositeId().KeyReference(x => x.Parent);
-        }
+        CompositeId().KeyReference(x => x.Parent);
     }
 }

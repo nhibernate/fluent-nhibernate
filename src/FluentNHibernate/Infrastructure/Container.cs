@@ -1,30 +1,27 @@
 using System;
 using System.Collections.Generic;
 
-namespace FluentNHibernate.Infrastructure
+namespace FluentNHibernate.Infrastructure;
+
+public class Container
 {
-    public class Container
+    readonly Dictionary<Type, Func<Container, object>> registeredTypes = new();
+
+    public void Register<T>(Func<Container, object> instantiateFunc)
     {
-        private readonly IDictionary<Type, Func<Container, object>> registeredTypes = new Dictionary<Type, Func<Container, object>>();
+        registeredTypes[typeof(T)] = instantiateFunc;
+    }
 
-        public void Register<T>(Func<Container, object> instantiateFunc)
-        {
-            registeredTypes[typeof(T)] = instantiateFunc;
-        }
+    public object Resolve(Type type)
+    {
+        if (!registeredTypes.TryGetValue(type, out var instantiationFunc))
+            throw new ResolveException(type);
 
-        public object Resolve(Type type)
-        {
-            if (!registeredTypes.ContainsKey(type))
-                throw new ResolveException(type);
-            
-            var instantiationFunc = registeredTypes[type];
+        return instantiationFunc(this);
+    }
 
-            return instantiationFunc(this);
-        }
-
-        public T Resolve<T>()
-        {
-            return (T)Resolve(typeof(T));
-        }
+    public T Resolve<T>()
+    {
+        return (T)Resolve(typeof(T));
     }
 }

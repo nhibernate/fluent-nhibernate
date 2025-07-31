@@ -1,53 +1,54 @@
-namespace FluentNHibernate.Conventions.Inspections
+using System;
+
+namespace FluentNHibernate.Conventions.Inspections;
+
+public class OnDelete : IEquatable<OnDelete>
 {
-    public class OnDelete
+    public static readonly OnDelete Unset = new OnDelete("");
+    public static readonly OnDelete Cascade = new OnDelete("cascade");
+    public static readonly OnDelete NoAction = new OnDelete("noaction");
+
+    readonly string value;
+
+    OnDelete(string value)
     {
-        public static readonly OnDelete Unset = new OnDelete("");
-        public static readonly OnDelete Cascade = new OnDelete("cascade");
-        public static readonly OnDelete NoAction = new OnDelete("noaction");
+        this.value = value;
+    }
 
-        private readonly string value;
+    public override bool Equals(object obj)
+    {
+        if (obj is OnDelete) return Equals((OnDelete)obj);
 
-        private OnDelete(string value)
-        {
-            this.value = value;
-        }
+        return base.Equals(obj);
+    }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is OnDelete) return Equals((OnDelete)obj);
+    public bool Equals(OnDelete other)
+    {
+        return Equals(other.value, value);
+    }
 
-            return base.Equals(obj);
-        }
+    public override int GetHashCode()
+    {
+        return (value is not null ? value.GetHashCode() : 0);
+    }
 
-        public bool Equals(OnDelete other)
-        {
-            return Equals(other.value, value);
-        }
+    public static bool operator ==(OnDelete x, OnDelete y)
+    {
+        return x.Equals(y);
+    }
 
-        public override int GetHashCode()
-        {
-            return (value != null ? value.GetHashCode() : 0);
-        }
+    public static bool operator !=(OnDelete x, OnDelete y)
+    {
+        return !(x == y);
+    }
 
-        public static bool operator ==(OnDelete x, OnDelete y)
-        {
-            return x.Equals(y);
-        }
+    public override string ToString()
+    {
+        return value;
+    }
 
-        public static bool operator !=(OnDelete x, OnDelete y)
-        {
-            return !(x == y);
-        }
-
-        public override string ToString()
-        {
-            return value;
-        }
-
-        public static OnDelete FromString(string value)
-        {
-            return new OnDelete(value);
-        }
+    public static OnDelete FromString(string value)
+    {
+        return new OnDelete(value);
     }
 }

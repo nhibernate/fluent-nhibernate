@@ -19,7 +19,7 @@
 //                m => m.ParentType == manyToManyMapping.ChildType && m.ChildType == manyToManyMapping.ParentType)
 //                .FirstOrDefault();
                 
-//            if(otherSide == null)
+//            if(otherSide is null)
 //                _foundMappings.Add(manyToManyMapping);
 //            else
 //            {

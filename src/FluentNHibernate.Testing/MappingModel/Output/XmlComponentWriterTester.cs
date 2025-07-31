@@ -2,214 +2,212 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Output;
-using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.MappingModel.Output
+namespace FluentNHibernate.Testing.MappingModel.Output;
+
+[TestFixture]
+public class XmlComponentWriterTester
 {
-    [TestFixture]
-    public class XmlComponentWriterTester
+    IXmlWriter<IComponentMapping> writer;
+
+    XmlWriterTestHelper<IComponentMapping> create_helper()
     {
-        private IXmlWriter<IComponentMapping> writer;
+        var helper = new XmlWriterTestHelper<IComponentMapping>();
+        helper.CreateInstance(() => new ComponentMapping(ComponentType.Component));
+        return helper;
+    }
 
-        private XmlWriterTestHelper<IComponentMapping> create_helper()
-        {
-            var helper = new XmlWriterTestHelper<IComponentMapping>();
-            helper.CreateInstance(() => new ComponentMapping(ComponentType.Component));
-            return helper;
-        }
+    [SetUp]
+    public void GetWriterFromContainer()
+    {
+        var container = new XmlWriterContainer();
+        writer = container.Resolve<IXmlWriter<IComponentMapping>>();
+    }
 
-        [SetUp]
-        public void GetWriterFromContainer()
-        {
-            var container = new XmlWriterContainer();
-            writer = container.Resolve<IXmlWriter<IComponentMapping>>();
-        }
+    [Test]
+    public void ShouldWriteNameAttribute()
+    {
+        var testHelper = create_helper();
 
-        [Test]
-        public void ShouldWriteNameAttribute()
-        {
-            var testHelper = create_helper();
+        testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.Check(x => x.Name, "name").MapsToAttribute("name");
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteAccessAttribute()
+    {
+        var testHelper = create_helper();
 
-        [Test]
-        public void ShouldWriteAccessAttribute()
-        {
-            var testHelper = create_helper();
+        testHelper.Check(x => x.Access, "acc").MapsToAttribute("access");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.Check(x => x.Access, "acc").MapsToAttribute("access");
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteClassAttribute()
+    {
+        var testHelper = create_helper();
 
-        [Test]
-        public void ShouldWriteClassAttribute()
-        {
-            var testHelper = create_helper();
+        testHelper.Check(x => x.Class, new TypeReference("class")).MapsToAttribute("class");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.Check(x => x.Class, new TypeReference("class")).MapsToAttribute("class");
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteUpdateAttribute()
+    {
+        var testHelper = create_helper();
 
-        [Test]
-        public void ShouldWriteUpdateAttribute()
-        {
-            var testHelper = create_helper();
+        testHelper.Check(x => x.Update, true).MapsToAttribute("update");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.Check(x => x.Update, true).MapsToAttribute("update");
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteInsertAttribute()
+    {
+        var testHelper = create_helper();
 
-        [Test]
-        public void ShouldWriteInsertAttribute()
-        {
-            var testHelper = create_helper();
+        testHelper.Check(x => x.Insert, true).MapsToAttribute("insert");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.Check(x => x.Insert, true).MapsToAttribute("insert");
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteLazyAttribute()
+    {
+        var testHelper = create_helper();
 
-        [Test]
-        public void ShouldWriteLazyAttribute()
-        {
-            var testHelper = create_helper();
+        testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.Check(x => x.Lazy, true).MapsToAttribute("lazy");
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteOptimisticLockAttribute()
+    {
+        var testHelper = create_helper();
 
-        [Test]
-        public void ShouldWriteOptimisticLockAttribute()
-        {
-            var testHelper = create_helper();
+        testHelper.Check(x => x.OptimisticLock, true).MapsToAttribute("optimistic-lock");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.Check(x => x.OptimisticLock, true).MapsToAttribute("optimistic-lock");
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteComponents()
+    {
+        var mapping = new ComponentMapping(ComponentType.Component);
 
-        [Test]
-        public void ShouldWriteComponents()
-        {
-            var mapping = new ComponentMapping(ComponentType.Component);
+        mapping.AddComponent(new ComponentMapping(ComponentType.Component));
 
-            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
+        writer.VerifyXml(mapping)
+            .Element("component").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("component").Exists();
-        }
+    [Test]
+    public void ShouldWriteDynamicComponents()
+    {
+        var mapping = new ComponentMapping(ComponentType.DynamicComponent);
 
-        [Test]
-        public void ShouldWriteDynamicComponents()
-        {
-            var mapping = new ComponentMapping(ComponentType.DynamicComponent);
+        mapping.AddComponent(new ComponentMapping(ComponentType.DynamicComponent));
 
-            mapping.AddComponent(new ComponentMapping(ComponentType.DynamicComponent));
+        writer.VerifyXml(mapping)
+            .Element("dynamic-component").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("dynamic-component").Exists();
-        }
+    [Test]
+    public void ShouldWriteProperties()
+    {
+        var mapping = new ComponentMapping(ComponentType.Component);
 
-        [Test]
-        public void ShouldWriteProperties()
-        {
-            var mapping = new ComponentMapping(ComponentType.Component);
+        mapping.AddProperty(new PropertyMapping());
 
-            mapping.AddProperty(new PropertyMapping());
+        writer.VerifyXml(mapping)
+            .Element("property").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("property").Exists();
-        }
+    [Test]
+    public void ShouldWriteManyToOnes()
+    {
+        var mapping = new ComponentMapping(ComponentType.Component);
 
-        [Test]
-        public void ShouldWriteManyToOnes()
-        {
-            var mapping = new ComponentMapping(ComponentType.Component);
+        mapping.AddReference(new ManyToOneMapping());
 
-            mapping.AddReference(new ManyToOneMapping());
+        writer.VerifyXml(mapping)
+            .Element("many-to-one").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("many-to-one").Exists();
-        }
+    [Test]
+    public void ShouldWriteOneToOnes()
+    {
+        var mapping = new ComponentMapping(ComponentType.Component);
 
-        [Test]
-        public void ShouldWriteOneToOnes()
-        {
-            var mapping = new ComponentMapping(ComponentType.Component);
+        mapping.AddOneToOne(new OneToOneMapping());
 
-            mapping.AddOneToOne(new OneToOneMapping());
+        writer.VerifyXml(mapping)
+            .Element("one-to-one").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("one-to-one").Exists();
-        }
+    [Test]
+    public void ShouldWriteAnys()
+    {
+        var mapping = new ComponentMapping(ComponentType.Component);
 
-        [Test]
-        public void ShouldWriteAnys()
-        {
-            var mapping = new ComponentMapping(ComponentType.Component);
+        mapping.AddAny(new AnyMapping());
 
-            mapping.AddAny(new AnyMapping());
+        writer.VerifyXml(mapping)
+            .Element("any").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("any").Exists();
-        }
+    [Test]
+    public void ShouldWriteMaps()
+    {
+        var mapping = new ComponentMapping(ComponentType.Component);
 
-        [Test]
-        public void ShouldWriteMaps()
-        {
-            var mapping = new ComponentMapping(ComponentType.Component);
+        mapping.AddCollection(CollectionMapping.Map());
 
-            mapping.AddCollection(CollectionMapping.Map());
+        writer.VerifyXml(mapping)
+            .Element("map").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("map").Exists();
-        }
+    [Test]
+    public void ShouldWriteSets()
+    {
+        var mapping = new ComponentMapping(ComponentType.Component);
 
-        [Test]
-        public void ShouldWriteSets()
-        {
-            var mapping = new ComponentMapping(ComponentType.Component);
+        mapping.AddCollection(CollectionMapping.Set());
 
-            mapping.AddCollection(CollectionMapping.Set());
+        writer.VerifyXml(mapping)
+            .Element("set").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("set").Exists();
-        }
+    [Test]
+    public void ShouldWriteBags()
+    {
+        var mapping = new ComponentMapping(ComponentType.Component);
 
-        [Test]
-        public void ShouldWriteBags()
-        {
-            var mapping = new ComponentMapping(ComponentType.Component);
+        mapping.AddCollection(CollectionMapping.Bag());
 
-            mapping.AddCollection(CollectionMapping.Bag());
+        writer.VerifyXml(mapping)
+            .Element("bag").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("bag").Exists();
-        }
+    [Test]
+    public void ShouldWriteLists()
+    {
+        var mapping = new ComponentMapping(ComponentType.Component);
 
-        [Test]
-        public void ShouldWriteLists()
-        {
-            var mapping = new ComponentMapping(ComponentType.Component);
+        mapping.AddCollection(CollectionMapping.List());
 
-            mapping.AddCollection(CollectionMapping.List());
+        writer.VerifyXml(mapping)
+            .Element("list").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("list").Exists();
-        }
+    [Test, Ignore("ShouldWriteArrays")]
+    public void ShouldWriteArrays()
+    {
+        Assert.Fail();
+    }
 
-        [Test, Ignore("ShouldWriteArrays")]
-        public void ShouldWriteArrays()
-        {
-            Assert.Fail();
-        }
-
-        [Test, Ignore("ShouldWritePrimitiveArrays")]
-        public void ShouldWritePrimitiveArrays()
-        {
-            Assert.Fail();
-        }
+    [Test, Ignore("ShouldWritePrimitiveArrays")]
+    public void ShouldWritePrimitiveArrays()
+    {
+        Assert.Fail();
     }
 }

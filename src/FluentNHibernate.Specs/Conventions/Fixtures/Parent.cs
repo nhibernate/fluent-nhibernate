@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Specs.Conventions.Fixtures
-{
-    public class Parent
-    {
-        public int Id { get; set; }
-        public IList<Child> Children { get; set; }
-    }
+namespace FluentNHibernate.Specs.Conventions.Fixtures;
 
-    public class ParentMap : ClassMap<Parent>
+public class Parent
+{
+    public int Id { get; set; }
+    public IList<Child> Children { get; set; }
+}
+
+public class ParentMap : ClassMap<Parent>
+{
+    public ParentMap()
     {
-        public ParentMap()
-        {
-            Id(x => x.Id);
-            HasMany(x => x.Children);
-        }
+        Id(x => x.Id);
+        HasMany(x => x.Children);
     }
 }

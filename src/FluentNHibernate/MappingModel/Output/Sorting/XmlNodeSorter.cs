@@ -1,12 +1,11 @@
 using System.Xml;
 
-namespace FluentNHibernate.MappingModel.Output.Sorting
+namespace FluentNHibernate.MappingModel.Output.Sorting;
+
+public class XmlNodeSorter
 {
-    public class XmlNodeSorter
+    public static XmlNode SortClassChildren(XmlNode node)
     {
-        public static XmlNode SortClassChildren(XmlNode node)
-        {
-            return new XmlClasslikeNodeSorter().Sort(node);
-        }
+        return new XmlClasslikeNodeSorter().Sort(node);
     }
 }

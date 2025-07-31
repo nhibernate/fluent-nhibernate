@@ -1,24 +1,23 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FluentNHibernate.Diagnostics;
 
-namespace FluentNHibernate.Testing
+namespace FluentNHibernate.Testing;
+
+class EmptySource : ITypeSource
 {
-    internal class EmptySource : ITypeSource
+    public IEnumerable<Type> GetTypes()
     {
-        public IEnumerable<Type> GetTypes()
-        {
-            return new Type[0];
-        }
+        return Array.Empty<Type>();
+    }
 
-        public void LogSource(IDiagnosticLogger logger)
-        {
-            logger.LoadedFluentMappingsFromSource(this);
-        }
+    public void LogSource(IDiagnosticLogger logger)
+    {
+        logger.LoadedFluentMappingsFromSource(this);
+    }
 
-        public string GetIdentifier()
-        {
-            return "EmptySource";
-        }
+    public string GetIdentifier()
+    {
+        return "EmptySource";
     }
 }

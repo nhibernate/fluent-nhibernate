@@ -1,59 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml;
-using FluentNHibernate.Mapping;
+﻿using System.Xml;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public abstract class BaseXmlComponentWriter(IXmlWriterServiceLocator serviceLocator)
+    : XmlClassWriterBase(serviceLocator)
 {
-    public abstract class BaseXmlComponentWriter : XmlClassWriterBase
+    readonly IXmlWriterServiceLocator serviceLocator = serviceLocator;
+
+    protected XmlDocument WriteComponent(string element, IComponentMapping mapping)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
+        var doc = new XmlDocument();
+        var componentElement = doc.AddElement(element);
 
-        protected BaseXmlComponentWriter(IXmlWriterServiceLocator serviceLocator)
-            : base(serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+        if (mapping.IsSpecified("Name"))
+            componentElement.WithAtt("name", mapping.Name);
 
-        protected XmlDocument WriteComponent(string element, IComponentMapping mapping)
-        {
-            var doc = new XmlDocument();
-            var componentElement = doc.AddElement(element);
+        if (mapping.IsSpecified("Insert"))
+            componentElement.WithAtt("insert", mapping.Insert);
 
-            if (mapping.IsSpecified("Name"))
-                componentElement.WithAtt("name", mapping.Name);
+        if (mapping.IsSpecified("Update"))
+            componentElement.WithAtt("update", mapping.Update);
 
-            if (mapping.IsSpecified("Insert"))
-                componentElement.WithAtt("insert", mapping.Insert);
+        if (mapping.IsSpecified("Access"))
+            componentElement.WithAtt("access", mapping.Access);
 
-            if (mapping.IsSpecified("Update"))
-                componentElement.WithAtt("update", mapping.Update);
+        if (mapping.IsSpecified("OptimisticLock"))
+            componentElement.WithAtt("optimistic-lock", mapping.OptimisticLock);
 
-            if (mapping.IsSpecified("Access"))
-                componentElement.WithAtt("access", mapping.Access);
+        return doc;
+    }
 
-            if (mapping.IsSpecified("OptimisticLock"))
-                componentElement.WithAtt("optimistic-lock", mapping.OptimisticLock);
+    public override void Visit(IComponentMapping componentMapping)
+    {
+        var writer = new XmlComponentWriter(serviceLocator);
+        var componentXml = writer.Write(componentMapping);
 
-            return doc;
-        }
+        document.ImportAndAppendChild(componentXml);
+    }
 
-        public override void Visit(IComponentMapping componentMapping)
-        {
-            var writer = new XmlComponentWriter(serviceLocator);
-            var componentXml = writer.Write(componentMapping);
+    public override void Visit(ParentMapping parentMapping)
+    {
+        var writer = serviceLocator.GetWriter<ParentMapping>();
+        var parentXml = writer.Write(parentMapping);
 
-            document.ImportAndAppendChild(componentXml);
-        }
+        document.ImportAndAppendChild(parentXml);
+    }
+    
+    public override void Visit(TuplizerMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<TuplizerMapping>();
+        var filterXml = writer.Write(mapping);
 
-        public override void Visit(ParentMapping parentMapping)
-        {
-            var writer = serviceLocator.GetWriter<ParentMapping>();
-            var parentXml = writer.Write(parentMapping);
-
-            document.ImportAndAppendChild(parentXml);
-        }
+        document.ImportAndAppendChild(filterXml);
     }
 }

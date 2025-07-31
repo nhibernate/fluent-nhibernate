@@ -1,7 +1,6 @@
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public interface INullableInstance
 {
-    public interface INullableInstance
-    {
-        void Nullable();
-    }
+    void Nullable();
 }

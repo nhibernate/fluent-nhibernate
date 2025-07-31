@@ -1,111 +1,73 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public class PropertyInspector : ColumnBasedInspector, IPropertyInspector
 {
-    public class PropertyInspector : ColumnBasedInspector, IPropertyInspector
+    readonly InspectorModelMapper<IPropertyInspector, PropertyMapping> propertyMappings = new InspectorModelMapper<IPropertyInspector, PropertyMapping>();
+    readonly PropertyMapping mapping;
+
+    public PropertyInspector(PropertyMapping mapping)
+        : base(mapping.Columns)
     {
-        private readonly InspectorModelMapper<IPropertyInspector, PropertyMapping> propertyMappings = new InspectorModelMapper<IPropertyInspector, PropertyMapping>();
-        private readonly PropertyMapping mapping;
+        this.mapping = mapping;
 
-        public PropertyInspector(PropertyMapping mapping)
-            : base(mapping.Columns)
+        propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
+        propertyMappings.Map(x => x.Nullable, "NotNull");
+    }
+
+    public bool Insert => mapping.Insert;
+
+    public bool Update => mapping.Update;
+
+    public string Formula => mapping.Formula;
+
+    public TypeReference Type => mapping.Type;
+
+    public string Name => mapping.Name;
+
+    public bool OptimisticLock => mapping.OptimisticLock;
+
+    public Generated Generated => Generated.FromString(mapping.Generated);
+
+    public IEnumerable<IColumnInspector> Columns
+    {
+        get
         {
-            this.mapping = mapping;
-
-            propertyMappings.Map(x => x.LazyLoad, x => x.Lazy);
-            propertyMappings.Map(x => x.Nullable, "NotNull");
+            return mapping.Columns
+                .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
+                .Cast<IColumnInspector>()
+                .ToList();
         }
+    }
 
-        public bool Insert
+    public bool LazyLoad => mapping.Lazy;
+
+    public Access Access
+    {
+        get
         {
-            get { return mapping.Insert; }
-        }
+            if (mapping.Access is not null)
+                return Access.FromString(mapping.Access);
 
-        public bool Update
-        {
-            get { return mapping.Update; }
+            return Access.Unset;
         }
+    }
 
-        public string Formula
-        {
-            get { return mapping.Formula; }
-        }
+    public Type EntityType => mapping.ContainingEntityType;
 
-        public TypeReference Type
-        {
-            get { return mapping.Type; }
-        }
+    public string StringIdentifierForModel => mapping.Name;
 
-        public string Name
-        {
-            get { return mapping.Name; }
-        }
+    public bool ReadOnly => mapping.Insert && mapping.Update;
 
-        public bool OptimisticLock
-        {
-            get { return mapping.OptimisticLock; }
-        }
+    public Member Property => mapping.Member;
 
-        public Generated Generated
-        {
-            get { return Generated.FromString(mapping.Generated); }
-        }
-
-        public IEnumerable<IColumnInspector> Columns
-        {
-            get
-            {
-                return mapping.Columns
-                    .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
-                    .Cast<IColumnInspector>()
-                    .ToList();
-            }
-        }
-
-        public bool LazyLoad
-        {
-            get { return mapping.Lazy; }
-        }
-
-        public Access Access
-        {
-            get
-            {
-                if (mapping.Access != null)
-                    return Access.FromString(mapping.Access);
-
-                return Access.Unset;
-            }
-        }
-
-        public Type EntityType
-        {
-            get { return mapping.ContainingEntityType; }
-        }
-
-        public string StringIdentifierForModel
-        {
-            get { return mapping.Name; }
-        }
-
-        public bool ReadOnly
-        {
-            get { return mapping.Insert && mapping.Update; }
-        }
-
-        public Member Property
-        {
-            get { return mapping.Member; }
-        }
-
-        public bool IsSet(Member property)
-        {
-            return mapping.IsSpecified(propertyMappings.Get(property));
-        }
+    public bool IsSet(Member property)
+    {
+        return mapping.IsSpecified(propertyMappings.Get(property));
     }
 }

@@ -1,23 +1,16 @@
 using NHibernate.Dialect;
 using NHibernate.Driver;
 
-namespace FluentNHibernate.Cfg.Db
+namespace FluentNHibernate.Cfg.Db;
+
+public class MsSqlCeConfiguration : PersistenceConfiguration<MsSqlCeConfiguration>
 {
-    public class MsSqlCeConfiguration : PersistenceConfiguration<MsSqlCeConfiguration>
+    protected MsSqlCeConfiguration()
     {
-        protected MsSqlCeConfiguration()
-        {
-            Driver<SqlServerCeDriver>();
-        }
-
-        public static MsSqlCeConfiguration Standard
-        {
-            get { return new MsSqlCeConfiguration().Dialect<MsSqlCeDialect>(); }
-        }
-
-        public static MsSqlCeConfiguration MsSqlCe40
-        {
-            get { return new MsSqlCeConfiguration().Dialect<MsSqlCe40Dialect>(); }
-        }
+        Driver<SqlServerCeDriver>();
     }
+
+    public static MsSqlCeConfiguration Standard => new MsSqlCeConfiguration().Dialect<MsSqlCeDialect>();
+
+    public static MsSqlCeConfiguration MsSqlCe40 => new MsSqlCeConfiguration().Dialect<MsSqlCe40Dialect>();
 }

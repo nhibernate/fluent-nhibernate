@@ -2,67 +2,61 @@ using System.Xml;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlPropertyWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<PropertyMapping>
 {
-    public class XmlPropertyWriter : NullMappingModelVisitor, IXmlWriter<PropertyMapping>
+    XmlDocument document;
+
+    public XmlDocument Write(PropertyMapping property)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
-        private XmlDocument document;
+        document = null;
+        property.AcceptVisitor(this);
+        return document;
+    }
 
-        public XmlPropertyWriter(IXmlWriterServiceLocator serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+    public override void ProcessProperty(PropertyMapping propertyMapping)
+    {
+        document = new XmlDocument();
 
-        public XmlDocument Write(PropertyMapping property)
-        {
-            document = null;
-            property.AcceptVisitor(this);
-            return document;
-        }
+        var element = document.CreateElement("property");
 
-        public override void ProcessProperty(PropertyMapping propertyMapping)
-        {
-            document = new XmlDocument();
+        if (propertyMapping.IsSpecified("Access"))
+            element.WithAtt("access", propertyMapping.Access);
 
-            var element = document.CreateElement("property");
+        if (propertyMapping.IsSpecified("Generated"))
+            element.WithAtt("generated", propertyMapping.Generated);
 
-            if (propertyMapping.IsSpecified("Access"))
-                element.WithAtt("access", propertyMapping.Access);
+        if (propertyMapping.IsSpecified("Name"))
+            element.WithAtt("name", propertyMapping.Name);
 
-            if (propertyMapping.IsSpecified("Generated"))
-                element.WithAtt("generated", propertyMapping.Generated);
+        if (propertyMapping.IsSpecified("OptimisticLock"))
+            element.WithAtt("optimistic-lock", propertyMapping.OptimisticLock);
 
-            if (propertyMapping.IsSpecified("Name"))
-                element.WithAtt("name", propertyMapping.Name);
+        if (propertyMapping.IsSpecified("Insert"))
+            element.WithAtt("insert", propertyMapping.Insert);
 
-            if (propertyMapping.IsSpecified("OptimisticLock"))
-                element.WithAtt("optimistic-lock", propertyMapping.OptimisticLock);
+        if (propertyMapping.IsSpecified("Update"))
+            element.WithAtt("update", propertyMapping.Update);
 
-            if (propertyMapping.IsSpecified("Insert"))
-                element.WithAtt("insert", propertyMapping.Insert);
+        if (propertyMapping.IsSpecified("Formula"))
+            element.WithAtt("formula", propertyMapping.Formula);
 
-            if (propertyMapping.IsSpecified("Update"))
-                element.WithAtt("update", propertyMapping.Update);
+        if (propertyMapping.IsSpecified("Type"))
+            element.WithAtt("type", propertyMapping.Type);
 
-            if (propertyMapping.IsSpecified("Formula"))
-                element.WithAtt("formula", propertyMapping.Formula);
+        if (propertyMapping.IsSpecified("Lazy"))
+            element.WithAtt("lazy", propertyMapping.Lazy);
 
-            if (propertyMapping.IsSpecified("Type"))
-                element.WithAtt("type", propertyMapping.Type);
+        document.AppendChild(element);
+    }
 
-            if (propertyMapping.IsSpecified("Lazy"))
-                element.WithAtt("lazy", propertyMapping.Lazy);
-
-            document.AppendChild(element);
-        }
-
-        public override void Visit(ColumnMapping columnMapping)
-        {
-            var writer = serviceLocator.GetWriter<ColumnMapping>();
-            var columnXml = writer.Write(columnMapping);
+    public override void Visit(ColumnMapping columnMapping)
+    {
+        var writer = serviceLocator.GetWriter<ColumnMapping>();
+        var columnXml = writer.Write(columnMapping);
             
-            document.ImportAndAppendChild(columnXml);
-        }
+        document.ImportAndAppendChild(columnXml);
     }
 }

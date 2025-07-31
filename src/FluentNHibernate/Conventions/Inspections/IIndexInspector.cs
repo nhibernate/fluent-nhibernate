@@ -1,9 +1,8 @@
 ﻿using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface IIndexInspector : IIndexInspectorBase
 {
-    public interface IIndexInspector : IIndexInspectorBase
-    {
-        TypeReference Type { get; }
-    }
+    TypeReference Type { get; }
 }

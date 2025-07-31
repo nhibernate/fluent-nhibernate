@@ -1,57 +1,50 @@
 using System;
 using System.Xml;
 using FluentNHibernate.MappingModel.Collections;
-using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlCollectionWriter(IXmlWriterServiceLocator serviceLocator)
+    : NullMappingModelVisitor, IXmlWriter<CollectionMapping>
 {
-    public class XmlCollectionWriter : NullMappingModelVisitor, IXmlWriter<CollectionMapping>
+    XmlDocument document;
+    Collection collection;
+
+    public XmlDocument Write(CollectionMapping mappingModel)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
-        private XmlDocument document;
-        Collection collection;
+        collection = mappingModel.Collection;
 
-        public XmlCollectionWriter(IXmlWriterServiceLocator serviceLocator)
+        document = null;
+        mappingModel.AcceptVisitor(this);
+        return document;
+    }
+
+    public override void ProcessCollection(CollectionMapping mapping)
+    {
+        IXmlWriter<CollectionMapping> writer = null;
+
+        switch (mapping.Collection)
         {
-            this.serviceLocator = serviceLocator;
+            case Collection.Array:
+                writer = new XmlArrayWriter(serviceLocator);
+                break;
+            case Collection.Bag:
+                writer = new XmlBagWriter(serviceLocator);
+                break;
+            case Collection.List:
+                writer = new XmlListWriter(serviceLocator);
+                break;
+            case Collection.Map:
+                writer = new XmlMapWriter(serviceLocator);
+                break;
+            case Collection.Set:
+                writer = new XmlSetWriter(serviceLocator);
+                break;
+            default:
+                throw new InvalidOperationException("Unrecognised collection type " + mapping.Collection);
         }
 
-        public XmlDocument Write(CollectionMapping mappingModel)
-        {
-            collection = mappingModel.Collection;
-
-            document = null;
-            mappingModel.AcceptVisitor(this);
-            return document;
-        }
-
-        public override void ProcessCollection(CollectionMapping mapping)
-        {
-            IXmlWriter<CollectionMapping> writer = null;
-
-            switch (mapping.Collection)
-            {
-                case Collection.Array:
-                    writer = new XmlArrayWriter(serviceLocator);
-                    break;
-                case Collection.Bag:
-                    writer = new XmlBagWriter(serviceLocator);
-                    break;
-                case Collection.List:
-                    writer = new XmlListWriter(serviceLocator);
-                    break;
-                case Collection.Map:
-                    writer = new XmlMapWriter(serviceLocator);
-                    break;
-                case Collection.Set:
-                    writer = new XmlSetWriter(serviceLocator);
-                    break;
-                default:
-                    throw new InvalidOperationException("Unrecognised collection type " + mapping.Collection);
-            }
-
-            document = writer.Write(mapping);
-        }
+        document = writer.Write(mapping);
     }
 }

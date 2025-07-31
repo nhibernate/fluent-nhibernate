@@ -1,65 +1,53 @@
 using FluentNHibernate.Visitors;
 using System;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.MappingModel;
+
+[Serializable]
+public class ImportMapping(AttributeStore attributes) : MappingBase, IEquatable<ImportMapping>
 {
-    [Serializable]
-    public class ImportMapping : MappingBase
+    readonly AttributeStore attributes = attributes;
+
+    public ImportMapping()
+        : this(new AttributeStore())
+    {}
+
+    public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
-        readonly AttributeStore attributes;
+        visitor.ProcessImport(this);
+    }
 
-        public ImportMapping()
-            : this(new AttributeStore())
-        {}
+    public string Rename => attributes.GetOrDefault<string>();
 
-        public ImportMapping(AttributeStore attributes)
-        {
-            this.attributes = attributes;
-        }
+    public TypeReference Class => attributes.GetOrDefault<TypeReference>();
 
-        public override void AcceptVisitor(IMappingModelVisitor visitor)
-        {
-            visitor.ProcessImport(this);
-        }
+    public bool Equals(ImportMapping other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return Equals(other.attributes, attributes);
+    }
 
-        public string Rename
-        {
-            get { return attributes.GetOrDefault<string>("Rename"); }
-        }
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != typeof(ImportMapping)) return false;
+        return Equals((ImportMapping)obj);
+    }
 
-        public TypeReference Class
-        {
-            get { return attributes.GetOrDefault<TypeReference>("Class"); }
-        }
+    public override int GetHashCode()
+    {
+        return (attributes is not null ? attributes.GetHashCode() : 0);
+    }
 
-        public bool Equals(ImportMapping other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(other.attributes, attributes);
-        }
+    public override bool IsSpecified(string attribute)
+    {
+        return attributes.IsSpecified(attribute);
+    }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof(ImportMapping)) return false;
-            return Equals((ImportMapping)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return (attributes != null ? attributes.GetHashCode() : 0);
-        }
-
-        public override bool IsSpecified(string attribute)
-        {
-            return attributes.IsSpecified(attribute);
-        }
-
-        protected override void Set(string attribute, int layer, object value)
-        {
-            attributes.Set(attribute, layer, value);
-        }
+    protected override void Set(string attribute, int layer, object value)
+    {
+        attributes.Set(attribute, layer, value);
     }
 }

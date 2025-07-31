@@ -1,7 +1,6 @@
-﻿namespace FluentNHibernate.Diagnostics
+﻿namespace FluentNHibernate.Diagnostics;
+
+public interface IDiagnosticListener
 {
-    public interface IDiagnosticListener
-    {
-        void Receive(DiagnosticResults results);
-    }
+    void Receive(DiagnosticResults results);
 }

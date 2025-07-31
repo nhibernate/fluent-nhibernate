@@ -1,9 +1,8 @@
-namespace FluentNHibernate.Conventions.Inspections
-{
-    public interface IOneToManyCollectionInspector : ICollectionInspector
-    {
-        new IOneToManyInspector Relationship { get; }
+namespace FluentNHibernate.Conventions.Inspections;
 
-        IManyToOneInspector OtherSide { get; }
-    }
+public interface IOneToManyCollectionInspector : ICollectionInspector
+{
+    new IOneToManyInspector Relationship { get; }
+
+    IManyToOneInspector OtherSide { get; }
 }

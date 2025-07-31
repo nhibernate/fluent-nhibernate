@@ -1,49 +1,41 @@
 using System;
 
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public class SchemaActionInstance(Action<string> setter) : ISchemaActionInstance
 {
-    public class SchemaActionInstance : ISchemaActionInstance
+    public void None()
     {
-        private readonly Action<string> setter;
+        setter("none");
+    }
 
-        public SchemaActionInstance(Action<string> setter)
-        {
-            this.setter = setter;
-        }
+    public void All()
+    {
+        setter("all");
+    }
 
-        public void None()
-        {
-            setter("none");
-        }
+    public void Drop()
+    {
+        setter("drop");
+    }
 
-        public void All()
-        {
-            setter("all");
-        }
+    public void Update()
+    {
+        setter("update");
+    }
 
-        public void Drop()
-        {
-            setter("drop");
-        }
+    public void Validate()
+    {
+        setter("validate");
+    }
 
-        public void Update()
-        {
-            setter("update");
-        }
+    public void Export()
+    {
+        setter("export");
+    }
 
-        public void Validate()
-        {
-            setter("validate");
-        }
-
-        public void Export()
-        {
-            setter("export");
-        }
-
-        public void Custom(string customValue)
-        {
-            setter(customValue);
-        }
+    public void Custom(string customValue)
+    {
+        setter(customValue);
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace FluentNHibernate.MappingModel
+﻿namespace FluentNHibernate.MappingModel;
+
+public interface IRelationship
 {
-    public interface IRelationship
-    {
-        IRelationship OtherSide { get; set; }
-    }
+    IRelationship OtherSide { get; set; }
 }

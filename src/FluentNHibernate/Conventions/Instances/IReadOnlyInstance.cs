@@ -1,8 +1,7 @@
-namespace FluentNHibernate.Conventions.Instances
+namespace FluentNHibernate.Conventions.Instances;
+
+public interface IReadOnlyInstance
 {
-    public interface IReadOnlyInstance
-    {
-        /// <summary> Shortcut for setting <c>.Not.Insert().Not.Update()</c>. </summary>
-        void ReadOnly();
-    }
+    /// <summary> Shortcut for setting <c>.Not.Insert().Not.Update()</c>. </summary>
+    void ReadOnly();
 }

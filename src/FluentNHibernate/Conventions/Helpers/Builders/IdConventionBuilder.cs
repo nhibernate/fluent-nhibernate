@@ -4,18 +4,17 @@ using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Conventions.Helpers.Prebuilt;
 using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions.Helpers.Builders
-{
-    public class IdConventionBuilder : IConventionBuilder<IIdConvention, IIdentityInspector, IIdentityInstance>
-    {
-        public IIdConvention Always(Action<IIdentityInstance> convention)
-        {
-            return new BuiltIdConvention(accept => { }, convention);
-        }
+namespace FluentNHibernate.Conventions.Helpers.Builders;
 
-        public IIdConvention When(Action<IAcceptanceCriteria<IIdentityInspector>> expectations, Action<IIdentityInstance> convention)
-        {
-            return new BuiltIdConvention(expectations, convention);
-        }
+public class IdConventionBuilder : IConventionBuilder<IIdConvention, IIdentityInspector, IIdentityInstance>
+{
+    public IIdConvention Always(Action<IIdentityInstance> convention)
+    {
+        return new BuiltIdConvention(accept => { }, convention);
+    }
+
+    public IIdConvention When(Action<IAcceptanceCriteria<IIdentityInspector>> expectations, Action<IIdentityInstance> convention)
+    {
+        return new BuiltIdConvention(expectations, convention);
     }
 }

@@ -1,21 +1,11 @@
 using System;
-using System.Reflection;
-using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Conventions.Helpers.Prebuilt
+namespace FluentNHibernate.Conventions.Helpers.Prebuilt;
+
+public class BuiltFuncForeignKeyConvention(Func<Member, Type, string> format) : ForeignKeyConvention
 {
-    public class BuiltFuncForeignKeyConvention : ForeignKeyConvention
+    protected override string GetKeyName(Member property, Type type)
     {
-        private readonly Func<Member, Type, string> format;
-
-        public BuiltFuncForeignKeyConvention(Func<Member, Type, string> format)
-        {
-            this.format = format;
-        }
-
-        protected override string GetKeyName(Member property, Type type)
-        {
-            return format(property, type);
-        }
+        return format(property, type);
     }
 }

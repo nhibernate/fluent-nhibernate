@@ -1,10 +1,9 @@
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface IMetaValueInspector : IInspector
 {
-    public interface IMetaValueInspector : IInspector
-    {
-        TypeReference Class { get; }
-        string Value { get; }
-    }
+    TypeReference Class { get; }
+    string Value { get; }
 }

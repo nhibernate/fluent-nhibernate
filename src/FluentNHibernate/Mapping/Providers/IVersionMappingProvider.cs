@@ -1,9 +1,8 @@
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+public interface IVersionMappingProvider
 {
-    public interface IVersionMappingProvider
-    {
-        VersionMapping GetVersionMapping();
-    }
+    VersionMapping GetVersionMapping();
 }

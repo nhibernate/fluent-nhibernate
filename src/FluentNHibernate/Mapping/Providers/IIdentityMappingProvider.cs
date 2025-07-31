@@ -1,9 +1,8 @@
 using FluentNHibernate.MappingModel.Identity;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+public interface IIdentityMappingProvider
 {
-    public interface IIdentityMappingProvider
-    {
-        IdMapping GetIdentityMapping();
-    }
+    IdMapping GetIdentityMapping();
 }

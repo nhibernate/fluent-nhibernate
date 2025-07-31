@@ -1,60 +1,39 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public class ElementInspector(ElementMapping mapping) : IElementInspector
 {
-    public class ElementInspector : IElementInspector
+    readonly InspectorModelMapper<IElementInspector, ElementMapping> mappedProperties = new InspectorModelMapper<IElementInspector, ElementMapping>();
+
+    public Type EntityType => mapping.ContainingEntityType;
+
+    public string StringIdentifierForModel => mapping.Type.Name;
+
+    public bool IsSet(Member property)
     {
-        private readonly InspectorModelMapper<IElementInspector, ElementMapping> mappedProperties = new InspectorModelMapper<IElementInspector, ElementMapping>();
-        private readonly ElementMapping mapping;
+        return mapping.IsSpecified(mappedProperties.Get(property));
+    }
 
-        public ElementInspector(ElementMapping mapping)
-        {
-            this.mapping = mapping;
-        }
+    public TypeReference Type => mapping.Type;
 
-        public Type EntityType
+    public IEnumerable<IColumnInspector> Columns
+    {
+        get
         {
-            get { return mapping.ContainingEntityType; }
+            return mapping.Columns
+                .Select(x => new ColumnInspector(mapping.ContainingEntityType, x));
         }
+    }
 
-        public string StringIdentifierForModel
-        {
-            get { return mapping.Type.Name; }
-        }
+    public string Formula => mapping.Formula;
 
-        public bool IsSet(Member property)
-        {
-            return mapping.IsSpecified(mappedProperties.Get(property));
-        }
-
-        public TypeReference Type
-        {
-            get { return mapping.Type; }
-        }
-
-        public IEnumerable<IColumnInspector> Columns
-        {
-            get
-            {
-                return mapping.Columns
-                    .Select(x => new ColumnInspector(mapping.ContainingEntityType, x))
-                    .Cast<IColumnInspector>();
-            }
-        }
-
-        public string Formula
-        {
-            get { return mapping.Formula; }
-        }
-
-        public int Length
-        {
-            get { return mapping.Columns.Select(x => x.Length).FirstOrDefault();  }
-        }
+    public int Length
+    {
+        get { return mapping.Columns.Select(x => x.Length).FirstOrDefault();  }
     }
 }

@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface ICompositeIdentityInspector : IIdentityInspectorBase
 {
-    public interface ICompositeIdentityInspector : IIdentityInspectorBase
-    {
-        TypeReference Class { get; }
-        IEnumerable<IKeyManyToOneInspector> KeyManyToOnes { get; }
-        IEnumerable<IKeyPropertyInspector> KeyProperties { get; }
-        bool Mapped { get; }
-    }
+    TypeReference Class { get; }
+    IEnumerable<IKeyManyToOneInspector> KeyManyToOnes { get; }
+    IEnumerable<IKeyPropertyInspector> KeyProperties { get; }
+    bool Mapped { get; }
 }

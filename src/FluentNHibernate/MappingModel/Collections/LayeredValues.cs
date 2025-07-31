@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace FluentNHibernate.MappingModel.Collections
-{
-    [Serializable]
-    public class LayeredValues : Dictionary<int, object>
-    {
-        public LayeredValues()
-        {}
+namespace FluentNHibernate.MappingModel.Collections;
 
-        protected LayeredValues(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {}
-    }
+[Serializable]
+public class LayeredValues : Dictionary<int, object>
+{
+    public LayeredValues()
+    { }
+
+    [Obsolete("This API supports obsolete formatter-based serialization and will be removed in a future version")]
+    protected LayeredValues(SerializationInfo info, StreamingContext context) : base(info, context)
+    { }
 }

@@ -5,159 +5,158 @@ using FluentNHibernate.MappingModel.Output;
 using FluentNHibernate.Testing.Testing;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.MappingModel.Output
+namespace FluentNHibernate.Testing.MappingModel.Output;
+
+[TestFixture]
+public class XmlJoinWriterTester
 {
-    [TestFixture]
-    public class XmlJoinWriterTester
+    IXmlWriter<JoinMapping> writer;
+
+    [SetUp]
+    public void GetWriterFromContainer()
     {
-        private IXmlWriter<JoinMapping> writer;
+        var container = new XmlWriterContainer();
+        writer = container.Resolve<IXmlWriter<JoinMapping>>();
+    }
 
-        [SetUp]
-        public void GetWriterFromContainer()
-        {
-            var container = new XmlWriterContainer();
-            writer = container.Resolve<IXmlWriter<JoinMapping>>();
-        }
+    [Test]
+    public void ShouldWriteTableAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<JoinMapping>();
+        testHelper.Check(x => x.TableName, "tbl").MapsToAttribute("table");
 
-        [Test]
-        public void ShouldWriteTableAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<JoinMapping>();
-            testHelper.Check(x => x.TableName, "tbl").MapsToAttribute("table");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteSchemaAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<JoinMapping>();
+        testHelper.Check(x => x.Schema, "dbo").MapsToAttribute("schema");
 
-        [Test]
-        public void ShouldWriteSchemaAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<JoinMapping>();
-            testHelper.Check(x => x.Schema, "dbo").MapsToAttribute("schema");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteFetchAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<JoinMapping>();
+        testHelper.Check(x => x.Fetch, "fetch").MapsToAttribute("fetch");
 
-        [Test]
-        public void ShouldWriteFetchAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<JoinMapping>();
-            testHelper.Check(x => x.Fetch, "fetch").MapsToAttribute("fetch");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteInverseAttribute()
+    {
 
-        [Test]
-        public void ShouldWriteInverseAttribute()
-        {
+        var testHelper = new XmlWriterTestHelper<JoinMapping>();
+        testHelper.Check(x => x.Inverse, true).MapsToAttribute("inverse");
 
-            var testHelper = new XmlWriterTestHelper<JoinMapping>();
-            testHelper.Check(x => x.Inverse, true).MapsToAttribute("inverse");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteOptionalAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<JoinMapping>();
+        testHelper.Check(x => x.Optional, true).MapsToAttribute("optional");
 
-        [Test]
-        public void ShouldWriteOptionalAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<JoinMapping>();
-            testHelper.Check(x => x.Optional, true).MapsToAttribute("optional");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteCatalogAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<JoinMapping>();
+        testHelper.Check(x => x.Catalog, "catalog").MapsToAttribute("catalog");
 
-        [Test]
-        public void ShouldWriteCatalogAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<JoinMapping>();
-            testHelper.Check(x => x.Catalog, "catalog").MapsToAttribute("catalog");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteSubselectAttribute()
+    {
+        var testHelper = new XmlWriterTestHelper<JoinMapping>();
+        testHelper.Check(x => x.Subselect, "subselect").MapsToAttribute("subselect");
 
-        [Test]
-        public void ShouldWriteSubselectAttribute()
-        {
-            var testHelper = new XmlWriterTestHelper<JoinMapping>();
-            testHelper.Check(x => x.Subselect, "subselect").MapsToAttribute("subselect");
+        testHelper.VerifyAll(writer);
+    }
 
-            testHelper.VerifyAll(writer);
-        }
+    [Test]
+    public void ShouldWriteKey()
+    {
+        var mapping = new JoinMapping();
 
-        [Test]
-        public void ShouldWriteKey()
-        {
-            var mapping = new JoinMapping();
+        mapping.Set(x => x.Key, Layer.Defaults, new KeyMapping());
 
-            mapping.Set(x => x.Key, Layer.Defaults, new KeyMapping());
+        writer.VerifyXml(mapping)
+            .Element("key").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("key").Exists();
-        }
+    [Test]
+    public void ShouldWriteProperties()
+    {
+        var mapping = new JoinMapping();
 
-        [Test]
-        public void ShouldWriteProperties()
-        {
-            var mapping = new JoinMapping();
+        mapping.AddProperty(new PropertyMapping());
 
-            mapping.AddProperty(new PropertyMapping());
+        writer.VerifyXml(mapping)
+            .Element("property").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("property").Exists();
-        }
+    [Test]
+    public void ShouldWriteManyToOnes()
+    {
+        var mapping = new JoinMapping();
 
-        [Test]
-        public void ShouldWriteManyToOnes()
-        {
-            var mapping = new JoinMapping();
+        mapping.AddReference(new ManyToOneMapping());
 
-            mapping.AddReference(new ManyToOneMapping());
+        writer.VerifyXml(mapping)
+            .Element("many-to-one").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("many-to-one").Exists();
-        }
+    [Test]
+    public void ShouldWriteComponents()
+    {
+        var mapping = new JoinMapping();
 
-        [Test]
-        public void ShouldWriteComponents()
-        {
-            var mapping = new JoinMapping();
+        mapping.AddComponent(new ComponentMapping(ComponentType.Component));
 
-            mapping.AddComponent(new ComponentMapping(ComponentType.Component));
+        writer.VerifyXml(mapping)
+            .Element("component").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("component").Exists();
-        }
+    [Test]
+    public void ShouldWriteDynamicComponents()
+    {
+        var mapping = new JoinMapping();
 
-        [Test]
-        public void ShouldWriteDynamicComponents()
-        {
-            var mapping = new JoinMapping();
+        mapping.AddComponent(new ComponentMapping(ComponentType.DynamicComponent));
 
-            mapping.AddComponent(new ComponentMapping(ComponentType.DynamicComponent));
+        writer.VerifyXml(mapping)
+            .Element("dynamic-component").Exists();
+    }
 
-            writer.VerifyXml(mapping)
-                .Element("dynamic-component").Exists();
-        }
-
-        [Test]
-        public void ShouldWriteAny()
-        {
-            var mapping = new JoinMapping();
+    [Test]
+    public void ShouldWriteAny()
+    {
+        var mapping = new JoinMapping();
             
-            mapping.AddAny(new AnyMapping());
+        mapping.AddAny(new AnyMapping());
 
-            writer.VerifyXml(mapping)
-                .Element("any").Exists();
-        }
+        writer.VerifyXml(mapping)
+            .Element("any").Exists();
+    }
 
-        [Test]
-        public void ShouldWriteCollection()
-        {
-            var mapping = new JoinMapping();
+    [Test]
+    public void ShouldWriteCollection()
+    {
+        var mapping = new JoinMapping();
 
-            mapping.AddCollection(CollectionMapping.Bag());
+        mapping.AddCollection(CollectionMapping.Bag());
 
-            writer.VerifyXml(mapping)
-                .Element("bag").Exists();
-        }
+        writer.VerifyXml(mapping)
+            .Element("bag").Exists();
     }
 }

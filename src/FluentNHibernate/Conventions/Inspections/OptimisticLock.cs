@@ -1,55 +1,56 @@
-namespace FluentNHibernate.Conventions.Inspections
+using System;
+
+namespace FluentNHibernate.Conventions.Inspections;
+
+public class OptimisticLock : IEquatable<OptimisticLock>
 {
-    public class OptimisticLock
+    public static readonly OptimisticLock Unset = new OptimisticLock("");
+    public static readonly OptimisticLock None = new OptimisticLock("none");
+    public static readonly OptimisticLock Version = new OptimisticLock("version");
+    public static readonly OptimisticLock Dirty = new OptimisticLock("dirty");
+    public static readonly OptimisticLock All = new OptimisticLock("all");
+
+    readonly string value;
+
+    OptimisticLock(string value)
     {
-        public static readonly OptimisticLock Unset = new OptimisticLock("");
-        public static readonly OptimisticLock None = new OptimisticLock("none");
-        public static readonly OptimisticLock Version = new OptimisticLock("version");
-        public static readonly OptimisticLock Dirty = new OptimisticLock("dirty");
-        public static readonly OptimisticLock All = new OptimisticLock("all");
+        this.value = value;
+    }
 
-        private readonly string value;
+    public override bool Equals(object obj)
+    {
+        if (obj is OptimisticLock) return Equals((OptimisticLock)obj);
 
-        private OptimisticLock(string value)
-        {
-            this.value = value;
-        }
+        return base.Equals(obj);
+    }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is OptimisticLock) return Equals((OptimisticLock)obj);
+    public bool Equals(OptimisticLock other)
+    {
+        return Equals(other.value, value);
+    }
 
-            return base.Equals(obj);
-        }
+    public override int GetHashCode()
+    {
+        return (value is not null ? value.GetHashCode() : 0);
+    }
 
-        public bool Equals(OptimisticLock other)
-        {
-            return Equals(other.value, value);
-        }
+    public static bool operator ==(OptimisticLock x, OptimisticLock y)
+    {
+        return x.Equals(y);
+    }
 
-        public override int GetHashCode()
-        {
-            return (value != null ? value.GetHashCode() : 0);
-        }
+    public static bool operator !=(OptimisticLock x, OptimisticLock y)
+    {
+        return !(x == y);
+    }
 
-        public static bool operator ==(OptimisticLock x, OptimisticLock y)
-        {
-            return x.Equals(y);
-        }
+    public override string ToString()
+    {
+        return value;
+    }
 
-        public static bool operator !=(OptimisticLock x, OptimisticLock y)
-        {
-            return !(x == y);
-        }
-
-        public override string ToString()
-        {
-            return value;
-        }
-
-        public static OptimisticLock FromString(string value)
-        {
-            return new OptimisticLock(value);
-        }
+    public static OptimisticLock FromString(string value)
+    {
+        return new OptimisticLock(value);
     }
 }

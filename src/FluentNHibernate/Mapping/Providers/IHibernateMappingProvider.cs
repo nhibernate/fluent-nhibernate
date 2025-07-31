@@ -1,9 +1,8 @@
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+public interface IHibernateMappingProvider
 {
-    public interface IHibernateMappingProvider
-    {
-        HibernateMapping GetHibernateMapping();
-    }
+    HibernateMapping GetHibernateMapping();
 }

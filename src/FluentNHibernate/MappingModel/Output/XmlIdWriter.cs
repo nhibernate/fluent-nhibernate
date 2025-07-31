@@ -1,61 +1,53 @@
-using System;
 using System.Xml;
 using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlIdWriter(IXmlWriterServiceLocator serviceLocator) : NullMappingModelVisitor, IXmlWriter<IdMapping>
 {
-    public class XmlIdWriter : NullMappingModelVisitor, IXmlWriter<IdMapping>
+    XmlDocument document;
+
+    public XmlDocument Write(IdMapping mappingModel)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
-        private XmlDocument document;
+        document = null;
+        mappingModel.AcceptVisitor(this);
+        return document;
+    }
 
-        public XmlIdWriter(IXmlWriterServiceLocator serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+    public override void ProcessId(IdMapping mapping)
+    {
+        document = new XmlDocument();
 
-        public XmlDocument Write(IdMapping mappingModel)
-        {
-            document = null;
-            mappingModel.AcceptVisitor(this);
-            return document;
-        }
+        var element = document.AddElement("id");
 
-        public override void ProcessId(IdMapping mapping)
-        {
-            document = new XmlDocument();
+        if (mapping.IsSpecified("Access"))
+            element.WithAtt("access", mapping.Access);
 
-            var element = document.AddElement("id");
+        if (mapping.IsSpecified("Name"))
+            element.WithAtt("name", mapping.Name);
 
-            if (mapping.IsSpecified("Access"))
-                element.WithAtt("access", mapping.Access);
+        if (mapping.IsSpecified("Type"))
+            element.WithAtt("type", mapping.Type);
 
-            if (mapping.IsSpecified("Name"))
-                element.WithAtt("name", mapping.Name);
+        if (mapping.IsSpecified("UnsavedValue"))
+            element.WithAtt("unsaved-value", mapping.UnsavedValue);
+    }
 
-            if (mapping.IsSpecified("Type"))
-                element.WithAtt("type", mapping.Type);
+    public override void Visit(GeneratorMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<GeneratorMapping>();
+        var generatorXml = writer.Write(mapping);
 
-            if (mapping.IsSpecified("UnsavedValue"))
-                element.WithAtt("unsaved-value", mapping.UnsavedValue);
-        }
+        document.ImportAndAppendChild(generatorXml);
+    }
 
-        public override void Visit(GeneratorMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<GeneratorMapping>();
-            var generatorXml = writer.Write(mapping);
+    public override void Visit(ColumnMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<ColumnMapping>();
+        var columnXml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(generatorXml);
-        }
-
-        public override void Visit(ColumnMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<ColumnMapping>();
-            var columnXml = writer.Write(mapping);
-
-            document.ImportAndAppendChild(columnXml);
-        }
+        document.ImportAndAppendChild(columnXml);
     }
 }

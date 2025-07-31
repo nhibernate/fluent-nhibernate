@@ -1,9 +1,8 @@
 using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+public interface IJoinMappingProvider
 {
-    public interface IJoinMappingProvider
-    {
-        JoinMapping GetJoinMapping();
-    }
+    JoinMapping GetJoinMapping();
 }

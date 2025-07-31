@@ -1,7 +1,6 @@
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public interface IXmlWriterServiceLocator
 {
-    public interface IXmlWriterServiceLocator
-    {
-        IXmlWriter<T> GetWriter<T>();
-    }
+    IXmlWriter<T> GetWriter<T>();
 }

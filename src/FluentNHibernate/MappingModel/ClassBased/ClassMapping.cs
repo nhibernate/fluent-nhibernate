@@ -4,222 +4,131 @@ using FluentNHibernate.MappingModel.Identity;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.ClassBased
+namespace FluentNHibernate.MappingModel.ClassBased;
+
+[Serializable]
+public class ClassMapping(AttributeStore attributes) : ClassMappingBase(attributes), IEquatable<ClassMapping>
 {
-    [Serializable]
-    public class ClassMapping : ClassMappingBase
+    readonly AttributeStore attributes = attributes;
+
+    public ClassMapping()
+        : this(new AttributeStore())
+    {}
+
+    public IIdentityMapping Id => attributes.GetOrDefault<IIdentityMapping>();
+
+    public NaturalIdMapping NaturalId => attributes.GetOrDefault<NaturalIdMapping>();
+
+    public override string Name => attributes.GetOrDefault<string>();
+
+    public override Type Type => attributes.GetOrDefault<Type>();
+
+    public CacheMapping Cache => attributes.GetOrDefault<CacheMapping>();
+
+    public VersionMapping Version => attributes.GetOrDefault<VersionMapping>();
+
+    public DiscriminatorMapping Discriminator => attributes.GetOrDefault<DiscriminatorMapping>();
+
+    public bool IsUnionSubclass => attributes.GetOrDefault<bool>();
+
+    public TuplizerMapping Tuplizer => attributes.GetOrDefault<TuplizerMapping>();
+
+    public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
-        readonly AttributeStore attributes;
+        visitor.ProcessClass(this);            
 
-        public ClassMapping()
-            : this(new AttributeStore())
-        {}
+        if (Id is not null)
+            visitor.Visit(Id);
 
-        public ClassMapping(AttributeStore attributes)
-            : base(attributes)
-        {
-            this.attributes = attributes;
-        }
+        if (NaturalId is not null)
+            visitor.Visit(NaturalId);
 
-        public IIdentityMapping Id
-        {
-            get { return attributes.GetOrDefault<IIdentityMapping>("Id"); }
-        }
+        if (Discriminator is not null)
+            visitor.Visit(Discriminator);
 
-        public NaturalIdMapping NaturalId
-        {
-            get { return attributes.GetOrDefault<NaturalIdMapping>("NaturalId"); }
-        }
+        if (Cache is not null)
+            visitor.Visit(Cache);
 
-        public override string Name
-        {
-            get { return attributes.GetOrDefault<string>("Name"); }
-        }
+        if (Version is not null)
+            visitor.Visit(Version);
 
-        public override Type Type
-        {
-            get { return attributes.GetOrDefault<Type>("Type"); }
-        }
+        if (Tuplizer is not null)
+            visitor.Visit(Tuplizer);
 
-        public CacheMapping Cache
-        {
-            get { return attributes.GetOrDefault<CacheMapping>("Cache"); }
-        }
+        base.AcceptVisitor(visitor);
+    }
 
-        public VersionMapping Version
-        {
-            get { return attributes.GetOrDefault<VersionMapping>("Version"); }
-        }
+    public string TableName => attributes.GetOrDefault<string>();
 
-        public DiscriminatorMapping Discriminator
-        {
-            get { return attributes.GetOrDefault<DiscriminatorMapping>("Discriminator"); }
-        }
+    public int BatchSize => attributes.GetOrDefault<int>();
 
-        public bool IsUnionSubclass
-        {
-            get { return attributes.GetOrDefault<bool>("IsUnionSubclass"); }
-        }
+    public object DiscriminatorValue => attributes.GetOrDefault<object>();
 
-        public TuplizerMapping Tuplizer
-        {
-            get { return attributes.GetOrDefault<TuplizerMapping>("Tuplizer"); }
-        }
+    public string Schema => attributes.GetOrDefault<string>();
 
-        public override void AcceptVisitor(IMappingModelVisitor visitor)
-        {
-            visitor.ProcessClass(this);            
+    public bool Lazy => attributes.GetOrDefault<bool>();
 
-            if (Id != null)
-                visitor.Visit(Id);
+    public bool Mutable => attributes.GetOrDefault<bool>();
 
-            if (NaturalId != null)
-                visitor.Visit(NaturalId);
+    public bool DynamicUpdate => attributes.GetOrDefault<bool>();
 
-            if (Discriminator != null)
-                visitor.Visit(Discriminator);
+    public bool DynamicInsert => attributes.GetOrDefault<bool>();
 
-            if (Cache != null)
-                visitor.Visit(Cache);
+    public string OptimisticLock => attributes.GetOrDefault<string>();
 
-            if (Version != null)
-                visitor.Visit(Version);
+    public string Polymorphism => attributes.GetOrDefault<string>();
 
-            if (Tuplizer != null)
-                visitor.Visit(Tuplizer);
+    public string Persister => attributes.GetOrDefault<string>();
 
-            base.AcceptVisitor(visitor);
-        }
+    public string Where => attributes.GetOrDefault<string>();
 
-        public string TableName
-        {
-            get { return attributes.GetOrDefault<string>("TableName"); }
-        }
+    public string Check => attributes.GetOrDefault<string>();
 
-        public int BatchSize
-        {
-            get { return attributes.GetOrDefault<int>("BatchSize"); }
-        }
+    public string Proxy => attributes.GetOrDefault<string>();
 
-        public object DiscriminatorValue
-        {
-            get { return attributes.GetOrDefault<object>("DiscriminatorValue"); }
-        }
+    public bool SelectBeforeUpdate => attributes.GetOrDefault<bool>();
 
-        public string Schema
-        {
-            get { return attributes.GetOrDefault<string>("Schema"); }
-        }
+    public bool Abstract => attributes.GetOrDefault<bool>();
 
-        public bool Lazy
-        {
-            get { return attributes.GetOrDefault<bool>("Lazy"); }
-        }
+    public string Subselect => attributes.GetOrDefault<string>();
 
-        public bool Mutable
-        {
-            get { return attributes.GetOrDefault<bool>("Mutable"); }
-        }
+    public string SchemaAction => attributes.GetOrDefault<string>();
 
-        public bool DynamicUpdate
-        {
-            get { return attributes.GetOrDefault<bool>("DynamicUpdate"); }
-        }
+    public string EntityName => attributes.GetOrDefault<string>();
 
-        public bool DynamicInsert
-        {
-            get { return attributes.GetOrDefault<bool>("DynamicInsert"); }
-        }
+    public bool Equals(ClassMapping other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return base.Equals(other) &&
+               Equals(other.attributes, attributes);
+    }
 
-        public string OptimisticLock
-        {
-            get { return attributes.GetOrDefault<string>("OptimisticLock"); }
-        }
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != typeof(ClassMapping)) return false;
+        return Equals((ClassMapping)obj);
+    }
 
-        public string Polymorphism
-        {
-            get { return attributes.GetOrDefault<string>("Polymorphism"); }
-        }
+    public override int GetHashCode()
+    {
+        return (attributes is not null ? attributes.GetHashCode() : 0);
+    }
 
-        public string Persister
-        {
-            get { return attributes.GetOrDefault<string>("Persister"); }
-        }
+    public void Set<T>(Expression<Func<ClassMapping, T>> expression, int layer, T value)
+    {
+        Set(expression.ToMember().Name, layer, value);
+    }
 
-        public string Where
-        {
-            get { return attributes.GetOrDefault<string>("Where"); }
-        }
+    protected override void Set(string attribute, int layer, object value)
+    {
+        attributes.Set(attribute, layer, value);
+    }
 
-        public string Check
-        {
-            get { return attributes.GetOrDefault<string>("Check"); }
-        }
-
-        public string Proxy
-        {
-            get { return attributes.GetOrDefault<string>("Proxy"); }
-        }
-
-        public bool SelectBeforeUpdate
-        {
-            get { return attributes.GetOrDefault<bool>("SelectBeforeUpdate"); }
-        }
-
-        public bool Abstract
-        {
-            get { return attributes.GetOrDefault<bool>("Abstract"); }
-        }
-
-        public string Subselect
-        {
-            get { return attributes.GetOrDefault<string>("Subselect"); }
-        }
-
-        public string SchemaAction
-        {
-            get { return attributes.GetOrDefault<string>("SchemaAction"); }
-        }
-
-        public string EntityName
-        {
-            get { return attributes.GetOrDefault<string>("EntityName"); }
-        }       
-
-        public bool Equals(ClassMapping other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) &&
-                Equals(other.attributes, attributes);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof(ClassMapping)) return false;
-            return Equals((ClassMapping)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return (attributes != null ? attributes.GetHashCode() : 0);
-        }
-
-        public void Set<T>(Expression<Func<ClassMapping, T>> expression, int layer, T value)
-        {
-            Set(expression.ToMember().Name, layer, value);
-        }
-
-        protected override void Set(string attribute, int layer, object value)
-        {
-            attributes.Set(attribute, layer, value);
-        }
-
-        public override bool IsSpecified(string attribute)
-        {
-            return attributes.IsSpecified(attribute);
-        }
+    public override bool IsSpecified(string attribute)
+    {
+        return attributes.IsSpecified(attribute);
     }
 }

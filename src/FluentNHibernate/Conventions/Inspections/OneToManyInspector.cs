@@ -1,49 +1,25 @@
 using System;
-using System.Reflection;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public class OneToManyInspector(OneToManyMapping mapping) : IOneToManyInspector
 {
-    public class OneToManyInspector : IOneToManyInspector
+    readonly InspectorModelMapper<IOneToManyInspector, OneToManyMapping> mappedProperties = new InspectorModelMapper<IOneToManyInspector, OneToManyMapping>();
+
+    public Type EntityType => mapping.ContainingEntityType;
+
+    public string StringIdentifierForModel => mapping.Class.Name;
+
+    public bool IsSet(Member property)
     {
-        private readonly InspectorModelMapper<IOneToManyInspector, OneToManyMapping> mappedProperties = new InspectorModelMapper<IOneToManyInspector, OneToManyMapping>();
-        private readonly OneToManyMapping mapping;
+        return mapping.IsSpecified(mappedProperties.Get(property));
+    }
 
-        public OneToManyInspector(OneToManyMapping mapping)
-        {
-            this.mapping = mapping;
-        }
+    public Type ChildType => mapping.ChildType;
 
-        public Type EntityType
-        {
-            get { return mapping.ContainingEntityType; }
-        }
+    public TypeReference Class => mapping.Class;
 
-        public string StringIdentifierForModel
-        {
-            get { return mapping.Class.Name; }
-        }
-
-        public bool IsSet(Member property)
-        {
-            return mapping.IsSpecified(mappedProperties.Get(property));
-        }
-
-        public Type ChildType
-        {
-            get { return mapping.ChildType; }
-        }
-
-        public TypeReference Class
-        {
-            get { return mapping.Class; }
-        }
-
-        public NotFound NotFound
-        {
-            get { return NotFound.FromString(mapping.NotFound); }
-        }
-
-	}
+    public NotFound NotFound => NotFound.FromString(mapping.NotFound);
 }

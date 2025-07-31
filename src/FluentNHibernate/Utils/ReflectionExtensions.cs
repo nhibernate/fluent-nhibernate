@@ -2,13 +2,12 @@ using System;
 using System.Linq.Expressions;
 using FluentNHibernate.Utils.Reflection;
 
-namespace FluentNHibernate.Utils
+namespace FluentNHibernate.Utils;
+
+public static class ReflectionExtensions
 {
-    public static class ReflectionExtensions
+    public static Member ToMember<TMapping, TReturn>(this Expression<Func<TMapping, TReturn>> propertyExpression)
     {
-        public static Member ToMember<TMapping, TReturn>(this Expression<Func<TMapping, TReturn>> propertyExpression)
-        {
-            return ReflectionHelper.GetMember(propertyExpression);
-        }
+        return ReflectionHelper.GetMember(propertyExpression);
     }
 }

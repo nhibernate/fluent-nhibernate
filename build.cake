@@ -1,11 +1,11 @@
-#addin "nuget:?package=Cake.FileHelpers&version=4.0.1"
-#tool "nuget:?package=GitReleaseManager&version=0.11.0"
-#tool "nuget:?package=GitVersion.CommandLine&version=5.3.7"
+#addin "nuget:?package=Cake.FileHelpers&version=7.0.0"
+#tool "dotnet:?package=GitReleaseManager.Tool&version=0.20.0"
+#tool "dotnet:?package=GitVersion.Tool&version=6.3.0"
 
 #load "./build/parameters.cake"
 
 BuildParameters parameters = BuildParameters.GetParameters(Context);
-DotNetCoreMSBuildSettings msBuildSettings = null;
+DotNetMSBuildSettings msBuildSettings = null;
 bool publishingError = false;
 
 var SolutionPath = "./src/FluentNHibernate.sln";
@@ -29,7 +29,7 @@ Setup((context) =>
     var releaseNotes = string.Join("\n", 
         parameters.ReleaseNotes.Notes.ToArray()).Replace("\"", "\"\"");
 
-    msBuildSettings = new DotNetCoreMSBuildSettings()
+    msBuildSettings = new DotNetMSBuildSettings()
         .WithProperty("Version", parameters.Version.SemVersion)
         .WithProperty("AssemblyVersion", parameters.Version.AssemblyVersion)
         .WithProperty("FileVersion", parameters.Version.Version)
@@ -45,7 +45,7 @@ Task("Clean")
   .Does(() =>
     {
         CleanDirectories(parameters.Paths.Directories.ToClean);
-        DotNetCoreClean(SolutionPath);
+        DotNetClean(SolutionPath);
         EnsureDirectoryExists(parameters.Paths.Directories.Artifacts);
         EnsureDirectoryExists(parameters.Paths.Directories.ArtifactsBinFullFx);
         EnsureDirectoryExists(parameters.Paths.Directories.TestResults);
@@ -56,9 +56,9 @@ Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
     {
-        DotNetCoreRestore(SolutionPath, new DotNetCoreRestoreSettings
+        DotNetRestore(SolutionPath, new DotNetRestoreSettings
         {
-            Verbosity = DotNetCoreVerbosity.Minimal,            
+            Verbosity = DotNetVerbosity.Minimal,            
         });
     });
 
@@ -66,7 +66,7 @@ Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
     {
-        DotNetCoreBuild(SolutionPath, new DotNetCoreBuildSettings
+        DotNetBuild(SolutionPath, new DotNetBuildSettings
         {
             Configuration = parameters.Configuration,
             MSBuildSettings = msBuildSettings
@@ -83,17 +83,17 @@ Task("Test")
 
         foreach(var project in testProjects) 
         {                      
-            DotNetCoreTest(project.ToString(), new DotNetCoreTestSettings
+            DotNetTest(project.ToString(), new DotNetTestSettings
             {
-                Framework = "net461",
+                Framework = "net48",
                 NoBuild = true,
                 NoRestore = true,
                 Configuration = parameters.Configuration
             });          
 
-            DotNetCoreTest(project.ToString(), new DotNetCoreTestSettings
+            DotNetTest(project.ToString(), new DotNetTestSettings
             {
-                Framework = "netcoreapp2.0",
+                Framework = "net6.0",
                 NoBuild = true,
                 NoRestore = true,
                 Configuration = parameters.Configuration
@@ -108,21 +108,21 @@ Task("Copy-Files")
         PublishProjects(
             SrcProjects, "net461",
             parameters.Paths.Directories.ArtifactsBinFullFx.FullPath, 
-            parameters.Version.DotNetAsterix, 
+            parameters.Version.VersionSuffix, 
             parameters.Configuration, 
             msBuildSettings
         );
         PublishProjects(
             SrcProjects, "netstandard2.0",
             parameters.Paths.Directories.ArtifactsBinNetStandard20.FullPath, 
-            parameters.Version.DotNetAsterix, 
+            parameters.Version.VersionSuffix, 
             parameters.Configuration, 
             msBuildSettings
         );
         PublishProjects(
             SrcProjects, "netcoreapp2.0",
             parameters.Paths.Directories.ArtifactsBinNetCoreApp2.FullPath, 
-            parameters.Version.DotNetAsterix, 
+            parameters.Version.VersionSuffix, 
             parameters.Configuration, 
             msBuildSettings
         );
@@ -176,13 +176,11 @@ Task("Publish-GitHub-Release")
     .Does(() =>
     {
         GitReleaseManagerAddAssets(
-            parameters.GitHub.UserName, parameters.GitHub.Password, 
-            parameters.GitHub.Owner, parameters.GitHub.Repository, 
+            parameters.GitHub.Token, parameters.GitHub.Owner, parameters.GitHub.Repository, 
             parameters.Version.Milestone, 
             parameters.Paths.Files.ZipArtifactPathDesktop.ToString());
         GitReleaseManagerClose(
-            parameters.GitHub.UserName, parameters.GitHub.Password, 
-            parameters.GitHub.Owner, parameters.GitHub.Repository, 
+            parameters.GitHub.Token, parameters.GitHub.Owner, parameters.GitHub.Repository, 
             parameters.Version.Milestone);
     })
     .OnError(exception =>
@@ -195,13 +193,13 @@ Task("Create-Release-Notes")
     .Does(() =>
     {
         GitReleaseManagerCreate(
-            parameters.GitHub.UserName, parameters.GitHub.Password, 
+            parameters.GitHub.Token, 
             parameters.GitHub.Owner, parameters.GitHub.Repository, 
             new GitReleaseManagerCreateSettings {
                 Milestone         = parameters.Version.Milestone,
                 Name              = parameters.Version.Milestone,
                 Prerelease        = true,
-                TargetCommitish   = "master"
+                TargetCommitish   = "main"
             }
         );
     });
@@ -261,11 +259,11 @@ private void PublishProjects(
     string artifactsBin,
     string versionSuffix,
     string configuration, 
-    DotNetCoreMSBuildSettings msBuildSettings)
+    DotNetMSBuildSettings msBuildSettings)
 {
     foreach(var project in projectNames)
     {        
-        DotNetCorePublish($"./src/{project}", new DotNetCorePublishSettings
+        DotNetPublish($"./src/{project}", new DotNetPublishSettings
         {
             Framework = framework,
             VersionSuffix = versionSuffix,
@@ -286,7 +284,7 @@ private void PackProjects(
 {
     foreach(var project in projectNames) {
         var projectPath = File($"./src/{project}/{project}.csproj");
-        DotNetCorePack(projectPath.ToString(), new DotNetCorePackSettings
+        DotNetPack(projectPath.ToString(), new DotNetPackSettings
         {
             Configuration = configuration,
             MSBuildSettings = msBuildSettings,

@@ -6,173 +6,127 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel
+namespace FluentNHibernate.MappingModel;
+
+[Serializable]
+public class JoinMapping(AttributeStore attributes) : IMapping, IEquatable<JoinMapping>
 {
-    [Serializable]
-    public class JoinMapping : IMapping
+    readonly AttributeStore attributes = attributes;
+
+    readonly MappedMembers mappedMembers = new();
+
+    public JoinMapping()
+        : this(new AttributeStore())
+    {}
+
+    public KeyMapping Key => attributes.GetOrDefault<KeyMapping>();
+
+    public IEnumerable<PropertyMapping> Properties => mappedMembers.Properties;
+
+    public IEnumerable<ManyToOneMapping> References => mappedMembers.References;
+
+    public IEnumerable<IComponentMapping> Components => mappedMembers.Components;
+
+    public IEnumerable<AnyMapping> Anys => mappedMembers.Anys;
+
+    public IEnumerable<CollectionMapping> Collections => mappedMembers.Collections;
+
+    public void AddProperty(PropertyMapping property)
     {
-        private readonly AttributeStore attributes;
+        mappedMembers.AddProperty(property);
+    }
 
-        private readonly MappedMembers mappedMembers;
+    public void AddReference(ManyToOneMapping manyToOne)
+    {
+        mappedMembers.AddReference(manyToOne);
+    }
 
-        public JoinMapping()
-            : this(new AttributeStore())
-        {}
+    public void AddComponent(IComponentMapping componentMapping)
+    {
+        mappedMembers.AddComponent(componentMapping);
+    }
 
-        public JoinMapping(AttributeStore attributes)
+    public void AddAny(AnyMapping mapping)
+    {
+        mappedMembers.AddAny(mapping);
+    }
+
+    public void AddCollection(CollectionMapping collectionMapping)
+    {
+        mappedMembers.AddCollection(collectionMapping);
+    }
+
+    public void AddStoredProcedure(StoredProcedureMapping storedProcedureMapping)
+    {
+        mappedMembers.AddStoredProcedure(storedProcedureMapping);
+    }
+
+    public string TableName => attributes.GetOrDefault<string>();
+
+    public string Schema => attributes.GetOrDefault<string>();
+
+    public string Catalog => attributes.GetOrDefault<string>();
+
+    public string Subselect => attributes.GetOrDefault<string>();
+
+    public string Fetch => attributes.GetOrDefault<string>();
+
+    public bool Inverse => attributes.GetOrDefault<bool>();
+
+    public bool Optional => attributes.GetOrDefault<bool>();
+
+    public Type ContainingEntityType { get; set; }
+
+    public void AcceptVisitor(IMappingModelVisitor visitor)
+    {
+        visitor.ProcessJoin(this);
+
+        if (Key is not null)
+            visitor.Visit(Key);
+
+        mappedMembers.AcceptVisitor(visitor);
+    }
+
+    public bool Equals(JoinMapping other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return Equals(other.attributes, attributes) &&
+               Equals(other.mappedMembers, mappedMembers) &&
+               other.ContainingEntityType == ContainingEntityType;
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != typeof(JoinMapping)) return false;
+        return Equals((JoinMapping)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            this.attributes = attributes;
-            mappedMembers = new MappedMembers();
+            int result = (attributes is not null ? attributes.GetHashCode() : 0);
+            result = (result * 397) ^ (mappedMembers is not null ? mappedMembers.GetHashCode() : 0);
+            result = (result * 397) ^ (ContainingEntityType is not null ? ContainingEntityType.GetHashCode() : 0);
+            return result;
         }
+    }
 
-        public KeyMapping Key
-        {
-            get { return attributes.GetOrDefault<KeyMapping>("Key"); }
-        }
+    public void Set<T>(Expression<Func<JoinMapping, T>> expression, int layer, T value)
+    {
+        Set(expression.ToMember().Name, layer, value);
+    }
 
-        public IEnumerable<PropertyMapping> Properties
-        {
-            get { return mappedMembers.Properties; }
-        }
+    public void Set(string attribute, int layer, object value)
+    {
+        attributes.Set(attribute, layer, value);
+    }
 
-        public IEnumerable<ManyToOneMapping> References
-        {
-            get { return mappedMembers.References; }
-        }
-
-        public IEnumerable<IComponentMapping> Components
-        {
-            get { return mappedMembers.Components; }
-        }
-
-        public IEnumerable<AnyMapping> Anys
-        {
-            get { return mappedMembers.Anys; }
-        }
-
-        public IEnumerable<CollectionMapping> Collections
-        {
-            get { return mappedMembers.Collections; }
-        }
-
-        public void AddProperty(PropertyMapping property)
-        {
-            mappedMembers.AddProperty(property);
-        }
-
-        public void AddReference(ManyToOneMapping manyToOne)
-        {
-            mappedMembers.AddReference(manyToOne);
-        }
-
-        public void AddComponent(IComponentMapping componentMapping)
-        {
-            mappedMembers.AddComponent(componentMapping);
-        }
-
-        public void AddAny(AnyMapping mapping)
-        {
-            mappedMembers.AddAny(mapping);
-        }
-
-        public void AddCollection(CollectionMapping collectionMapping)
-        {
-            mappedMembers.AddCollection(collectionMapping);
-        }
-
-        public void AddStoredProcedure(StoredProcedureMapping storedProcedureMapping)
-        {
-            mappedMembers.AddStoredProcedure(storedProcedureMapping);
-        }
-
-        public string TableName
-        {
-            get { return attributes.GetOrDefault<string>("TableName"); }
-        }
-
-        public string Schema
-        {
-            get { return attributes.GetOrDefault<string>("Schema"); }
-        }
-
-        public string Catalog
-        {
-            get { return attributes.GetOrDefault<string>("Catalog"); }
-        }
-
-        public string Subselect
-        {
-            get { return attributes.GetOrDefault<string>("Subselect"); }
-        }
-
-        public string Fetch
-        {
-            get { return attributes.GetOrDefault<string>("Fetch"); }
-        }
-
-        public bool Inverse
-        {
-            get { return attributes.GetOrDefault<bool>("Inverse"); }
-        }
-
-        public bool Optional
-        {
-            get { return attributes.GetOrDefault<bool>("Optional"); }
-        }
-
-        public Type ContainingEntityType { get; set; }
-
-        public void AcceptVisitor(IMappingModelVisitor visitor)
-        {
-            visitor.ProcessJoin(this);
-
-            if (Key != null)
-                visitor.Visit(Key);
-
-            mappedMembers.AcceptVisitor(visitor);
-        }
-
-        public bool Equals(JoinMapping other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(other.attributes, attributes) &&
-                Equals(other.mappedMembers, mappedMembers) &&
-                Equals(other.ContainingEntityType, ContainingEntityType);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof(JoinMapping)) return false;
-            return Equals((JoinMapping)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int result = (attributes != null ? attributes.GetHashCode() : 0);
-                result = (result * 397) ^ (mappedMembers != null ? mappedMembers.GetHashCode() : 0);
-                result = (result * 397) ^ (ContainingEntityType != null ? ContainingEntityType.GetHashCode() : 0);
-                return result;
-            }
-        }
-
-        public void Set<T>(Expression<Func<JoinMapping, T>> expression, int layer, T value)
-        {
-            Set(expression.ToMember().Name, layer, value);
-        }
-
-        public void Set(string attribute, int layer, object value)
-        {
-            attributes.Set(attribute, layer, value);
-        }
-
-        public bool IsSpecified(string attribute)
-        {
-            return attributes.IsSpecified(attribute);
-        }
+    public bool IsSpecified(string attribute)
+    {
+        return attributes.IsSpecified(attribute);
     }
 }

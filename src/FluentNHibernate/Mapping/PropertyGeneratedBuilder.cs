@@ -1,43 +1,33 @@
 using System;
 
-namespace FluentNHibernate.Mapping
+namespace FluentNHibernate.Mapping;
+
+public class PropertyGeneratedBuilder(PropertyPart parent, Action<string> setter)
 {
-    public class PropertyGeneratedBuilder
+    /// <summary>
+    /// Property is never database generated
+    /// </summary>
+    public PropertyPart Never()
     {
-        private readonly PropertyPart parent;
-        private readonly Action<string> setter;
+        setter("never");
+        return parent;
+    }
 
-        public PropertyGeneratedBuilder(PropertyPart parent, Action<string> setter)
-        {
-            this.parent = parent;
-            this.setter = setter;
-        }
+    /// <summary>
+    /// Property is only generated on insert
+    /// </summary>
+    public PropertyPart Insert()
+    {
+        setter("insert");
+        return parent;
+    }
 
-        /// <summary>
-        /// Property is never database generated
-        /// </summary>
-        public PropertyPart Never()
-        {
-            setter("never");
-            return parent;
-        }
-
-        /// <summary>
-        /// Property is only generated on insert
-        /// </summary>
-        public PropertyPart Insert()
-        {
-            setter("insert");
-            return parent;
-        }
-
-        /// <summary>
-        /// Property is always database generated
-        /// </summary>
-        public PropertyPart Always()
-        {
-            setter("always");
-            return parent;
-        }
+    /// <summary>
+    /// Property is always database generated
+    /// </summary>
+    public PropertyPart Always()
+    {
+        setter("always");
+        return parent;
     }
 }

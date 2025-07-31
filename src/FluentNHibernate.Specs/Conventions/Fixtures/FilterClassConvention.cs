@@ -1,38 +1,37 @@
 ﻿using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 
-namespace FluentNHibernate.Specs.Conventions.Fixtures
+namespace FluentNHibernate.Specs.Conventions.Fixtures;
+
+public class FilterClassConvention : IClassConvention
 {
-    public class FilterClassConvention : IClassConvention
-    {
-        public const string FilterName = "TestFilterName";
-        public const string FilterCondition = "TestFilterCondition";
+    public const string FilterName = "TestFilterName";
+    public const string FilterCondition = "TestFilterCondition";
 
-        public void Apply(IClassInstance instance)
-        {
-            instance.ApplyFilter(FilterName, FilterCondition);
-        }
+    public void Apply(IClassInstance instance)
+    {
+        instance.ApplyFilter(FilterName, FilterCondition);
     }
+}
 
-    public class FilterHasManyConvention : IHasManyConvention
+public class FilterHasManyConvention : IHasManyConvention
+{
+    public const string FilterName = "TestFilterName";
+    public const string FilterCondition = "TestFilterCondition";
+
+    public void Apply(IOneToManyCollectionInstance instance)
     {
-        public const string FilterName = "TestFilterName";
-        public const string FilterCondition = "TestFilterCondition";
-
-        public void Apply(IOneToManyCollectionInstance instance)
-        {
-            instance.ApplyFilter(FilterName, FilterCondition);
-        }
+        instance.ApplyFilter(FilterName, FilterCondition);
     }
+}
 
-    public class FilterHasManyToManyConvention : IHasManyToManyConvention
+public class FilterHasManyToManyConvention : IHasManyToManyConvention
+{
+    public const string FilterName = "TestFilterName";
+    public const string FilterCondition = "TestFilterCondition";
+
+    public void Apply(IManyToManyCollectionInstance instance)
     {
-        public const string FilterName = "TestFilterName";
-        public const string FilterCondition = "TestFilterCondition";
-
-        public void Apply(IManyToManyCollectionInstance instance)
-        {
-            instance.ApplyFilter(FilterName, FilterCondition);
-        }
+        instance.ApplyFilter(FilterName, FilterCondition);
     }
 }

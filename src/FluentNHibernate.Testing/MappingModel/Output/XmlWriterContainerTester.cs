@@ -2,31 +2,30 @@
 using FluentNHibernate.MappingModel.Output;
 using NUnit.Framework;
 
-namespace FluentNHibernate.Testing.MappingModel.Output
+namespace FluentNHibernate.Testing.MappingModel.Output;
+
+[TestFixture]
+public class XmlWriterContainerTester
 {
-    [TestFixture]
-    public class XmlWriterContainerTester
+    XmlWriterContainer container;
+
+    [SetUp]
+    public void CreateContainer()
     {
-        private XmlWriterContainer container;
+        container = new XmlWriterContainer();
+    }
 
-        [SetUp]
-        public void CreateContainer()
+    [Test]
+    public void ShouldResolveAllWriters()
+    {
+        var writers = from type in typeof(IXmlWriter<>).Assembly.GetTypes()
+            from interfaceType in type.GetInterfaces()
+            where interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IXmlWriter<>)
+            select interfaceType;
+
+        foreach (var type in writers)
         {
-            container = new XmlWriterContainer();
-        }
-
-        [Test]
-        public void ShouldResolveAllWriters()
-        {
-            var writers = from type in typeof(IXmlWriter<>).Assembly.GetTypes()
-                          from interfaceType in type.GetInterfaces()
-                          where interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IXmlWriter<>)
-                          select interfaceType;
-
-            foreach (var type in writers)
-            {
-                container.Resolve(type);
-            }
+            container.Resolve(type);
         }
     }
 }

@@ -1,7 +1,6 @@
 using FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions
-{
-    public interface IIdConventionAcceptance : IConventionAcceptance<IIdentityInspector>
-    {}
-}
+namespace FluentNHibernate.Conventions;
+
+public interface IIdConventionAcceptance : IConventionAcceptance<IIdentityInspector>
+{}

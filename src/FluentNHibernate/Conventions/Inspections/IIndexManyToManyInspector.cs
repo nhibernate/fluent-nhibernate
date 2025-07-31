@@ -1,10 +1,9 @@
 ﻿using FluentNHibernate.MappingModel;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface IIndexManyToManyInspector : IIndexInspectorBase
 {
-    public interface IIndexManyToManyInspector : IIndexInspectorBase
-    {
-        TypeReference Class { get; }
-        string ForeignKey { get; }
-    }
+    TypeReference Class { get; }
+    string ForeignKey { get; }
 }

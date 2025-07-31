@@ -6,206 +6,200 @@ using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.Mapping
+namespace FluentNHibernate.Mapping;
+
+/// <summary>
+/// Component-element for component HasMany's.
+/// </summary>
+/// <typeparam name="T">Component type</typeparam>
+public class CompositeElementPart<T>(Type entity)
+    : ICompositeElementMappingProvider, INestedCompositeElementMappingProvider
 {
-    /// <summary>
-    /// Component-element for component HasMany's.
-    /// </summary>
-    /// <typeparam name="T">Component type</typeparam>
-    public class CompositeElementPart<T> : ICompositeElementMappingProvider, INestedCompositeElementMappingProvider
+    private protected readonly Member member;
+    readonly List<IPropertyMappingProvider> properties = new List<IPropertyMappingProvider>();
+    readonly List<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
+    readonly List<INestedCompositeElementMappingProvider> components = new List<INestedCompositeElementMappingProvider>();
+    private protected readonly AttributeStore attributes = new AttributeStore();
+
+    public CompositeElementPart(Type entity, Member member)
+        : this(entity)
     {
-        readonly Type entity;
-        private protected readonly Member member;
-        readonly List<IPropertyMappingProvider> properties = new List<IPropertyMappingProvider>();
-        readonly List<IManyToOneMappingProvider> references = new List<IManyToOneMappingProvider>();
-        readonly List<INestedCompositeElementMappingProvider> components = new List<INestedCompositeElementMappingProvider>();
-        private protected readonly AttributeStore attributes = new AttributeStore();
+        this.member = member;
+    }
 
-        public CompositeElementPart(Type entity)
+    /// <summary>
+    /// Map a property
+    /// </summary>
+    /// <param name="expression">Property</param>
+    /// <example>
+    /// Map(x => x.Age);
+    /// </example>
+    public PropertyPart Map(Expression<Func<T, object>> expression)
+    {
+        return Map(expression, null);
+    }
+
+    /// <summary>
+    /// Map a property
+    /// </summary>
+    /// <param name="expression">Property</param>
+    /// <param name="columnName">Column name</param>
+    /// <example>
+    /// Map(x => x.Age, "person_age");
+    /// </example>
+    public PropertyPart Map(Expression<Func<T, object>> expression, string columnName)
+    {
+        return Map(expression.ToMember(), columnName);
+    }
+
+    protected virtual PropertyPart Map(Member property, string columnName)
+    {
+        var propertyMap = new PropertyPart(property, typeof(T));
+
+        if (!string.IsNullOrEmpty(columnName))
+            propertyMap.Column(columnName);
+
+        properties.Add(propertyMap);
+
+        return propertyMap;
+    }
+
+    /// <summary>
+    /// Create a reference to another entity. In database terms, this is a many-to-one
+    /// relationship.
+    /// </summary>
+    /// <typeparam name="TOther">Other entity</typeparam>
+    /// <param name="expression">Property on the current entity</param>
+    /// <example>
+    /// References(x => x.Company);
+    /// </example>
+    public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression)
+    {
+        return References(expression, null);
+    }
+
+    /// <summary>
+    /// Create a reference to another entity. In database terms, this is a many-to-one
+    /// relationship.
+    /// </summary>
+    /// <typeparam name="TOther">Other entity</typeparam>
+    /// <param name="expression">Property on the current entity</param>
+    /// <param name="columnName">Column name</param>
+    /// <example>
+    /// References(x => x.Company, "person_company_id");
+    /// </example>
+    public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression, string columnName)
+    {
+        return References<TOther>(expression.ToMember(), columnName);
+    }
+
+    protected virtual ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
+    {
+        var part = new ManyToOnePart<TOther>(typeof(T), property);
+
+        if (columnName is not null)
+            part.Column(columnName);
+
+        references.Add(part);
+
+        return part;
+    }
+
+    /// <summary>
+    /// Maps a property of the component class as a reference back to the containing entity
+    /// </summary>
+    /// <param name="expression">Parent reference property</param>
+    /// <returns>Component being mapped</returns>
+    public void ParentReference(Expression<Func<T, object>> expression)
+    {
+        ParentReference(expression, null);
+    }
+
+    /// <summary>
+    /// Maps a property of the component class as a reference back to the containing entity
+    /// </summary>
+    /// <param name="expression">Parent reference property</param>
+    /// <param name="customMapping">Additional settings for the parent reference property</param>
+    /// <returns>Component being mapped</returns>
+    public void ParentReference(Expression<Func<T, object>> expression, Action<ParentPropertyPart> customMapping)
+    {
+        ParentReference(expression.ToMember(), customMapping);
+    }
+
+    void ParentReference(Member property, Action<ParentPropertyPart> customMapping)
+    {
+        var parentMapping = new ParentMapping
         {
-            this.entity = entity;
-        }
+            ContainingEntityType = entity
+        };
+        parentMapping.Set(x => x.Name, Layer.Defaults, property.Name);
 
-        public CompositeElementPart(Type entity, Member member)
-            : this(entity)
-        {
-            this.member = member;
-        }
+        var access = MemberAccessResolver.Resolve(property);
+        if (access != Access.Property && access != Access.Unset)
+            parentMapping.Set(x => x.Access, Layer.Defaults, access.ToString());
 
-        /// <summary>
-        /// Map a property
-        /// </summary>
-        /// <param name="expression">Property</param>
-        /// <example>
-        /// Map(x => x.Age);
-        /// </example>
-        public PropertyPart Map(Expression<Func<T, object>> expression)
-        {
-            return Map(expression, null);
-        }
+        customMapping?.Invoke(new ParentPropertyPart(parentMapping));
 
-        /// <summary>
-        /// Map a property
-        /// </summary>
-        /// <param name="expression">Property</param>
-        /// <param name="columnName">Column name</param>
-        /// <example>
-        /// Map(x => x.Age, "person_age");
-        /// </example>
-        public PropertyPart Map(Expression<Func<T, object>> expression, string columnName)
-        {
-            return Map(expression.ToMember(), columnName);
-        }
+        attributes.Set("Parent", Layer.Defaults, parentMapping);
+    }
 
-        protected virtual PropertyPart Map(Member property, string columnName)
-        {
-            var propertyMap = new PropertyPart(property, typeof(T));
+    /// <summary>
+    /// Create a nested component mapping.
+    /// </summary>
+    /// <param name="property">Component property</param>
+    /// <param name="nestedCompositeElementAction">Action for creating the component</param>
+    /// <example>
+    /// HasMany(x => x.Locations)
+    ///   .Component(c =>
+    ///   {
+    ///     c.Map(x => x.Name);
+    ///     c.Component(x => x.Address, addr =>
+    ///     {
+    ///       addr.Map(x => x.Street);
+    ///       addr.Map(x => x.PostCode);
+    ///     });
+    ///   });
+    /// </example>
+    public void Component<TChild>(Expression<Func<T, TChild>> property, Action<NestedCompositeElementPart<TChild>> nestedCompositeElementAction)
+    {
+        var nestedCompositeElement = new NestedCompositeElementPart<TChild>(entity, property.ToMember());
 
-            if (!string.IsNullOrEmpty(columnName))
-                propertyMap.Column(columnName);
+        nestedCompositeElementAction(nestedCompositeElement);
 
-            properties.Add(propertyMap);
+        components.Add(nestedCompositeElement);
+    }
 
-            return propertyMap;
-        }
+    void PopulateMapping(CompositeElementMapping mapping)
+    {
+        mapping.ContainingEntityType = entity;
+        mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(T)));
 
-        /// <summary>
-        /// Create a reference to another entity. In database terms, this is a many-to-one
-        /// relationship.
-        /// </summary>
-        /// <typeparam name="TOther">Other entity</typeparam>
-        /// <param name="expression">Property on the current entity</param>
-        /// <example>
-        /// References(x => x.Company);
-        /// </example>
-        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression)
-        {
-            return References(expression, null);
-        }
+        foreach (var property in properties)
+            mapping.AddProperty(property.GetPropertyMapping());
 
-        /// <summary>
-        /// Create a reference to another entity. In database terms, this is a many-to-one
-        /// relationship.
-        /// </summary>
-        /// <typeparam name="TOther">Other entity</typeparam>
-        /// <param name="expression">Property on the current entity</param>
-        /// <param name="columnName">Column name</param>
-        /// <example>
-        /// References(x => x.Company, "person_company_id");
-        /// </example>
-        public ManyToOnePart<TOther> References<TOther>(Expression<Func<T, TOther>> expression, string columnName)
-        {
-            return References<TOther>(expression.ToMember(), columnName);
-        }
+        foreach (var reference in references)
+            mapping.AddReference(reference.GetManyToOneMapping());
 
-        protected virtual ManyToOnePart<TOther> References<TOther>(Member property, string columnName)
-        {
-            var part = new ManyToOnePart<TOther>(typeof(T), property);
+        foreach (var component in components)
+            mapping.AddCompositeElement(component.GetCompositeElementMapping());
+    }
 
-            if (columnName != null)
-                part.Column(columnName);
+    CompositeElementMapping ICompositeElementMappingProvider.GetCompositeElementMapping()
+    {
+        var mapping = new CompositeElementMapping(attributes.Clone());
 
-            references.Add(part);
+        PopulateMapping(mapping);
 
-            return part;
-        }
+        return mapping;
+    }
 
-        /// <summary>
-        /// Maps a property of the component class as a reference back to the containing entity
-        /// </summary>
-        /// <param name="expression">Parent reference property</param>
-        /// <returns>Component being mapped</returns>
-        public void ParentReference(Expression<Func<T, object>> expression)
-        {
-            ParentReference(expression, null);
-        }
+    NestedCompositeElementMapping INestedCompositeElementMappingProvider.GetCompositeElementMapping()
+    {
+        var mapping = new NestedCompositeElementMapping(attributes.Clone());
+        mapping.Set(x => x.Name, Layer.Defaults, member.Name);
 
-        /// <summary>
-        /// Maps a property of the component class as a reference back to the containing entity
-        /// </summary>
-        /// <param name="expression">Parent reference property</param>
-        /// <param name="customMapping">Additional settings for the parent reference property</param>
-        /// <returns>Component being mapped</returns>
-        public void ParentReference(Expression<Func<T, object>> expression, Action<ParentPropertyPart> customMapping)
-        {
-            ParentReference(expression.ToMember(), customMapping);
-        }
+        PopulateMapping(mapping);
 
-        void ParentReference(Member property, Action<ParentPropertyPart> customMapping)
-        {
-            var parentMapping = new ParentMapping
-            {
-                ContainingEntityType = entity
-            };
-            parentMapping.Set(x => x.Name, Layer.Defaults, property.Name);
-
-            var access = MemberAccessResolver.Resolve(property);
-            if (access != Access.Property && access != Access.Unset)
-                parentMapping.Set(x => x.Access, Layer.Defaults, access.ToString());
-
-            customMapping?.Invoke(new ParentPropertyPart(parentMapping));
-
-            attributes.Set("Parent", Layer.Defaults, parentMapping);
-        }
-
-        /// <summary>
-        /// Create a nested component mapping.
-        /// </summary>
-        /// <param name="property">Component property</param>
-        /// <param name="nestedCompositeElementAction">Action for creating the component</param>
-        /// <example>
-        /// HasMany(x => x.Locations)
-        ///   .Component(c =>
-        ///   {
-        ///     c.Map(x => x.Name);
-        ///     c.Component(x => x.Address, addr =>
-        ///     {
-        ///       addr.Map(x => x.Street);
-        ///       addr.Map(x => x.PostCode);
-        ///     });
-        ///   });
-        /// </example>
-        public void Component<TChild>(Expression<Func<T, TChild>> property, Action<NestedCompositeElementPart<TChild>> nestedCompositeElementAction)
-        {
-            var nestedCompositeElement = new NestedCompositeElementPart<TChild>(entity, property.ToMember());
-
-            nestedCompositeElementAction(nestedCompositeElement);
-
-            components.Add(nestedCompositeElement);
-        }
-
-        void PopulateMapping(CompositeElementMapping mapping)
-        {
-            mapping.ContainingEntityType = entity;
-            mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(T)));
-
-            foreach (var property in properties)
-                mapping.AddProperty(property.GetPropertyMapping());
-
-            foreach (var reference in references)
-                mapping.AddReference(reference.GetManyToOneMapping());
-
-            foreach (var component in components)
-                mapping.AddCompositeElement(component.GetCompositeElementMapping());
-        }
-
-        CompositeElementMapping ICompositeElementMappingProvider.GetCompositeElementMapping()
-        {
-            var mapping = new CompositeElementMapping(attributes.Clone());
-
-            PopulateMapping(mapping);
-
-            return mapping;
-        }
-
-        NestedCompositeElementMapping INestedCompositeElementMappingProvider.GetCompositeElementMapping()
-        {
-            var mapping = new NestedCompositeElementMapping(attributes.Clone());
-            mapping.Set(x => x.Name, Layer.Defaults, member.Name);
-
-            PopulateMapping(mapping);
-
-            return mapping;
-        }
+        return mapping;
     }
 }

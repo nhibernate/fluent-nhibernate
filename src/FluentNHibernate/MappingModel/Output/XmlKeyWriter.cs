@@ -2,57 +2,50 @@ using System.Xml;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlKeyWriter(IXmlWriterServiceLocator serviceLocator) : NullMappingModelVisitor, IXmlWriter<KeyMapping>
 {
-    public class XmlKeyWriter : NullMappingModelVisitor, IXmlWriter<KeyMapping>
+    XmlDocument document;
+
+    public XmlDocument Write(KeyMapping mappingModel)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
-        private XmlDocument document;
+        document = null;
+        mappingModel.AcceptVisitor(this);
+        return document;
+    }
 
-        public XmlKeyWriter(IXmlWriterServiceLocator serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+    public override void ProcessKey(KeyMapping mapping)
+    {
+        document = new XmlDocument();
 
-        public XmlDocument Write(KeyMapping mappingModel)
-        {
-            document = null;
-            mappingModel.AcceptVisitor(this);
-            return document;
-        }
+        var element = document.AddElement("key");
 
-        public override void ProcessKey(KeyMapping mapping)
-        {
-            document = new XmlDocument();
+        if (mapping.IsSpecified("ForeignKey"))
+            element.WithAtt("foreign-key", mapping.ForeignKey);
 
-            var element = document.AddElement("key");
+        if (mapping.IsSpecified("OnDelete"))
+            element.WithAtt("on-delete", mapping.OnDelete);
 
-            if (mapping.IsSpecified("ForeignKey"))
-                element.WithAtt("foreign-key", mapping.ForeignKey);
+        if (mapping.IsSpecified("PropertyRef"))
+            element.WithAtt("property-ref", mapping.PropertyRef);
 
-            if (mapping.IsSpecified("OnDelete"))
-                element.WithAtt("on-delete", mapping.OnDelete);
+        if (mapping.IsSpecified("NotNull"))
+            element.WithAtt("not-null", mapping.NotNull);
 
-            if (mapping.IsSpecified("PropertyRef"))
-                element.WithAtt("property-ref", mapping.PropertyRef);
+        if (mapping.IsSpecified("Update"))
+            element.WithAtt("update", mapping.Update);
 
-            if (mapping.IsSpecified("NotNull"))
-                element.WithAtt("not-null", mapping.NotNull);
+        if (mapping.IsSpecified("Unique"))
+            element.WithAtt("unique", mapping.Unique);
 
-            if (mapping.IsSpecified("Update"))
-                element.WithAtt("update", mapping.Update);
+    }
 
-            if (mapping.IsSpecified("Unique"))
-                element.WithAtt("unique", mapping.Unique);
+    public override void Visit(ColumnMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<ColumnMapping>();
+        var columnXml = writer.Write(mapping);
 
-        }
-
-        public override void Visit(ColumnMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<ColumnMapping>();
-            var columnXml = writer.Write(mapping);
-
-            document.ImportAndAppendChild(columnXml);
-        }
+        document.ImportAndAppendChild(columnXml);
     }
 }

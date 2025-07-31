@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
-    <NoWarn>1591</NoWarn>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>Exe</OutputType>        
     <PlatformTarget>AnyCpu</PlatformTarget>
     <IsPackable>false</IsPackable>
@@ -13,18 +12,14 @@
   </ItemGroup>
 
   <ItemGroup>    
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.1" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
   </ItemGroup>
   
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
-  </ItemGroup>
-
-  <ItemGroup>  
-    <None Include="app.config" />
   </ItemGroup>
 
 </Project>

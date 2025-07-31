@@ -1,69 +1,47 @@
 using System;
 using System.Linq.Expressions;
-using System.Reflection;
-using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Utils
+namespace FluentNHibernate.Utils;
+
+public class SingleMember(Member member) : Accessor
 {
-    public class SingleMember : Accessor
+    #region Accessor Members
+
+    public string FieldName => InnerMember.Name;
+
+    public Type PropertyType => InnerMember.PropertyType;
+
+    public Member InnerMember { get; } = member;
+
+    public Accessor GetChildAccessor<T>(Expression<Func<T, object>> expression)
     {
-        private readonly Member member;
+        var property = expression.ToMember();
+        return new PropertyChain(new[] {InnerMember, property});
+    }
 
-        public SingleMember(Member member)
-        {
-            this.member = member;
-        }
+    public string Name => InnerMember.Name;
 
-        #region Accessor Members
+    public void SetValue(object target, object propertyValue)
+    {
+        InnerMember.SetValue(target, propertyValue);
+    }
 
-        public string FieldName
-        {
-            get { return member.Name; }
-        }
+    public object GetValue(object target)
+    {
+        return InnerMember.GetValue(target);
+    }
 
-        public Type PropertyType
-        {
-            get { return member.PropertyType; }
-        }
+    #endregion
 
-        public Member InnerMember
-        {
-            get { return member; }
-        }
+    public static SingleMember Build<T>(Expression<Func<T, object>> expression)
+    {
+        var m = expression.ToMember();
+        return new SingleMember(m);
+    }
 
-        public Accessor GetChildAccessor<T>(Expression<Func<T, object>> expression)
-        {
-            var property = expression.ToMember();
-            return new PropertyChain(new[] {member, property});
-        }
-
-        public string Name
-        {
-            get { return member.Name; }
-        }
-
-        public void SetValue(object target, object propertyValue)
-        {
-            member.SetValue(target, propertyValue);
-        }
-
-        public object GetValue(object target)
-        {
-            return member.GetValue(target);
-        }
-
-        #endregion
-
-        public static SingleMember Build<T>(Expression<Func<T, object>> expression)
-        {
-            var member = expression.ToMember();
-            return new SingleMember(member);
-        }
-
-        public static SingleMember Build<T>(string propertyName)
-        {
-            var member = typeof(T).GetProperty(propertyName).ToMember();
-            return new SingleMember(member);
-        }
+    public static SingleMember Build<T>(string propertyName)
+    {
+        var m = typeof(T).GetProperty(propertyName).ToMember();
+        return new SingleMember(m);
     }
 }

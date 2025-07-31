@@ -4,51 +4,47 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentNHibernate.Utils;
 
-namespace FluentNHibernate.Testing.Values
-{
-    public class ReferenceBag<T, TListElement> : ReferenceList<T, TListElement>
-    {
-        public ReferenceBag(Accessor property, IEnumerable<TListElement> value) : base(property, value)
-        {}
+namespace FluentNHibernate.Testing.Values;
 
-        public override void CheckValue(object target)
+public class ReferenceBag<T, TListElement>(Accessor property, IEnumerable<TListElement> value)
+    : ReferenceList<T, TListElement>(property, value)
+{
+    public override void CheckValue(object target)
+    {
+        var actual = PropertyAccessor.GetValue(target) as IEnumerable<TListElement>;
+        AssertGenericListMatches(actual, Expected);
+    }
+
+    void AssertGenericListMatches(IEnumerable<TListElement> actualEnumerable, IEnumerable<TListElement> expectedEnumerable)
+    {
+        if (actualEnumerable is null)
         {
-            var actual = PropertyAccessor.GetValue(target) as IEnumerable;
-            AssertGenericListMatches(actual, Expected);
+            throw new ArgumentNullException(nameof(actualEnumerable),
+                "Actual and expected are not equal (actual was null).");
+        }
+        if (expectedEnumerable is null)
+        {
+            throw new ArgumentNullException(nameof(expectedEnumerable),
+                "Actual and expected are not equal (expected was null).");
         }
 
-        private void AssertGenericListMatches(IEnumerable actualEnumerable, IEnumerable<TListElement> expectedEnumerable)
+        var actualList = actualEnumerable.ToList();
+
+        var expectedList = expectedEnumerable.ToList();
+
+        if (actualList.Count != expectedList.Count)
         {
-            if (actualEnumerable == null)
-            {
-                throw new ArgumentNullException("actualEnumerable",
-                    "Actual and expected are not equal (actual was null).");
-            }
-            if (expectedEnumerable == null)
-            {
-                throw new ArgumentNullException("expectedEnumerable",
-                    "Actual and expected are not equal (expected was null).");
-            }
+            throw new ApplicationException($"Actual count ({actualList.Count}) does not equal expected count ({expectedList.Count})");
+        }
 
-            var actualList = actualEnumerable.Cast<object>().ToList();
+        Func<object, object, bool> equalsFunc = EntityEqualityComparer is not null
+            ? EntityEqualityComparer.Equals
+            : Equals;
 
-            var expectedList = expectedEnumerable.ToList();
-
-            if (actualList.Count != expectedList.Count)
-            {
-                throw new ApplicationException(String.Format("Actual count ({0}) does not equal expected count ({1})", actualList.Count, expectedList.Count));
-            }
-
-            var equalsFunc = (EntityEqualityComparer != null)
-                ? new Func<object, object, bool>((a, b) => EntityEqualityComparer.Equals(a, b))
-                : new Func<object, object, bool>(Equals);
-
-
-            var result = actualList.FirstOrDefault(item => actualList.Count(x => equalsFunc(item, x)) != expectedList.Count(x => equalsFunc(item, x)));
-            if (result != null)
-            {
-                throw new ApplicationException(String.Format("Actual count of item {0} ({1}) does not equal expected item count ({2})",result, actualList.Count(x => x == result), expectedList.Count(x => (object)x == result)));
-            }
+        var result = actualList.FirstOrDefault(item => actualList.Count(x => equalsFunc(item, x)) != expectedList.Count(x => equalsFunc(item, x)));
+        if (result is not null)
+        {
+            throw new ApplicationException($"Actual count of item {result} ({actualList.Count(x => ReferenceEquals(x, result))}) does not equal expected item count ({expectedList.Count(x => ReferenceEquals(x, result))})");
         }
     }
 }

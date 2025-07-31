@@ -1,9 +1,6 @@
-using FluentNHibernate.MappingModel;
+namespace FluentNHibernate.Conventions.Inspections;
 
-namespace FluentNHibernate.Conventions.Inspections
+public interface ILazyLoadInspector : IInspector
 {
-    public interface ILazyLoadInspector : IInspector
-    {
-        bool LazyLoad { get; }
-    }
+    bool LazyLoad { get; }
 }

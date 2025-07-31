@@ -2,35 +2,34 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace FluentNHibernate.Mapping.Providers
+namespace FluentNHibernate.Mapping.Providers;
+
+/// <summary>
+/// This collection optimizes search for already mapped types in subclasses providers. Matters in models with huge inheritance trees.
+/// </summary>
+public class IndeterminateSubclassMappingProviderCollection : IIndeterminateSubclassMappingProviderCollection
 {
-    /// <summary>
-    /// This collection optimizes search for already mapped types in subclasses providers. Matters in models with huge inheritance trees.
-    /// </summary>
-    public class IndeterminateSubclassMappingProviderCollection : IIndeterminateSubclassMappingProviderCollection
+    readonly List<IIndeterminateSubclassMappingProvider> providers = new List<IIndeterminateSubclassMappingProvider>();
+    readonly HashSet<Type> mappedTypes = new HashSet<Type>(); 
+
+    public IEnumerator<IIndeterminateSubclassMappingProvider> GetEnumerator()
     {
-        private readonly List<IIndeterminateSubclassMappingProvider> providers = new List<IIndeterminateSubclassMappingProvider>(); 
-        private readonly HashSet<Type> mappedTypes = new HashSet<Type>(); 
+        return providers.GetEnumerator();
+    }
 
-        public IEnumerator<IIndeterminateSubclassMappingProvider> GetEnumerator()
-        {
-            return providers.GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    public void Add(IIndeterminateSubclassMappingProvider item)
+    {
+        providers.Add(item);
+        mappedTypes.Add(item.EntityType);
+    }
 
-        public void Add(IIndeterminateSubclassMappingProvider item)
-        {
-            providers.Add(item);
-            mappedTypes.Add(item.EntityType);
-        }
-
-        public bool IsTypeMapped(Type type)
-        {
-            return mappedTypes.Contains(type);
-        }
+    public bool IsTypeMapped(Type type)
+    {
+        return mappedTypes.Contains(type);
     }
 }

@@ -3,72 +3,65 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public abstract class XmlClassWriterBase(IXmlWriterServiceLocator serviceLocator) : NullMappingModelVisitor
 {
-    public abstract class XmlClassWriterBase : NullMappingModelVisitor
+    protected XmlDocument document;
+
+    public override void Visit(PropertyMapping propertyMapping)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
-        protected XmlDocument document;
+        var writer = serviceLocator.GetWriter<PropertyMapping>();
+        var xml = writer.Write(propertyMapping);
 
-        protected XmlClassWriterBase(IXmlWriterServiceLocator serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+        document.ImportAndAppendChild(xml);
+    }
 
-        public override void Visit(PropertyMapping propertyMapping)
-        {
-            var writer = serviceLocator.GetWriter<PropertyMapping>();
-            var xml = writer.Write(propertyMapping);
+    public override void Visit(VersionMapping versionMapping)
+    {
+        var writer = serviceLocator.GetWriter<VersionMapping>();
+        var xml = writer.Write(versionMapping);
 
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
+    }
 
-        public override void Visit(VersionMapping versionMapping)
-        {
-            var writer = serviceLocator.GetWriter<VersionMapping>();
-            var xml = writer.Write(versionMapping);
+    public override void Visit(OneToOneMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<OneToOneMapping>();
+        var xml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
+    }
 
-        public override void Visit(OneToOneMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<OneToOneMapping>();
-            var xml = writer.Write(mapping);
+    public override void Visit(ManyToOneMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<ManyToOneMapping>();
+        var xml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
+    }
 
-        public override void Visit(ManyToOneMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<ManyToOneMapping>();
-            var xml = writer.Write(mapping);
+    public override void Visit(AnyMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<AnyMapping>();
+        var xml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
+    }
 
-        public override void Visit(AnyMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<AnyMapping>();
-            var xml = writer.Write(mapping);
+    public override void Visit(CollectionMapping collectionMapping)
+    {
+        var writer = serviceLocator.GetWriter<CollectionMapping>();
+        var xml = writer.Write(collectionMapping);
 
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
+    }
 
-        public override void Visit(CollectionMapping collectionMapping)
-        {
-            var writer = serviceLocator.GetWriter<CollectionMapping>();
-            var xml = writer.Write(collectionMapping);
+    public override void Visit(StoredProcedureMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<StoredProcedureMapping>();
+        var xml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(xml);
-        }
-
-        public override void Visit(StoredProcedureMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<StoredProcedureMapping>();
-            var xml = writer.Write(mapping);
-
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
     }
 }

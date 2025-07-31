@@ -3,56 +3,49 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public class XmlIndexWriter(IXmlWriterServiceLocator serviceLocator) : NullMappingModelVisitor, IXmlWriter<IndexMapping>
 {
-    public class XmlIndexWriter : NullMappingModelVisitor, IXmlWriter<IndexMapping>
+    XmlDocument document;
+
+    public XmlDocument Write(IndexMapping mappingModel)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
-        private XmlDocument document;
+        document = null;
+        mappingModel.AcceptVisitor(this);
+        return document;
+    }
 
-        public XmlIndexWriter(IXmlWriterServiceLocator serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+    public override void ProcessIndex(IndexMapping mapping)
+    {
+        document = new XmlDocument();
 
-        public XmlDocument Write(IndexMapping mappingModel)
-        {
-            document = null;
-            mappingModel.AcceptVisitor(this);
-            return document;
-        }
+        if (mapping.IsSpecified("Offset"))
+            WriteListIndex(mapping);
+        else
+            WriteIndex(mapping);
+    }
 
-        public override void ProcessIndex(IndexMapping mapping)
-        {
-            document = new XmlDocument();
+    void WriteIndex(IndexMapping mapping)
+    {
+        var element = document.AddElement("index");
 
-            if (mapping.IsSpecified("Offset"))
-                WriteListIndex(mapping);
-            else
-                WriteIndex(mapping);
-        }
+        if (mapping.IsSpecified("Type"))
+            element.WithAtt("type", mapping.Type);
+    }
 
-        void WriteIndex(IndexMapping mapping)
-        {
-            var element = document.AddElement("index");
+    void WriteListIndex(IndexMapping mapping)
+    {
+        var element = document.AddElement("list-index");
 
-            if (mapping.IsSpecified("Type"))
-                element.WithAtt("type", mapping.Type);
-        }
+        element.WithAtt("base", mapping.Offset);
+    }
 
-        void WriteListIndex(IndexMapping mapping)
-        {
-            var element = document.AddElement("list-index");
+    public override void Visit(ColumnMapping columnMapping)
+    {
+        var writer = serviceLocator.GetWriter<ColumnMapping>();
+        var xml = writer.Write(columnMapping);
 
-            element.WithAtt("base", mapping.Offset);
-        }
-
-        public override void Visit(ColumnMapping columnMapping)
-        {
-            var writer = serviceLocator.GetWriter<ColumnMapping>();
-            var xml = writer.Write(columnMapping);
-
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
     }
 }

@@ -1,0 +1,11 @@
+version = 1
+
+test_patterns = [
+  "src/FluentNHibernate.Testing/**",
+  "src/FluentNHibernate.Specs/**",
+  "src/FluentNHibernate.Specs.ExternalFixtures/**"
+]
+
+[[analyzers]]
+name = "csharp"
+enabled = true

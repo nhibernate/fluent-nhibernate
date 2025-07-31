@@ -1,13 +1,12 @@
 ﻿using FluentNHibernate.Mapping;
 
-namespace FluentNHibernate.Specs.PersistenceModel.Fixtures
+namespace FluentNHibernate.Specs.PersistenceModel.Fixtures;
+
+class UnionEntityMap : ClassMap<UnionEntity>
 {
-    class UnionEntityMap : ClassMap<UnionEntity>
+    public UnionEntityMap()
     {
-        public UnionEntityMap()
-        {
-            Id(x => x.Id);
-            UseUnionSubclassForInheritanceMapping();
-        }
+        Id(x => x.Id);
+        UseUnionSubclassForInheritanceMapping();
     }
 }

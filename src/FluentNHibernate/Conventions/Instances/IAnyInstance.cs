@@ -1,9 +1,8 @@
 using FluentNHibernate.Conventions.Instances;
 
-namespace FluentNHibernate.Conventions.Inspections
+namespace FluentNHibernate.Conventions.Inspections;
+
+public interface IAnyInstance : IAnyInspector
 {
-    public interface IAnyInstance : IAnyInspector
-    {
-        new IAccessInstance Access { get; }
-    }
+    new IAccessInstance Access { get; }
 }

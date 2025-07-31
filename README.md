@@ -1,6 +1,6 @@
-![FluentNHibernate logo](https://raw.githubusercontent.com/jagregory/fluent-nhibernate/master/docs/logo.png)
+![FluentNHibernate logo](https://raw.githubusercontent.com/nhibernate/fluent-nhibernate/main/docs/logo.png)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/684r2ot07i2lrcij/branch/master?svg=true)](https://ci.appveyor.com/project/nhibernate/fluent-nhibernate/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/684r2ot07i2lrcij/branch/main?svg=true)](https://ci.appveyor.com/project/nhibernate/fluent-nhibernate/branch/main)
 [![NuGet](https://img.shields.io/nuget/v/FluentNHibernate.svg)](https://www.nuget.org/packages/FluentNHibernate)
 
 ## What is FluentNHibernate?
@@ -17,11 +17,7 @@ dotnet add package FluentNHibernate
 ## How do I use it?
 
 * Read the [introduction](https://github.com/FluentNHibernate/fluent-nhibernate/wiki/Getting-started).
-* Get latest version from NuGet
-    - [.NETCore2.0, NETStandard2.0 or NET 4.6.1 with NHibernate 5.x](https://www.nuget.org/packages/FluentNHibernate)
-    - [.NET 4.0 with NHibernate 4.x](https://www.nuget.org/packages/FluentNHibernate/2.0.3)
-    - [.NET 3.5 with NHibernate 3 if you like it vintage](https://www.nuget.org/packages/FluentNHibernate.Net35)
-
+* Get latest version from [NuGet](https://www.nuget.org/packages/FluentNHibernate)
 * Create your [first project](https://github.com/FluentNHibernate/fluent-nhibernate/wiki/Getting-started#wiki-yourfirstproject).
 
 ## Further reading
@@ -37,5 +33,5 @@ Fluent NHibernate wouldn't be possible without the time and effort of its contri
 
 Thanks goes to [Jeremy Miller](http://codebetter.com/blogs/jeremy.miller) for the original idea and implementation.
     
-Fluent NHibernate is &copy; 2008-2018 [James Gregory](http://jagregory.com) and contributors under the [BSD license](https://github.com/FluentNHibernate/fluent-nhibernate/blob/master/LICENSE)
+Fluent NHibernate is &copy; 2008-2018 [James Gregory](http://jagregory.com) and contributors under the [BSD license](https://github.com/nhibernate/fluent-nhibernate/blob/main/LICENSE)
 

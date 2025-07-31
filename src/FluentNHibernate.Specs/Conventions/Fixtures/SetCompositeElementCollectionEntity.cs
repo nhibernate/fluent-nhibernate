@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace FluentNHibernate.Specs.Conventions.Fixtures
+namespace FluentNHibernate.Specs.Conventions.Fixtures;
+
+public class SetCompositeElementCollectionEntity
 {
-    public class SetCompositeElementCollectionEntity
-    {
-        public int Id { get; set; }
-        public ISet<Value> Values { get; set; }
-    }
+    public int Id { get; set; }
+    public ISet<Value> Values { get; set; }
 }

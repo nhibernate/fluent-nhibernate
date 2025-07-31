@@ -3,117 +3,110 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.Utils;
 using FluentNHibernate.Visitors;
 
-namespace FluentNHibernate.MappingModel.Output
+namespace FluentNHibernate.MappingModel.Output;
+
+public abstract class BaseXmlCollectionWriter(IXmlWriterServiceLocator serviceLocator) : NullMappingModelVisitor
 {
-    public abstract class BaseXmlCollectionWriter : NullMappingModelVisitor
+    protected XmlDocument document;
+
+    public override void Visit(KeyMapping mapping)
     {
-        private readonly IXmlWriterServiceLocator serviceLocator;
-        protected XmlDocument document;
+        var writer = serviceLocator.GetWriter<KeyMapping>();
+        var keyXml = writer.Write(mapping);
 
-        protected BaseXmlCollectionWriter(IXmlWriterServiceLocator serviceLocator)
-        {
-            this.serviceLocator = serviceLocator;
-        }
+        document.ImportAndAppendChild(keyXml);
+    }
 
-        public override void Visit(KeyMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<KeyMapping>();
-            var keyXml = writer.Write(mapping);
+    public override void Visit(CacheMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<CacheMapping>();
+        var cacheXml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(keyXml);
-        }
+        document.ImportAndAppendChild(cacheXml);
+    }
 
-        public override void Visit(CacheMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<CacheMapping>();
-            var cacheXml = writer.Write(mapping);
+    public override void Visit(ICollectionRelationshipMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<ICollectionRelationshipMapping>();
+        var relationshipXml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(cacheXml);
-        }
+        document.ImportAndAppendChild(relationshipXml);
+    }
 
-        public override void Visit(ICollectionRelationshipMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<ICollectionRelationshipMapping>();
-            var relationshipXml = writer.Write(mapping);
+    public override void Visit(CompositeElementMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<CompositeElementMapping>();
+        var xml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(relationshipXml);
-        }
+        document.ImportAndAppendChild(xml);
+    }
 
-        public override void Visit(CompositeElementMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<CompositeElementMapping>();
-            var xml = writer.Write(mapping);
+    public override void Visit(ElementMapping mapping)
+    {
+        var writer = serviceLocator.GetWriter<ElementMapping>();
+        var xml = writer.Write(mapping);
 
-            document.ImportAndAppendChild(xml);
-        }
+        document.ImportAndAppendChild(xml);
+    }
 
-        public override void Visit(ElementMapping mapping)
-        {
-            var writer = serviceLocator.GetWriter<ElementMapping>();
-            var xml = writer.Write(mapping);
+    public override void Visit(FilterMapping filterMapping)
+    {
+        var writer = serviceLocator.GetWriter<FilterMapping>();
+        var xml = writer.Write(filterMapping);
+        document.ImportAndAppendChild(xml);
+    }
 
-            document.ImportAndAppendChild(xml);
-        }
+    protected void WriteBaseCollectionAttributes(XmlElement element, CollectionMapping mapping)
+    {
+        if (mapping.IsSpecified("Access"))
+            element.WithAtt("access", mapping.Access);
 
-        public override void Visit(FilterMapping filterMapping)
-        {
-            var writer = serviceLocator.GetWriter<FilterMapping>();
-            var xml = writer.Write(filterMapping);
-            document.ImportAndAppendChild(xml);
-        }
+        if (mapping.IsSpecified("BatchSize"))
+            element.WithAtt("batch-size", mapping.BatchSize);
 
-        protected void WriteBaseCollectionAttributes(XmlElement element, CollectionMapping mapping)
-        {
-            if (mapping.IsSpecified("Access"))
-                element.WithAtt("access", mapping.Access);
+        if (mapping.IsSpecified("Cascade"))
+            element.WithAtt("cascade", mapping.Cascade);
 
-            if (mapping.IsSpecified("BatchSize"))
-                element.WithAtt("batch-size", mapping.BatchSize);
+        if (mapping.IsSpecified("Check"))
+            element.WithAtt("check", mapping.Check);
 
-            if (mapping.IsSpecified("Cascade"))
-                element.WithAtt("cascade", mapping.Cascade);
+        if (mapping.IsSpecified("CollectionType") && mapping.CollectionType != TypeReference.Empty)
+            element.WithAtt("collection-type", mapping.CollectionType);
 
-            if (mapping.IsSpecified("Check"))
-                element.WithAtt("check", mapping.Check);
+        if (mapping.IsSpecified("Fetch"))
+            element.WithAtt("fetch", mapping.Fetch);
 
-            if (mapping.IsSpecified("CollectionType") && mapping.CollectionType != TypeReference.Empty)
-                element.WithAtt("collection-type", mapping.CollectionType);
+        if (mapping.IsSpecified("Generic"))
+            element.WithAtt("generic", mapping.Generic);
 
-            if (mapping.IsSpecified("Fetch"))
-                element.WithAtt("fetch", mapping.Fetch);
+        if (mapping.IsSpecified("Inverse"))
+            element.WithAtt("inverse", mapping.Inverse);
 
-            if (mapping.IsSpecified("Generic"))
-                element.WithAtt("generic", mapping.Generic);
+        if (mapping.IsSpecified("Lazy"))
+            element.WithAtt("lazy", mapping.Lazy.ToString().ToLowerInvariant());
 
-            if (mapping.IsSpecified("Inverse"))
-                element.WithAtt("inverse", mapping.Inverse);
+        if (mapping.IsSpecified("Name"))
+            element.WithAtt("name", mapping.Name);
 
-            if (mapping.IsSpecified("Lazy"))
-                element.WithAtt("lazy", mapping.Lazy.ToString().ToLowerInvariant());
+        if (mapping.IsSpecified("OptimisticLock"))
+            element.WithAtt("optimistic-lock", mapping.OptimisticLock);
 
-            if (mapping.IsSpecified("Name"))
-                element.WithAtt("name", mapping.Name);
+        if (mapping.IsSpecified("Persister"))
+            element.WithAtt("persister", mapping.Persister);
 
-            if (mapping.IsSpecified("OptimisticLock"))
-                element.WithAtt("optimistic-lock", mapping.OptimisticLock);
+        if (mapping.IsSpecified("Schema"))
+            element.WithAtt("schema", mapping.Schema);
 
-            if (mapping.IsSpecified("Persister"))
-                element.WithAtt("persister", mapping.Persister);
+        if (mapping.IsSpecified("TableName"))
+            element.WithAtt("table", mapping.TableName);
 
-            if (mapping.IsSpecified("Schema"))
-                element.WithAtt("schema", mapping.Schema);
+        if (mapping.IsSpecified("Where"))
+            element.WithAtt("where", mapping.Where);
 
-            if (mapping.IsSpecified("TableName"))
-                element.WithAtt("table", mapping.TableName);
+        if (mapping.IsSpecified("Subselect"))
+            element.WithAtt("subselect", mapping.Subselect);
 
-            if (mapping.IsSpecified("Where"))
-                element.WithAtt("where", mapping.Where);
-
-            if (mapping.IsSpecified("Subselect"))
-                element.WithAtt("subselect", mapping.Subselect);
-
-            if (mapping.IsSpecified("Mutable"))
-                element.WithAtt("mutable", mapping.Mutable);
-        }
+        if (mapping.IsSpecified("Mutable"))
+            element.WithAtt("mutable", mapping.Mutable);
     }
 }
