@@ -17,7 +17,7 @@ public abstract class ClassMappingBase(AttributeStore attributes) : MappingBase,
     public override void AcceptVisitor(IMappingModelVisitor visitor)
     {
         mappedMembers.AcceptVisitor(visitor);
-        
+
         foreach (var subclass in Subclasses)
             visitor.Visit(subclass);
     }

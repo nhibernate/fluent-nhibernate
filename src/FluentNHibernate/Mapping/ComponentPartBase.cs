@@ -166,9 +166,9 @@ public abstract class ComponentPartBase<TEntity, TBuilder> : ClasslikeMapBase<TE
 
         if (member is not null)
             mapping.Set(x => x.Name, Layer.Defaults, member.Name);
-        
+
         mapping.Set(x => x.Tuplizer, Layer.UserSupplied, providers.TuplizerMapping);
-        
+
         foreach (var property in providers.Properties)
             mapping.AddProperty(property.GetPropertyMapping());
 

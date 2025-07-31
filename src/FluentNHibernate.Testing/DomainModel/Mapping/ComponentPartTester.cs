@@ -106,7 +106,7 @@ public class ComponentPartTester
                 m.Component(x => x.Component, c => c.Map(x => x.Name)))
             .Element("class/component").HasAttribute("class", typeof(ComponentTarget).AssemblyQualifiedName);                
     }
-    
+
     [Test]
     public void ComponentCanSetTuplizer()
     {
