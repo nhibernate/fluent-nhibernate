@@ -249,9 +249,9 @@ public class PersistenceModel
         WriteMappingsTo( _ => new XmlTextWriter(writer), false);
     }
 
-        public void WriteMappingsTo(Func<HibernateMapping, XmlTextWriter> writerBuilder, bool shouldDispose)
-        {
-            EnsureMappingsBuilt();
+    public void WriteMappingsTo(Func<HibernateMapping, XmlTextWriter> writerBuilder, bool shouldDispose)
+    {
+        EnsureMappingsBuilt();
 
         foreach (var mapping in compiledMappings)
         {
