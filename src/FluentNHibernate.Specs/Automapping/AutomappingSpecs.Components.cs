@@ -8,7 +8,6 @@ using FluentNHibernate.Specs.Automapping.Fixtures;
 using FluentNHibernate.Specs.ExternalFixtures;
 using FluentNHibernate.Utils;
 using Machine.Specifications;
-using FluentAssertions;
 
 namespace FluentNHibernate.Specs.Automapping;
 
@@ -68,7 +67,7 @@ public class when_the_automapper_is_told_to_map_an_entity_and_a_component_that_h
             .Components.ShouldContain(x => x.Type == typeof(Component));
 
     It should_use_the_component_map_for_mapping = () =>
-        mappings.Single().Components.Single().Access.Should().Be("none");
+        mappings.Single().Components.Single().Access.ShouldEqual("none");
 
     static AutoPersistenceModel mapper;
     static IEnumerable<ClassMapping> mappings;
@@ -105,7 +104,7 @@ public class when_the_automapper_maps_nested_comonents
             .SelectMany(x => x.Properties)
             .SelectMany(x => x.Columns)
             .Select(x => x.Name)
-            .Should().Contain(new string[] { "LeftLocationProperty", "RightLocationProperty" });
+            .ShouldContain("LeftLocationProperty", "RightLocationProperty");
 
     It should_prefix_the_components_in_the_components = () =>
         mapping.Components
@@ -113,7 +112,7 @@ public class when_the_automapper_maps_nested_comonents
             .SelectMany(x => x.Properties)
             .SelectMany(x => x.Columns)
             .Select(x => x.Name)
-            .Should().Contain(new string[] { "LeftAPropertyA", "LeftBPropertyB", "RightAPropertyA", "RightBPropertyB" });
+            .ShouldContain("LeftAPropertyA", "LeftBPropertyB", "RightAPropertyA", "RightBPropertyB");
 
     static AutoPersistenceModel mapper;
     static ClassMapping mapping;

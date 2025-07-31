@@ -108,6 +108,6 @@ public class ClassMapConventionsTester
     {
         new MappingTester<MappedObject>()
             .ForMapping(m => m.Map(x => x.Color).CustomType(typeof(int)))
-            .Element("class/property[@name='Color']").HasAttribute("type", typeof(int).Name);
+            .Element("class/property[@name='Color']").HasAttribute("type", typeof(int).AssemblyQualifiedName);
     }
 }
