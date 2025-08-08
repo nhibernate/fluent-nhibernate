@@ -9,7 +9,7 @@ namespace FluentNHibernate.Mapping;
 public class CollectionIdPart : ICollectionIdMappingProvider
 {
     readonly Type entity;
-    readonly AttributeStore attributes = new AttributeStore();
+    readonly AttributeStore attributes = new();
     
     /// <summary>
     /// Specify the generator
@@ -17,7 +17,7 @@ public class CollectionIdPart : ICollectionIdMappingProvider
     /// <example>
     /// .AsIdBag&lt;int&gt;(x => x.Column("Id").GeneratedBy.Identity())
     /// </example>
-    public IdentityGenerationStrategyBuilder<CollectionIdPart> GeneratedBy { get; }
+    public IdentityGenerationStrategyBuilder<CollectionIdPart> GeneratedBy { get; }F
 
     public CollectionIdPart(Type entityType, Type idColumnType)
     {
@@ -56,9 +56,11 @@ public class CollectionIdPart : ICollectionIdMappingProvider
 
     CollectionIdMapping ICollectionIdMappingProvider.GetCollectionIdMapping()
     {
-        var mapping = new CollectionIdMapping(attributes.Clone());
-
-        mapping.ContainingEntityType = entity;
+        var mapping = new CollectionIdMapping(attributes.Clone())
+        {
+            ContainingEntityType = entity
+        };
+        
         mapping.Set(x => x.Column, Layer.Defaults, "Id");
         if (GeneratedBy.IsDirty)
             mapping.Set(x => x.Generator, Layer.UserSupplied, GeneratedBy.GetGeneratorMapping());
