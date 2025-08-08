@@ -129,6 +129,9 @@ public class XmlWriterContainer : Container
 
         RegisterWriter<KeyManyToOneMapping>(c =>
             new XmlKeyManyToOneWriter(c.Resolve<IXmlWriterServiceLocator>()));
+        
+        RegisterWriter<CollectionIdMapping>(c =>
+            new XmlCollectionIdWriter(c.Resolve<IXmlWriterServiceLocator>()));
     }
 
     void RegisterComponentWriters()

@@ -188,6 +188,11 @@ public abstract class NullMappingModelVisitor : IMappingModelVisitor
             
     }
 
+    public virtual void ProcessCollectionId(CollectionIdMapping mapping)
+    {
+        
+    }
+
     public virtual void Visit(IEnumerable<HibernateMapping> mappings)
     {
             
@@ -355,5 +360,10 @@ public abstract class NullMappingModelVisitor : IMappingModelVisitor
     public virtual void Visit(TuplizerMapping mapping)
     {
             
+    }
+
+    public virtual void Visit(CollectionIdMapping mapping)
+    {
+        
     }
 }

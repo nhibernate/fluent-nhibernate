@@ -22,28 +22,16 @@ public class XmlCollectionWriter(IXmlWriterServiceLocator serviceLocator)
 
     public override void ProcessCollection(CollectionMapping mapping)
     {
-        IXmlWriter<CollectionMapping> writer = null;
-
-        switch (mapping.Collection)
+        IXmlWriter<CollectionMapping> writer = mapping.Collection switch
         {
-            case Collection.Array:
-                writer = new XmlArrayWriter(serviceLocator);
-                break;
-            case Collection.Bag:
-                writer = new XmlBagWriter(serviceLocator);
-                break;
-            case Collection.List:
-                writer = new XmlListWriter(serviceLocator);
-                break;
-            case Collection.Map:
-                writer = new XmlMapWriter(serviceLocator);
-                break;
-            case Collection.Set:
-                writer = new XmlSetWriter(serviceLocator);
-                break;
-            default:
-                throw new InvalidOperationException("Unrecognised collection type " + mapping.Collection);
-        }
+            Collection.Array => new XmlArrayWriter(serviceLocator),
+            Collection.Bag => new XmlBagWriter(serviceLocator),
+            Collection.List => new XmlListWriter(serviceLocator),
+            Collection.Map => new XmlMapWriter(serviceLocator),
+            Collection.Set => new XmlSetWriter(serviceLocator),
+            Collection.IdBag => new XmlIdBagWriter(serviceLocator),
+            _ => throw new InvalidOperationException("Unrecognised collection type " + mapping.Collection)
+        };
 
         document = writer.Write(mapping);
     }

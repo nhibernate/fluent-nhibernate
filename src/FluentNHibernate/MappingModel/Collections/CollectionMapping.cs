@@ -32,6 +32,9 @@ public class CollectionMapping : MappingBase, IRelationship, IEquatable<Collecti
     {
         visitor.ProcessCollection(this);
 
+        if (CollectionId is not null && Collection == Collection.IdBag)
+            visitor.Visit(CollectionId);
+        
         if (Key is not null)
             visitor.Visit(Key);
 
@@ -109,6 +112,8 @@ public class CollectionMapping : MappingBase, IRelationship, IEquatable<Collecti
     public string Sort => attributes.GetOrDefault<string>();
 
     public IIndexMapping Index => attributes.GetOrDefault<IIndexMapping>();
+    
+    public CollectionIdMapping CollectionId => attributes.GetOrDefault<CollectionIdMapping>();
 
     public bool Equals(CollectionMapping other)
     {
@@ -173,6 +178,11 @@ public class CollectionMapping : MappingBase, IRelationship, IEquatable<Collecti
     public static CollectionMapping Bag(AttributeStore underlyingStore)
     {
         return For(Collection.Bag, underlyingStore);
+    }
+    
+    public static CollectionMapping IdBag(AttributeStore underlyingStore)
+    {
+        return For(Collection.IdBag, underlyingStore);
     }
 
     public static CollectionMapping List()

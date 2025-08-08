@@ -44,6 +44,7 @@ public interface IMappingModelVisitor
     void ProcessStoredProcedure(StoredProcedureMapping mapping);
     void ProcessTuplizer(TuplizerMapping mapping);
     void ProcessCollection(MappingModel.Collections.CollectionMapping mapping);
+    void ProcessCollectionId(CollectionIdMapping mapping);
 
     /// <summary>
     /// This bad boy is the entry point to the visitor
@@ -84,4 +85,5 @@ public interface IMappingModelVisitor
     void Visit(FilterDefinitionMapping mapping);
     void Visit(StoredProcedureMapping mapping);
     void Visit(TuplizerMapping mapping);
+    void Visit(CollectionIdMapping mapping);
 }

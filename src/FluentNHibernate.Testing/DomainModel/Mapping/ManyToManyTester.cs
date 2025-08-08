@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -332,5 +333,59 @@ public class ManyToManyTester
                 .ChildKeyColumns.Add("ID2"))
             .Element("class/bag/many-to-many/column[@name='ID1']").Exists()
             .Element("class/bag/many-to-many/column[@name='ID2']").Exists();
+    }
+    
+    [Test]
+    public void CanSpecifyIdBag()
+    {
+        new MappingTester<ManyToManyTarget>()
+            .ForMapping(m => m.HasManyToMany(x => x.MapOfChildren)
+                .AsIdBag<int>(x => x.Column("Id").GeneratedBy.Identity()))
+            .Element("class/idbag/collection-id").Exists()
+                .HasAttribute("column", "Id")
+                .HasAttribute("type",  typeof(int).AssemblyQualifiedName)
+            .Element("class/idbag/collection-id/generator").Exists()
+                .HasAttribute("class", "identity");
+    }
+    
+    [Test]
+    public void CanSpecifyIdBagWithLength()
+    {
+        var x = new MappingTester<ManyToManyTarget>()
+            .ForMapping(m => m.HasManyToMany(x => x.MapOfChildren)
+                .AsIdBag<string>(x => x.Column("Id").Length(10)))
+            .Element("class/idbag/collection-id").Exists()
+                .HasAttribute("column", "Id")
+                .HasAttribute("type",  typeof(string).AssemblyQualifiedName)
+                .HasAttribute("length", "10")
+            .Element("class/idbag/collection-id/generator").Exists()
+                .HasAttribute("class", "assigned");
+    }
+    
+    [Test]
+    public void CanSpecifyIdBagWithNonGenericType()
+    {
+        var x = new MappingTester<ManyToManyTarget>()
+            .ForMapping(m => m.HasManyToMany(x => x.MapOfChildren)
+                .AsIdBag(typeof(string), x => x.Column("Id").Length(10)))
+            .Element("class/idbag/collection-id").Exists()
+                .HasAttribute("column", "Id")
+                .HasAttribute("type",  typeof(string).AssemblyQualifiedName)
+                .HasAttribute("length", "10")
+            .Element("class/idbag/collection-id/generator").Exists()
+                .HasAttribute("class", "assigned");
+    }
+    
+    [Test]
+    public void CanSpecifyIdBagWithGenerator()
+    {
+        var x = new MappingTester<ManyToManyTarget>()
+            .ForMapping(m => m.HasManyToMany(x => x.MapOfChildren)
+                .AsIdBag(typeof(int), x => x.GeneratedBy.Identity()))
+            .Element("class/idbag/collection-id").Exists()
+                .HasAttribute("column", "Id")
+                .HasAttribute("type",  typeof(int).AssemblyQualifiedName)
+            .Element("class/idbag/collection-id/generator").Exists()
+                .HasAttribute("class", "identity");
     }
 }
