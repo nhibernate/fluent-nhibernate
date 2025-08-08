@@ -184,4 +184,8 @@ public abstract class DefaultMappingModelVisitor : NullMappingModelVisitor
         mapping.AcceptVisitor(this);
     }
 
+    public override void Visit(CollectionIdMapping mapping)
+    {
+        mapping.AcceptVisitor(this);
+    }
 }

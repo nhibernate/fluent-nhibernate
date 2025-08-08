@@ -95,7 +95,10 @@ public class ConventionVisitor : DefaultMappingModelVisitor
             Apply(conventions, new OneToManyCollectionInstance(mapping));
         }
 
-        collections[mapping.Collection](mapping);
+        if (collections.TryGetValue(mapping.Collection, out var processor))
+        {
+            processor(mapping);
+        }
     }
 
 #pragma warning disable 612,618

@@ -250,15 +250,7 @@ public class IdentityPart : IIdentityMappingProvider
     void SetDefaultGenerator()
     {
         var generatorMapping = new GeneratorMapping();
-        var defaultGenerator = new GeneratorBuilder(generatorMapping, identityType, Layer.UserSupplied);
-
-        if (identityType == typeof(Guid))
-            defaultGenerator.GuidComb();
-        else if (identityType == typeof(int) || identityType == typeof(long))
-            defaultGenerator.Identity();
-        else
-            defaultGenerator.Assigned();
-
+        new GeneratorBuilder(generatorMapping, identityType, Layer.UserSupplied).SetDefault();
         attributes.Set("Generator", Layer.Defaults, generatorMapping);
     }
 

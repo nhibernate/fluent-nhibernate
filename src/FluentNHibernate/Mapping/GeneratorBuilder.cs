@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentNHibernate.MappingModel.Identity;
 using NHibernate.Id;
 
@@ -6,6 +7,8 @@ namespace FluentNHibernate.Mapping;
 
 class GeneratorBuilder(GeneratorMapping mapping, Type identityType, int layer)
 {
+    readonly HashSet<Type> identityCompatibleTypes = new HashSet<Type>{ typeof(long), typeof(int), typeof(short), typeof(byte) };
+    
     void SetGenerator(string generator)
     {
         mapping.Set(x => x.Class, layer, generator);
@@ -29,6 +32,16 @@ class GeneratorBuilder(GeneratorMapping mapping, Type identityType, int layer)
     void EnsureStringIdentityType()
     {
         if (identityType != typeof(string)) throw new InvalidOperationException("Identity type must be string");
+    }
+
+    internal void SetDefault()
+    {
+        if (identityType == typeof(Guid))
+            GuidComb();
+        else if (identityCompatibleTypes.Contains(identityType))
+            Identity();
+        else
+            Assigned();
     }
 
     static bool IsIntegralType(Type t)

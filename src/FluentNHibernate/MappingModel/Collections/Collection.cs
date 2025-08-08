@@ -6,5 +6,6 @@ public enum Collection
     Bag,
     Map,
     List,
-    Set
+    Set,
+    IdBag
 }
