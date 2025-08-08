@@ -33,8 +33,6 @@ public class ValidationVisitor : DefaultMappingModelVisitor
                 "Remove Inverse from one side of the relationship",
                 mapping.ContainingEntityType);
         }
-        
-        //if (mapping.Collection == Collection.IdBag && mapping.Relationship.)
     }
 
     /// <summary>
