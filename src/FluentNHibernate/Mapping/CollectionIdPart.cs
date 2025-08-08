@@ -17,7 +17,7 @@ public class CollectionIdPart : ICollectionIdMappingProvider
     /// <example>
     /// .AsIdBag&lt;int&gt;(x => x.Column("Id").GeneratedBy.Identity())
     /// </example>
-    public IdentityGenerationStrategyBuilder<CollectionIdPart> GeneratedBy { get; }F
+    public IdentityGenerationStrategyBuilder<CollectionIdPart> GeneratedBy { get; }
 
     public CollectionIdPart(Type entityType, Type idColumnType)
     {

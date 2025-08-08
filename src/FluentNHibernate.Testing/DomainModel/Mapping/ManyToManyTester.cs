@@ -351,7 +351,7 @@ public class ManyToManyTester
     [Test]
     public void CanSpecifyIdBagWithLength()
     {
-        var x = new MappingTester<ManyToManyTarget>()
+        new MappingTester<ManyToManyTarget>()
             .ForMapping(m => m.HasManyToMany(x => x.MapOfChildren)
                 .AsIdBag<string>(x => x.Column("Id").Length(10)))
             .Element("class/idbag/collection-id").Exists()
@@ -365,7 +365,7 @@ public class ManyToManyTester
     [Test]
     public void CanSpecifyIdBagWithNonGenericType()
     {
-        var x = new MappingTester<ManyToManyTarget>()
+        new MappingTester<ManyToManyTarget>()
             .ForMapping(m => m.HasManyToMany(x => x.MapOfChildren)
                 .AsIdBag(typeof(string), x => x.Column("Id").Length(10)))
             .Element("class/idbag/collection-id").Exists()
@@ -379,7 +379,7 @@ public class ManyToManyTester
     [Test]
     public void CanSpecifyIdBagWithGenerator()
     {
-        var x = new MappingTester<ManyToManyTarget>()
+        new MappingTester<ManyToManyTarget>()
             .ForMapping(m => m.HasManyToMany(x => x.MapOfChildren)
                 .AsIdBag(typeof(int), x => x.GeneratedBy.Identity()))
             .Element("class/idbag/collection-id").Exists()
