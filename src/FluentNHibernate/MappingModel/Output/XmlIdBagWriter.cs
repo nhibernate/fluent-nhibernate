@@ -7,8 +7,6 @@ namespace FluentNHibernate.MappingModel.Output;
 
 public class XmlIdBagWriter(IXmlWriterServiceLocator serviceLocator) : BaseXmlCollectionWriter(serviceLocator), IXmlWriter<CollectionMapping>
 {
-    readonly IXmlWriterServiceLocator _serviceLocator = serviceLocator;
-
     public XmlDocument Write(CollectionMapping mappingModel)
     {
         document = null;
@@ -25,14 +23,14 @@ public class XmlIdBagWriter(IXmlWriterServiceLocator serviceLocator) : BaseXmlCo
     
     public override void Visit(CollectionIdMapping mapping)
     {
-        var writer = _serviceLocator.GetWriter<CollectionIdMapping>();
+        var writer = serviceLocator.GetWriter<CollectionIdMapping>();
         var xml = writer.Write(mapping);
         document.ImportAndAppendChild(xml);
     }
     
     public override void Visit(GeneratorMapping mapping)
     {
-        var writer = _serviceLocator.GetWriter<GeneratorMapping>();
+        var writer = serviceLocator.GetWriter<GeneratorMapping>();
         var generatorXml = writer.Write(mapping);
         document.ImportAndAppendChild(generatorXml);
     }
