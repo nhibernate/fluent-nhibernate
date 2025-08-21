@@ -16,13 +16,12 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     protected ElementPart elementPart;
     protected ICompositeElementMappingProvider componentMapping;
     protected bool nextBool = true;
+    protected Func<AttributeStore, CollectionMapping> collectionBuilder;
 
     protected readonly AttributeStore collectionAttributes = new AttributeStore();
     protected readonly KeyMapping keyMapping = new KeyMapping();
     protected readonly AttributeStore relationshipAttributes = new AttributeStore();
-    Func<AttributeStore, CollectionMapping> collectionBuilder;
     IndexMapping indexMapping;
-    CollectionIdMapping collectionIdMapping;
     protected Member member;
     readonly List<IFilterMappingProvider> filters = [];
 
@@ -152,26 +151,6 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     public T AsBag()
     {
         collectionBuilder = attrs => CollectionMapping.Bag(attrs);
-        return (T)this;
-    }
-
-    /// <summary>
-    /// Use an idbag collection
-    /// </summary>
-    public T AsIdBag<TIdType>(Action<CollectionIdPart> customId = null)
-    {
-        return AsIdBag(typeof(TIdType), customId);
-    }
-    
-    /// <summary>
-    /// Use an idbag collection
-    /// </summary>
-    public T AsIdBag(Type idColType, Action<CollectionIdPart> customId = null)
-    {
-        collectionBuilder = attrs => CollectionMapping.IdBag(attrs);
-        var builder = new CollectionIdPart(typeof(T), idColType);
-        customId?.Invoke(builder);
-        collectionIdMapping = ((ICollectionIdMappingProvider)builder).GetCollectionIdMapping();
         return (T)this;
     }
 
@@ -746,9 +725,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         // HACK: Index only on list and map - shouldn't have to do this!
         if (mapping.Collection == Collection.Array || mapping.Collection == Collection.List || mapping.Collection == Collection.Map)
             mapping.Set(x => x.Index, Layer.Defaults, indexMapping);
-        else if (mapping.Collection == Collection.IdBag)
-            mapping.Set(x => x.CollectionId, Layer.Defaults, collectionIdMapping);
-
+        
         if (elementPart is not null)
         {
             mapping.Set(x => x.Element, Layer.Defaults, ((IElementMappingProvider)elementPart).GetElementMapping());

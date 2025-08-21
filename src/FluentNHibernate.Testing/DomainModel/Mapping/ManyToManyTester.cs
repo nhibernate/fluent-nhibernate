@@ -388,4 +388,15 @@ public class ManyToManyTester
             .Element("class/idbag/collection-id/generator").Exists()
                 .HasAttribute("class", "identity");
     }
+    
+    [Test]
+    public void CanSpecifyIdBagWithDefaultIdType()
+    {
+        new MappingTester<ManyToManyTarget>()
+            .ForMapping(m => m.HasManyToMany(x => x.MapOfChildren)
+                .AsIdBag(x => x.Column("Id")))
+            .Element("class/idbag/collection-id").Exists()
+            .HasAttribute("column", "Id")
+            .HasAttribute("type",  typeof(int).AssemblyQualifiedName);
+    }
 }

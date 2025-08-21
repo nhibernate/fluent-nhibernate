@@ -7,7 +7,7 @@ using FluentNHibernate.Visitors;
 namespace FluentNHibernate.MappingModel.Collections;
 
 [Serializable]
-public sealed class CollectionIdMapping(AttributeStore attributes) : MappingBase, IEquatable<CollectionIdMapping>
+public class CollectionIdMapping(AttributeStore attributes) : MappingBase, IEquatable<CollectionIdMapping>
 {
     readonly AttributeStore attributes = attributes;
 
