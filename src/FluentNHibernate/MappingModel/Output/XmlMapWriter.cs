@@ -7,8 +7,6 @@ namespace FluentNHibernate.MappingModel.Output;
 public class XmlMapWriter(IXmlWriterServiceLocator serviceLocator)
     : BaseXmlCollectionWriter(serviceLocator), IXmlWriter<CollectionMapping>
 {
-    readonly IXmlWriterServiceLocator serviceLocator = serviceLocator;
-
     public XmlDocument Write(CollectionMapping mappingModel)
     {
         document = null;

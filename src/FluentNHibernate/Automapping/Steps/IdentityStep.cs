@@ -9,8 +9,6 @@ namespace FluentNHibernate.Automapping.Steps;
 
 public class IdentityStep(IAutomappingConfiguration cfg) : IAutomappingStep
 {
-    readonly List<Type> identityCompatibleTypes = new List<Type> { typeof(long), typeof(int), typeof(short), typeof(byte) };
-
     public bool ShouldMap(Member member)
     {
         return cfg.IsId(member);
@@ -52,15 +50,7 @@ public class IdentityStep(IAutomappingConfiguration cfg) : IAutomappingStep
     GeneratorMapping GetDefaultGenerator(Member property)
     {
         var generatorMapping = new GeneratorMapping();
-        var defaultGenerator = new GeneratorBuilder(generatorMapping, property.PropertyType, Layer.Defaults);
-
-        if (property.PropertyType == typeof(Guid))
-            defaultGenerator.GuidComb();
-        else if (identityCompatibleTypes.Contains(property.PropertyType))
-            defaultGenerator.Identity();
-        else
-            defaultGenerator.Assigned();
-
+        new GeneratorBuilder(generatorMapping, property.PropertyType, Layer.Defaults).SetDefault();
         return generatorMapping;
     }
 }

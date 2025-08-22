@@ -7,6 +7,7 @@ namespace FluentNHibernate.MappingModel.Output;
 
 public abstract class BaseXmlCollectionWriter(IXmlWriterServiceLocator serviceLocator) : NullMappingModelVisitor
 {
+    protected readonly IXmlWriterServiceLocator serviceLocator = serviceLocator;
     protected XmlDocument document;
 
     public override void Visit(KeyMapping mapping)

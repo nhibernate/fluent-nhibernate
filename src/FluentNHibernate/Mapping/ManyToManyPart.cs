@@ -17,6 +17,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
     readonly Type childType;
     Type valueType;
     bool isTernary;
+    CollectionIdMapping collectionIdMapping;
 
     public ManyToManyPart(Type entity, Member property)
         : this(entity, property, property.PropertyType)
@@ -338,11 +339,41 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
     {
         return ChildWhere(ExpressionToSql.Convert(@where));
     }
+    
+    /// <summary>
+    /// Use an idbag collection
+    /// </summary>
+    public ManyToManyPart<TChild> AsIdBag<TIdType>(Action<CollectionIdPart> customId = null)
+    {
+        return AsIdBag(typeof(TIdType), customId);
+    }
+    
+    /// <summary>
+    /// Use an idbag collection with an int id type
+    /// </summary>
+    public ManyToManyPart<TChild> AsIdBag(Action<CollectionIdPart> customId = null)
+    {
+        return AsIdBag(typeof(Int32), customId);
+    }
+    
+    /// <summary>
+    /// Use an idbag collection
+    /// </summary>
+    public ManyToManyPart<TChild> AsIdBag(Type idColType, Action<CollectionIdPart> customId = null)
+    {
+        collectionBuilder = CollectionMapping.IdBag;
+        var builder = new CollectionIdPart(typeof(ManyToManyPart<TChild>), idColType);
+        customId?.Invoke(builder);
+        collectionIdMapping = ((ICollectionIdMappingProvider)builder).GetCollectionIdMapping();
+        return this;
+    }
 
     protected override CollectionMapping GetCollectionMapping()
     {
         var collection = base.GetCollectionMapping();
 
+        collection.Set(x => x.CollectionId, Layer.Defaults, collectionIdMapping);
+        
         // key columns
         if (ParentKeyColumns.Count == 0)
             collection.Key.AddColumn(Layer.Defaults, new ColumnMapping(EntityType.Name + "_id"));

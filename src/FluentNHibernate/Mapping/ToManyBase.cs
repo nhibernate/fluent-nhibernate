@@ -16,11 +16,11 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     protected ElementPart elementPart;
     protected ICompositeElementMappingProvider componentMapping;
     protected bool nextBool = true;
+    protected Func<AttributeStore, CollectionMapping> collectionBuilder;
 
     protected readonly AttributeStore collectionAttributes = new AttributeStore();
     protected readonly KeyMapping keyMapping = new KeyMapping();
     protected readonly AttributeStore relationshipAttributes = new AttributeStore();
-    Func<AttributeStore, CollectionMapping> collectionBuilder;
     IndexMapping indexMapping;
     protected Member member;
     readonly List<IFilterMappingProvider> filters = [];
@@ -725,7 +725,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         // HACK: Index only on list and map - shouldn't have to do this!
         if (mapping.Collection == Collection.Array || mapping.Collection == Collection.List || mapping.Collection == Collection.Map)
             mapping.Set(x => x.Index, Layer.Defaults, indexMapping);
-
+        
         if (elementPart is not null)
         {
             mapping.Set(x => x.Element, Layer.Defaults, ((IElementMappingProvider)elementPart).GetElementMapping());
