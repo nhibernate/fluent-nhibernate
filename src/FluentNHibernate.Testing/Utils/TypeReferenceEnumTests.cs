@@ -16,7 +16,7 @@ public class TypeReferenceEnumTests
         enumTypeReference.IsEnum.ShouldBeTrue();
     }
 
-    [Test, Obsolete]
+    [Test]
     public void IsEnumOnTypeReferenceToGenericEnumMapperShouldBeTrue()
     {
         var enumTypeReference = new TypeReference(typeof(GenericEnumMapper<TestEnum>));

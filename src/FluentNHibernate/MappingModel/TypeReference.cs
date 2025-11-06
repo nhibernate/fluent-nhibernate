@@ -39,9 +39,7 @@ public class TypeReference: IEquatable<TypeReference>
                 {
                     return true;
                 }
-#pragma warning disable CS0618
                 if (innerType.GetGenericTypeDefinition() == typeof(GenericEnumMapper<>))
-#pragma warning restore CS0618
                 {
                     return true;
                 }
