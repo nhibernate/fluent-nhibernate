@@ -3,6 +3,10 @@
     <TargetFrameworks>net48;net8.0</TargetFrameworks>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="ConventionsTests\Defaults\**" />
     <EmbeddedResource Remove="ConventionsTests\Defaults\**" />
