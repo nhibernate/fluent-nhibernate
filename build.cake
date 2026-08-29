@@ -93,7 +93,7 @@ Task("Test")
 
             DotNetTest(project.ToString(), new DotNetTestSettings
             {
-                Framework = "net6.0",
+                Framework = "net8.0",
                 NoBuild = true,
                 NoRestore = true,
                 Configuration = parameters.Configuration
