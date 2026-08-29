@@ -1,8 +1,11 @@
 ## How to release
 
-### Ensure tokens are current
+### Ensure publishing is configured
 
-Ensure that GitHub and NuGet tokens are not expired. If they are update `GITHUB_TOKEN` and `NUGET_API_KEY` environment variables in AppVeyor.
+Releasing runs on GitHub Actions (`.github/workflows/dotnet.yml`) when a tag is pushed:
+
+- **NuGet** uses [trusted publishing](https://learn.microsoft.com/nuget/nuget-org/trusted-publishing) (OIDC), so there is no long-lived API key to rotate. Ensure a trusted publishing policy exists on nuget.org for the `nhibernate/fluent-nhibernate` repository and the `.NET` workflow, and that the `NUGET_USER` repository secret is set to the owning nuget.org account.
+- **GitHub release** uses the built-in `GITHUB_TOKEN`; no secret to maintain.
 
 ### Prepare milestone
 

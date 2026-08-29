@@ -8,7 +8,7 @@ public class BuildParameters
     public string Configuration { get; private set; }
     public bool IsLocalBuild { get; private set; }    
     public bool IsRunningOnWindows { get; private set; }
-    public bool IsRunningOnAppVeyor { get; private set; }
+    public bool IsCI { get; private set; }
     public bool IsPullRequest { get; private set; }
     public bool IsMainRepo { get; private set; }
     public bool IsMainBranch { get; private set; }    
@@ -45,16 +45,21 @@ public class BuildParameters
         var target = context.Argument("target", "Default");
         var buildSystem = context.BuildSystem();
 
+        var repository = context.EnvironmentVariable("GITHUB_REPOSITORY");
+        var refName = context.EnvironmentVariable("GITHUB_REF_NAME");
+        var isTagged = StringComparer.OrdinalIgnoreCase.Equals("tag", context.EnvironmentVariable("GITHUB_REF_TYPE"));
+
         return new BuildParameters {
             Target = target,
             Configuration = context.Argument("configuration", "Release"),
             IsLocalBuild = buildSystem.IsLocalBuild,            
             IsRunningOnWindows = context.IsRunningOnWindows(),
-            IsRunningOnAppVeyor = buildSystem.AppVeyor.IsRunningOnAppVeyor,
-            IsPullRequest = buildSystem.AppVeyor.Environment.PullRequest.IsPullRequest,
-            IsMainRepo = StringComparer.OrdinalIgnoreCase.Equals("nhibernate/fluent-nhibernate", buildSystem.AppVeyor.Environment.Repository.Name),
-            IsMainBranch = StringComparer.OrdinalIgnoreCase.Equals("main", buildSystem.AppVeyor.Environment.Repository.Branch),            
-            IsTagged = IsBuildTagged(buildSystem),            
+            IsCI = buildSystem.GitHubActions.IsRunningOnGitHubActions,
+            IsPullRequest = buildSystem.GitHubActions.Environment.PullRequest.IsPullRequest,
+            IsMainRepo = StringComparer.OrdinalIgnoreCase.Equals("nhibernate/fluent-nhibernate", repository),
+            // tag builds are cut from main
+            IsMainBranch = isTagged || StringComparer.OrdinalIgnoreCase.Equals("main", refName),
+            IsTagged = isTagged,
             GitHub = BuildGitHub.GetWithCredentials(context, "nhibernate", "fluent-nhibernate"),
             NuGet = BuildNuGet.GetWithCredentials(context),
             ReleaseNotes = context.ParseReleaseNotes("./ReleaseNotes.md"),
@@ -62,10 +67,6 @@ public class BuildParameters
             IsReleaseBuild = IsReleasing(target)                          
         };
     }
-
-    private static bool IsBuildTagged(BuildSystem buildSystem) =>
-        buildSystem.AppVeyor.Environment.Repository.Tag.IsTag && 
-        !string.IsNullOrWhiteSpace(buildSystem.AppVeyor.Environment.Repository.Tag.Name);    
 
     private static bool IsReleasing(string target)
     {

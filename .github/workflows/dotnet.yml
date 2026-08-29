@@ -3,6 +3,7 @@ name: .NET
 on:
   push:
     branches: [ "main" ]
+    tags: [ "*" ]
   pull_request:
     branches: [ "main" ]
 
@@ -10,6 +11,11 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
+
+permissions:
+  contents: write
+  issues: write
+  id-token: write
 
 jobs:
   build:
@@ -24,5 +30,15 @@ jobs:
         global-json-file: global.json
     - name: Restore dependencies
       run: dotnet tool restore
+    - name: NuGet login
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: NuGet/login@v1
+      id: nuget-login
+      with:
+        user: ${{ secrets.NUGET_USER }}
     - name: Build
-      run: dotnet cake --target AppVeyor --verbosity Diagnostic
+      run: dotnet cake --target CI --verbosity Diagnostic
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NUGET_API_URL: https://api.nuget.org/v3/index.json
+        NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}

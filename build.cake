@@ -204,29 +204,6 @@ Task("Create-Release-Notes")
         );
     });
 
-Task("Update-AppVeyor-BuildNumber")
-    .WithCriteria(() => parameters.IsRunningOnAppVeyor)
-    .Does(() =>
-    {
-        // AppVeyor.UpdateBuildVersion(parameters.Version.SemVersion);
-    })
-    .ReportError(exception =>
-    {
-        // Via: See https://github.com/reactiveui/ReactiveUI/issues/1262
-        Warning("Build with version {0} already exists.", parameters.Version.SemVersion);
-    });    
-
-Task("Upload-AppVeyor-Artifacts")        
-    .WithCriteria(() => parameters.IsRunningOnAppVeyor)
-    .Does(() =>
-    {
-        AppVeyor.UploadArtifact(parameters.Paths.Files.ZipArtifactPathDesktop);    
-        foreach(var package in GetFiles(parameters.Paths.Directories.NugetRoot + "/*"))
-        {
-            AppVeyor.UploadArtifact(package);
-        }
-    });
-	
 Task("Release-Notes")
   .IsDependentOn("Create-Release-Notes");
 
@@ -234,17 +211,15 @@ Task("Package")
     .IsDependentOn("Zip-Files")
     .IsDependentOn("Create-NuGet-Packages");  
 
-Task("AppVeyor")
-    .IsDependentOn("Update-AppVeyor-BuildNumber")
+Task("CI")
     .IsDependentOn("Package")
-    .IsDependentOn("Upload-AppVeyor-Artifacts")     
     .IsDependentOn("Publish-NuGet")
     .IsDependentOn("Publish-GitHub-Release")
     .Finally(() =>
     {
         if(publishingError)
         {
-            throw new Exception("An error occurred during the publishing of Cake.  All publishing tasks have been attempted.");
+            throw new Exception("An error occurred during the publishing of FluentNHibernate. All publishing tasks have been attempted.");
         }
     });
     
