@@ -45,9 +45,8 @@ public class BuildParameters
         var target = context.Argument("target", "Default");
         var buildSystem = context.BuildSystem();
 
-        var repository = context.EnvironmentVariable("GITHUB_REPOSITORY");
-        var refName = context.EnvironmentVariable("GITHUB_REF_NAME");
-        var isTagged = StringComparer.OrdinalIgnoreCase.Equals("tag", context.EnvironmentVariable("GITHUB_REF_TYPE"));
+        var workflow = buildSystem.GitHubActions.Environment.Workflow;
+        var isTagged = workflow.RefType == Cake.Common.Build.GitHubActions.Data.GitHubActionsRefType.Tag;
 
         return new BuildParameters {
             Target = target,
@@ -56,9 +55,9 @@ public class BuildParameters
             IsRunningOnWindows = context.IsRunningOnWindows(),
             IsCI = buildSystem.GitHubActions.IsRunningOnGitHubActions,
             IsPullRequest = buildSystem.GitHubActions.Environment.PullRequest.IsPullRequest,
-            IsMainRepo = StringComparer.OrdinalIgnoreCase.Equals("nhibernate/fluent-nhibernate", repository),
+            IsMainRepo = StringComparer.OrdinalIgnoreCase.Equals("nhibernate/fluent-nhibernate", workflow.Repository),
             // tag builds are cut from main
-            IsMainBranch = isTagged || StringComparer.OrdinalIgnoreCase.Equals("main", refName),
+            IsMainBranch = isTagged || StringComparer.OrdinalIgnoreCase.Equals("main", workflow.RefName),
             IsTagged = isTagged,
             GitHub = BuildGitHub.GetWithCredentials(context, "nhibernate", "fluent-nhibernate"),
             NuGet = BuildNuGet.GetWithCredentials(context),
