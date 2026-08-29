@@ -9,9 +9,9 @@ env:
   IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
 
 permissions:
-  contents: write      # create the draft release
-  issues: read         # read milestone issues for the notes
-  pull-requests: read  # include merged PRs in the notes
+  contents: write
+  issues: read 
+  pull-requests: read
 
 jobs:
   prepare:
