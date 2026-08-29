@@ -12,10 +12,8 @@ Releasing runs on GitHub Actions (`.github/workflows/dotnet.yml`) when a tag is 
 1. Create milestone
 2. Assign issues to the milestone
 3. Label issues
-4. Create release notes
-    ```ps
-    .\build.ps1 --target Release-Notes
-    ```
+4. Create release notes by running the **Prepare Release** workflow (Actions tab → Prepare Release → Run workflow). It creates the draft GitHub release from the milestone.
+    - Locally, the equivalent is `.\build.ps1 --target Release-Notes`.
 
 ### Tag a release
 
