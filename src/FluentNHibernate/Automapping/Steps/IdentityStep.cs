@@ -7,7 +7,7 @@ using FluentNHibernate.MappingModel.Identity;
 
 namespace FluentNHibernate.Automapping.Steps;
 
-public class IdentityStep(IAutomappingConfiguration cfg) : IAutomappingStep
+public class IdentityStep(IAutomappingConfiguration cfg) : IAutomappingStep, IContextAwareAutomappingStep
 {
     readonly List<Type> identityCompatibleTypes = new List<Type> { typeof(long), typeof(int), typeof(short), typeof(byte) };
 
@@ -16,9 +16,14 @@ public class IdentityStep(IAutomappingConfiguration cfg) : IAutomappingStep
         return cfg.IsId(member);
     }
 
+    public bool ShouldMap(ClassMappingBase classMap, Member member)
+    {
+        return classMap is ClassMapping { Id: null } && ShouldMap(member);
+    }
+
     public void Map(ClassMappingBase classMap, Member member)
     {
-        if (!(classMap is ClassMapping)) return;
+        if (classMap is not ClassMapping) return;
 
         var idMapping = new IdMapping { ContainingEntityType = classMap.Type };
         var columnMapping = new ColumnMapping();

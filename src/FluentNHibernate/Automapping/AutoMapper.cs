@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentNHibernate.Automapping.Steps;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.ClassBased;
@@ -157,14 +158,21 @@ public class AutoMapper(
 
         foreach (var rule in cfg.GetMappingSteps(this, conventionFinder))
         {
-            if (!rule.ShouldMap(member)) continue;
             if (mappedMembers.Contains(member)) continue;
+            if (!ShouldMap(rule, mapping, member)) continue;
 
             rule.Map(mapping, member);
             mappedMembers.Add(member);
 
             break;
         }
+    }
+
+    private static bool ShouldMap(IAutomappingStep rule, ClassMappingBase mapping, Member member)
+    {
+        return rule is IContextAwareAutomappingStep contextual
+            ? contextual.ShouldMap(mapping, member)
+            : rule.ShouldMap(member);
     }
 
     public ClassMapping Map(Type classType, List<AutoMapType> types)
