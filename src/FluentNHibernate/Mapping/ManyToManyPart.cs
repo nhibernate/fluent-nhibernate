@@ -28,7 +28,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
     {
         childType = collectionType;
 
-        FetchType = new FetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
+        FetchType = new CollectionFetchTypeExpression<ManyToManyPart<TChild>>(this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
         NotFound = new NotFoundExpression<ManyToManyPart<TChild>>(this, value => relationshipAttributes.Set("NotFound", Layer.UserSupplied, value));
 
         ChildKeyColumns = new ColumnMappingCollection<ManyToManyPart<TChild>>(this);
@@ -40,7 +40,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
     /// </summary>
     public ManyToManyPart<TChild> ChildKeyColumn(string childKeyColumn)
     {
-        ChildKeyColumns.Clear(); 
+        ChildKeyColumns.Clear();
         ChildKeyColumns.Add(childKeyColumn);
         return this;
     }
@@ -50,7 +50,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
     /// </summary>
     public ManyToManyPart<TChild> ParentKeyColumn(string parentKeyColumn)
     {
-        ParentKeyColumns.Clear(); 
+        ParentKeyColumns.Clear();
         ParentKeyColumns.Add(parentKeyColumn);
         return this;
     }
@@ -98,7 +98,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
 
     public ManyToManyPart<TChild> AsTernaryAssociation(string indexColumn, string valueColumn)
     {
-        return AsTernaryAssociation(indexColumn, valueColumn, x => {});
+        return AsTernaryAssociation(indexColumn, valueColumn, x => { });
     }
 
     public ManyToManyPart<TChild> AsTernaryAssociation(string indexColumn, string valueColumn, Action<IndexManyToManyPart> indexAction)
@@ -129,7 +129,7 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
 
     public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, string indexColumn, Type typeOfValue, string valueColumn)
     {
-        return AsTernaryAssociation(indexType, indexColumn, typeOfValue, valueColumn, x => {});
+        return AsTernaryAssociation(indexType, indexColumn, typeOfValue, valueColumn, x => { });
     }
 
     public ManyToManyPart<TChild> AsTernaryAssociation(Type indexType, string indexColumn, Type typeOfValue, string valueColumn, Action<IndexManyToManyPart> indexAction)

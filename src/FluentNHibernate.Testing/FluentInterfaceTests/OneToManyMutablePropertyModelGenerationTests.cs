@@ -115,7 +115,7 @@ public class OneToManyMutablePropertyModelGenerationTests : BaseModelFixture
             .Mapping(m => m.Not.LazyLoad())
             .ModelShouldMatch(x => x.Lazy.ShouldEqual(Lazy.False));
     }
-        
+
     [Test]
     public void ExtraLazyLoadShouldSetModelLazyPropertyToExtra()
     {
@@ -178,6 +178,14 @@ public class OneToManyMutablePropertyModelGenerationTests : BaseModelFixture
         OneToMany(x => x.BagOfChildren)
             .Mapping(m => m.Fetch.Select())
             .ModelShouldMatch(x => x.Fetch.ShouldEqual("select"));
+    }
+
+    [Test]
+    public void FetchSubselectShouldSetModelFetchPropertyToSubselect()
+    {
+        OneToMany(x => x.BagOfChildren)
+            .Mapping(m => m.Fetch.Subselect())
+            .ModelShouldMatch(x => x.Fetch.ShouldEqual("subselect"));
     }
 
     [Test]
