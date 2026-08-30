@@ -266,7 +266,8 @@ public class IdentityPart : IIdentityMappingProvider
     {
         var mapping = new IdMapping(attributes.Clone())
         {
-            ContainingEntityType = entityType
+            ContainingEntityType = entityType,
+            Member = member,
         };
 
         if (columns.Count > 0)
