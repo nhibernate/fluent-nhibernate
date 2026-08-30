@@ -166,6 +166,36 @@ public class HasManyCollectionConventionTests
     }
 
     [Test]
+    public void ElementTypeShouldBeSetByConventionUsingGeneric()
+    {
+        Mapping(x => x.Children, x => x.Element("xxx"));
+
+        Convention(x => x.Element.Type<string>());
+
+        VerifyModel(x => x.Element.Type.GetUnderlyingSystemType().ShouldEqual(typeof(string)));
+    }
+
+    [Test]
+    public void ElementTypeShouldBeSetByConventionUsingTypeOf()
+    {
+        Mapping(x => x.Children, x => x.Element("xxx"));
+
+        Convention(x => x.Element.Type(typeof(string)));
+
+        VerifyModel(x => x.Element.Type.GetUnderlyingSystemType().ShouldEqual(typeof(string)));
+    }
+
+    [Test]
+    public void ElementTypeShouldBeSetByConventionUsingString()
+    {
+        Mapping(x => x.Children, x => x.Element("xxx"));
+
+        Convention(x => x.Element.Type(typeof(string).AssemblyQualifiedName));
+
+        VerifyModel(x => x.Element.Type.GetUnderlyingSystemType().ShouldEqual(typeof(string)));
+    }
+
+    [Test]
     public void LazyShouldntBeOverwritten()
     {
         Mapping(x => x.Children, x => x.LazyLoad());

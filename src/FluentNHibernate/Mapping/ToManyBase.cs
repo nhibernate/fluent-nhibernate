@@ -417,7 +417,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     public T Element(string columnName)
     {
         elementPart = new ElementPart(typeof(T));
-        elementPart.Type<TChild>();
+        elementPart.SetDefaultType(typeof(TChild));
 
         if (!string.IsNullOrEmpty(columnName))
             elementPart.Column(columnName);
