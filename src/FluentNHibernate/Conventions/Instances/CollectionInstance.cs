@@ -30,10 +30,7 @@ public class CollectionInstance(CollectionMapping mapping) : CollectionInspector
         get { return new CollectionCascadeInstance(value => mapping.Set(x => x.Cascade, Layer.Conventions, value)); }
     }
 
-    public new IFetchInstance Fetch
-    {
-        get { return new CollectionFetchInstance(value => mapping.Set(x => x.Fetch, Layer.Conventions, value)); }
-    }
+    public new IFetchInstance Fetch => new CollectionFetchInstance(value => mapping.Set(x => x.Fetch, Layer.Conventions, value));
 
     public new void OptimisticLock()
     {
