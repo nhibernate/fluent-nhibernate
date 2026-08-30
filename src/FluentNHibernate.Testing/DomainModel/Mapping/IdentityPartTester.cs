@@ -2,6 +2,7 @@ using System;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping.Providers;
 using FluentNHibernate.Utils.Reflection;
 using NUnit.Framework;
 
@@ -456,6 +457,17 @@ public class IdentityPartTester
         Assert.That(() =>
                 new IdentityPart(typeof(IdentityTarget), property).GeneratedBy.Native(),
             Throws.TypeOf<InvalidOperationException>());
+    }
+
+    [Test]
+    public void SetsMemberOnMapping()
+    {
+        var member = typeof(IdentityTarget).GetProperty("IntId").ToMember();
+        var part = new IdentityPart(typeof(IdentityTarget), member);
+
+        var mapping = ((IIdentityMappingProvider)part).GetIdentityMapping();
+
+        mapping.Member.ShouldEqual(member);
     }
 
     [Test]
