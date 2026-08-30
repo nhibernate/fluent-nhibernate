@@ -45,6 +45,16 @@ public class ElementPart : IElementMappingProvider
     }
 
     /// <summary>
+    /// Specify the default element type, allowing it to be overridden by conventions.
+    /// </summary>
+    /// <param name="type">Element type</param>
+    internal ElementPart SetDefaultType(Type type)
+    {
+        attributes.Set("Type", Layer.Defaults, new TypeReference(type));
+        return this;
+    }
+
+    /// <summary>
     /// Specify the element column length
     /// </summary>
     /// <param name="length">Column length</param>
