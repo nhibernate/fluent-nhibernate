@@ -97,6 +97,12 @@ public class when_using_an_automapping_override_to_specify_a_different_id
     It should_map_id_as_different_id = () =>
         ((IdMapping)mapping.Id).Name.ShouldEqual("DestinationId");
 
+    It should_map_the_leftover_id_named_member_as_a_property = () =>
+        mapping.Properties.Select(x => x.Name).ShouldContain("Id");
+
+    It should_not_also_map_the_overridden_id_as_a_property = () =>
+        mapping.Properties.Select(x => x.Name).ShouldNotContain("DestinationId");
+
     static AutoPersistenceModel model;
     static ClassMapping mapping;
 }
