@@ -31,7 +31,7 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
         this.member = member;
         AsBag();
         Access = new AccessStrategyBuilder<T>((T)this, value => collectionAttributes.Set("Access", Layer.UserSupplied, value));
-        Fetch = new FetchTypeExpression<T>((T)this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
+        Fetch = new CollectionFetchTypeExpression<T>((T)this, value => collectionAttributes.Set("Fetch", Layer.UserSupplied, value));
         Cascade = new CollectionCascadeExpression<T>((T)this, value =>
         {
             var current = collectionAttributes.Get("Cascade") as string;

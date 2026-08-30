@@ -32,7 +32,7 @@ public class CollectionInstance(CollectionMapping mapping) : CollectionInspector
 
     public new IFetchInstance Fetch
     {
-        get { return new FetchInstance(value => mapping.Set(x => x.Fetch, Layer.Conventions, value)); }
+        get { return new CollectionFetchInstance(value => mapping.Set(x => x.Fetch, Layer.Conventions, value)); }
     }
 
     public new void OptimisticLock()
@@ -147,7 +147,7 @@ public class CollectionInstance(CollectionMapping mapping) : CollectionInspector
         mapping.Set(x => x.Lazy, Layer.Conventions, nextBool ? Lazy.True : Lazy.False);
         nextBool = true;
     }
-        
+
     public override void ExtraLazyLoad()
     {
         mapping.Set(x => x.Lazy, Layer.Conventions, nextBool ? Lazy.Extra : Lazy.True);
@@ -201,13 +201,13 @@ public class CollectionInstance(CollectionMapping mapping) : CollectionInspector
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public ICollectionInstance Not
     {
-        get 
+        get
         {
             nextBool = !nextBool;
-            return this; 
+            return this;
         }
     }
-        
+
     public new ICacheInstance Cache
     {
         get
@@ -238,7 +238,7 @@ public class CollectionInstance(CollectionMapping mapping) : CollectionInspector
         {
             if (mapping.Element is null)
                 mapping.Set(x => x.Element, Layer.Conventions, new ElementMapping());
-                
+
             return new ElementInstance(mapping.Element);
         }
     }

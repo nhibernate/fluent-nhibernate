@@ -10,7 +10,7 @@ public class FetchTypeExpressionTester
     #region Test Setup
     public FetchTypeExpression<object> _fetchType;
     string fetchValue;
-		
+
     [SetUp]
     public virtual void SetUp()
     {
@@ -44,8 +44,18 @@ public class FetchTypeExpressionTester
     }
 
     [Test]
-    public void Subselect_should_add_the_correct_fetch_attribute_to_the_parent_part()
+    public void Subselect_should_throw_because_it_is_not_supported_for_associations()
     {
-        A_call_to(_fetchType.Subselect).should_set_the_fetch_value_to("subselect");
+        Assert.Throws<NotSupportedException>(() => _fetchType.Subselect());
+    }
+
+    [Test]
+    public void Subselect_on_a_collection_fetch_should_add_the_correct_fetch_attribute()
+    {
+        var collectionFetchType = new CollectionFetchTypeExpression<object>(null, value => fetchValue = value);
+
+        collectionFetchType.Subselect();
+
+        fetchValue.ShouldEqual("subselect");
     }
 }
