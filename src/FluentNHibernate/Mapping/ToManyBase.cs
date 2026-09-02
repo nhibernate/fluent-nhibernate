@@ -66,6 +66,21 @@ public abstract class ToManyBase<T, TChild> : ICollectionMappingProvider
     }
 
     /// <summary>
+    /// This method is used to set a different key column in this table to be used for joins.
+    /// The output is set as the property-ref attribute in the "key" subelement of the collection
+    /// </summary>
+    /// <example>
+    /// HasMany(x => x.Children).PropertyRef&lt;Parent&gt;(p => p.Code);
+    /// </example>
+    /// <typeparam name="TParent">The entity which owns the collection</typeparam>
+    /// <param name="expression">The property of the owning entity which is linked to the foreign key</param>
+    /// <returns>OneToManyPart</returns>
+    public T PropertyRef<TParent>(Expression<Func<TParent, object>> expression)
+    {
+        return PropertyRef(expression.ToMember().Name);
+    }
+
+    /// <summary>
     /// Specify caching for this entity.
     /// </summary>
     public CachePart Cache { get; }
