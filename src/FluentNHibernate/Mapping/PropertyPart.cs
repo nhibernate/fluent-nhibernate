@@ -309,7 +309,11 @@ public class PropertyPart : IPropertyMappingProvider
             Member = member
         };
 
-        if (Columns.Count == 0 && !mapping.IsSpecified("Formula"))
+        if (mapping.IsSpecified("Formula"))
+        {
+            mapping.MakeColumnsEmpty(Layer.UserSupplied);
+        }
+        else if (Columns.Count == 0)
         {
             var columnMapping = new ColumnMapping(columnAttributes.Clone());
             columnMapping.Set(x => x.Name, Layer.Defaults, member.Name);

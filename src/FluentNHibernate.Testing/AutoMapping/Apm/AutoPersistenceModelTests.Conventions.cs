@@ -2,6 +2,7 @@
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers;
+using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Testing.Automapping;
 using NUnit.Framework;
 
@@ -76,6 +77,22 @@ public partial class AutoPersistenceModelTests : BaseAutoPersistenceTests
 
         new AutoMappingTester<ExampleClass>(autoMapper)
             .Element("class").HasAttribute("table", "test");
+    }
+
+    [Test]
+    public void PropertyFormulaConventionShouldNotRenderColumn()
+    {
+        var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
+            .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
+            .Conventions.Add(new PropertyConventionBuilder().Always(x =>
+            {
+                if (x.Name == "LineOne")
+                    x.Formula("foo(bar)");
+            }));
+
+        new AutoMappingTester<ExampleClass>(autoMapper)
+            .Element("class/property[@name='LineOne']").HasAttribute("formula", "foo(bar)")
+            .Element("class/property[@name='LineOne']/column").DoesntExist();
     }
 
     [Test]

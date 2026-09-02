@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.TestFixtures;
+using FluentNHibernate.Conventions.Helpers.Builders;
 using FluentNHibernate.Testing.Automapping;
 using NUnit.Framework;
 
@@ -35,6 +36,31 @@ public partial class AutoPersistenceModelTests : BaseAutoPersistenceTests
             .Exists()
             .HasThisManyChildNodes(1)
             .Element("//property[@name='LineOne']/column").HasAttribute("name", "test");
+    }
+
+    [Test]
+    public void OverrideWithFormulaShouldNotRenderColumn()
+    {
+        var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
+            .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
+            .Override<ExampleClass>(c => c.Map(x => x.LineOne).Formula("foo(bar)"));
+
+        new AutoMappingTester<ExampleClass>(autoMapper)
+            .Element("//property[@name='LineOne']").HasAttribute("formula", "foo(bar)")
+            .Element("//property[@name='LineOne']/column").DoesntExist();
+    }
+
+    [Test]
+    public void OverrideWithFormulaAndColumnConventionShouldNotRenderColumn()
+    {
+        var autoMapper = AutoMap.AssemblyOf<ExampleClass>()
+            .Where(t => t.Namespace == "FluentNHibernate.Automapping.TestFixtures")
+            .Conventions.Add(new PropertyConventionBuilder().Always(x => x.Column(x.Name.ToUpperInvariant())))
+            .Override<ExampleClass>(c => c.Map(x => x.LineOne).Formula("foo(bar)"));
+
+        new AutoMappingTester<ExampleClass>(autoMapper)
+            .Element("//property[@name='LineOne']").HasAttribute("formula", "foo(bar)")
+            .Element("//property[@name='LineOne']/column").DoesntExist();
     }
 
     [Test]

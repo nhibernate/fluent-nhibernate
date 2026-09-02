@@ -272,6 +272,19 @@ public class PropertyPartTester
     }
 
     [Test]
+    public void MapWithFluentFormulaAndColumnOptionsDoesNotRenderColumn()
+    {
+        new MappingTester<PropertyTarget>()
+            .ForMapping(m =>
+            {
+                m.Id(x => x.Id);
+                m.Map(x => x.Name).Formula("foo(bar)").Length(100).Not.Nullable();
+            })
+            .Element("class/property").HasAttribute("formula", "foo(bar)")
+            .Element("class/property/column").DoesntExist();
+    }
+
+    [Test]
     public void MapWithLazyLoadUsesLazyAttribute()
     {
         new MappingTester<PropertyTarget>()

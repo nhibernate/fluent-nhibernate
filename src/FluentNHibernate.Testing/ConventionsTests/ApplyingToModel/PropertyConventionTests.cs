@@ -65,6 +65,23 @@ public class PropertyConventionTests
     }
 
     [Test]
+    public void ShouldNotHaveColumnsWhenFormulaSet()
+    {
+        Convention(x => x.Formula("xxx"));
+
+        VerifyModel(x => x.Columns.ShouldBeEmpty());
+    }
+
+    [Test]
+    public void ShouldNotHaveColumnsWhenFormulaAndColumnConventionsSet()
+    {
+        Convention(x => x.Formula("xxx"));
+        Convention(x => x.Column("yyy"));
+
+        VerifyModel(x => x.Columns.ShouldBeEmpty());
+    }
+
+    [Test]
     public void ShouldSetGeneratedProperty()
     {
         Convention(x => x.Generated.Never());
