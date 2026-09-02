@@ -1,6 +1,7 @@
 using System.Linq;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests;
@@ -282,6 +283,14 @@ public class OneToManyMutablePropertyModelGenerationTests : BaseModelFixture
         OneToMany(x => x.BagOfChildren)
             .Mapping(m => m.PropertyRef("prop1"))
             .ModelShouldMatch(x => x.Key.PropertyRef.ShouldEqual("prop1"));
+    }
+
+    [Test]
+    public void PropertyRefWithExpressionShouldSetModelValue()
+    {
+        OneToMany(x => x.BagOfChildren)
+            .Mapping(m => m.PropertyRef<OneToManyTarget>(t => t.Id))
+            .ModelShouldMatch(x => x.Key.PropertyRef.ShouldEqual("Id"));
     }
 
     [Test]

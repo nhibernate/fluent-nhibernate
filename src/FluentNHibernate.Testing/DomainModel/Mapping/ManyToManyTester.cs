@@ -72,6 +72,24 @@ public class ManyToManyTester
 
 
     [Test]
+    public void ManyToManyMapping_with_property_ref_expression()
+    {
+        new MappingTester<ManyToManyTarget>()
+            .ForMapping(m => m.HasManyToMany(x => x.GetOtherChildren()).PropertyRef((ManyToManyTarget t) => t.Id))
+            .Element("class/bag/key")
+            .HasAttribute("property-ref", "Id");
+    }
+
+    [Test]
+    public void ManyToManyMapping_with_child_property_ref_expression()
+    {
+        new MappingTester<ManyToManyTarget>()
+            .ForMapping(m => m.HasManyToMany(x => x.GetOtherChildren()).ChildPropertyRef(c => c.Name))
+            .Element("class/bag/many-to-many")
+            .HasAttribute("property-ref", "Name");
+    }
+
+    [Test]
     public void Can_use_custom_collection_implicitly()
     {
         new MappingTester<ManyToManyTarget>()

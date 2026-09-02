@@ -94,6 +94,14 @@ public class OneToManyTester
     }
 
     [Test]
+    public void CanSpecifyPropertyRefWithExpression()
+    {
+        new MappingTester<OneToManyTarget>()
+            .ForMapping(map => map.HasMany(x => x.BagOfChildren).PropertyRef((OneToManyTarget t) => t.Id))
+            .Element("class/bag/key").HasAttribute("property-ref", "Id");
+    }
+
+    [Test]
     public void CanSpecifyCollectionTypeAsBag()
     {
         new MappingTester<OneToManyTarget>()

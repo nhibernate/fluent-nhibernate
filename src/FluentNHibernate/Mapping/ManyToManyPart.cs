@@ -72,6 +72,16 @@ public class ManyToManyPart<TChild> : ToManyBase<ManyToManyPart<TChild>, TChild>
         return this;
     }
 
+    /// <summary>
+    /// Specifies the property of the child entity which is linked to the child key column.
+    /// The output is set as the property-ref attribute in the "many-to-many" subelement of the collection
+    /// </summary>
+    /// <param name="expression">The property of the child entity</param>
+    public ManyToManyPart<TChild> ChildPropertyRef(Expression<Func<TChild, object>> expression)
+    {
+        return ChildPropertyRef(expression.ToMember().Name);
+    }
+
     public FetchTypeExpression<ManyToManyPart<TChild>> FetchType { get; }
 
     void EnsureDictionary()

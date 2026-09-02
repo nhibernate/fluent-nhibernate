@@ -1,6 +1,7 @@
 using System.Linq;
 using FluentNHibernate.MappingModel;
 using FluentNHibernate.MappingModel.Collections;
+using FluentNHibernate.Testing.DomainModel.Mapping;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests;
@@ -286,6 +287,38 @@ public class ManyToManyMutablePropertyModelGenerationTests : BaseModelFixture
         ManyToMany(x => x.BagOfChildren)
             .Mapping(m => m.ChildWhere(x => x.Name == "Name"))
             .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).Where.ShouldEqual("Name = 'Name'"));
+    }
+
+    [Test]
+    public void PropertyRefShouldSetModelValue()
+    {
+        ManyToMany(x => x.BagOfChildren)
+            .Mapping(m => m.PropertyRef("prop1"))
+            .ModelShouldMatch(x => x.Key.PropertyRef.ShouldEqual("prop1"));
+    }
+
+    [Test]
+    public void PropertyRefWithExpressionShouldSetModelValue()
+    {
+        ManyToMany(x => x.BagOfChildren)
+            .Mapping(m => m.PropertyRef<ManyToManyTarget>(t => t.Id))
+            .ModelShouldMatch(x => x.Key.PropertyRef.ShouldEqual("Id"));
+    }
+
+    [Test]
+    public void ChildPropertyRefShouldSetModelValue()
+    {
+        ManyToMany(x => x.BagOfChildren)
+            .Mapping(m => m.ChildPropertyRef("prop1"))
+            .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).ChildPropertyRef.ShouldEqual("prop1"));
+    }
+
+    [Test]
+    public void ChildPropertyRefWithExpressionShouldSetModelValue()
+    {
+        ManyToMany(x => x.BagOfChildren)
+            .Mapping(m => m.ChildPropertyRef(c => c.Name))
+            .ModelShouldMatch(x => ((ManyToManyMapping)x.Relationship).ChildPropertyRef.ShouldEqual("Name"));
     }
 
     [Test]
