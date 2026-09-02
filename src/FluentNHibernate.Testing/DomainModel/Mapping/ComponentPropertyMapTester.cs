@@ -161,7 +161,8 @@ public class ComponentPropertyMapTester
     {
         new MappingTester<PropertyTarget>()
             .ForMapping(m => m.Component(x => x.Component, c => c.Map(x => x.Name).Formula("foo(bar)")))
-            .Element("//property").HasAttribute("formula", "foo(bar)");
+            .Element("//property").HasAttribute("formula", "foo(bar)")
+            .Element("//property/column").DoesntExist();
     }
 
     [Test]

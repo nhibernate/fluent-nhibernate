@@ -33,6 +33,15 @@ public class JoinPartTester
     }
 
     [Test]
+    public void PropertyFormulaInJoinShouldNotRenderColumn()
+    {
+        new MappingTester<JoinTarget>()
+            .ForMapping(m => m.Join("myTable", t => t.Map(x => x.Name).Formula("foo(bar)")))
+            .Element("class/join/property").HasAttribute("formula", "foo(bar)")
+            .Element("class/join/property/column").DoesntExist();
+    }
+
+    [Test]
     public void PropertiesDefinedInClassAndPropertiesDefinedInJoinAreSeparateInOutput()
     {
         new MappingTester<JoinTarget>()

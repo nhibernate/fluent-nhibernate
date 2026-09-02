@@ -196,6 +196,16 @@ public class ManyToOneConventionTests
         VerifyModel(x => x.Formula.ShouldEqual("form"));
     }
 
+    [Test]
+    public void ColumnConventionShouldNotAddColumnWhenFormulaSpecified()
+    {
+        Mapping(x => x.Formula("form"));
+
+        Convention(x => x.Column("xxx"));
+
+        VerifyModel(x => x.Columns.ShouldBeEmpty());
+    }
+
     #region Helpers
 
     void Convention(Action<IManyToOneInstance> convention)

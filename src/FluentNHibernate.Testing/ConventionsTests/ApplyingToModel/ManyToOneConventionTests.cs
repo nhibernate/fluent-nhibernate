@@ -161,6 +161,14 @@ public class ManyToOneConventionTests
     }
 
     [Test]
+    public void ShouldNotHaveColumnsWhenFormulaSet()
+    {
+        Convention(x => x.Formula("xxx"));
+
+        VerifyModel(x => x.Columns.ShouldBeEmpty());
+    }
+
+    [Test]
     public void ShouldSetOptimisticLockProperty()
     {
         Convention(x => x.OptimisticLock());

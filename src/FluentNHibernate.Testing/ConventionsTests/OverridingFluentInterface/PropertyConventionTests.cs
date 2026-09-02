@@ -79,6 +79,16 @@ public class PropertyConventionTests
     }
 
     [Test]
+    public void ColumnConventionShouldNotAddColumnWhenFormulaSpecified()
+    {
+        Mapping(x => x.LineOne, x => x.Formula("form"));
+
+        Convention(x => x.Column("xxx"));
+
+        VerifyModel(x => x.Columns.ShouldBeEmpty());
+    }
+
+    [Test]
     public void GeneratedShouldntBeOverwritten()
     {
         Mapping(x => x.LineOne, x => x.Generated.Always());

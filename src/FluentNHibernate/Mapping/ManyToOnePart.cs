@@ -341,7 +341,9 @@ public class ManyToOnePart<TOther> : IManyToOneMappingProvider
         mapping.Set(x => x.Name, Layer.Defaults, member.Name);
         mapping.Set(x => x.Class, Layer.Defaults, new TypeReference(typeof(TOther)));
 
-        if (columns.Count == 0 && !mapping.IsSpecified("Formula"))
+        if (mapping.IsSpecified("Formula"))
+            mapping.MakeColumnsEmpty(Layer.UserSupplied);
+        else if (columns.Count == 0)
             mapping.AddColumn(Layer.Defaults, CreateColumn(member.Name + "_id"));
 
         foreach (var column in columns)
