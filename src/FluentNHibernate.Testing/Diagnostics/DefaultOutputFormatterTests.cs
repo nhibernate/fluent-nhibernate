@@ -73,14 +73,14 @@ public class DefaultOutputFormatterTests
             "\r\n" +
             "Automapping\r\n" +
             "-----------\r\n\r\n" +
-            "Skipped types:\r\n\r\n" + 
+            "Skipped types:\r\n\r\n" +
             "  " + typeof(One).Name + " | first reason  | " + typeof(One).AssemblyQualifiedName + "\r\n" +
             "  " + typeof(Two).Name + " | second reason | " + typeof(Two).AssemblyQualifiedName + "\r\n" +
             "\r\n" +
             "Candidate types:\r\n\r\n" +
             "  " + typeof(One).Name + " | " + typeof(One).AssemblyQualifiedName + "\r\n" +
             "  " + typeof(Two).Name + " | " + typeof(Two).AssemblyQualifiedName + "\r\n" +
-            "\r\n" + 
+            "\r\n" +
             "Mapped types:\r\n\r\n" +
             "  " + typeof(One).Name + " | " + typeof(One).AssemblyQualifiedName + "\r\n" +
             "  " + typeof(Two).Name + " | " + typeof(Two).AssemblyQualifiedName + "\r\n"
