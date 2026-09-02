@@ -52,7 +52,7 @@ public class DefaultOutputFormatterTests
             });
         var output = formatter.Format(results);
 
-        output.ShouldEqual(
+        Assert.That(output, Is.EqualTo(
             "Fluent Mappings\r\n" +
             "---------------\r\n\r\n" +
             "Sources scanned:\r\n\r\n" +
@@ -84,7 +84,7 @@ public class DefaultOutputFormatterTests
             "Mapped types:\r\n\r\n" +
             "  " + typeof(One).Name + " | " + typeof(One).AssemblyQualifiedName + "\r\n" +
             "  " + typeof(Two).Name + " | " + typeof(Two).AssemblyQualifiedName + "\r\n"
-        );
+        ).IgnoreLineEndingFormat);
     }
 
     class One { }

@@ -9,6 +9,7 @@ using System.Drawing;
 namespace FluentNHibernate.Testing.Testing;
 
 [TestFixture]
+[Platform("Win", Reason = "System.Drawing.Common is only supported on Windows")]
 public class PersistenceSpecificationTester
 {
     public class Cat
